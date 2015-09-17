@@ -30,67 +30,7 @@ module.exports = function(grunt) {
                     src: ['build/js/r//text.js'],
                     dest: 'build/js/r/text.js'
                 }]
-            },
-
-            // templates_layouts: {
-            //     files: [{
-            //         src: ['build/views/layouts/html_corp.ejs'],
-            //         dest: 'build/views/layouts/html_corp.ejs'
-            //     }]
-            // },
-
-            // templates_pages: {
-            //     files: [{
-            //         src: ['build/views/pages/about.ejs'],
-            //         dest: 'build/views/pages/about.ejs'
-            //     }, {
-            //         src: ['build/views/pages/bad.ejs'],
-            //         dest: 'build/views/pages/bad.ejs'
-            //     }, {
-            //         src: ['build/views/pages/careers.ejs'],
-            //         dest: 'build/views/pages/careers.ejs'
-            //     }, {
-            //         src: ['build/views/pages/contact-us.ejs'],
-            //         dest: 'build/views/pages/contact-us.ejs'
-            //     }, {
-            //         src: ['build/views/pages/create-account.ejs'],
-            //         dest: 'build/views/pages/create-account.ejs'
-            //     }, {
-            //         src: ['build/views/pages/faq.ejs'],
-            //         dest: 'build/views/pages/faq.ejs'
-            //     }, {
-            //         src: ['build/views/pages/forgot.ejs'],
-            //         dest: 'build/views/pages/forgot.ejs'
-            //     }, {
-            //         src: ['build/views/pages/home.ejs'],
-            //         dest: 'build/views/pages/home.ejs'
-            //     }, {
-            //         src: ['build/views/pages/legal.ejs'],
-            //         dest: 'build/views/pages/legal.ejs'
-            //     }, {
-            //         src: ['build/views/pages/meet-the-team.ejs'],
-            //         dest: 'build/views/pages/meet-the-team.ejs'
-            //     }, {
-            //         src: ['build/views/pages/terms-of-service.ejs'],
-            //         dest: 'build/views/pages/terms-of-service.ejs'
-            //     }]
-            // },
-
-            // templates_partials: {
-            //     files: [{
-            //         src: ['build/views/partials/css.ejs'],
-            //         dest: 'build/views/partials/css.ejs'
-            //     }, {
-            //         src: ['build/views/partials/footer.ejs'],
-            //         dest: 'build/views/partials/footer.ejs'
-            //     }, {
-            //         src: ['build/views/partials/js.ejs'],
-            //         dest: 'build/views/partials/js.ejs'
-            //     }, {
-            //         src: ['build/views/partials/nav.ejs'],
-            //         dest: 'build/views/partials/nav.ejs'
-            //     }]
-            // }
+            }
         },
 
         concat: {
@@ -198,21 +138,15 @@ module.exports = function(grunt) {
         }
     });
 
-    // TODO: need to learn how build this shit right
-    // grunt-contrib-concat - To put files together in one
-    // grunt-contrib-copy - To copy files to your "build" folder
-    // grunt-usemin - To use the compiled js file in your html
-
-
     //load all tasks;
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
 
+    // Default task(s).
     grunt.registerTask('default', [
         'clean:pre',
         'copy',
@@ -224,6 +158,24 @@ module.exports = function(grunt) {
     ]);
 
     // Default task(s).
-    // grunt.registerTask('default', ['clean', 'uglify', 'less']);
+    grunt.registerTask('development', [
+        'clean:pre',
+        'copy',
+        'requirejs',
+        'concat',
+        'less',
+        'uglify',
+        'clean:post'
+    ]);
 
+    // Default task(s).
+    grunt.registerTask('production', [
+        'clean:pre',
+        'copy',
+        'requirejs',
+        'concat',
+        'less',
+        'uglify',
+        'clean:post'
+    ]);
 };

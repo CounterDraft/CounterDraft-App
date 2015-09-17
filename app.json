@@ -1,8 +1,8 @@
 {
-  "name": "CounterDraft Corp Site",
-  "description": "CounterDraft Corp Site",
-  "repository": "https://github.com/ScoobyGaming/Scooby-Corp",
-  "logo": "http://scooby-corp.herokuapp.com/images/node.svg",
+  "name": "CounterDraft-App",
+  "description": "CounterDraft App",
+  "repository": "https://github.com/CounterDraft/CounterDraft-App",
+  "logo": "",
   "keywords": ["node", "express", "static"],
   "image": "heroku/nodejs"
 }

@@ -1,4 +1,4 @@
-console.log('Running Project....');
+console.log('Running webapp/api Project....');
 var express = require('express');
 var expressLayouts = require('express-ejs-layouts');
 var npm = require("npm");
@@ -26,7 +26,9 @@ var loadServer = function() {
     app.use(expressLayouts);
 
     app.get('/', function(request, response) {
-        response.render('pages/home');
+        response.render('pages/login');
+    }).get('/dashboard', function(request, response) {
+        response.render('pages/dashboard');
     }).get('/about', function(request, response) {
         response.render('pages/about');
     }).get('/meet-the-team', function(request, response) {
