@@ -1,0 +1,9 @@
+<%if (settings.env === 'production') { %>
+    <script type="text/javascript" src="build/js/min/CounterDraft-corp-site.min.js"></script>
+    	<!-- <script type="text/javascript" src="build/js/CounterDraft-corp-site.min.js"></script> -->
+    <% } else { %>
+        <script type="text/javascript" src="/node_modules/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" src="/node_modules/underscore/underscore.js"></script>
+        <script type="text/javascript" src="/node_modules/backbone/backbone.js"></script>
+        <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<% } %>

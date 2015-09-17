@@ -1,0 +1,188 @@
+@img-dir: "/images";
+
+/* As hex codes */
+
+@color-primary-0: #AA5A39;  /* Main Primary color */
+@color-primary-1: #FFC3AA;
+@color-primary-2: #D48A6A;
+@color-primary-3: #803515;
+@color-primary-4: #551900;
+
+@color-secondary-0: #A13646; /* Main Secondary color */
+@color-secondary-1: #F1A1AD;
+@color-secondary-2: #C96474;
+@color-secondary-3: #781424;
+@color-secondary-4: #50000D;
+
+@footer-color: #1d1c1e;
+
+//Header, Links blue;
+@clientColorBlue: #1e96bc;
+
+//Active Calendar Day, Button (Top part of gradient) green;
+@clientColorGreen: #64d46f;
+
+//Headlines, Body Copy black;
+@clientColorBlack: #444444;
+
+//Secondary Copy, Labels, Footer Text Dark Gray;
+@clientColorDarkGray: #AAAAAA;
+
+//Inactive Calendar Day, Calendar Arrows Gray;
+@clientColorGray: #CCC;
+
+//Footer, Hairlines Light Gray Blue;
+@clientColorLightGrayBlue: #E3E6E8;
+
+//Page Background Light Gray;
+@clientColorLightGray: #f0f3f5;
+
+//Side Bar Module Background Lightest Gray;
+@clientColorLightestGray: #f7fbfc;
+
+
+//BootStrap Sizes;
+@bootstrap-med: 768px;
+@bootstrap-large: 992px;
+@bootstrap-exlarge: 1200px;
+
+@bootstrap-input-border-color: rgb(204, 204, 204);
+
+
+//Home Page;
+
+@counter-dark-section: #dedede;
+
+
+
+// Test Stuff
+
+.test-border-1 {
+    border: 1px solid green;
+}
+
+.test-border-2 {
+    border: 1px solid blue;
+}
+
+.test-border-3 {
+    border: 1px solid red;
+}
+
+//mixin functions -----------
+
+.addImage(@url, @position: left, @size: 100%){
+    background: url('@{img-dir}/@{url}') @position no-repeat;
+    background-size: @size;
+}
+
+// sets the color of a swtich
+.setSwtichColor(@color: @standardSwtichSelectorColor) {
+    input:checked + label {
+        background: @color
+    }
+}
+.addTransition(@property: all, @time: .5s, @ease: ease-in-out){
+    webkit-transition: @property @time @ease;
+    -moz-transition: @property @time @ease;
+    -o-transition: @property @time @ease;
+    transition: @property @time @ease;
+}
+
+.border-radius (@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    border-radius: @radius;
+}
+
+.box-shadow (@x: 0px, @y: 3px, @blur: 5px, @alpha: 0.5) {
+    -webkit-box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+    -moz-box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+    box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+}
+
+.appearance(@type: none){
+    appearance:@type;
+    -moz-appearance:@type;
+    -webkit-appearance:@type; 
+}
+
+.not-box-shadow{
+    -webkit-box-shadow:none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.text-shadow (@x: 0px, @y: 3px, @blur: 5px, @alpha: 0.5) {
+    -webkit-text-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+    -moz-text-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+    text-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+}
+
+.gradient (@origin: left, @start: #ffffff, @stop: #000000) {
+    background-color: @start;
+    background-image: -webkit-linear-gradient(@origin, @start, @stop);
+    background-image: -moz-linear-gradient(@origin, @start, @stop);
+    background-image: -o-linear-gradient(@origin, @start, @stop);
+    background-image: -ms-linear-gradient(@origin, @start, @stop);
+    background-image: linear-gradient(@origin, @start, @stop);
+}
+
+.gradient-top-bottom (@top: #fff, @bottom: #f7f7f7){
+    background: -webkit-linear-gradient(@top, @bottom);
+    background: -o-linear-gradient(@top, @bottom);
+    background: -moz-linear-gradient(@top, @bottom);
+    background: linear-gradient(@top, @bottom);
+}
+.quick-gradient (@origin: left, @alpha: 0.2) {
+    background-image: -webkit-linear-gradient(@origin, rgba(0,0,0,0.0), rgba(0,0,0,@alpha));
+    background-image: -moz-linear-gradient(@origin, rgba(0,0,0,0.0), rgba(0,0,0,@alpha));
+    background-image: -o-linear-gradient(@origin, rgba(0,0,0,0.0), rgba(0,0,0,@alpha));
+    background-image: -ms-linear-gradient(@origin, rgba(0,0,0,0.0), rgba(0,0,0,@alpha));
+    background-image: linear-gradient(@origin, rgba(0,0,0,0.0), rgba(0,0,0,@alpha));
+}
+.reflect (@length: 50%, @opacity: 0.2){
+    -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(@length, transparent), to(rgba(255,255,255,@opacity)));
+}
+
+//for navigation menu;
+.addMarker(@className, @pre: ~'.', @color: @standardMarkerColor) {
+    position: relative;
+    @{pre}@{className}
+    {
+        display: block;
+        position: absolute;
+        background-color: @color;
+        height: 100%;
+        width: 10px;
+        right: 0px;
+        top: 0;
+        bottom: 0px;
+    }
+}
+
+.positionInCenter(@position: fixed){
+    position: @position;
+    top: 15% !important;
+    margin: 0 auto;
+}
+
+.flipImage(){
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+.rotateImage(@degree: 0deg){
+    -webkit-transform: rotate(@degree);
+    -moz-transform: rotate(@degree);
+    -ms-transform: rotate(@degree);
+    -o-transform: rotate(@degree);
+    transform: rotate(@degree);
+}
+
+
+
