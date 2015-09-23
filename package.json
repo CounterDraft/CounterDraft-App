@@ -2,10 +2,10 @@
     "name": "CounterDraft-App",
     "version": "0.0.1",
     "description": "CounterDraft Webapp and API",
-    "main": "main.js",
+    "main": "index.js",
     "scripts": {
         "postinstall": "grunt",
-        "start": "node main.js"
+        "start": "node index.js"
     },
     "dependencies": {
         "bootstrap": "^3.3.5",
