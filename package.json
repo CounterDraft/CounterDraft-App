@@ -2,17 +2,16 @@
     "name": "CounterDraft-App",
     "version": "0.0.1",
     "description": "CounterDraft Webapp and API",
-    "main": "index.js",
+    "main": "main.js",
     "scripts": {
-        "postinstall": "node build.js",
-        "start": "node index.js"
+        "postinstall": "grunt",
+        "start": "node main.js"
     },
     "dependencies": {
         "bootstrap": "^3.3.5",
         "ejs": "^2.3.1",
         "express": "^4.13.3",
         "express-ejs-layouts": "^1.1.0",
-
         "grunt": "*",
         "grunt-cli": "*",
         "grunt-contrib-less": "*",
@@ -21,8 +20,6 @@
         "grunt-contrib-copy": "^0.8.1",
         "grunt-contrib-clean": "*",
         "grunt-contrib-requirejs": "^0.4.4",
-
-
         "jquery": "^2.1.4",
         "less": "^2.5.1",
         "npm": "^2.14.2",
@@ -30,9 +27,7 @@
         "underscore": "^1.8.3",
         "backbone": "^1.2.3",
         "googlemaps": "^1.0.1",
-
-        "angular": "^1.5.0",
-        
+        "angular": "^1.0.0",
         "bcryptjs": "^2.2.1",
         "orchestrate": "^0.5.0",
         "morgan": "^1.6.1",
