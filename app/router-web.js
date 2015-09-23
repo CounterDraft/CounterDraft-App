@@ -34,6 +34,9 @@
          }).get(br + wr['changepassword'], function(req, res){
             
             res.render('pages/password');
+         }).get(br + "*", function(req, res){
+            
+            res.render('pages/badURL');
          });
          return false;
      }
