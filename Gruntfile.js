@@ -92,7 +92,17 @@ module.exports = function(grunt) {
                             "common-build"
                         ]
                     }, {
+                        name: "bad-page",
+                        exclude: [
+                            "common-build"
+                        ]
+                    }, {
                         name: "careers-page",
+                        exclude: [
+                            "common-build"
+                        ]
+                    }, {
+                        name: "login-page",
                         exclude: [
                             "common-build"
                         ]
