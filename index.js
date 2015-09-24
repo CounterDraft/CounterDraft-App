@@ -1,8 +1,12 @@
+/*This file starts the app and manages the creating of the
+express server all munpulation of the express server should be done here
+or the respected router objects.*/
 console.log('Loading webapp/api project....');
+
 var express = require('express');
 var expressLayouts = require('express-ejs-layouts');
-var expressSession = require('express-session');
-var uuid = require('uuid');
+var sessionFactory= require("./app/sessionFactory");
+
 var app = express();
 
 var routerApp = require("./app/router-api");
@@ -11,14 +15,7 @@ var routerWeb = require("./app/router-web");
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname));
 
-app.use(expressSession({
-  genid: function(req) {
-    return uuid.v4(); // use UUIDs for session IDs 
-  },
-  secret: 'keyboard cat',
-  saveUninitialized: true,
-  resave: true
-}));
+app.use(sessionFactory({}));
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
@@ -28,6 +25,7 @@ app.set('view engine', 'ejs');
 app.set('layout', 'layouts/html_app');
 app.use(expressLayouts);
 
+//@deperacated
 //Pass in Environmental Variables.
 if (process.env) {
 	// app.env = {}
