@@ -20,8 +20,12 @@ app.use(expressLayouts);
 
 //Pass in Environmental Variables.
 if (process.env) {
-    app.settings.env = process.env.MODE;
-    app.settings.package_name = process.env.npm_package_name;
+	app.env = {}
+    app.env.MODE = (process.env.MODE || 'undefined');
+    app.isAuth = true;
+    app.package_name = process.env.npm_package_name;
+
+    console.log(app.env.MODE);
 }
 
 //Adding api calls;

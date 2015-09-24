@@ -2,17 +2,19 @@
 <html lang="en" data-framework="angularjs">
 
 <head>
-    <title>
-        <%= title %>
-    </title>
+    <title><%= title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <% include ../partials/css.ejs %>
 </head>
 
 <body>
     <article id="counter-<%= articleID %>">
-        <% include ../partials/nav.ejs %>
-            <%- body %>
+    <%if(settings.isAuth == true) { %>
+        <% include ../partials/authNav.ejs %>
+    <%} else { %>
+        <% include ../partials/nonAuthNav.ejs %>
+    <%}%>
+    <%- body %>
     </article>
 </body>
 <% include ../partials/footer.ejs %>
@@ -24,7 +26,7 @@
                 <% } %>
                     <div id="counter-modal" class="modal fade" role="dialog"></div>
                     <div id="counter-load">
-                    	<div class="counter-loader"></div>
+                        <div class="counter-loader"></div>
                     </div>
 
 </html>
