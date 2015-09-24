@@ -1,7 +1,8 @@
 console.log('Loading webapp/api project....');
 var express = require('express');
 var expressLayouts = require('express-ejs-layouts');
-var npm = require("npm");
+var expressSession = require('express-session');
+var uuid = require('uuid');
 var app = express();
 
 var routerApp = require("./app/router-api");
@@ -9,6 +10,15 @@ var routerWeb = require("./app/router-web");
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname));
+
+app.use(expressSession({
+  genid: function(req) {
+    return uuid.v4(); // use UUIDs for session IDs 
+  },
+  secret: 'keyboard cat',
+  saveUninitialized: true,
+  resave: true
+}));
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
@@ -20,12 +30,12 @@ app.use(expressLayouts);
 
 //Pass in Environmental Variables.
 if (process.env) {
-	app.env = {}
-    app.env.MODE = (process.env.MODE || 'undefined');
-    app.isAuth = true;
-    app.package_name = process.env.npm_package_name;
+	// app.env = {}
+ //    app.env.MODE = (process.env.MODE || 'undefined');
+ //    app.isAuth = true;
+ //    app.package_name = process.env.npm_package_name;
 
-    console.log(app.env.MODE);
+ //    console.log(app.env.MODE);
 }
 
 //Adding api calls;

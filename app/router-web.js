@@ -2,7 +2,9 @@
 
  var authorization = require('express-authorization');
 
- var nonAuthView = 'pages/login';
+ // setup permission
+ var isAdmin = authorization.ensureRequest.isPermitted('admin:*');
+ var isLoggedIn = authorization.ensureRequest.isPermitted('session:active');
 
  var br = '/';
 
@@ -10,7 +12,9 @@
      'login': 'login',
      'dashboard': 'dashboard',
      'profile': 'profile',
-     'changepassword': 'password'
+     'changepassword': 'password',
+     'logout': 'logout',
+     'superadmin': 'admin'
  }
 
  module.exports = {
@@ -24,35 +28,36 @@
      },
 
      setRouters: function() {
-         this.app.get(br,
-             authorization.ensureRequest.isPermitted(nonAuthView),
-             function(req, res) {
-                 //TODO: Call the api for stuff we need for page
-                 res.render('pages/dashboard');
-             }).get(br + wr['dashboard'],
-             authorization.ensureRequest.isPermitted(nonAuthView),
-             function(req, res) {
+         this.app.get(br, isLoggedIn, function(req, res) {
+             //TODO: Call the api for stuff we need for page
+             res.render('pages/dashboard',{});
 
-                 res.render('pages/dashboard');
-             }).get(br + wr['profile'],
-             authorization.ensureRequest.isPermitted(nonAuthView),
-             function(req, res) {
+         }).get(br + wr['dashboard'], isLoggedIn, function(req, res) {
+             res.render('pages/dashboard', {});
 
-                 res.render('pages/profile');
-             }).get(br + wr['changepassword'],
-             authorization.ensureRequest.isPermitted(nonAuthView),
-             function(req, res) {
+         }).get(br + wr['profile'], isLoggedIn, function(req, res) {
+             res.render('pages/profile', {});
 
-                 res.render('pages/password');
-             }).get(br + wr['login'],
-             function(req, res) {
-                 res.render('pages/login');
-             }).get(br + "*",
-             authorization.ensureRequest.isPermitted(nonAuthView),
-             function(req, res) {
+         })
+         //Need to ensure they are logged in and are admin loggedIn.
+         .get(br + wr['superadmin'], isAdmin,function(req, res) {
+             res.render('pages/superadmin',{ });
 
-                 res.render('pages/badURL');
-             });
+         }).get(br + wr['changepassword'], isLoggedIn, function(req, res) {
+             res.render('pages/password');
+
+         }).get(br + wr['logout'], function(req, res) {
+             req.session.destroy();
+             res.redirect(br);
+         })
+         //defaults if they fail to auth per framework
+         .get(br + wr['login'], function(req, res) {
+             res.render('pages/login');
+
+         }).get(br + "*", isLoggedIn, function(req, res) {
+             res.render('pages/badURL');
+
+         });
          return false;
      }
 

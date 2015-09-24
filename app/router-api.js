@@ -1,7 +1,7 @@
  "use strict"; //Defines that JavaScript code should be executed in "strict mode".
- var baseRouter = '/api';
+ var br = '/api';
 
- var ApiRouters = {
+ var ar = {
      'login': '/login',
      'registration': '/registration',
      'createGame': '/createGame'
@@ -17,7 +17,16 @@
      },
 
      setRouters: function() {
-         console.log('setting the routers for api');
+         this.app.post(br + ar['login'], function(req, res) {
+            //calls the loggin controller and controllers calls loginApi;
+             req.session.user = {
+                 username: "root",
+                 permissions: ['session:*']
+             };
+             res.redirect('/');
+         });
+
+
          return false;
      }
 
