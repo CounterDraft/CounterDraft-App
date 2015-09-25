@@ -45,11 +45,11 @@
  });
  routerWeb.get(wr['login'], function(req, res) {
      // TODO: need to determine if we are authorzed before sending them to login
-     if(req.session.user){
-          res.redirect('/dashboard');
-     }else{
-          res.render('pages/login', {});
-     }
+     // if(req.session.user){
+     //      res.redirect('/dashboard');
+     // }else{
+     //      res.render('pages/login', {});
+     // }
  });
  routerWeb.get(wr['logout'], function(req, res) {
      req.session.destroy();
