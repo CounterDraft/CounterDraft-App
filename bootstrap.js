@@ -11,8 +11,8 @@ module.exports = {
 		GLOBAL.config.server.port = process.env.PORT || GLOBAL.config.server.port;
 
 		GLOBAL.BASE_URL = 'http://' + GLOBAL.config.server.ip + ':' + GLOBAL.config.server.port + '/';
-		GLOBAL.CONTROLLER_DIR = './controller/';
-		GLOBAL.MODEL_DIR = './model/';
+		GLOBAL.CONTROLLER_DIR = './app/controller/';
+		GLOBAL.MODEL_DIR = './app/model/';
 		
 		GLOBAL.Promise = require('promise');
 
