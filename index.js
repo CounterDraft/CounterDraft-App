@@ -25,7 +25,7 @@ app.set('view engine', 'ejs');
 app.set('layout', 'layouts/html_app');
 app.use(expressLayouts);
 
-//@deperacated
+//@Deperacated
 //Pass in Environmental Variables.
 if (process.env) {
 	// app.env = {}
@@ -39,11 +39,8 @@ if (process.env) {
 //Adding api calls;
 app.use('/api', routerApi);
 
-
-// routerApp.init(app);
-
 //Adding webapp calls;
-routerWeb.init(app);
+app.use('', routerWeb);
 
 app.listen(app.get('port'), function() {
     console.log('Node WebApp/Api is running on port', app.get('port'));

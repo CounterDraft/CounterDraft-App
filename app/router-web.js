@@ -3,62 +3,52 @@
  var authorization = require('express-authorization');
 
  // setup permission
- var isAdmin = authorization.ensureRequest.isPermitted('admin:*');
- var isLoggedIn = authorization.ensureRequest.isPermitted('session:active');
+ var isAuthorizedAdmin = authorization.ensureRequest.isPermitted('admin:*');
+ var isAuthorized = authorization.ensureRequest.isPermitted('session:active');
 
- var br = '/';
+ var express = require('express');
+ var routerWeb = express.Router();
 
+//routers, so we can see them easier;
  var wr = {
-     'login': 'login',
-     'dashboard': 'dashboard',
-     'profile': 'profile',
-     'changepassword': 'password',
-     'logout': 'logout',
-     'superadmin': 'admin'
+     'login':           '/login',
+     'dashboard':       '/dashboard',
+     'profile':         '/profile',
+     'changepassword':  '/password',
+     'logout':          '/logout',
+     'superadmin':      '/admin'
  }
 
- module.exports = {
+ routerWeb.use(function timeLog(req, res, next) {
+     console.log('Time: ', Date.now());
+     next();
+ });
 
-     app: null,
+ routerWeb.get('/', isAuthorized, function(req, res) {
+     //TODO: Call the api for stuff we need for page
+     res.render('pages/dashboard', {});
+ });
 
-     init: function(app) {
-         this.app = app;
-         this.setRouters();
-         return true;
-     },
+ routerWeb.get(wr['login'], function(req, res) {
+     res.render('pages/login', {});
+ });
 
-     setRouters: function() {
-         this.app.get(br, isLoggedIn, function(req, res) {
-             //TODO: Call the api for stuff we need for page
-             res.render('pages/dashboard',{});
+ routerWeb.get(wr['dashboard'], isAuthorized, function(req, res) {
+     res.render('pages/dashboard', {});
+ });
+ routerWeb.get(wr['profile'], isAuthorized, function(req, res) {
+     res.render('pages/profile', {});
+ });
+ routerWeb.get(wr['superadmin'], isAuthorizedAdmin, function(req, res) {
+     res.render('pages/superadmin', {});
+ });
+ routerWeb.get(wr['changepassword'], isAuthorized, function(req, res) {
+     res.render('pages/password', {});
+ });
+ routerWeb.get(wr['logout'], function(req, res) {
+     req.session.destroy();
+     res.redirect('/');
+ });
 
-         }).get(br + wr['dashboard'], isLoggedIn, function(req, res) {
-             res.render('pages/dashboard', {});
 
-         }).get(br + wr['profile'], isLoggedIn, function(req, res) {
-             res.render('pages/profile', {});
-
-         })
-         //Need to ensure they are logged in and are admin loggedIn.
-         .get(br + wr['superadmin'], isAdmin,function(req, res) {
-             res.render('pages/superadmin',{ });
-
-         }).get(br + wr['changepassword'], isLoggedIn, function(req, res) {
-             res.render('pages/password');
-
-         }).get(br + wr['logout'], function(req, res) {
-             req.session.destroy();
-             res.redirect(br);
-         })
-         //defaults if they fail to auth per framework
-         .get(br + wr['login'], function(req, res) {
-             res.render('pages/login');
-
-         }).get(br + "*", isLoggedIn, function(req, res) {
-             res.render('pages/badURL');
-
-         });
-         return false;
-     }
-
- }
+ module.exports = routerWeb;
