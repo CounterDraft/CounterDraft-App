@@ -50,6 +50,7 @@
      // }else{
      //      res.render('pages/login', {});
      // }
+     res.render('pages/login', {});
  });
  routerWeb.get(wr['logout'], function(req, res) {
      req.session.destroy();
