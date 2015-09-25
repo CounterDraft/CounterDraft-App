@@ -9,7 +9,7 @@ var sessionFactory= require("./app/sessionFactory");
 
 var app = express();
 
-var routerApp = require("./app/router-api");
+var routerApi = require("./app/router-api");
 var routerWeb = require("./app/router-web");
 
 app.set('port', (process.env.PORT || 5000));
@@ -37,7 +37,10 @@ if (process.env) {
 }
 
 //Adding api calls;
-routerApp.init(app);
+app.use('/api', routerApi);
+
+
+// routerApp.init(app);
 
 //Adding webapp calls;
 routerWeb.init(app);
