@@ -1,0 +1,46 @@
+@import "tools";
+//This is the less file for the footer;
+footer {
+    background-color: @footer-color;
+    .mastfoot {
+        position: relative;
+        padding-top: 1em;
+        .text-size-small;
+        * {
+            color: @clientColorLightestGray;
+        }
+        ul {
+            list-style: none;
+            li {
+                border-left: 1px solid white;
+                padding-left: 1em;
+                a {
+                    padding: .5em;
+                }
+                a:hover {
+                    background-color: @clientColorLightestGray;
+                    color: white;
+                    text-decoration: none;
+                    .border-radius(10px);
+                }
+            }
+        }
+        .footer-corp {
+            padding: 1em;
+            * {
+                color: @clientColorDarkGray !important;
+            }
+        }
+        @media screen and (max-width: @bootstrap-med) {
+            > div {
+                text-align: center;
+            }
+            ul {
+                padding: 0;
+                li {
+                    border: none;
+                }
+            }
+        }
+    }
+}

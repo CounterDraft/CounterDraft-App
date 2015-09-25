@@ -17,8 +17,16 @@ module.exports = {
 		GLOBAL.Promise = require('promise');
 
 		GLOBAL.generateUUID = function() {
-			var uuid = return('uuid');
+			var uuid = require('uuid');
 			return uuid.v4();
+		};
+		
+		GLOBAL.getAuthorization = function() {
+			return require('express-authorization');
+		};
+		
+		GLOBAL.getExpressSession = function() {
+			return require('express-session');
 		};
 
 		GLOBAL.getController = function(controllerName) {
@@ -80,15 +88,33 @@ module.exports = {
 		var cookieParser = require('cookie-parser');
 		var bodyParser = require('body-parser');
 		var cors = require('./lib/cors');
+		var sessionFactory = require('./lib/sessionFactory');
+		var expressLayouts = require('express-ejs-layouts');
 
-		app.use(express.static(__dirname + '/public'));
+		app.use(express.static(__dirname));
 		app.use(bodyParser.urlencoded( { extended: true } ));
 		app.use(bodyParser.json());
 		app.use(cookieParser());
 		app.use(cors);
+		app.use(sessionFactory({}));
+		
+		app.set('views', __dirname + '/views');
+		app.set('view engine', 'ejs');
+		app.set('layout', 'layouts/html_app');
+		app.use(expressLayouts);
+		
+		// TODO: Complete this
+		if (process.env) {
+			// app.env = {}
+			//    app.env.MODE = (process.env.MODE || 'undefined');
+			//    app.isAuth = true;
+			//    app.package_name = process.env.npm_package_name;
+			
+			//    console.log(app.env.MODE);
+		}
 	},
 
-	startBootstrap: function(app, express) {
+	start: function(app, express) {
 		this.setupGlobals();
 		logger.info('Loaded configuration: \n' + JSON.stringify(config));
 		this.setupApp(app, express);

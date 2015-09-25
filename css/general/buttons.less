@@ -1,0 +1,153 @@
+//styling for action button
+.primary {
+    &.btn {
+        .box-shadow(-1px, 0, 2px, 0.2);
+        .text-shadow(-1px, 0, 0, 0.2);
+        .border-radius();
+        .gradient(top, @clientColorGreen, darken(@clientColorGreen, 20%));
+        .text-size-larger;
+        color: white !important;
+        height: 50px;
+        border: none;
+        &:hover {
+            opacity: .8;
+        }
+        i {
+            position: relative;
+            top: 3px;
+        }
+        // @media screen and (max-width: @bootstrap-med) {
+        //     .text-size-small;
+        // }
+    }
+}
+
+.model-secondary {
+    &.btn-modal {
+        font-size: 35px;
+        color: white !important;
+        border: none;
+        opacity: 1;
+        &:hover {
+            opacity: .8;
+        }
+    }
+}
+
+.secondary {
+    &.btn {
+        .border-radius();
+        .box-shadow(-1px, 0, 2px, 0.2);
+        // .text-shadow(-1px, 0, 0, 0.2);
+        // .gradient(top, @clientColorLightestGray, darken(@clientColorLightestGray, 20%));
+        .text-size-larger;
+        background-color: @color-secondary-0;
+        color: white !important;
+        border: none;
+        height: 50px;
+        &:hover {
+            opacity: .8;
+        }
+    }
+    // @media screen and (max-width: @bootstrap-med) {
+    //         .text-size-small;
+    //     }
+}
+
+//styling for nav buttons
+.tertiary {
+    &.btn {
+        .box-shadow(-1px, 0, 2px, 0.2);
+        .border-radius();
+        height: 40px;
+        padding: .3em;
+        .text-size-larger;
+        border: none;
+        color: white;
+        i{
+            color: white;
+        }
+      
+        background-color: @color-secondary-0;
+        &:hover {
+            opacity: .8;
+            color: white;
+        }
+    }
+}
+
+a.quaternary,
+button.quaternary {
+    padding: 0 20px;
+    height: 40px;
+    background: @clientColorLightGray;
+    color: black;
+    cursor: auto;
+    .text-size-larger;
+    @media screen and (max-width: @bootstrap-med) {
+        .text-size-small;
+    }
+}
+
+.btn.nmb {
+    margin-bottom: 0;
+}
+
+a.btn {
+    padding: .5em;
+}
+
+// body {
+//     /* removes outline border when button clicked */
+//     button:focus, .button:focus {
+//      outline-style:none;
+//  }
+//     .button-filter {
+//         button, .button {
+//             padding: 10px 0px;
+//             max-height: 40px;
+//             background-color: white;
+//             .link-text;
+//             @media only screen and (max-width: @foundation-small) {
+//                 font-size: 13px !important;
+//             }
+//         }
+//         li{
+//             height: 100%;
+//         }
+//         li:after {
+//             content: "\25BC";
+//             color: transparent;
+//             position: relative;
+//             bottom: 28px;
+//             left: 45%;
+//         }
+//         .active {
+//             button, .button {
+//                 background-color: @clientColorBlue;
+//                 .link-text-inverted;
+//             }
+//             &:after {
+//                 color: @clientColorBlue;
+//             }
+//         }
+//         &.button-group.round > *:first-child,
+//         &.button-group.round > *:first-child > a,
+//         &.button-group.round > *:first-child > button,
+//         &.button-group.round > *:first-child > .button {
+//             -webkit-border-bottom-left-radius: @btn-group-radius;
+//             -webkit-border-top-left-radius: @btn-group-radius;
+//             border-bottom-left-radius: @btn-group-radius;
+//             border-top-left-radius: @btn-group-radius;
+//         }
+//         &.button-group.round > *:last-child,
+//         &.button-group.round > *:last-child > a,
+//         &.button-group.round > *:last-child > button,
+//         &.button-group.round > *:last-child > .button {
+//             -webkit-border-bottom-right-radius: @btn-group-radius;
+//             -webkit-border-top-right-radius: @btn-group-radius;
+//             border-bottom-right-radius: @btn-group-radius;
+//             border-top-right-radius: @btn-group-radius;
+//         }
+//     }
+// }

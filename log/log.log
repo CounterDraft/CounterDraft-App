@@ -1,0 +1,3 @@
+{"level":"info","message":"Loaded configuration: \n{\"server\":{\"ip\":\"localhost\",\"port\":8080},\"database\":{\"host\":\"localhost\",\"port\":3306,\"user\":\"\",\"password\":\"\",\"database\":\"counterdraft_development\",\"table\":\"log\",\"level\":\"info\",\"multipleStatements\":true},\"email\":{\"service\":\"Gmail\",\"secureConnection\":true,\"port\":465,\"transportMethod\":\"SMTP\",\"auth\":{\"user\":\"\",\"pass\":\"\"}}}","timestamp":"2015-09-25T05:07:19.625Z"}
+{"level":"info","message":"Server started.","timestamp":"2015-09-25T05:07:19.687Z"}
+{"level":"info","message":"Listening on port: 8080","timestamp":"2015-09-25T05:07:19.687Z"}

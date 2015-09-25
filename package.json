@@ -1,37 +1,72 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.1.4",
-  "description": "A sample Node.js app using Express 4",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "ejs": "^2.3.1",
-    "express": "~4.9.x",
-    "mysql": "2.9.0",
-    "nodemailer": "1.4.0",
-    "promise": "7.0.4",
-    "uuid": "2.0.1",
-    "winston": "1.0.1",
-    "winston-mysql-transport": "0.1.2",
-    "body-parser": "1.13.2",
-    "cookie-parser": "1.3.5",
-    "crypto": "0.0.3",
-    "dateformat": "1.0.11",
-    "validator": "4.0.6"
-  },
-  "engines": {
-    "node": "0.12.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
-  },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
-  "license": "MIT"
+    "name": "CounterDraft-App",
+    "version": "0.0.1",
+    "description": "CounterDraft Webapp and API",
+    "main": "index.js",
+    "scripts": {
+        "postinstall": "grunt",
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "bootstrap": "^3.3.5",
+        "ejs": "^2.3.1",
+        "express": "^4.13.3",
+        "express-ejs-layouts": "^1.1.0",
+        "grunt": "*",
+        "grunt-cli": "*",
+        "grunt-contrib-less": "*",
+        "grunt-contrib-uglify": "*",
+        "grunt-contrib-concat": "^0.5.1",
+        "grunt-contrib-copy": "^0.8.1",
+        "grunt-contrib-clean": "*",
+        "grunt-contrib-requirejs": "^0.4.4",
+        "jquery": "^2.1.4",
+        "less": "^2.5.1",
+        "npm": "^2.14.2",
+        "requirejs": "^2.1.20",
+        "underscore": "^1.8.3",
+        "backbone": "^1.2.3",
+        "googlemaps": "^1.0.1",
+        "angular": "^1.0.0",
+        "bcryptjs": "^2.2.1",
+        "crypto": "0.0.3",
+        "orchestrate": "^0.5.0",
+        "morgan": "^1.6.1",
+        "body-parser": "^1.14.0",
+        "cookie-parser": "^1.3.5",
+        "method-override": "^2.3.5",
+        "express-session": "1.11.3",
+        "passport": "^0.3.0 ",
+        "passport-facebook": "^2.0.0",
+        "passport-google": "^0.3.0",
+        "passport-local": "^1.0.0",
+        "passport-twitter": "^1.0.3",
+        "uuid": "2.0.1",
+        "express-authorization": "^1.0.0", 
+        "q": "^1.4.1",
+        "promise": "7.0.4",
+        "mysql": "2.9.0",
+        "nodemailer": "1.4.0",
+        "winston": "1.0.1",
+        "winston-mysql-transport": "0.1.2",
+        "dateformat": "1.0.11",
+        "validator": "4.0.6"
+    },
+
+    "engines": {
+        "node": "0.12.2"
+    },
+
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/CounterDraft/CounterDraft-App"
+    },
+
+    "keywords": [
+        "node",
+        "heroku",
+        "express"
+    ],
+
+    "license": "MIT"
 }

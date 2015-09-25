@@ -1,0 +1,204 @@
+//general
+@import "general/tools";
+@import "general/fonts";
+@import "general/nav";
+@import "general/images";
+@import "general/footer";
+@import "general/buttons";
+@import "general/modal";
+
+/*libs*/
+
+@import "../node_modules/bootstrap/less/bootstrap";
+@import "libs/glyphicons";
+
+/*pages*/
+
+@import "pages/login";
+@import "pages/dashboard";
+@import "pages/profile";
+@import "pages/admin";
+@import "pages/password";
+
+
+body {
+    * {
+        font-family: "Avenir Next W01", "AvenirNextLTPro-demi";
+        // font-family: 'AvenirNextLTPro';
+        /* All text an all pages for clients is this font */
+        font-style: normal;
+        .body-text;
+    }
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+input[type="search"],
+input[type="email"],
+select,
+textarea,
+fieldset {
+    .border-radius();
+}
+
+select,
+textarea,
+fieldset {
+    .box-shadow();
+    border: 1px solid @bootstrap-input-border-color;
+}
+
+input[type="text"][readonly] {
+    background-color: white;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+input[type="search"],
+input[type="email"],
+select {
+    height: 40px !important;
+}
+
+body {
+    background-color: @clientColorLightestGray;
+}
+
+.counter-a-link-0 {
+    color: white!important;
+    &:hover {
+        .box-shadow(-1px, 0, 2px, 0.2);
+        .border-radius();
+        background: @color-secondary-0!important;
+    }
+}
+
+div.light-section,
+div.dark-section {
+    padding: 60px 0px 54px 0;
+    min-height: 233px;
+}
+
+div.light-section {
+    background: transparent;
+}
+
+div.dark-section {
+    background: @counter-dark-section;
+}
+
+.e-holder {
+    position: relative;
+    overflow: hidden;
+    .box-shadow();
+    .border-radius();
+    h2 {
+        .text-size-regular;
+        text-align: center;
+        width: 100%;
+        padding: .5em;
+        margin: 0;
+        opacity: .7;
+        color: white;
+        background: @color-secondary-0;
+    }
+    text-align: center;
+    height: 200px;
+    width: 200px;
+    @media screen and (max-width: @bootstrap-med) {
+        margin-bottom: 1em;
+    }
+}
+
+div#counter-load {
+    display: none;
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: black;
+    opacity: .5;
+    &.active {
+        display: block;
+    }
+    .counter-loader {
+        position: absolute;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 64px;
+        height: 64px;
+    }
+}
+
+.apple-message-box {
+    position: relative;
+    z-index: -1;
+    color: white;
+    word-wrap: break-word;
+    max-width: 200px;
+    min-height: 40px;
+    padding: 1em;
+    .modal-title;
+    .border-radius(20px);
+    background-color: @clientColorBlue;
+    .dialog-arrow {
+        position: absolute;
+        eight: 55px;
+        width: 55px;
+        top: 60px;
+        left: 30px;
+        z-index: -1;
+    }
+    span {
+        color: white !important;
+        @media screen and (max-width: @bootstrap-med) {
+            .text-size-regular;
+        }
+    }
+}
+
+.small-image {
+    @si: 40px;
+    height: @si;
+    width: @si;
+}
+
+.counter-page-header {
+    min-height: 500px;
+}
+
+.counter-page-header-1 {
+    .counter-page-header;
+    * {
+        color: white !important;
+    }
+    h1 {
+        .text-shadow();
+    }
+}
+
+.to-bottom {
+    position: absolute;
+    bottom: 0;
+}
+
+.to-top {
+    position: absolute;
+    top: 0;
+}
+
+.widget {
+    position: relative;
+    .box-shadow();
+}
