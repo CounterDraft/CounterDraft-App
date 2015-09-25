@@ -37,7 +37,7 @@
  routerWeb.get(wr['superadmin'], isAuthorizedAdmin, function(req, res) {
      res.render('pages/superadmin', {});
  });
- routerWeb.get('/*', isAuthorized, function(req, res) {
+ routerWeb.get('/*', function(req, res) {
      res.render('pages/badURL', {});
  });
  routerWeb.get(wr['changepassword'], isAuthorized, function(req, res) {
