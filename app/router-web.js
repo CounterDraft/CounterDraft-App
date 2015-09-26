@@ -9,14 +9,14 @@
  var express = require('express');
  var routerWeb = express.Router();
 
-//routers, so we can see them easier;
+ //routers, so we can see them easier;
  var wr = {
-     'login':           '/login',
-     'dashboard':       '/dashboard',
-     'profile':         '/profile',
-     'changepassword':  '/password',
-     'logout':          '/logout',
-     'superadmin':      '/admin'
+     'login': '/login',
+     'dashboard': '/dashboard',
+     'profile': '/profile',
+     'changepassword': '/password',
+     'logout': '/logout',
+     'superadmin': '/admin'
  }
 
  routerWeb.use(function timeLog(req, res, next) {
@@ -24,37 +24,73 @@
      next();
  });
 
+ // data - should be information we gather from the api's
  routerWeb.get('/', isAuthorized, function(req, res) {
      //TODO: Call the api for stuff we need for page
-     res.render('pages/dashboard', {});
+     res.render('pages/dashboard', {
+         data: {
+             name: 'Jerum Hubbert',
+             dob: '01/01/2000'
+         }
+     });
  });
  routerWeb.get(wr['dashboard'], isAuthorized, function(req, res) {
-     res.render('pages/dashboard', {});
+     res.render('pages/dashboard', {
+         data: {
+             name: 'Jerum Hubbert',
+             dob: '01/01/2000'
+         }
+     });
  });
  routerWeb.get(wr['profile'], isAuthorized, function(req, res) {
-     res.render('pages/profile', {});
+     res.render('pages/profile', {
+         data: {
+             name: 'Jerum Hubbert',
+             dob: '01/01/2000'
+         }
+     });
  });
  routerWeb.get(wr['superadmin'], isAuthorizedAdmin, function(req, res) {
-     res.render('pages/superadmin', {});
+     res.render('pages/superadmin', {
+         data: {
+             name: 'Jerum Hubbert',
+             dob: '01/01/2000'
+         }
+     });
  });
  routerWeb.get(wr['changepassword'], isAuthorized, function(req, res) {
-     res.render('pages/password', {});
+     res.render('pages/password', {
+         data: {
+             name: 'Jerum Hubbert',
+             dob: '01/01/2000'
+         }
+     });
  });
  routerWeb.get(wr['login'], function(req, res) {
      // TODO: need to determine if we are authorzed before sending them to login
-     if(req.session.user){
-          res.redirect('/dashboard');
-     }else{
-          res.render('pages/login', {});
+     if (req.session.user) {
+         res.redirect('/dashboard');
+     } else {
+         res.render('pages/login', {
+
+             data: {
+                 name: 'Jerum Hubbert',
+                 dob: '01/01/2000'
+             }
+         });
      }
-     // res.render('pages/login', {});
  });
  routerWeb.get(wr['logout'], function(req, res) {
      req.session.destroy();
      res.redirect('/');
  });
  routerWeb.get('/*', isAuthorized, function(req, res) {
-     res.render('pages/badURL', {});
+     res.render('pages/badURL', {
+         data: {
+             name: 'Jerum Hubbert',
+             dob: '01/01/2000'
+         }
+     });
  });
 
 

@@ -12,6 +12,8 @@ var app = express();
 var routerApi = require("./app/router-api");
 var routerWeb = require("./app/router-web");
 
+app.locals.title = 'My App';
+
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname));
 

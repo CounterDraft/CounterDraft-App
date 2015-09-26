@@ -6,3 +6,5 @@ console.log('login main section');
 $('a.active-reset').on('click', function(event) {
     $('div.retrieve-container').toggleClass('active');
 });
+
+console.log(pageScope);
