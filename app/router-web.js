@@ -80,20 +80,26 @@
          });
      }
  });
- 
+
  routerWeb.get(wr['logout'], function(req, res) {
      req.session.destroy();
      res.redirect('/');
  });
 
- // routerWeb.get('/*', isAuthorized, function(req, res) {
- //     res.render('pages/badURL', {
- //         data: {
- //             name: 'Jerum Hubbert',
- //             dob: '01/01/2000'
- //         }
- //     });
- // });
+ routerWeb.get('/*', function(req, res, next) {
+     if (req.params && req.params[0].split('/').indexOf('api') > -1) {
+         next();
+     } else if (req.session.user) {
+         res.render('pages/badURL', {
+             data: {
+                 name: 'Jerum Hubbert',
+                 dob: '01/01/2000'
+             }
+         });
+     } else {
+         res.redirect(wr['login']);
+     }
+ });
 
 
  module.exports = routerWeb;
