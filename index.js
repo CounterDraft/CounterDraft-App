@@ -38,11 +38,13 @@ if (process.env) {
  //    console.log(app.env.MODE);
 }
 
+//Adding webapp calls;
+app.use('', routerWeb);
+
 //Adding api calls;
 app.use('/api', routerApi);
 
-//Adding webapp calls;
-app.use('', routerWeb);
+
 
 app.listen(app.get('port'), function() {
     console.log('Node WebApp/Api is running on port', app.get('port'));
