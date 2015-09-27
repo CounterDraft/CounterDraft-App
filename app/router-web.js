@@ -80,18 +80,20 @@
          });
      }
  });
+ 
  routerWeb.get(wr['logout'], function(req, res) {
      req.session.destroy();
      res.redirect('/');
  });
- routerWeb.get('/*', isAuthorized, function(req, res) {
-     res.render('pages/badURL', {
-         data: {
-             name: 'Jerum Hubbert',
-             dob: '01/01/2000'
-         }
-     });
- });
+
+ // routerWeb.get('/*', isAuthorized, function(req, res) {
+ //     res.render('pages/badURL', {
+ //         data: {
+ //             name: 'Jerum Hubbert',
+ //             dob: '01/01/2000'
+ //         }
+ //     });
+ // });
 
 
  module.exports = routerWeb;
