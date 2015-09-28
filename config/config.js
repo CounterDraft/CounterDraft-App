@@ -1,7 +1,7 @@
 module.exports = {
 	server: {
 		ip: 'localhost',
-		port: 8080
+		port: process.env.PORT || 8080
 	},
 	database: {
 		host: 'localhost',

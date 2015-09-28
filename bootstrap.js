@@ -8,7 +8,6 @@ module.exports = {
 	setupGlobals: function() {
 		// Setup the configuration
 		GLOBAL.config = require('./config/config');
-		GLOBAL.config.server.port = process.env.PORT || GLOBAL.config.server.port;
 
 		GLOBAL.BASE_URL = 'http://' + GLOBAL.config.server.ip + ':' + GLOBAL.config.server.port + '/';
 		GLOBAL.CONTROLLER_DIR = './app/controller/';

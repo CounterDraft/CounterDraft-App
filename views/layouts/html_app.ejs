@@ -18,14 +18,15 @@
     </article>
 </body>
 <% include ../partials/footer.ejs %>
+<div id="counter-modal" class="modal fade" role="dialog"></div>
+<div id="counter-load">
+    <div class="counter-loader"></div>
+</div>
+<script type="text/javascript">var pageScope = <%- JSON.stringify(data) %>;</script>
 <% include ../partials/js.ejs %>
 <% if (process.env.MODE  === 'production') { %>
    <script data-main="build/js/r/<%= mainjs %>-page.js" src="build/js/r/require.min.js"></script>
 <% } else { %>
    <script data-main="js/<%= mainjs %>-page.js" src="/node_modules/requirejs/require.js"></script>
 <% } %>
-<div id="counter-modal" class="modal fade" role="dialog"></div>
-<div id="counter-load">
-    <div class="counter-loader"></div>
-</div>
 </html>
