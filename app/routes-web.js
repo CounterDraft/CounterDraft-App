@@ -22,7 +22,7 @@ module.exports = {
 
         routerWeb.use(function timeLog(req, res, next) {
             //TODO: added a object in here that passes isAuth to the front-end;
-            console.log('Time: ', Date.now());
+            // console.log('Time: ', Date.now());
             next();
         });
 
@@ -76,12 +76,21 @@ module.exports = {
             res.redirect('/');
         });
 
-        routerWeb.get(wr['bad'], isAuthorized, function(req, res) {
-            res.render('pages/badURL', {
-                data: {
-                    user: 'jerum hubbert'
-                }
-            });
+        routerWeb.get(wr['bad'], function(req, res, next) {
+            var data = {
+                user: 'jerum hubbert'
+            }
+
+            if (req.originalUrl.split('/').indexOf('api') > -1) {
+                next();
+            } else if (req.session.user) {
+                res.render('pages/badURL', {
+                    data: data
+                });
+            } else {
+                res.redirect('/login');
+            }
+
         });
 
         app.use('', routerWeb);
