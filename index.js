@@ -1,20 +1,17 @@
 "use strict";
 
 var express = require('express');
-
 var app = express();
 
-var startApp = function() {
-  var bootstrap = require('./bootstrap.js');
-  bootstrap.start(app, express);
-  
-  var routes = require('./routes.js');
-  routes.setup(app);
+var bootstrap = require('./bootstrap.js');
+var routes = require('./app/router-main.js');
 
-  app.listen(GLOBAL.config.server.port, GLOBAL.config.server.ip, function() {
+
+bootstrap.start(app, express);
+
+routes.setup(app);
+
+app.listen(GLOBAL.config.server.port, GLOBAL.config.server.ip, function() {
     logger.info('Server started.');
     logger.info('Listening on port: ' + GLOBAL.config.server.port);
-  });
-};
-
-startApp();
+});

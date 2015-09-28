@@ -2,8 +2,8 @@
 
 module.exports = {
 	setup: function(app) {
-		var routesWeb = require('./app/routes-web');
-		var routesApi = require('./app/routes-api');
+		var routesApi = require('./routes-api');
+		var routesWeb = require('./routes-web');
 		routesWeb.setup(app);
 		routesApi.setup(app);
 	}
