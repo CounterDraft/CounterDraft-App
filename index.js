@@ -11,8 +11,6 @@ bootstrap.start(app, express);
 
 routes.setup(app);
 
-app.set('port', (process.env.PORT || GLOBAL.config.server.port));
-
 app.listen(app.get('port'), function() {
     logger.info('Server started.');
     logger.info('Listening on port: ' + app.get('port'));
