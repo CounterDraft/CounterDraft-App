@@ -86,7 +86,7 @@ module.exports = {
 	setupApp: function(app, express) {
 		var cookieParser = require('cookie-parser');
 		var bodyParser = require('body-parser');
-		var cors = require('./lib/cors');
+		// var cors = require('./lib/cors');
 		var sessionFactory = require('./lib/sessionFactory');
 		var expressLayouts = require('express-ejs-layouts');
 
@@ -94,7 +94,7 @@ module.exports = {
 		app.use(bodyParser.urlencoded( { extended: true } ));
 		app.use(bodyParser.json());
 		app.use(cookieParser());
-		app.use(cors);
+		// app.use(cors);
 		app.use(sessionFactory({}));
 		
 		app.set('views', __dirname + '/views');

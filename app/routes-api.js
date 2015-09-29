@@ -2,21 +2,31 @@
 
 module.exports = {
     setup: function(app) {
+
+        app.all('/', function(req, res, next) {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+            next();
+        });
         // Register account
-        app.post('/register', function(req, res) {
+        app.post('/api/register', function(req, res) {
             getController('AccountController').register(req, res);
         });
 
         // Login account
         app.post('/api/login', function(req, res) {
-        	//TODO: tmp code so I can work on login
+            //TODO: tmp code so I can work on login
             req.session.user = {
                 username: "root",
                 permissions: ['session:*']
             };
             if (req.session.user) {
                 //TODO: need to makes a message.resourse file so we can keep all the strings in it.
-                res.status(200).json({user: req.session.user, message: 'completed'});
+                res.status(200).json({
+                    user: req.session.user,
+                    message: 'completed'
+                });
             } else {
                 res.status(400).send('Wrong username/password.');
             }
@@ -25,7 +35,7 @@ module.exports = {
         });
 
         app.get('/api/login', function(req, res) {
-        	//TODO: tmp code so I can work on login
+            //TODO: tmp code so I can work on login
             if (req.session.user) {
                 res.status = 200;
                 res.json({
@@ -43,12 +53,12 @@ module.exports = {
 
 
         // Verify account
-        app.post('/verify', function(req, res) {
+        app.post('/api/verify', function(req, res) {
             getController('AccountController').verify(req, res);
         });
 
         // Reset password
-        app.post('/reset', function(req, res) {
+        app.post('/api/reset', function(req, res) {
             getController('AccountController').reset(req, res);
         });
     },
