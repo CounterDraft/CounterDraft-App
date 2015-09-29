@@ -3,7 +3,7 @@
 module.exports = {
 
     setup: function(app) {
-        var authorization = GLOBAL.getAuthorization();
+        var authorization = require('express-authorization');
         var routerWeb = require('express').Router();
 
         // setup permission
