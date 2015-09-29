@@ -3,6 +3,9 @@
     "version": "0.0.1",
     "description": "CounterDraft Webapp and API",
     "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
     "dependencies": {
         "bootstrap": "^3.3.5",
         "ejs": "^2.3.1",
