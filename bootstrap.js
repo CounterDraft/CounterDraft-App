@@ -100,9 +100,6 @@ module.exports = {
 		app.set('views', __dirname + '/views');
 		app.set('view engine', 'ejs');
 		app.set('layout', 'layouts/html_app');
-
-		app.set('port', (process.env.PORT || GLOBAL.config.server.port));
-		
 		app.use(expressLayouts);
 		
 		// TODO: Complete this
@@ -118,7 +115,7 @@ module.exports = {
 
 	start: function(app, express) {
 		this.setupGlobals();
-		// logger.info('Loaded configuration: \n' + JSON.stringify(config));
-		// this.setupApp(app, express);
+		logger.info('Loaded configuration: \n' + JSON.stringify(config));
+		this.setupApp(app, express);
 	}
 };

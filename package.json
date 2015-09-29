@@ -4,6 +4,7 @@
     "description": "CounterDraft Webapp and API",
     "main": "index.js",
     "scripts": {
+        "postinstall": "grunt",
         "start": "node index.js"
     },
     "dependencies": {
