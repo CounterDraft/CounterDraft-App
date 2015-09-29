@@ -119,6 +119,6 @@ module.exports = {
 	start: function(app, express) {
 		this.setupGlobals();
 		// logger.info('Loaded configuration: \n' + JSON.stringify(config));
-		this.setupApp(app, express);
+		// this.setupApp(app, express);
 	}
 };
