@@ -11,7 +11,14 @@ bootstrap.start(app, express);
 
 routes.setup(app);
 
-app.listen(GLOBAL.config.server.port, GLOBAL.config.server.ip, function() {
+app.set('port', (process.env.PORT || GLOBAL.config.server.port));
+
+app.listen(app.get('port'), function() {
     logger.info('Server started.');
-    logger.info('Listening on port: ' + GLOBAL.config.server.port);
+    logger.info('Listening on port: ' + app.get('port'));
 });
+
+// app.listen(GLOBAL.config.server.port, GLOBAL.config.server.ip, function() {
+//     logger.info('Server started.');
+//     logger.info('Listening on port: ' + GLOBAL.config.server.port);
+// });
