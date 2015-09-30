@@ -4,12 +4,15 @@ var express = require('express');
 var app = express();
 
 var bootstrap = require('./bootstrap.js');
-var routes = require('./app/router-main.js');
+var routesApi = require('./app/routes-api');
+var routesWeb = require('./app/routes-web');
+
 
 
 bootstrap.start(app, express);
 
-routes.setup(app);
+routesWeb.setup(app);
+routesApi.setup(app);
 
 app.listen(GLOBAL.config.server.port, function() {
     logger.info('Server started.');

@@ -52,10 +52,6 @@
         "dateformat": "1.0.11",
         "validator": "4.0.6"
     },
-    
-    "dependencies": {
-        "socket.io": "0.9.x"
-    },
 
     "engines": {
         "node": "0.12.2"
