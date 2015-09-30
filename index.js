@@ -9,12 +9,19 @@ var routesWeb = require('./app/routes-web');
 
 
 
-bootstrap.start(app, express);
+// bootstrap.start(app, express);
 
-routesWeb.setup(app);
-routesApi.setup(app);
+// routesWeb.setup(app);
+// routesApi.setup(app);
 
-app.listen(GLOBAL.config.server.port, function() {
-    logger.info('Server started.');
-    logger.info('Listening on port: ' + GLOBAL.config.server.port);
+// app.listen(GLOBAL.config.server.port, function() {
+//     logger.info('Server started.');
+//     logger.info('Listening on port: ' + GLOBAL.config.server.port);
+// });
+
+app.listen(process.env.PORT, function() {
+    // logger.info('Server started.');
+    // logger.info('Listening on port: ' + GLOBAL.config.server.port);
 });
+
+ 
