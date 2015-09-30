@@ -43,7 +43,7 @@
         "passport-twitter": "^1.0.3",
         "uuid": "2.0.1",
         "express-authorization": "^1.0.0",
-        "q": "^1.4.1",
+        "q": "*",
         "promise": "7.0.4",
         "mysql": "2.9.0",
         "nodemailer": "1.4.0",
