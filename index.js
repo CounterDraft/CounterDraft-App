@@ -13,7 +13,7 @@ var routesWeb = require('./app/routes-web');
 bootstrap.start(app, express);
 
 routesWeb.setup(app);
-// routesApi.setup(app);
+routesApi.setup(app);
 
 
 app.listen(app.get('port'), function() {
