@@ -100,6 +100,7 @@ module.exports = {
 		app.set('views', __dirname + '/views');
 		app.set('view engine', 'ejs');
 		app.set('layout', 'layouts/html_app');
+		app.set('port', GLOBAL.config.server.port);
 		app.use(expressLayouts);
 	},
 
