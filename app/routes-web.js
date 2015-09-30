@@ -36,11 +36,15 @@ module.exports = {
         });
 
         routerWeb.get(wr['login'], function(req, res) {
-            res.render('pages/login', {
-                data: {
-                    user: 'jerum hubbert'
-                }
-            });
+            if (req.session.user) {
+                res.redirect('/dashboard');
+            } else {
+                res.render('pages/login', {
+                    data: {
+                        user: 'jerum hubbert'
+                    }
+                });
+            }
         });
 
         routerWeb.get(wr['dashboard'], isAuthorized, function(req, res) {
