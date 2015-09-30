@@ -86,7 +86,7 @@ module.exports = {
 	setupApp: function(app, express) {
 		var cookieParser = require('cookie-parser');
 		var bodyParser = require('body-parser');
-		// var cors = require('./lib/cors');
+		var cors = require('./lib/cors');
 		var sessionFactory = require('./lib/sessionFactory');
 		var expressLayouts = require('express-ejs-layouts');
 
@@ -94,23 +94,13 @@ module.exports = {
 		app.use(bodyParser.urlencoded( { extended: true } ));
 		app.use(bodyParser.json());
 		app.use(cookieParser());
-		// app.use(cors);
+		app.use(cors);
 		app.use(sessionFactory({}));
 		
 		app.set('views', __dirname + '/views');
 		app.set('view engine', 'ejs');
 		app.set('layout', 'layouts/html_app');
 		app.use(expressLayouts);
-		
-		// TODO: Complete this
-		if (process.env) {
-			// app.env = {}
-			//    app.env.MODE = (process.env.MODE || 'undefined');
-			//    app.isAuth = true;
-			//    app.package_name = process.env.npm_package_name;
-			
-			//    console.log(app.env.MODE);
-		}
 	},
 
 	start: function(app, express) {

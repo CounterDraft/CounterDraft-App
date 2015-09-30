@@ -3,12 +3,6 @@
 module.exports = {
     setup: function(app) {
 
-        app.all('/', function(req, res, next) {
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-            next();
-        });
         // Register account
         app.post('/api/register', function(req, res) {
             getController('AccountController').register(req, res);

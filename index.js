@@ -6,6 +6,8 @@ var app = express();
 var bootstrap = require('./bootstrap.js');
 var routesApi = require('./app/routes-api');
 var routesWeb = require('./app/routes-web');
+var routesApi = require('./app/routes-api');
+var routesWeb = require('./app/routes-web');
 
 
 
@@ -18,4 +20,3 @@ app.listen(GLOBAL.config.server.port, function() {
     logger.info('Server started.');
     logger.info('Listening on port: ' + GLOBAL.config.server.port);
 });
- 
