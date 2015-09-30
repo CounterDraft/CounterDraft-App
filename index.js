@@ -6,8 +6,6 @@ var app = express();
 var bootstrap = require('./bootstrap.js');
 var routesApi = require('./app/routes-api');
 var routesWeb = require('./app/routes-web');
-var routesApi = require('./app/routes-api');
-var routesWeb = require('./app/routes-web');
 
 
 
