@@ -1,25 +1,8 @@
-define([], function() {
-	var title = 'about';
-	console.log('about main section');
-	Counter.Navigation.set(title);
-	// amstatz.EventBus.onContextInitialized(function() {
-	// 	 amstatz.Navigation.setPageDefaults('fitness', 'acsm-assessments');
-	// 	amstatz.PageScope.router = new Router({
-	// 		collection : new Collection([], {
-	// 			context : {
-	// 			}
-	// 		}),
-			
-	// 		labels : {
-	// 			notMatchingResults : "<tr><td>No matching Health PAR-Qs.</td></tr>"
-	// 		},
-	// 		filterConfig : {
-	// 			templates: {
-	// 				suggestion: Handlebars.compile('<p>{{athlete.name}}</p>')
-	// 			}
-	// 		}
-	// 	});
+"use strict"; //Defines that JavaScript code should be executed in "strict mode".
+var title = 'about';
 
-	// 	Backbone.history.start({pushState: true, root: amstatz.URL.prependGym('/fitness/acsmassessments')});
-	// });
+$(document).ready(function() {
 });
+
+//TODO: bring in a common module all pages can share.
+var myApp = angular.module('aboutApp', []);

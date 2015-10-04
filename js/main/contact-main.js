@@ -1,18 +1,9 @@
-define(
-    ["../modules/contact/models/contact-model",
-        "../modules/contact/views/contact-view"
-    ],
-    function(Model,
-        ContactView) {
-        var title = 'contact';
-        Counter.Navigation.set(title);
+"use strict"; //Defines that JavaScript code should be executed in "strict mode".
+var title = 'contact';
 
-        Counter.showLoader(true);
-        var contactView = new ContactView({
-            model: new Model()
-        });
+$(document).ready(function() {
 
-        $('.counter-page-header').first().append(contactView.render().$el);
-        
-        Counter.showLoader(false);
-    });
+});
+
+//TODO: bring in a common module all pages can share.
+var myApp = angular.module('contactApp', []);

@@ -1,5 +1,9 @@
-define([], function() {
-	var title = 'dashboard';
-	console.log('dashboard main section');
-	console.log(pageScope);
+"use strict"; //Defines that JavaScript code should be executed in "strict mode".
+var title = 'dashboard';
+
+$(document).ready(function() {
+
 });
+
+//TODO: bring in a common module all pages can share.
+var myApp = angular.module('dashboardApp', []);

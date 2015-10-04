@@ -1,5 +1,9 @@
-define([], function() {
-	var title = 'forgot';
-	console.log('forgot password/username main section');
-	Counter.Navigation.set(title);
+"use strict"; //Defines that JavaScript code should be executed in "strict mode".
+var title = 'forgot';
+
+$(document).ready(function() {
+
 });
+
+//TODO: bring in a common module all pages can share.
+var myApp = angular.module('forgotApp', []);

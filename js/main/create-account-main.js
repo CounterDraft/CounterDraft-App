@@ -1,21 +1,9 @@
-define(["../modules/create/models/create-model",
-    "../modules/create/views/create-account-view"
-], function(Model,
-    CreateAccountView) {
-    var title = 'create';
-    Counter.Navigation.set(title);
+"use strict"; //Defines that JavaScript code should be executed in "strict mode".
+var title = 'create';
 
-    var createModel = new Model({});
-
-    Counter.showLoader(true);
-
-    var createAccountView = new CreateAccountView({
-    	model: createModel,
-    	el: $('.create-account-container')
-    }).render();
-
-    Counter.showLoader(false);
-
-
+$(document).ready(function() {
 
 });
+
+//TODO: bring in a common module all pages can share.
+var myApp = angular.module('createApp', []);

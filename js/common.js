@@ -1,16 +1,12 @@
 "use restrict"; // restrict mode for JavaScript;
 
-requirejs.config({
-    waitSeconds: 12,
-    paths: {
-        lib: "libs",
-        home: "/",
-        tpl: "tpl",
-        main: "main",
-        async: "async",
-        modules: "modules"
-    }
+$(document).ready(function() {
+
 });
+
+//loads the app;
+// angular.module('counterApp', []);
+
 
 window.Counter = {
     Navigation: {

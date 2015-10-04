@@ -1,5 +1,9 @@
-define([], function() {
-	var title = 'faq';
-	console.log('faw main section');
-	Counter.Navigation.set(title);
+"use strict"; //Defines that JavaScript code should be executed in "strict mode".
+var title = 'faq';
+
+$(document).ready(function() {
+
 });
+
+//TODO: bring in a common module all pages can share.
+var myApp = angular.module('faqApp', []);
