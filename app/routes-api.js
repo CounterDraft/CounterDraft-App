@@ -19,10 +19,16 @@ module.exports = {
                 //TODO: need to makes a message.resourse file so we can keep all the strings in it.
                 res.status(200).json({
                     user: req.session.user,
-                    message: 'completed'
+                    success: true
                 });
             } else {
-                res.status(400).send('Wrong username/password.');
+                res.status(400).json({
+                    errors: {
+                        name: 'failed-login',
+                        message: 'Invalid username/password'
+                    },
+                    success: false
+                });
             }
 
             // getController('AccountController').login(req, res);

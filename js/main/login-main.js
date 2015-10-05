@@ -9,10 +9,50 @@ $(document).ready(function() {
 
 //TODO: bring in a common module all pages can share.
 var myApp = angular.module('loginApp', [])
-    .controller('loginController', ['$scope',function($scope) {
+    .controller('loginController', ['$scope','$http', function($scope, $http) {
         $scope.formData = {};
         $scope.retdata = {};
-        //button click;
+
+        // process the form
+        var submitForm = function(data, url) {
+            $http({
+                    method: 'POST',
+                    url: url,
+                    data: $.param(data), // pass in data as strings
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    } // set the headers so angular passing info as form data (not request payload)
+                })
+                .success(function(data) {
+                    console.log(data);
+
+                    if (!data.success) {
+                        // if not successful, bind errors to error variables
+                        $scope.errorName = data.errors.name;
+                    } else {
+                        // if successful, bind success message to message
+                        $scope.message = data.message;
+                        window.location.replace("/dashboard");
+                    }
+                });
+        }
+
+        var loginProcess = function(username, paswrd) {
+            if ((!username || username === '') || (!email || email === '')) {
+                return false;
+            }
+            console.log('submitting data for login');
+            submitForm({username: username, password: paswrd}, '/api/login');  
+        }
+
+        var retrieveLoginProcess = function(username, email) {
+                if ((!username || username === '') && (!email || email === '')) {
+                    return false;
+                }
+                console.log('submitting data for retrieve');
+                submitForm({username: username, email: email}, '/api/recover');  
+            }
+            //button click;
         $scope.onClick = function() {
                 return false;
             }
@@ -20,10 +60,10 @@ var myApp = angular.module('loginApp', [])
         $scope.onSubmit = function(type) {
             switch (type) {
                 case 'login-form':
-                    console.log($scope.formData);
+                    loginProcess($scope.formData.username, $scope.formData.password);
                     break;
                 case 'retrieve-form':
-                    console.log($scope.retdata);
+                    retrieveLoginProcess($scope.formData.username, $scope.formData.email);
                     break;
                 default:
                     console.error('Error: Missing argument!');
@@ -31,4 +71,33 @@ var myApp = angular.module('loginApp', [])
             }
             return false;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }]);
