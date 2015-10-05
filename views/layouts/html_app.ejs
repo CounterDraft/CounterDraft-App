@@ -6,7 +6,8 @@
     <% include ../partials/css.ejs %>
 </head>
 <body>
-    <article id="counter-<%= articleID %>">
+ <article id="counter-<%= articleID %>">
+	<% include ../partials/loggedInNav.ejs %>
     <%- body %>
     </article>
 </body>
