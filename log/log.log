@@ -73,3 +73,21 @@
 {"level":"info","message":"Loaded configuration: \n{\"server\":{\"ip\":\"localhost\",\"port\":8080},\"database\":{\"host\":\"localhost\",\"port\":3306,\"user\":\"\",\"password\":\"\",\"database\":\"counterdraft_development\",\"table\":\"log\",\"level\":\"info\",\"multipleStatements\":true},\"email\":{\"service\":\"Gmail\",\"secureConnection\":true,\"port\":465,\"transportMethod\":\"SMTP\",\"auth\":{\"user\":\"\",\"pass\":\"\"}}}","timestamp":"2015-10-05T01:10:10.292Z"}
 {"level":"info","message":"Server started.","timestamp":"2015-10-05T01:10:10.362Z"}
 {"level":"info","message":"Listening on port: 8080","timestamp":"2015-10-05T01:10:10.362Z"}
+{"level":"info","message":"Loaded configuration: \n{\"server\":{\"ip\":\"localhost\",\"port\":8080},\"database\":{\"host\":\"localhost\",\"port\":3306,\"user\":\"\",\"password\":\"\",\"database\":\"counterdraft_development\",\"table\":\"log\",\"level\":\"info\",\"multipleStatements\":true},\"email\":{\"service\":\"Gmail\",\"secureConnection\":true,\"port\":465,\"transportMethod\":\"SMTP\",\"auth\":{\"user\":\"\",\"pass\":\"\"}}}","timestamp":"2015-10-05T17:10:36.763Z"}
+{"level":"info","message":"Server started.","timestamp":"2015-10-05T17:10:36.877Z"}
+{"level":"info","message":"Listening on port: 8080","timestamp":"2015-10-05T17:10:36.877Z"}
+{"level":"info","message":"Loaded configuration: \n{\"server\":{\"ip\":\"localhost\",\"port\":8080},\"database\":{\"host\":\"localhost\",\"port\":3306,\"user\":\"\",\"password\":\"\",\"database\":\"counterdraft_development\",\"table\":\"log\",\"level\":\"info\",\"multipleStatements\":true},\"email\":{\"service\":\"Gmail\",\"secureConnection\":true,\"port\":465,\"transportMethod\":\"SMTP\",\"auth\":{\"user\":\"\",\"pass\":\"\"}}}","timestamp":"2015-10-06T01:47:57.170Z"}
+{"level":"info","message":"Server started.","timestamp":"2015-10-06T01:47:57.292Z"}
+{"level":"info","message":"Listening on port: 8080","timestamp":"2015-10-06T01:47:57.292Z"}
+{"level":"info","message":"Loaded configuration: \n[object Object]","timestamp":"2015-10-06T01:48:48.723Z"}
+{"level":"info","message":"Server started.","timestamp":"2015-10-06T01:48:48.787Z"}
+{"level":"info","message":"Listening on port: 8080","timestamp":"2015-10-06T01:48:48.787Z"}
+{"level":"info","message":"Loaded configuration: \n{ server: { ip: 'localhost', port: 8080 },\n  database: \n   { host: 'localhost',\n     port: 3306,\n     user: '',\n     password: '',\n     database: 'counterdraft_development',\n     table: 'log',\n     level: 'info',\n     multipleStatements: true },\n  email: \n   { service: 'Gmail',\n     secureConnection: true,\n     port: 465,\n     transportMethod: 'SMTP',\n     auth: { user: '', pass: '' } } }","timestamp":"2015-10-06T01:54:31.557Z"}
+{"level":"info","message":"Server started.","timestamp":"2015-10-06T01:54:31.625Z"}
+{"level":"info","message":"Listening on port: 8080","timestamp":"2015-10-06T01:54:31.626Z"}
+{"level":"info","message":"Loaded configuration: \n{ server: { ip: 'localhost', port: 8080 },\n  database: \n   { host: 'localhost',\n     port: 3306,\n     user: '',\n     password: '',\n     database: 'counterdraft_development',\n     table: 'log',\n     level: 'info',\n     multipleStatements: true },\n  email: \n   { service: 'Gmail',\n     secureConnection: true,\n     port: 465,\n     transportMethod: 'SMTP',\n     auth: { user: '', pass: '' } } }","timestamp":"2015-10-06T02:12:24.497Z"}
+{"level":"info","message":"Server started.","timestamp":"2015-10-06T02:12:24.563Z"}
+{"level":"info","message":"Listening on port: 8080","timestamp":"2015-10-06T02:12:24.563Z"}
+{"level":"info","message":"Loaded configuration: \n{ server: { ip: 'localhost', port: 8080 },\n  database: \n   { host: 'localhost',\n     port: 3306,\n     user: '',\n     password: '',\n     database: 'counterdraft_development',\n     table: 'log',\n     level: 'info',\n     multipleStatements: true },\n  email: \n   { service: 'Gmail',\n     secureConnection: true,\n     port: 465,\n     transportMethod: 'SMTP',\n     auth: { user: '', pass: '' } } }","timestamp":"2015-10-06T02:13:45.586Z"}
+{"level":"info","message":"Server started.","timestamp":"2015-10-06T02:13:45.588Z"}
+{"level":"info","message":"Listening on port: 8080","timestamp":"2015-10-06T02:13:45.588Z"}
