@@ -6,11 +6,11 @@ var DBCreateConnection = function(config) {
 
 module.exports = {
     init: function() {
-        GLOBAL.getUtil = require('util');
         // Setup the configuration
         GLOBAL.config = require('./config/config');
 
-        GLOBAL.smtpTransport = require("nodemailer").createTransport(GLOBAL.config.email);
+        GLOBAL.getUtil = require('util');
+
         GLOBAL.BASE_URL = 'http://' + GLOBAL.config.server.ip + ':' + GLOBAL.config.server.port + '/';
         GLOBAL.CONTROLLER_DIR = './app/controller/';
         GLOBAL.MODEL_DIR = './app/model/';
@@ -80,7 +80,8 @@ module.exports = {
         GLOBAL.getDateFormatter = function() {
             return require('dateformat');
         };
-        //Starting Logger;
+
+        GLOBAL.smtpTransport = require("nodemailer").createTransport(GLOBAL.config.email);
         GLOBAL.logger = require('./lib/logger');
     }
 };

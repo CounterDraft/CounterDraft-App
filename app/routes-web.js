@@ -36,6 +36,7 @@ module.exports = {
         });
 
         routerWeb.get(wr['login'], function(req, res) {
+
             if (req.session.user) {
                 res.redirect('/dashboard');
             } else {
