@@ -40,7 +40,8 @@ app.use(sessionFactory());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('layout', 'layouts/html_app');
-app.set('port', config.server.port);
+// app.set('port', config.server.port);
+app.set('port', process.env.PORT || 8080);
 app.use(expressLayouts);
 
 routesWeb.setup(app);
