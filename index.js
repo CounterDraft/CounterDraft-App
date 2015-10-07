@@ -16,16 +16,16 @@ var cors = require('./lib/cors');
 var sessionFactory = require('./lib/sessionFactory');
 var expressLayouts = require('express-ejs-layouts');
 
-if (config.environment === 'production') {
-    logger.warn('Creating the build, please wait...');
-    var grunt = require("grunt");
-    grunt.cli({
-        gruntfile: __dirname + "/Gruntfile.js",
-        extra: {
-            key: "run"
-        }
-    });
-}
+// if (config.environment === 'production') {
+//     logger.warn('Creating the build, please wait...');
+//     var grunt = require("grunt");
+//     grunt.cli({
+//         gruntfile: __dirname + "/Gruntfile.js",
+//         extra: {
+//             key: "run"
+//         }
+//     });
+// }
 
 //Starts the server;
 app.use(express.static(__dirname));
@@ -40,8 +40,8 @@ app.use(sessionFactory());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('layout', 'layouts/html_app');
-// app.set('port', config.server.port);
-app.set('port', process.env.PORT || 8080);
+app.set('port', config.server.port);
+// app.set('port', process.env.PORT || 8080);
 app.use(expressLayouts);
 
 routesWeb.setup(app);
