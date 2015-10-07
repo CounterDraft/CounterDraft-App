@@ -24,8 +24,8 @@ var launchApp = function() {
     }));
     app.use(bodyParser.json());
     app.use(cookieParser());
-    app.use(cors);
     app.use(sessionFactory());
+    app.use(cors);
 
     app.set('views', __dirname + '/views');
     app.set('view engine', 'ejs');
