@@ -52,6 +52,7 @@ if (config.environment === 'production') {
             key: "run"
         }
     }, function() {
+        //callback;
         launchApp();
     });
 } else {

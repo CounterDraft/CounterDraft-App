@@ -6,4 +6,4 @@ $(document).ready(function() {
 });
 
 //TODO: bring in a common module all pages can share.
-var myApp = angular.module('dashboardApp', []);
+var myApp = angular.module('counterApp', []);
