@@ -16,40 +16,45 @@ var cors = require('./lib/cors');
 var sessionFactory = require('./lib/sessionFactory');
 var expressLayouts = require('express-ejs-layouts');
 
-// if (config.environment === 'production') {
-//     logger.warn('Creating the build, please wait...');
-//     var grunt = require("grunt");
-//     grunt.cli({
-//         gruntfile: __dirname + "/Gruntfile.js",
-//         extra: {
-//             key: "run"
-//         }
-//     });
-// }
+var launchApp = function() {
+    //Starts the server;
+    app.use(express.static(__dirname));
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+    app.use(bodyParser.json());
+    app.use(cookieParser());
+    app.use(cors);
+    app.use(sessionFactory());
 
-//Starts the server;
-app.use(express.static(__dirname));
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(cors);
-app.use(sessionFactory());
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'ejs');
+    app.set('layout', 'layouts/html_app');
+    app.set('port', config.server.port);
+    app.use(expressLayouts);
 
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-app.set('layout', 'layouts/html_app');
-app.set('port', config.server.port);
-// app.set('port', process.env.PORT || 8080);
-app.use(expressLayouts);
+    routesWeb.setup(app);
+    routesApi.setup(app);
 
-routesWeb.setup(app);
-routesApi.setup(app);
+    app.listen(app.get('port'), function() {
+        logger.info('Loaded configuration: \n' + getUtil.inspect(config));
+        logger.info('Server started in ' + config.environment + ' mode.');
+        logger.info('Listening on port: ' + app.get('port'));
+    });
+}
 
-app.listen(app.get('port'), function() {
-
-    logger.info('Loaded configuration: \n' + getUtil.inspect(config));
-    logger.info('Server started in ' + config.environment + ' mode.');
-    logger.info('Listening on port: ' + app.get('port'));
-});
+if (config.environment === 'production') {
+    logger.warn('Creating the build, please wait...');
+    var grunt = require("grunt");
+    grunt.cli({
+        gruntfile: __dirname + "/Gruntfile.js",
+        extra: {
+            key: "run"
+        }
+    }, function() {
+        launchApp();
+    });
+} else {
+    logger.info('Bypassing build we are in ' + config.environment + ' please wait...');
+    launchApp();
+}
