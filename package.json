@@ -49,7 +49,8 @@
         "winston-mysql-transport": "0.1.2",
         "dateformat": "1.0.11",
         "validator": "4.0.6",
-        "util": "*"
+        "util": "*",
+        "mix-objects": "*"
     },
 
     "engines": {

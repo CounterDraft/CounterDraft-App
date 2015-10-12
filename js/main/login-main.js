@@ -42,7 +42,7 @@ var myApp = angular.module('loginApp', [])
                 return false;
             }
             console.log('submitting data for login');
-            submitForm({username: username, password: paswrd}, '/api/login');  
+            submitForm({username: username, password: paswrd}, '/api/account/login/');  
         }
 
         var retrieveLoginProcess = function(username, email) {
@@ -50,7 +50,7 @@ var myApp = angular.module('loginApp', [])
                     return false;
                 }
                 console.log('submitting data for retrieve');
-                submitForm({username: username, email: email}, '/api/recover');  
+                submitForm({username: username, email: email}, '/api/account/recover');  
             }
             //button click;
         $scope.onClick = function() {

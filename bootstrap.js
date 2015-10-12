@@ -8,61 +8,80 @@ module.exports = {
     init: function() {
         // Setup the configuration
         GLOBAL.config = require('./config/config');
+        GLOBAL.mix = require('mix-objects');
 
         GLOBAL.getUtil = require('util');
 
         GLOBAL.BASE_URL = 'http://' + GLOBAL.config.server.ip + ':' + GLOBAL.config.server.port + '/';
-        GLOBAL.CONTROLLER_DIR = './app/controller/';
-        GLOBAL.MODEL_DIR = './app/model/';
+        GLOBAL.CONTROLLER_DIR = './app/controllers/';
+        GLOBAL.MODEL_DIR = './app/models/';
+        GLOBAL.REPOSITORY_DIR = './app/repositories/';
+        GLOBAL.API_DIR = './app/api/';
+        GLOBAL.BASE_DIR = './app/base/';
 
         GLOBAL.Promise = require('promise');
 
         GLOBAL.generateUUID = function() {
             var uuid = require('uuid');
             return uuid.v4();
-        };
+        }
 
         GLOBAL.getAuthorization = function() {
             return require('express-authorization');
-        };
+        }
 
         GLOBAL.getExpressSession = function() {
             return require('express-session');
-        };
+        }
 
         GLOBAL.getController = function(controllerName) {
             var Controller = require(GLOBAL.CONTROLLER_DIR + controllerName);
-            return new Controller();
-        };
+            return mix(new Controller(), [getBase('counter-controller')]);
+        }
+
+        GLOBAL.getApi = function(apiName) {
+            var api = require(GLOBAL.API_DIR + apiName);
+            return mix(new api(), [getBase('counter-api')]);
+        }
+
+        GLOBAL.getRepository = function(repositoryName) {
+            var repository = require(GLOBAL.REPOSITORY_DIR + repositoryName);
+            return mix(new repository(), [getBase('counter-repository')]);
+        }
+
+         GLOBAL.getBase = function(base) {
+            var baseController = require(GLOBAL.BASE_DIR + base);
+            return new baseController();
+        }
 
         GLOBAL.getModel = function(modelName) {
             var Model = require(GLOBAL.MODEL_DIR + modelName);
             return new Model();
-        };
+        }
 
         GLOBAL.getDBConnection = function() {
             var mysql = require('mysql');
             var dbconfig = GLOBAL.config.database;
             var connection = mysql.createConnection(dbconfig);
             return connection;
-        };
+        }
 
         GLOBAL.generatePasswordHash = function(password, salt) {
             var shasum = GLOBAL.getSHA1();
             shasum.update(salt + password + salt);
             var hash = shasum.digest('hex');
             return hash;
-        };
+        }
 
         GLOBAL.getCrypt = function() {
             return require('crypto');
-        };
+        }
 
         GLOBAL.getSHA1 = function() {
             var crypt = GLOBAL.getCrypt();
             var shasum = crypt.createHash('sha1');
             return shasum;
-        };
+        }
 
         GLOBAL.getValidator = function() {
             var validator = require('validator');
@@ -75,13 +94,13 @@ module.exports = {
                 //return /^$/.test(str);
             });
             return new Validator();
-        };
+        }
 
         GLOBAL.getDateFormatter = function() {
             return require('dateformat');
-        };
+        }
 
         GLOBAL.smtpTransport = require("nodemailer").createTransport(GLOBAL.config.email);
         GLOBAL.logger = require('./lib/logger');
     }
-};
+}
