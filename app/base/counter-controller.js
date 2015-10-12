@@ -7,6 +7,11 @@ function baseController() {
         return this.name;
     }
 
+    this.getErrorApi = function(){
+    	var errorApi = require(GLOBAL.API_DIR + 'error-api');
+    	return new errorApi();
+    }
+
     this.rest = function(req, res) {
         logger.debug('determine which call to invoke.');
         if (req && req.params && typeof req.params[0] != 'undefined' && req.params[0] != '' && req.method) {
