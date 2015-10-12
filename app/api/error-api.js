@@ -6,7 +6,7 @@ Error json example
 ------------------
 {
     error: [{
-        lan: en, // we should let teh user know this is a english error;
+        language: en, // we should let teh user know this is a english error;
         code: 1001, //code from the database;
         msg: Invalid Google API key supplied //msg from the database;
     }]
