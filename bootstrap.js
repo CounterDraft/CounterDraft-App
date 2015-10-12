@@ -6,6 +6,7 @@ var DBCreateConnection = function(config) {
 
 module.exports = {
     init: function() {
+        GLOBAL.dirBase = process.env.PWD;
         // Setup the configuration
         GLOBAL.config = require('./config/config');
         GLOBAL.mix = require('mix-objects');
@@ -13,11 +14,11 @@ module.exports = {
         GLOBAL.getUtil = require('util');
 
         GLOBAL.BASE_URL = 'http://' + GLOBAL.config.server.ip + ':' + GLOBAL.config.server.port + '/';
-        GLOBAL.CONTROLLER_DIR = './app/controllers/';
-        GLOBAL.MODEL_DIR = './app/models/';
-        GLOBAL.REPOSITORY_DIR = './app/repositories/';
-        GLOBAL.API_DIR = './app/api/';
-        GLOBAL.BASE_DIR = './app/base/';
+        GLOBAL.CONTROLLER_DIR = dirBase +'/app/controllers/';
+        GLOBAL.MODEL_DIR = dirBase + '/app/models/';
+        GLOBAL.REPOSITORY_DIR = dirBase + '/app/repositories/';
+        GLOBAL.API_DIR = dirBase + '/app/api/';
+        GLOBAL.BASE_DIR = dirBase + '/app/base/';
 
         GLOBAL.Promise = require('promise');
 

@@ -17,10 +17,15 @@ function loginApi() {
         };
         if (req.session.user) {
             //TODO: need to makes a message.resourse file so we can keep all the strings in it.
-            res.status(200).json({
-                user: req.session.user,
-                success: true
-            });
+
+            // res.status(200).json({
+            //     user: req.session.user,
+            //     success: true
+            // });
+
+            var errorApi = this.getErrorApi();
+            errorApi.sendError(1001, 403, res);
+
         } else {
             res.status(400).json({
                 errors: {
