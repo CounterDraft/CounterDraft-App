@@ -31,7 +31,7 @@ var myApp = angular.module('loginApp', [])
                 }
             }, function errorCallback(res) {
                 console.log(res.data);
-                Counter.showMessage('Failed to log in, ' + res.data.error[0].msg, 'error');
+                Counter.message.showMessage(res.data.error[0].msg, 'danger');
             });
         }
 

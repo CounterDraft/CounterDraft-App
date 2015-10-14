@@ -10,18 +10,17 @@ function loginApi() {
         // maybe call a sessionRespository to do this saving
 
         //TODO: tmp code so I can work on login
-        req.session.user = {
-            username: req.body.username,
-            permissions: ['session:*']
-        };
-
-        if (req.session.user) {
+        if (req.body.username === 'admin') {
+            req.session.user = {
+                username: req.body.username,
+                permissions: ['session:*']
+            }
             //TODO: need to makes a message.resourse file so we can keep all the strings in it.
             res.status(200).json({
                 user: req.session.user,
                 success: true
             });
-        } else {
+        }else{
             this.getErrorApi().sendError(1001, 403, res);
         }
     }

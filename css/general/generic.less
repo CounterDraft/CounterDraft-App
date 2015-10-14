@@ -21,8 +21,16 @@
 }
 
 //error messages;
-.msg-dialog {
+#msg-dialog {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0; 
     .addTransition();
+    &.active{
+        max-height: 500px;
+        opacity: 1; 
+    }
+    
     position: fixed;
     top: 55px;
     left: 12%;
