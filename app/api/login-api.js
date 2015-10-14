@@ -10,7 +10,7 @@ function loginApi() {
         // maybe call a sessionRespository to do this saving
 
         //TODO: tmp code so I can work on login
-        if (req.body.username === 'admin@gmail.com') {
+        if (req.body.username === 'admin@counterdraft.com') {
             req.session.user = {
                 username: req.body.username,
                 permissions: ['session:*']
