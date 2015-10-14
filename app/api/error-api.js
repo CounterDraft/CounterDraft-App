@@ -73,6 +73,14 @@ function errorApi() {
             success: false
         });
     }
+
+    this.getError = function(msg){
+        var eo = new this.errorObject();
+        if(msg){
+           eo.msg = msg; 
+        }
+        return eo;
+    }
 }
 
 module.exports = errorApi;

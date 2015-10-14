@@ -1,11 +1,18 @@
 "use restrict"; // restrict mode for JavaScript;
 
 $(document).ready(function() {
+    //add listener to message box;
+    $('div.msg-dialog i.modal-close').on('click', function(events) {
+        events.stopPropagation();
+        $('div.msg-dialog').removeClass(function(index, css) {
+                return (css.match(/(^|\s)alert-\S+/g) || []).join(' ');
+            })
+            .toggleClass('hidden')
+            .html('').find('span').html('');
+        return false;
+    });
 
 });
-
-//loads the app;
-// angular.module('counterApp', []);
 
 
 window.Counter = {
@@ -16,6 +23,10 @@ window.Counter = {
             //add other navgation items if needed.
         }
 
+    },
+
+    showMessage: function(msg, msgType){
+        console.log('we will show this message ' + msg + ' for message type=' + msgType);
     },
 
     showLoader: function(shouldShow) {
@@ -36,6 +47,7 @@ window.Counter = {
             console.log('loaded' + arguments);
         }
     },
+
     showSignin: function() {
         this.googleAnalytics.ga('signin');
 

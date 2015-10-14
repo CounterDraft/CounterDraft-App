@@ -14,14 +14,14 @@ function AccountController() {
                     break;
                     // @put(/api/login) 
                 case 'put':
-                    logger.warn(this.tag + 'A error has been generated json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
                     // @delete(/api/login)     
                 case 'delete':
-                    logger.warn(this.tag + 'A error has been generated json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
                 default:
-                    logger.warn(this.tag + 'A error has been generated for return json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
             }
         },
@@ -38,14 +38,14 @@ function AccountController() {
                     break;
                     // @put(/api/register)       
                 case 'put':
-                    logger.warn(this.tag + 'A error has been generated json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
                     // @delete(/api/register)     
                 case 'delete':
-                    logger.warn(this.tag + 'A error has been generated json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
                 default:
-                    logger.warn(this.tag + 'A error has been generated for return json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
             }
 
@@ -54,22 +54,22 @@ function AccountController() {
             switch (verb) {
                 // @post(/api/verify) 
                 case 'post':
-                    logger.warn(this.tag + 'A error has been generated json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
                     // @get(/api/verify)    
                 case 'get':
-                    logger.warn(this.tag + 'A error has been generated json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
                     // @put(/api/verify)     
                 case 'put':
-                    logger.warn(this.tag + 'A error has been generated json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
                     // @delete(/api/verify)     
                 case 'delete':
-                    logger.warn(this.tag + 'A error has been generated json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
                 default:
-                    logger.warn(this.tag + 'A error has been generated for return json a error json.');
+                    this.getErrorApi().sendError(1001, 403, res);
                     break;
             }
         }

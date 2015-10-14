@@ -5,7 +5,7 @@
     padding: 0;
     .border-radius(50px);
     overflow: hidden;
-    img{
+    img {
         height: 100%;
         width: 100%;
     }
@@ -18,4 +18,22 @@
 .min-round {
     height: 25px;
     width: 25px;
+}
+
+//error messages;
+.msg-dialog {
+    .addTransition();
+    position: fixed;
+    top: 55px;
+    left: 12%;
+    right: 12%;
+    z-index: 100;
+    i.modal-close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 2em;
+        color: @color-secondary-3;
+        cursor: pointer;
+    }
 }

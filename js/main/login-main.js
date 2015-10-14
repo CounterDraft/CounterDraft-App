@@ -9,40 +9,40 @@ $(document).ready(function() {
 
 //TODO: bring in a common module all pages can share.
 var myApp = angular.module('loginApp', [])
-    .controller('loginController', ['$scope','$http', function($scope, $http) {
+    .controller('loginController', ['$scope', '$http', function($scope, $http) {
         $scope.formData = {};
         $scope.retdata = {};
 
         // process the form
         var submitForm = function(data, url) {
             $http({
-                    method: 'POST',
-                    url: url,
-                    data: $.param(data), // pass in data as strings
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    } // set the headers so angular passing info as form data (not request payload)
-                })
-                .success(function(data) {
-                    console.log(data);
-
-                    if (!data.success) {
-                        // if not successful, bind errors to error variables
-                        $scope.errorName = data.errors.name;
-                    } else {
-                        // if successful, bind success message to message
-                        $scope.message = data.message;
-                        window.location.replace("/dashboard");
-                    }
-                });
+                method: 'POST',
+                url: url,
+                data: $.param(data), // pass in data as strings
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                } // set the headers so angular passing info as form data (not request payload)
+            }).then(function successCallback(res) {
+                if (!res.data.success) {
+                    $scope.errorName = res.data.errors[0].msg;
+                } else {
+                    Counter.showMessage('Welcome back, Jerum Hubbert', 'success');
+                    window.location.replace("/dashboard");
+                }
+            }, function errorCallback(res) {
+                console.log(res.data);
+                Counter.showMessage('Failed to log in, ' + res.data.error[0].msg, 'error');
+            });
         }
 
         var loginProcess = function(username, paswrd) {
             if ((!username || username === '') || (!email || email === '')) {
                 return false;
             }
-            console.log('submitting data for login');
-            submitForm({username: username, password: paswrd}, '/api/account/login/');  
+            submitForm({
+                username: username,
+                password: paswrd
+            }, '/api/account/login/');
         }
 
         var retrieveLoginProcess = function(username, email) {
@@ -50,7 +50,10 @@ var myApp = angular.module('loginApp', [])
                     return false;
                 }
                 console.log('submitting data for retrieve');
-                submitForm({username: username, email: email}, '/api/account/recover');  
+                submitForm({
+                    username: username,
+                    email: email
+                }, '/api/account/recover');
             }
             //button click;
         $scope.onClick = function() {
@@ -71,33 +74,5 @@ var myApp = angular.module('loginApp', [])
             }
             return false;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }]);
