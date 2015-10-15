@@ -26,7 +26,7 @@ var myApp = angular.module('loginApp', [])
                 if (!res.data.success) {
                     $scope.errorName = res.data.errors[0].msg;
                 } else {
-                    Counter.showMessage('Welcome back, Jerum Hubbert', 'success');
+                    Counter.message.showMessage('Welcome back, Jerum Hubbert', 'success');
                     window.location.replace("/dashboard");
                 }
             }, function errorCallback(res) {
