@@ -3,16 +3,14 @@
 .min-round {
     background: white;
     padding: 0;
-    .border-radius(50px);
     overflow: hidden;
-    img {
-        height: 100%;
-        width: 100%;
-    }
+    .border-radius(50%);
+    .box-shadow(0px 1px 0px 0.3);
 }
 
 .round {
-    height: 66px;
+    height: 40px;
+    width: 40px;
 }
 
 .min-round {
@@ -24,13 +22,12 @@
 #msg-dialog {
     max-height: 0;
     overflow: hidden;
-    opacity: 0; 
+    opacity: 0;
     .addTransition();
-    &.active{
+    &.active {
         max-height: 500px;
-        opacity: 1; 
+        opacity: 1;
     }
-    
     position: fixed;
     top: 55px;
     left: 12%;

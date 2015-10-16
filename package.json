@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "angular": "^1.0.0",
+    "angular-ui-router": "^0.2.15",
     "backbone": "^1.2.3",
     "bcryptjs": "^2.2.1",
     "body-parser": "^1.14.0",

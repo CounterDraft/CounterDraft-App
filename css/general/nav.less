@@ -1,10 +1,28 @@
 @import "tools";
 nav.counter-nav {
-    padding: 1em;
-    background-color: transparent;
+    padding: .3em;
+    background-color: @color-secondary-3;
     border: none;
     margin: 0;
-    .navbar-header{
+    .user-container,.balance-container{
+        min-height: 50px;
+        padding: .4em;
+        * {
+            .welcome-message;
+        }
+        background: @color-secondary-0;
+        .border-radius();
+        padding-top: .2em;
+        .container-name {
+            margin-top: 5px;
+        }
+        .box-shadow();
+    }
+
+    .balance-container{
+        padding: .8em;
+    }
+    .navbar-header {
         @media screen and (max-width: @bootstrap-med) {
             padding: .5em;
         }
@@ -13,15 +31,16 @@ nav.counter-nav {
         * {
             .page-title;
             font-weight: bold;
-            color:white;
+            color: white;
         }
     }
-    
     .navbar-toggle {
         border: none!important;
         .box-shadow();
-        &:hover, &:focus{
-                background-color: @color-primary-4;;
+        &:hover,
+        &:focus {
+            background-color: @color-primary-4;
+            ;
         }
         .icon-bar {
             background-color: white;

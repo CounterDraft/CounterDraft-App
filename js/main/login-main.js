@@ -7,6 +7,8 @@ $(document).ready(function() {
     });
 });
 
+
+
 //TODO: bring in a common module all pages can share.
 var myApp = angular.module('loginApp', [])
     .controller('loginController', ['$scope', '$http', function($scope, $http) {
@@ -30,7 +32,6 @@ var myApp = angular.module('loginApp', [])
                     window.location.replace("/dashboard");
                 }
             }, function errorCallback(res) {
-                console.log(res.data);
                 Counter.message.showMessage(res.data.error[0].msg, 'danger');
             });
         }
