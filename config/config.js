@@ -9,7 +9,7 @@ module.exports = {
 		port: 3306,
 		user: '',
 		password: '',
-		database: 'counterdraft_development',
+		database: 'counter',
 		table: 'log',
 		level: 'info',
 		multipleStatements: true
