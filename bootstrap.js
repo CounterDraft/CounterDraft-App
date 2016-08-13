@@ -9,7 +9,7 @@ module.exports = {
         GLOBAL.dirBase = process.env.PWD;
         // Setup the configuration
         GLOBAL.config = require('./config/config');
-        GLOBAL.mix = require('mix-objects');
+        GLOBAL.mix = require('mix-into');
 
         GLOBAL.getUtil = require('util');
 

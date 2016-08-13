@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="<%= appname %>">
+<html lang="en">
 <head>
     <title>CounterDraft | <%= title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <% include ../partials/css.ejs %>
 </head>
-<body>
- <article id="counter-<%= articleID %>">
- <div id="msg-dialog" class="alert"><span class="page-title">This is a test message</span><i class="icon-circle_remove modal-close"></i></div>
-	<% include ../partials/loggedInNav.ejs %>
-    <%- body %>
+<body ng-app="CounterDraft-app">
+	<article id="counterdraft-main" class="container">
+		<div class="row">
+			<div id="cd-alert-box" class="cd-alert ">
+	 			<button type="button" class="close" alert-dismiss>&times;</button>
+	 			<div class="alert-container col-xs-12"></div>
+	 		</div>
+	 	</div>
+	 	<div class="row">
+	 		<%- body %>
+	 	</div>
     </article>
 </body>
 <% include ../partials/footer.ejs %>
-<div id="counter-modal" class="modal fade" role="dialog"></div>
+<% include ../partials/modals.ejs %>
 <div id="counter-load">
     <div class="counter-loader"></div>
 </div>
-<script type="text/javascript">var pageScope = <%- JSON.stringify(data) %>;</script>
-<% include ../partials/js.ejs %>
-<% if (process.env.MODE  === 'development') { %>
-   <script src="js/main/<%= mainjs %>-main.js"></script>
-<% } %>
+<% include ../partials/application.ejs %>
 </html>

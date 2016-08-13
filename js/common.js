@@ -1,10 +1,35 @@
-"use restrict"; // restrict mode for JavaScript;
+/*  Title: Common JS
+    Author:  Hubbert
+    Date: Aug 16 2016
+    Comment:  
+        This defines and creates out JS 
+        tool object, used to store data 
+        and retrive it.
+*/
 
-$(document).ready(function() {
-    Counter.init();
+(function($, window) {
+
+    this.Navigation = function(){
+
+    }
+
+    this.Alert = function(){
+
+    }
+
+    this.Load = function(){
+
+    }
 
 
-});
+
+window.Counter.navgation = new Navigation();
+window.Counter.alert = new Alert();
+window.Counter.load = new Load();
+  
+})(jQuery, window);
+
+
 
 
 window.Counter = {
