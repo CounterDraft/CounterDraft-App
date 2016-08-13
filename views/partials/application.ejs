@@ -2,14 +2,16 @@
    <script type="text/javascript" defer async src="build/js/r/min/<%= process.env.npm_package_name %>.min.js"></script>
  <% } else{ %>  
 	<script type="text/javascript" src="/node_modules/jquery/dist/jquery.js"></script>
-	<script type="text/javascript" src="/node_modules/angular/angular.js"></script>
-	<script type="text/javascript" src="/node_modules/angular-ui-router/build/angular-ui-router.js"></script>
+	<script type="text/javascript" src="/node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+	<script type="text/javascript" src="/js/angular/app.js"></script>
+	<script type="text/javascript" src="/js/angular/directives.js"></script>
+	<script type="text/javascript" src="/js/angular/controller/login-controller.js"></script>
   	<script type="text/javascript" src="/js/common.js"></script>
 <% } %>
 <script type="text/javascript">
 	$( document ).ready(function() { 
-		console.log( "ready!" ); 
 
 
 
