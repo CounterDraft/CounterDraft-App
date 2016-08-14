@@ -1,6 +1,12 @@
 module.exports = {
     create: function(sequelize) {
         var EmployeeUser = sequelize.define('EMPLOYEE_USER', {
+            employeeID: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true, // Automatically gets converted to SERIAL for postgres
+                field: 'employee_id'
+            },
             firstName: {
                 type: Sequelize.STRING,
                 field: 'first_name'
@@ -16,6 +22,9 @@ module.exports = {
             emailAddress:{
                 type: Sequelize.STRING,
                 field: 'email_address'
+            },
+            password:{
+                type: Sequelize.STRING
             }
         }, {
             freezeTableName: true // Model tableName will be the same as the model name

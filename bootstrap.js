@@ -92,10 +92,9 @@ module.exports = {
         GLOBAL.smtpTransport = require("nodemailer").createTransport(GLOBAL.config.email);
         GLOBAL.logger = require('./lib/logger');
 
-        //database setup;
+        //database setup & makes GLOBAL.models object;
         GLOBAL.Sequelize = require('sequelize');
-        
         var sequelize = require('./database.js').init(GLOBAL.config.database);
-        GLOBAL.models = require('./models/create-models.js').init(sequelize);
+        
     }
 }

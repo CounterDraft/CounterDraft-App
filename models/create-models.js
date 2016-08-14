@@ -1,6 +1,6 @@
 createTables = function(sq) {
     var models = {};
-    logger.info('Creating datbase tables and models');
+    logger.info('Creating database tables & models');
     try {
         models.employee_user = require('./employee_user.js').create(sq);
         models.patron_player = require('./patron_player.js').create(sq);
@@ -13,8 +13,8 @@ createTables = function(sq) {
         models.edit_type = require('./edit_type.js').create(sq);
         models.server_log = require('./server_log.js').create(sq);
 
-    } catch (error) {
-        logger.error('Failed to create table ' + error.toString());
+    } catch (err) {
+        logger.error('Failed to create table ' + err.toString());
     }
 
     return models;
