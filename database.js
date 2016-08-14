@@ -1,7 +1,7 @@
 module.exports = {
     init: function(config) {
         
-
+        logger.info('Correction to database config=' + JSON.stringify(config));
         return sequelize = new Sequelize(config.database, config.user, config.password, {
             host: config.host,
             port: config.port,

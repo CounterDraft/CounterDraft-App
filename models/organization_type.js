@@ -1,6 +1,6 @@
 module.exports = {
     create: function(sequelize) {
-        var EmployeeUser = sequelize.define('EMPLOYEE_USER', {
+        var OrganizationType = sequelize.define('ORGANIZATION_TYPE', {
             firstName: {
                 type: Sequelize.STRING,
                 field: 'first_name'
@@ -20,7 +20,7 @@ module.exports = {
         }, {
             freezeTableName: true // Model tableName will be the same as the model name
         }).sync();
-
-        return EmployeeUser;
+        
+        return OrganizationType;
     }
 }

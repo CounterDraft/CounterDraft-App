@@ -1,12 +1,6 @@
 "use strict";
-
 //set The GLOBALS;
 require('./bootstrap.js').init();
-
-// var sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
-// postgres://whcewrcdvgggmn:QvT6K8st4lom4qrkDLNQlJXfyg@ec2-54-227-254-13.compute-1.amazonaws.com:5432/dcbr0vsdjsp5v0
-
-// var require('./bootstrap.js')
 
 var express = require('express');
 var app = express();
@@ -48,7 +42,7 @@ var launchApp = function() {
     routesApi.setup(app);
 
     app.listen(app.get('port'), function() {
-        logger.info('Loaded configuration: \n' + getUtil.inspect(config));
+        logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
         logger.info('Server started in ' + config.environment + ' mode.');
         logger.info('Listening on port: ' + app.get('port'));
     });

@@ -1,5 +1,6 @@
 createTables = function(sq) {
     var models = {};
+    logger.info('Creating datbase tables and models');
     try {
         models.employee_user = require('./employee_user.js').create(sq);
         models.patron_player = require('./patron_player.js').create(sq);
