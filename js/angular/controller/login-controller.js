@@ -5,8 +5,7 @@
         This should all the logic for the login page.
 */
 
-angular.module('CounterDraft-app')
-.controller('loginCtrl', ['$scope', function($scope) {
+app.controller('loginCtrl', ['$scope', function($scope) {
 
     $scope.Hello = "Hello application";
 

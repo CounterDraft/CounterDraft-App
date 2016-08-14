@@ -1,8 +1,12 @@
 "use strict";
 
 //set The GLOBALS;
-var bootstrap = require('./bootstrap.js');
-bootstrap.init();
+require('./bootstrap.js').init();
+
+// var sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
+// postgres://whcewrcdvgggmn:QvT6K8st4lom4qrkDLNQlJXfyg@ec2-54-227-254-13.compute-1.amazonaws.com:5432/dcbr0vsdjsp5v0
+
+// var require('./bootstrap.js')
 
 var express = require('express');
 var app = express();

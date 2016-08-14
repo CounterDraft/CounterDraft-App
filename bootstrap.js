@@ -1,9 +1,3 @@
-var DBCreateConnection = function(config) {
-    var mysql = require('mysql');
-    var connection = mysql.createConnection(config);
-    return connection;
-};
-
 module.exports = {
     init: function() {
         GLOBAL.dirBase = process.env.PWD;
@@ -60,12 +54,6 @@ module.exports = {
             return new Model();
         }
 
-        GLOBAL.getDBConnection = function() {
-            var mysql = require('mysql');
-            var dbconfig = GLOBAL.config.database;
-            var connection = mysql.createConnection(dbconfig);
-            return connection;
-        }
 
         GLOBAL.generatePasswordHash = function(password, salt) {
             var shasum = GLOBAL.getSHA1();
@@ -103,5 +91,11 @@ module.exports = {
 
         GLOBAL.smtpTransport = require("nodemailer").createTransport(GLOBAL.config.email);
         GLOBAL.logger = require('./lib/logger');
+
+        //database setup;
+        GLOBAL.Sequelize = require('sequelize');
+        
+        var sequelize = require('./database.js').init(GLOBAL.config.database);
+        GLOBAL.models = require('./models/create-models.js').init(sequelize);
     }
 }
