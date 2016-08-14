@@ -1,6 +1,6 @@
 module.exports = {
     create: function(sequelize) {
-        var GameType = sequelize.define('GAME_TYPE', {
+        var GameType = sequelize.define('game_type', {
             firstName: {
                 type: Sequelize.STRING,
                 field: 'first_name'
@@ -11,8 +11,8 @@ module.exports = {
             }
         }, {
             freezeTableName: true // Model tableName will be the same as the model name
-        }).sync();
-
+        });
+        GameType.sync();
         return GameType;
     }
 }

@@ -1,26 +1,43 @@
 module.exports = {
-    create: function(sequelize) {
-        var Organization = sequelize.define('ORGANIZATION', {
-            firstName: {
-                type: Sequelize.STRING,
-                field: 'first_name'
+    create: function(sequelize, mOrganizationType) {
+        
+        var Organization = sequelize.define('organization', {
+            organizationId: {
+                type: Sequelize.BIGINT,
+                field: 'organization_id',
+                primaryKey: true,
+                autoIncrement: true, // Automatically gets converted to SERIAL for postgres
+                comment: "Unique key for organizations"
             },
-            lastName: {
+            name: {
                 type: Sequelize.STRING,
-                field: 'last_name'
+                allowNull: false,
+                comment: "Name of organization"
             },
-            userName: {
-                type: Sequelize.STRING,
-                field: 'username'
+            organization_type: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                references: {
+                    model: mOrganizationType,
+                    key: 'id',
+                    deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
+                },
+                comment: "Key for organizations type"
             },
-            emailAddress:{
+            description: {
+                type: Sequelize.TEXT,
+                comment: "Description of the organization"
+            },
+            hasMultiAdmin: {
                 type: Sequelize.STRING,
-                field: 'email_address'
+                ield: 'has_multi_admin',
+                allowNull: false,
+                defaultValue: false
             }
         }, {
             freezeTableName: true // Model tableName will be the same as the model name
-        }).sync();
-
+        });
+        Organization.sync();
         return Organization;
     }
 }

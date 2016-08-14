@@ -1,26 +1,14 @@
 module.exports = {
     create: function(sequelize) {
-        var OrganizationType = sequelize.define('ORGANIZATION_TYPE', {
-            firstName: {
-                type: Sequelize.STRING,
-                field: 'first_name'
-            },
-            lastName: {
-                type: Sequelize.STRING,
-                field: 'last_name'
-            },
-            userName: {
-                type: Sequelize.STRING,
-                field: 'username'
-            },
-            emailAddress:{
-                type: Sequelize.STRING,
-                field: 'email_address'
+        var OrganizationType = sequelize.define('organization_type', {
+            description: {
+                type: Sequelize.TEXT,
+                comment: "Description of the type of organization type"
             }
         }, {
             freezeTableName: true // Model tableName will be the same as the model name
-        }).sync();
-        
+        });
+        OrganizationType.sync();
         return OrganizationType;
     }
 }

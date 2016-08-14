@@ -1,6 +1,6 @@
 module.exports = {
     create: function(sequelize) {
-        var EditType = sequelize.define('EDIT_TYPE', {
+        var EditType = sequelize.define('edit_type', {
             firstName: {
                 type: Sequelize.STRING,
                 field: 'first_name' // Will result in an attribute that is firstName when user facing but first_name in the database
@@ -10,8 +10,8 @@ module.exports = {
             }
         }, {
             freezeTableName: true // Model tableName will be the same as the model name
-        }).sync();
-
+        });
+        EditType.sync();
         return EditType;
     }
 }
