@@ -4,8 +4,14 @@ module.exports = {
         GLOBAL.mix = require('mix-into');
 
         // Setup the configuration
-        GLOBAL.config = mix(require('./config/master_config'))
+        var local_config = require('./config/local_config');
+        if(local_config){
+             GLOBAL.config = mix(require('./config/master_config'))
                             .into(require('./config/local_config'));
+        }else{
+            GLOBAL.config = require('./config/master_config');
+        }
+       
 
         GLOBAL.getUtil = require('util');
 
@@ -92,7 +98,7 @@ module.exports = {
         }
 
         GLOBAL.smtpTransport = require("nodemailer").createTransport(GLOBAL.config.email);
-        GLOBAL.logger = require('./lib/logger');
+        GLOBAL.logger = require('./lib/logger').init();
 
         //database setup & makes GLOBAL.models object;
         GLOBAL.Sequelize = require('sequelize');

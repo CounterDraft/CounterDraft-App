@@ -14,6 +14,7 @@ module.exports = {
         level: 'info',
         multipleStatements: true
     },
+    log_level: process.env.log_level || 'local',
     email: {
         service: "Gmail",
         secureConnection: true, // use SSL

@@ -1,14 +1,19 @@
 module.exports = {
     create: function(sequelize) {
         var ServerLog = sequelize.define('server_log', {
-            type: {
-                type: Sequelize.STRING(64),
+            meta: {
+                type: Sequelize.TEXT,
                 allowNull: false,
             },
-            message: {
-                type: Sequelize.STRING(255),
+            level: {
+                type: Sequelize.TEXT,
+                allowNull: false,
+            },
+            msg: {
+                type: Sequelize.TEXT            
             }
         }, {
+            timestamps: false,
             freezeTableName: true // Model tableName will be the same as the model name
         });
         ServerLog.sync();
