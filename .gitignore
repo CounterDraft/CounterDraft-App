@@ -1,7 +1,12 @@
-node_modules
-node_modules/*
-build/*
-npm-debug.log
-*.log
+#npm libs
+node_modules/
 
+#build files
+build/
+
+#logs
+npm-debug.log
+log/
+
+#File system files
 *.DS_Store
