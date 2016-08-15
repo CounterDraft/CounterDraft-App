@@ -4,6 +4,9 @@ node_modules/
 #build files
 build/
 
+#configurations
+config/config.js
+
 #logs
 npm-debug.log
 log/
