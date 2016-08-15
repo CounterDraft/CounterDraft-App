@@ -41,11 +41,16 @@ var launchApp = function() {
     routesWeb.setup(app);
     routesApi.setup(app);
 
-    app.listen(app.get('port'), function() {
+    try{
+        app.listen(app.get('port'), function() {
         logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
         logger.info('Server started in ' + config.environment + ' mode.');
         logger.info('Listening on port: ' + app.get('port'));
     });
+    }catch (err){
+        logger.log('error','Failed to start express',{error: err} );
+    }
+    
 }
 
 if (config.environment === 'production') {
