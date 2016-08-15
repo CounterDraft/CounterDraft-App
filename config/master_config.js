@@ -9,12 +9,11 @@ module.exports = {
         port: 5432,
         user: 'postgres',
         password: 'postgres',
-        database: 'counter',
-        table: 'server_log',
-        level: 'info',
-        multipleStatements: true
+        database: 'counter'
     },
     log_level: process.env.log_level || 'local',
+    log_table: 'server_log',
+    database_url: process.env.DATABASE_URL || false,
     email: {
         service: "Gmail",
         secureConnection: true, // use SSL
