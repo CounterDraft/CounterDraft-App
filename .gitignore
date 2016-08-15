@@ -5,7 +5,7 @@ node_modules/
 build/
 
 #configurations
-config/config.js
+config/local_config.js
 
 #logs
 npm-debug.log

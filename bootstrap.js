@@ -1,9 +1,11 @@
 module.exports = {
     init: function() {
         GLOBAL.dirBase = process.env.PWD;
-        // Setup the configuration
-        GLOBAL.config = require('./config/config');
         GLOBAL.mix = require('mix-into');
+
+        // Setup the configuration
+        GLOBAL.config = mix(require('./config/master_config'))
+                            .into(require('./config/local_config'));
 
         GLOBAL.getUtil = require('util');
 
