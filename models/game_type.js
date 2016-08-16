@@ -1,18 +1,21 @@
-module.exports = {
-    create: function(sequelize) {
-        var GameType = sequelize.define('game_type', {
-            firstName: {
-                type: Sequelize.STRING,
-                field: 'first_name'
-            },
-            lastName: {
-                type: Sequelize.STRING,
-                field: 'last_name'
-            }
-        }, {
-            freezeTableName: true // Model tableName will be the same as the model name
-        });
-        GameType.sync();
-        return GameType;
-    }
-}
+"use strict";
+
+module.exports = function(sequelize, DataTypes) {
+    var GameType = sequelize.define("game_type", {
+        name: {
+            type: DataTypes.STRING,
+            comment: "Name of the game type"
+        },
+        description: {
+            type: DataTypes.TEXT,
+            comment: "Description of game type"
+        },
+    }, {
+        freezeTableName: true,
+        classMethods: { associate: function(models) {
+            //none;
+        }}
+    });
+
+    return GameType;
+};

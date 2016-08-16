@@ -1,43 +1,43 @@
-module.exports = {
-    create: function(sequelize, mOrganizationType) {
-        
-        var Organization = sequelize.define('organization', {
-            organizationId: {
-                type: Sequelize.BIGINT,
-                field: 'organization_id',
-                primaryKey: true,
-                autoIncrement: true, // Automatically gets converted to SERIAL for postgres
-                comment: "Unique key for organizations"
-            },
-            name: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                comment: "Name of organization"
-            },
-            organization_type: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                references: {
-                    model: mOrganizationType,
-                    key: 'id',
-                    deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
-                },
-                comment: "Key for organizations type"
-            },
-            description: {
-                type: Sequelize.TEXT,
-                comment: "Description of the organization"
-            },
-            hasMultiAdmin: {
-                type: Sequelize.STRING,
-                ield: 'has_multi_admin',
-                allowNull: false,
-                defaultValue: false
+"use strict";
+
+module.exports = function(sequelize, DataTypes) {
+    var Organization = sequelize.define("organization", {
+        organization_id: {
+            type: DataTypes.BIGINT,
+            field: 'organization_id',
+            primaryKey: true,
+            autoIncrement: true, // Automatically gets converted to SERIAL for postgres
+            comment: "Unique key for organizations"
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            comment: "Name of organization"
+        },
+        organization_type_id: {
+            type: DataTypes.INTEGER,
+            field: 'organization_type',
+            allowNull: false,
+            comment: "ForeignKey from organizations_type."
+        },
+        description: {
+            type: DataTypes.TEXT,
+            comment: "Description of the organization"
+        },
+        hasMultiAdmin: {
+            type: DataTypes.STRING,
+            field: 'has_multi_admin',
+            allowNull: false,
+            defaultValue: false
+        }
+    }, {
+        freezeTableName: true,
+        classMethods: {
+            associate: function(models) {
+                Organization.belongsTo(models.organization_type, {foreignKey: 'organization_type_id'});
             }
-        }, {
-            freezeTableName: true // Model tableName will be the same as the model name
-        });
-        Organization.sync();
-        return Organization;
-    }
-}
+        }
+    });
+
+    return Organization;
+};
