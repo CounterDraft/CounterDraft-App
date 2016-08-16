@@ -1,24 +1,22 @@
-"use strict";
-
+'use strict';
 module.exports = function(sequelize, DataTypes) {
-    var OrganizationType = sequelize.define("organization_type", {
+    var edit_type = sequelize.define('edit_type', {
         name: {
             type: DataTypes.STRING,
              allowNull: false,
-             comment: "Simple name of the type."
+             comment: "Summary of the edit."
         },
         description: {
             type: DataTypes.TEXT,
-            comment: "Description of the type of organization type"
-        },
+             allowNull: false,
+             comment: "Full description of the edit."
+        }
     }, {
-        freezeTableName: true,
         classMethods: {
             associate: function(models) {
-                //none;
+                // associations can be defined here
             }
         }
     });
-
-    return OrganizationType;
+    return edit_type;
 };

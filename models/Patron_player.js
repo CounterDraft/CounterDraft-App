@@ -1,51 +1,40 @@
 "use strict";
 module.exports = function(sequelize, DataTypes) {
     var PatronPlayer = sequelize.define('patron_player', {
-        patronID: {
-            type: DataTypes.BIGINT,
-            primaryKey: true,
-            autoIncrement: true, // Automatically gets converted to SERIAL for postgres
-            field: 'player_id',
-            comment: "Unique key for patrons"
-        },
-        firstName: {
+        first_name: {
             type: DataTypes.STRING,
-            field: 'first_name',
             allowNull: false,
-            comment: "patron's first name"
+            comment: "Patron's first name"
         },
-        lastName: {
+        last_name: {
             type: DataTypes.STRING,
-            field: 'last_name',
             allowNull: false,
-            comment: "patron's last name"
+            comment: "Patron's last name"
         },
-        userName: {
+        username: {
             type: DataTypes.STRING,
-            field: 'username',
             allowNull: false,
-            comment: "patron's username"
+            comment: "Patron's username"
         },
-        emailAddress: {
+        email_address: {
             type: DataTypes.STRING,
-            field: 'email_address',
             allowNull: false,
-            comment: "patron's email address"
+            comment: "Patron's email address"
         },
         password: {
             type: DataTypes.STRING(64),
-            comment: "patron's hashed password"
+            comment: "Patron's hashed password"
         },
-        organization_id: {
-          type: DataTypes.BIGINT,
-          allowNull: false,
-          comment: "ForeignKey for organization, maps to the organization table."
+        patron_organization: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            comment: "Defines the organization."
         }
     }, {
-        freezeTableName: true, // Model tableName will be the same as the model name
+        freezeTableName: true,
         classMethods: {
             associate: function(models) {
-                PatronPlayer.belongsTo(models.organization, {foreignKey: 'organization_id'}); // Adds fk_companyname to User
+                PatronPlayer.belongsTo(models.organization, { foreignKey: 'patron_organization', target: 'id' });
             }
         }
     });
