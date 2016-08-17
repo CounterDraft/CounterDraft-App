@@ -101,10 +101,7 @@ module.exports = {
         
 
         GLOBAL.logger = require('./lib/logger').init();
-
-        //database setup & makes GLOBAL.models object;
         GLOBAL.models = require("./models");
-        models.sequelize.sync()
         
         // GLOBAL.Sequelize = require('sequelize');
         // require('./database.js').init(GLOBAL.config.database, function(models){

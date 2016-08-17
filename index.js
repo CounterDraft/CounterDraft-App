@@ -23,7 +23,7 @@ var launchApp = function() {
     app.use(bodyParser.json());
     app.use(cookieParser());
     app.use(sessionFactory());
-    
+
     app.use(function(req, res, next) {
         res.header('Access-Control-Allow-Credentials', true);
         res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -41,16 +41,18 @@ var launchApp = function() {
     routesWeb.setup(app);
     routesApi.setup(app);
 
-    try{
-        app.listen(app.get('port'), function() {
-        logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
-        logger.info('Server started in ' + config.environment + ' mode.');
-        logger.info('Listening on port: ' + app.get('port'));
+    //init database and starts server after the init;
+    GLOBAL.models.sequelize.sync().then(function() {
+        try {
+            app.listen(app.get('port'), function() {
+                logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
+                logger.info('Server started in ' + config.environment + ' mode.');
+                logger.info('Listening on port: ' + app.get('port'));
+            });
+        } catch (err) {
+            logger.log('error', 'Failed to start express', { error: err });
+        }
     });
-    }catch (err){
-        logger.log('error','Failed to start express',{error: err} );
-    }
-    
 }
 
 if (config.environment === 'production') {

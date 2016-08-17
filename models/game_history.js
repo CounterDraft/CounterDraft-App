@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function(models) {
                 game_history.belongsTo(models.edit_type, { foreignKey: 'edit', target: 'id' });
-                game_history.belongsTo(models.employee_user, { foreignKey: 'employee', target: 'employee_id' });
+                game_history.belongsTo(models.employee_user, { foreignKey: 'employee', target: 'id' });
                 game_history.belongsTo(models.game, { foreignKey: 'game_uuid', target: 'game_id' });
             }
         }

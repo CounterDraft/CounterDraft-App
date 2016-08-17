@@ -12,15 +12,15 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true,
             comment: "Amt of money the casino hold."
         },
-        bounes: {
+        bonus: {
             type: DataTypes.INTEGER,
             allowNull: true,
             comment: "Amt of extra payouts."
         },
-        bounes_description: {
+        bonus_description: {
             type: DataTypes.TEXT,
             allowNull: true,
-            comment: "if bounes amt, description of what this amt is."
+            comment: "if bonus amt, description of what this amt is."
         },
         win_amt: {
             type: DataTypes.INTEGER,
