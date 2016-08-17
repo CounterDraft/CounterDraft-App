@@ -104,7 +104,7 @@ module.exports = {
         GLOBAL.models = require("./models");
         
         // GLOBAL.Sequelize = require('sequelize');
-        // require('./database.js').init(GLOBAL.config.database, function(models){
+        // require('./model.bak/database.js').init(GLOBAL.config.database, function(models){
         //     GLOBAL.models = models;
         // });
     }

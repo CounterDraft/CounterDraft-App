@@ -14,6 +14,7 @@ module.exports = {
     log_level: process.env.log_level || 'local',
     log_table: 'server_log',
     database_url: process.env.DATABASE_URL || false,
+    secret: process.env.secret || '71b6c615-8f93-4b20-8dd7-6e1c5110e583',
     email: {
         service: "Gmail",
         secureConnection: true, // use SSL
