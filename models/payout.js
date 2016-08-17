@@ -63,6 +63,7 @@ module.exports = function(sequelize, DataTypes) {
             comment: "Patron id of the winner."
         }
     }, {
+        freezeTableName: true,
         classMethods: {
             associate: function(models) {
                 Payout.belongsTo(models.patron_player, { foreignKey: 'win', target: 'id' });
