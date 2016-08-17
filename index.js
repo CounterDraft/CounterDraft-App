@@ -11,7 +11,7 @@ var routesWeb = require('./app/routes-web');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 // var cors = require('./lib/cors');
-var sessionFactory = require('./lib/sessionFactory');
+var session = require('express-session')
 var expressLayouts = require('express-ejs-layouts');
 
 var launchApp = function() {
@@ -22,7 +22,7 @@ var launchApp = function() {
     }));
     app.use(bodyParser.json());
     app.use(cookieParser());
-    app.use(sessionFactory());
+
 
     app.use(function(req, res, next) {
         res.header('Access-Control-Allow-Credentials', true);

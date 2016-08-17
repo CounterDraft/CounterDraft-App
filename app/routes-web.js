@@ -8,7 +8,7 @@ module.exports = {
 
         // setup permission
         var isAuthorizedAdmin = authorization.ensureRequest.isPermitted('admin:*');
-        var isAuthorized = authorization.ensureRequest.isPermitted('session:active');
+        var isAuthorized = authorization.ensureRequest.isPermitted(['user','employee', 'admin', 'superadmin']);
 
         var wr = {
             'login': '/login',
@@ -26,8 +26,9 @@ module.exports = {
             next();
         });
 
-        routerWeb.get('/', isAuthorized, function(req, res) {
+        routerWeb.get("/", isAuthorized, function(req, res) {
             //TODO: Call the api for stuff we need for page
+            console.log("here we are");
             res.render('pages/dashboard', {
                 data: {
                     user: 'jerum hubbert'
@@ -35,7 +36,7 @@ module.exports = {
             });
         });
 
-        routerWeb.get(wr['login'], function(req, res) {
+        routerWeb.get("/login", function(req, res) {
 
             if (req.session.user) {
                 res.redirect('/dashboard');
@@ -48,7 +49,7 @@ module.exports = {
             }
         });
 
-        routerWeb.get(wr['dashboard'], isAuthorized, function(req, res) {
+        routerWeb.get("/dashboard", isAuthorized, function(req, res) {
             res.render('pages/dashboard', {
                 data: {
                     user: 'jerum hubbert'
@@ -100,4 +101,4 @@ module.exports = {
 
         app.use('', routerWeb);
     }
-}
+};

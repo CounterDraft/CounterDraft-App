@@ -1,1 +1,0 @@
-//This will be a direct mapping of the user table from the database;

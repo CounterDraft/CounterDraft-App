@@ -39,17 +39,17 @@ module.exports = {
 
         GLOBAL.getController = function(controllerName) {
             var Controller = require(GLOBAL.CONTROLLER_DIR + controllerName);
-            return mix(new Controller(), [getBase('counter-controller')]);
+            return mix(getBase('counter-controller')).into(new Controller());
         }
 
         GLOBAL.getApi = function(apiName) {
             var api = require(GLOBAL.API_DIR + apiName);
-            return mix(new api(), [getBase('counter-api')]);
+            return mix(getBase('counter-api')).into(new api());
         }
 
         GLOBAL.getRepository = function(repositoryName) {
             var repository = require(GLOBAL.REPOSITORY_DIR + repositoryName);
-            return mix(new repository(), [getBase('counter-repository')]);
+            return mix(getBase('counter-repository')).into(new repository());
         }
 
          GLOBAL.getBase = function(base) {
@@ -107,10 +107,5 @@ module.exports = {
         // require('./database.js').init(GLOBAL.config.database, function(models){
         //     GLOBAL.models = models;
         // });
-
-        
-
-
-        
     }
 }

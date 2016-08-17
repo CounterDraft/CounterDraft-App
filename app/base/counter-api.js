@@ -11,6 +11,13 @@ function baseApi(){
     	var errorApi = require(GLOBAL.API_DIR + 'error-api');
     	return new errorApi();
     }
+
+    this.getModal = function(model){
+    	if(model){
+    		return GLOBAL.models[model];
+    	}
+    	return GLOBAL.models; 	
+    }
 }
 
 module.exports = baseApi;
