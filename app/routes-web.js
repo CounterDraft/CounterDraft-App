@@ -76,7 +76,7 @@ module.exports = {
 
         routerWeb.get('/login', function(req, res) {
             if (req.session.user) {
-                res.redirect('/dashboard',{data:''});
+                res.redirect('/dashboard');
             } else {
                 res.render('pages/login');
             }

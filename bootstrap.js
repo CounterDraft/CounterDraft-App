@@ -37,6 +37,10 @@ module.exports = {
 
         GLOBAL.Promise = require('promise');
 
+        GLOBAL.getdbConnection = function(){
+            return require('pg');
+        }
+
         GLOBAL.generateUUID = function() {
             var uuid = require('uuid');
             return uuid.v4();
@@ -115,10 +119,6 @@ module.exports = {
 
         GLOBAL.logger = require('./lib/logger').init();
         GLOBAL.models = require("./models");
-
-        GLOBAL.getdbConnection = function(){
-            return require('pg');
-        }
 
         // GLOBAL.Sequelize = require('sequelize');
         // require('./model.bak/database.js').init(GLOBAL.config.database, function(models){
