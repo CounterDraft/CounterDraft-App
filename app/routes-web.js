@@ -7,8 +7,18 @@ module.exports = {
         var routerWeb = require('express').Router();
 
         // setup permission
-        var isAuthorizedAdmin = authorization.ensureRequest.isPermitted('admin:*');
-        var isAuthorized = authorization.ensureRequest.isPermitted(['user','employee', 'admin', 'superadmin']);
+        var isAuthorizedSuperAdmin = authorization.ensureRequest.
+        isPermitted(['user:permission:superadmin']);
+
+        var isAuthorizedAdmin = authorization.ensureRequest.
+        isPermitted(['user:permission:admin']);
+
+        var isAuthorized = authorization.ensureRequest.
+        isPermitted(['user:permission:user',
+            'user:permission:employee',
+            'user:permission:admin',
+            'user:permission:superadmin'
+        ]);
 
         var wr = {
             'login': '/login',
@@ -20,6 +30,8 @@ module.exports = {
             'bad': '/*'
         }
 
+        var sess;
+
         routerWeb.use(function timeLog(req, res, next) {
             //TODO: added a object in here that passes isAuth to the front-end;
             // console.log('Time: ', Date.now());
@@ -27,36 +39,51 @@ module.exports = {
         });
 
         routerWeb.get("/", isAuthorized, function(req, res) {
-            //TODO: Call the api for stuff we need for page
-            console.log("here we are");
             res.render('pages/dashboard', {
                 data: {
-                    user: 'jerum hubbert'
+                    user: req.session.user
                 }
             });
-        });
-
-        routerWeb.get("/login", function(req, res) {
-
-            if (req.session.user) {
-                res.redirect('/dashboard');
-            } else {
-                res.render('pages/login', {
-                    data: {
-                        user: 'jerum hubbert'
-                    }
-                });
-            }
         });
 
         routerWeb.get("/dashboard", isAuthorized, function(req, res) {
-            res.render('pages/dashboard', {
-                data: {
-                    user: 'jerum hubbert'
-                }
-            });
+            if (req.session && req.session.user) { // Check if session exists
+                // lookup the user in the DB by pulling their email from the session
+                // User.findOne({ email: req.session.user.email }, function(err, user) {
+                //     if (!user) {
+                //         // if the user isn't found in the DB, reset the session info and
+                //         // redirect the user to the login page
+                //         req.session.reset();
+                //         res.redirect('/login');
+                //     } else {
+                //         // expose the user to the template
+                //         res.locals.user = user;
+
+                //         // render the dashboard page
+                //         res.render('dashboard.jade');
+                //     }
+                // });
+                // res.locals.user = user;
+                res.render('pages/dashboard', {
+                    data: {
+                        user: req.session.user
+                    }
+                });
+            } else {
+                res.redirect('/login');
+            }
         });
-        routerWeb.get(wr['profile'], isAuthorized, function(req, res) {
+
+        routerWeb.get('/login', function(req, res) {
+            if (req.session.user) {
+                res.redirect('/dashboard',{data:''});
+            } else {
+                res.render('pages/login');
+            }
+        });
+
+
+        routerWeb.get('/profile', isAuthorized, function(req, res) {
             res.render('pages/profile', {
                 data: {
                     user: 'jerum hubbert'
@@ -82,16 +109,12 @@ module.exports = {
             res.redirect('/');
         });
 
-        routerWeb.get(wr['bad'], function(req, res, next) {
-            var data = {
-                user: 'jerum hubbert'
-            }
-
+        routerWeb.get('/*', function(req, res, next) {
             if (req.originalUrl.split('/').indexOf('api') > -1) {
                 next();
             } else if (req.session.user) {
                 res.render('pages/badURL', {
-                    data: data
+                    data: {}
                 });
             } else {
                 res.redirect('/login');

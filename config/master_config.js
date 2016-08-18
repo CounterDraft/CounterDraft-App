@@ -11,6 +11,7 @@ module.exports = {
         password: 'postgres',
         database: 'counter'
     },
+    secure_cookies: process.env.secure_cookies || false,
     log_level: process.env.log_level || 'local',
     log_table: 'server_log',
     database_url: process.env.DATABASE_URL || false,

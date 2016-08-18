@@ -4,19 +4,32 @@ module.exports = {
         GLOBAL.mix = require('mix-into');
 
         // Setup the configuration
-        try{
+        try {
             var local_config = require('./config/local_config');
             GLOBAL.config = mix(require('./config/master_config'))
-                            .into(require('./config/local_config'));
-        }catch(err){
+                .into(require('./config/local_config'));
+        } catch (err) {
             console.error('No local configurations found in config/ Error=' + JSON.stringify(err));
             GLOBAL.config = require('./config/master_config');
+        }
+
+        GLOBAL.getDatabase_url = function() {
+            if (GLOBAL.config.database_url) {
+                return GLOBAL.config.database_url;
+            } else {
+                database_url = 'postgres://' + GLOBAL.config.database.user +
+                    ':' + GLOBAL.config.database.password +
+                    '@' + GLOBAL.config.database.host +
+                    ':' + GLOBAL.config.database.port +
+                    '/' + GLOBAL.config.database.database;
+                return database_url;
+            }
         }
 
         GLOBAL.getUtil = require('util');
 
         GLOBAL.BASE_URL = 'http://' + GLOBAL.config.server.ip + ':' + GLOBAL.config.server.port + '/';
-        GLOBAL.CONTROLLER_DIR = dirBase +'/app/controllers/';
+        GLOBAL.CONTROLLER_DIR = dirBase + '/app/controllers/';
         GLOBAL.MODEL_DIR = dirBase + '/app/models/';
         GLOBAL.REPOSITORY_DIR = dirBase + '/app/repositories/';
         GLOBAL.API_DIR = dirBase + '/app/api/';
@@ -52,7 +65,7 @@ module.exports = {
             return mix(getBase('counter-repository')).into(new repository());
         }
 
-         GLOBAL.getBase = function(base) {
+        GLOBAL.getBase = function(base) {
             var baseController = require(GLOBAL.BASE_DIR + base);
             return new baseController();
         }
@@ -98,11 +111,15 @@ module.exports = {
         }
 
         GLOBAL.smtpTransport = require("nodemailer").createTransport(GLOBAL.config.email);
-        
+
 
         GLOBAL.logger = require('./lib/logger').init();
         GLOBAL.models = require("./models");
-        
+
+        GLOBAL.getdbConnection = function(){
+            return require('pg');
+        }
+
         // GLOBAL.Sequelize = require('sequelize');
         // require('./model.bak/database.js').init(GLOBAL.config.database, function(models){
         //     GLOBAL.models = models;
