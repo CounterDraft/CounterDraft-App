@@ -42,8 +42,11 @@ app.use(expressLayouts);
 routesWeb.setup(app);
 routesApi.setup(app);
 
+var _addWatcher = function(){
 
-var launchApp = function() {
+}
+
+var _launchApp = function() {
 
     //init database and starts server after the init;
     GLOBAL.models.sequelize.sync().then(function() {
@@ -69,9 +72,9 @@ if (config.environment === 'production') {
         }
     }, function() {
         //callback;
-        launchApp();
+        _launchApp();
     });
 } else {
     logger.info('Bypassing build we are in ' + config.environment + ' please wait...');
-    launchApp();
+    _launchApp();
 }
