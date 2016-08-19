@@ -4,6 +4,9 @@ node_modules/
 #build files
 build/
 
+#generated files
+css/*.css
+
 #configurations
 config/local_config.js
 
