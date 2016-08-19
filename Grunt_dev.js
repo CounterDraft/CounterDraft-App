@@ -3,19 +3,25 @@ module.exports = function(grunt) {
         less: {
             development: {
                 options: {
-                    paths: ["../css/"],
-                    yuicompress: true
+                    paths: ["./css/"],
+                    compress: true
                 },
                 files: {
-                    "../css/counter-main.css": "../css/counter-main.less"
+                    "./css/counter-main.css": "./css/counter-main.less"
                 }
             }
         },
         watch: {
-            files: "../css/*",
+            files: ["./css/*"],
             tasks: ["less"]
         }
     });
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
+
+    // Default task(s).
+    grunt.registerTask('default', [
+        'less',
+        'watch'
+    ]);
 };

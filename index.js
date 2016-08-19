@@ -14,6 +14,7 @@ var bodyParser = require('body-parser');
 // var session = require('express-session')
 var sessionFactory = require('./lib/session');
 var expressLayouts = require('express-ejs-layouts');
+var grunt = require("grunt");
 
 //Server settings;
 app.use(express.static(__dirname));
@@ -42,8 +43,13 @@ app.use(expressLayouts);
 routesWeb.setup(app);
 routesApi.setup(app);
 
-var _addWatcher = function(){
-
+var _addWatcher = function() {
+    grunt.cli({
+        gruntfile: __dirname + "/Grunt_dev.js",
+        extra: {
+            key: "run"
+        }
+    });
 }
 
 var _launchApp = function() {
@@ -64,9 +70,8 @@ var _launchApp = function() {
 
 if (config.environment === 'production') {
     logger.warn('Creating the build, please wait...');
-    var grunt = require("grunt");
     grunt.cli({
-        gruntfile: __dirname + "/Gruntfile.js",
+        gruntfile: __dirname + "/Grunt_pro.js",
         extra: {
             key: "run"
         }
@@ -76,5 +81,6 @@ if (config.environment === 'production') {
     });
 } else {
     logger.info('Bypassing build we are in ' + config.environment + ' please wait...');
+    _addWatcher();
     _launchApp();
 }

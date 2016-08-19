@@ -1,28 +1,58 @@
-<section id="alh-login" ng-controller="loginCtrl" ng-int="">
-    <row>
-        <div class="col-xs-12"></div>
-    </row>
-    <div class="container login-img">
-        <div id="counter-login-modal" class="login-modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Modal content-->
-                    <div class="model-tmpl-0">
-                        <form role="form" name="login-form" class="form-horizontal" id="login-form" ng-submit="onSubmit('login-form')">
+<section class="cd-login" ng-controller="loginCtrl" ng-int="init('James Bond','007')">
+    <div id="counter-login-modal" class="login-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal content-->
+                <div class="model-tmpl-0">
+                    <form role="form" name="login-form" class="form-horizontal" id="login-form" ng-submit="onSubmit('login-form')">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-center">login</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="username" class="sr-only col-sm-1">Email or Username:</label>
+                                <div class="col-sm-12">
+                                    <input type="email" class="form-control" id="username" placeholder="Email or Username" ng-model="formData.username" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="username" class="sr-only">Password:</label>
+                                <div class="col-sm-12">
+                                    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="formData.password" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-4">
+                                </div>
+                                <div class="col-xs-12 col-sm-4">
+                                    <button type="submit" class="btn primary btn-block">Login</button>
+                                </div>
+                                <div class="col-xs-12 col-sm-4">
+                                </div>
+                                <div class="col-xs-12 text-center">
+                                    <a class="link-text" href="http://www.counterDraft.com/create-account">
+                                        <u>create a account</u></a><span>&nbsp;or&nbsp;</span><a class="link-text active-reset"><u>forgot username/password</u></a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="retrieve-container">
+                        <form role="form" name="retrieve-form" class="form-horizontal" id="retrieve-form" ng-submit="onSubmit('retrieve-form')">
                             <div class="modal-header">
-                                <h4 class="modal-title text-center">Login</h4>
+                                <h4 class="modal-title text-center">Reset Your Password</h4>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="username" class="sr-only col-sm-1">Email or Username:</label>
+                                    <label for="username" class="sr-only col-sm-1">Username:</label>
                                     <div class="col-sm-12">
-                                        <input type="email" class="form-control" id="username" placeholder="Email or Username" ng-model="formData.username" required>
+                                        <input type="email" class="form-control" id="username" placeholder="Username" ng-model="retdata.username">
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="username" class="sr-only">Password:</label>
+                                    <div class="col-xs-12"><span class="modal-title">&nbsp;or&nbsp;</span></div>
+                                    <label for="username" class="sr-only col-sm-1">Email</label>
                                     <div class="col-sm-12">
-                                        <input type="password" class="form-control" id="password" placeholder="Password" ng-model="formData.password" required>
+                                        <input type="email" class="form-control" id="email" placeholder="Email" ng-model="retdata.email">
                                     </div>
                                 </div>
                             </div>
@@ -31,52 +61,19 @@
                                     <div class="col-xs-12 col-sm-4">
                                     </div>
                                     <div class="col-xs-12 col-sm-4">
-                                        <button type="submit" class="btn primary btn-block">Login</button>
+                                        <button type="submit" class="btn primary btn-block">Continue</button>
                                     </div>
                                     <div class="col-xs-12 col-sm-4">
-                                    </div>
-                                    <div class="col-xs-12 text-center">
-                                        <a class="link-text" href="http://www.counterDraft.com/create-account">
-                                            <u>create a account</u></a><span>&nbsp;or&nbsp;</span><a class="link-text active-reset"><u>forgot username/password</u></a>
                                     </div>
                                 </div>
                             </div>
                         </form>
-                        <div class="retrieve-container">
-                            <form role="form" name="retrieve-form" class="form-horizontal" id="retrieve-form" ng-submit="onSubmit('retrieve-form')">
-                                <div class="modal-header">
-                                    <h4 class="modal-title text-center">Reset Your Password</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="username" class="sr-only col-sm-1">Username:</label>
-                                        <div class="col-sm-12">
-                                            <input type="email" class="form-control" id="username" placeholder="Username" ng-model="retdata.username">
-                                        </div>
-                                        <div class="col-xs-12"><span class="modal-title">&nbsp;or&nbsp;</span></div>
-                                        <label for="username" class="sr-only col-sm-1">Email</label>
-                                        <div class="col-sm-12">
-                                            <input type="email" class="form-control" id="email" placeholder="Email" ng-model="retdata.email">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="form-group">
-                                        <div class="col-xs-12 col-sm-4">
-                                        </div>
-                                        <div class="col-xs-12 col-sm-4">
-                                            <button type="submit" class="btn primary btn-block">Continue</button>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-4">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<%- contentFor('title') %>login<%- contentFor('mainjs') %>login<%- contentFor('articleID') %>login
+<%- contentFor('title') %>login
+    <%- contentFor('mainjs') %>login
+        <%- contentFor('articleID') %>login
