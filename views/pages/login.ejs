@@ -1,4 +1,5 @@
-<section class="cd-login" ng-controller="loginCtrl" ng-int="init('James Bond','007')">
+<section class="cd-login" ng-controller="loginCtrl" ng-int="init()">
+<div ng-init="init('Blah')">{{ testInput }}</div>
     <div id="counter-login-modal" class="login-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -6,6 +7,7 @@
                 <div class="model-tmpl-0">
                     <form role="form" name="login-form" class="form-horizontal" id="login-form" ng-submit="onSubmit('login-form')">
                         <div class="modal-header">
+
                             <h4 class="modal-title text-center">login</h4>
                         </div>
                         <div class="modal-body">

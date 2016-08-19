@@ -5,11 +5,11 @@
         This should all the logic for the login page.
 */
 
-app.controller('loginCtrl', ['$scope, $http', function($scope, $http) {
-
-    $scope.init = function(name, id) {
-        $scope.id = id;
-        $scope.name = name;
+app.controller('loginCtrl', ['$scope', function($scope) {
+    $scope.testInput = null;
+    $scope.init = function(value) {
+        console.log('here');
+        $scope.testInput= value;
     };
 
     $scope.onSubmit = function(){
