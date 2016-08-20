@@ -78,7 +78,11 @@ module.exports = {
             if (req.session.user) {
                 res.redirect('/dashboard');
             } else {
-                res.render('pages/login');
+                res.render('pages/login', { 
+                    data: { first_name: "Jerum",
+                            last_name: "Hubbert",
+                            ts: Date.now()}
+                        });
             }
         });
 
@@ -86,21 +90,21 @@ module.exports = {
         routerWeb.get('/profile', isAuthorized, function(req, res) {
             res.render('pages/profile', {
                 data: {
-                    user: 'jerum hubbert'
+                    user: 'jerum hubbert1'
                 }
             });
         });
         routerWeb.get(wr['superadmin'], isAuthorizedAdmin, function(req, res) {
             res.render('pages/superadmin', {
                 data: {
-                    user: 'jerum hubbert'
+                    user: 'jerum hubbert2'
                 }
             });
         });
         routerWeb.get(wr['changepassword'], isAuthorized, function(req, res) {
             res.render('pages/password', {
                 data: {
-                    user: 'jerum hubbert'
+                    user: 'jerum hubbert3'
                 }
             });
         });

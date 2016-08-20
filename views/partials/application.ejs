@@ -11,9 +11,10 @@
   	<script type="text/javascript" src="/js/common.js"></script>
 <% } %>
 <script type="text/javascript">
-	$( document ).ready(function() { 
-
-
-
-	});
+	//loads page data to angular;
+	if(window['app']){
+		var data = <%- JSON.stringify(data) %> || "";
+		app.value("data", data);
+	}
+	$( document ).ready(function() { });
 </script>

@@ -3,19 +3,19 @@
 function loginApi() {
     this.tag = 'login-api';
     this.login = function(req, res) {
-
-        if (req.body.username === 'admin@counterdraft.com') {
+        if (!req.body.username) {
+            this.getErrorApi().sendError(1001, 403, res);
+        } else if (!req.body.password) {
+            this.getErrorApi().sendError(1001, 403, res);
+        } else {
             req.session.user = {
-                    username: req.body.username,
-                    permissions: 'user'
-                }
-                //TODO: need to makes a message.resourse file so we can keep all the strings in it.
+                username: req.body.username,
+                permissions: 'user'
+            }
             res.status(200).json({
                 user: req.session.user,
                 success: true
             });
-        } else {
-            this.getErrorApi().sendError(1001, 403, res);
         }
     }
 
