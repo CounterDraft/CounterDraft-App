@@ -26,7 +26,7 @@ function AccountController() {
             }
         },
 
-        register: function(verb, req, res) {
+        registration: function(verb, req, res) {
             switch (verb) {
                 // @post(/api/register)  
                 case 'post':

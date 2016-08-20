@@ -5,7 +5,7 @@ module.exports = {
     setup: function(app) {
 
         // Register account
-        app.all(version + '/register', function(req, res) {
+        app.all(version + '/registration', function(req, res) {
             var accountController = getController('account-controller');
             accountController.rest(req, res);
         });

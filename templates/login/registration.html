@@ -1,37 +1,32 @@
-<h1 class="text-center">Registration</h1>
-<form ng-submit="onRegistration()">
-    <div class="form-group">
-        <label for="registation-first-name">First Name</label>
-        <input type="text" id="registation-first-name" class="form-control" placeholder="Frist Name" ng-model="registrationModel.first_name">
+<section class="counter-registration">
+<div class="col-xs-12">&nbsp;</div>
+    <div class="row">
+        <button type="button" class="btn close quinary" ng-click="onClose()">&times;</button>
+        <div class="col-xs-1"></div>
+        <h1 class="col-xs-10 text-center">Registration</h1>
     </div>
-    <div class="form-group">
-        <label for="registation-last-name">Last Name</label>
-        <input type="text" class="form-control" placeholder="Last Name" ng-model="registrationModel.last_name">
-    </div>
-    <div class="form-group">
-        <label for="registation-email-address">Email address</label>
-        <input type="email" class="form-control" placeholder="Enter email" ng-model="registrationModel.email_address">
-    </div>
-    <div class="form-group">
-        <label for="registation-password">Password</label>
-        <input type="password" class="form-control" placeholder="Enter password" ng-model="registrationModel.password">
-    </div>
-    <div class="form-group">
-        <label for="registation-password-confirm">Password Confirm</label>
-        <input type="password" class="form-control" placeholder="Enter password again" ng-model="registrationModel.password_confirm">
-    </div>
-    <div class="form-group">
-        <div class="col-xs-3">&nbsp;</div>
-        <button class="btn col-xs-6 primary">SUBMIT</button>
-        <div class="col-xs-3">&nbsp;</div>
-    </div>
-</form>
-<div class="col-xs-12">&nbsp;</div>
-<div class="col-xs-12">&nbsp;</div>
-<div class="col-xs-12">&nbsp;</div>
-<div class="col-xs-12">&nbsp;</div>
-<div class="col-xs-12">&nbsp;</div>
-<div class="col-xs-12">&nbsp;</div>
-<div class="col-xs-12">&nbsp;</div>
-<div class="col-xs-12">&nbsp;</div>
-<div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12">&nbsp;</div>
+    <form ng-submit="onRegistration()">
+        <div class="form-group">
+            <input type="text" id="registation-first-name" class="form-control" placeholder="Frist Name *" ng-model="registrationModel.first_name">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Last Name *" ng-model="registrationModel.last_name">
+        </div>
+        <div class="form-group">
+            <input type="email" class="form-control" placeholder="Enter email *" ng-model="registrationModel.email_address">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Enter password *" ng-model="registrationModel.password">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Enter password again *" ng-model="registrationModel.password_confirm">
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3">&nbsp;</div>
+            <button class="btn col-xs-6 primary">SUBMIT</button>
+            <div class="col-xs-3">&nbsp;</div>
+        </div>
+    </form>
+</section>
