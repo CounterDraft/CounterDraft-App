@@ -19,8 +19,7 @@ module.exports = function(grunt) {
             },
             js: {
                 files: [{
-                    //NOTE- All controllers should go here;
-                    src: ['build/js/min/<%= pkg.name %>.js'],
+                    src: 'build/js/min/<%= pkg.name %>.js',
                     dest: 'build/js/min/<%= pkg.name %>.min.js'
                 }]
             }
@@ -31,10 +30,13 @@ module.exports = function(grunt) {
                 src: [
                     //NOTE- If we add more libs there need to be added to the build here;
                     'node_modules/jquery/dist/jquery.js',
-                    'node_modules/angular/angular.js',
-                    'node_modules/angular-ui-router/release/angular-ui-router.min.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
                     'build/js/common.js',
+                    'node_modules/angular/angular.js',
+                    'node_modules/angular-ui-router/release/angular-ui-router.min.js',
+                    'build/js/app.js',
+                    'build/js/directives.js',
+                    //controllers
                     'build/js/controllers/account-controller.js'
                 ],
                 dest: 'build/js/min/<%= pkg.name %>.js'
