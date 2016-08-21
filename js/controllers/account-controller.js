@@ -55,6 +55,9 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
             $http({
                 method: 'POST',
                 url: _url_registration,
+                // headers: {
+                //    "Content-Type":application/json;charset=UTF-8
+                // },
                 data: formData
             }).then(function successCallback(response) {
                 console.log(response);
