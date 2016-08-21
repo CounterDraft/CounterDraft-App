@@ -114,24 +114,4 @@ module.exports = function(grunt) {
         'less',
         'clean:post'
     ]);
-
-    // Default task(s).
-    grunt.registerTask('development', [
-        'clean:pre',
-        'copy',
-        'uglify',
-        'concat',
-        'less',
-        'clean:post'
-    ]);
-
-    // Default task(s).
-    grunt.registerTask('production', [
-        'clean:pre',
-        'copy',
-        'concat',
-        'less',
-        'uglify',
-        'clean:post'
-    ]);
 };
