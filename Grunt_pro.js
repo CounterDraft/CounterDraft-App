@@ -29,15 +29,15 @@ module.exports = function(grunt) {
             libsJS: {
                 src: [
                     //NOTE- If we add more libs there need to be added to the build here;
-                    'node_modules/jquery/dist/jquery.js',
-                    'node_modules/bootstrap/dist/js/bootstrap.js',
-                    'build/js/common.js',
                     'node_modules/angular/angular.js',
                     'node_modules/angular-ui-router/release/angular-ui-router.min.js',
                     'build/js/app.js',
                     'build/js/directives.js',
                     //controllers
-                    'build/js/controllers/account-controller.js'
+                    'build/js/controllers/account-controller.js',
+                    'node_modules/jquery/dist/jquery.js',
+                    'node_modules/bootstrap/dist/js/bootstrap.js',
+                    'build/js/common.js'
                 ],
                 dest: 'build/js/min/<%= pkg.name %>.js'
             }
