@@ -119,7 +119,6 @@ module.exports = function(grunt) {
     grunt.registerTask('development', [
         'clean:pre',
         'copy',
-        'requirejs',
         'uglify',
         'concat',
         'less',
@@ -130,7 +129,6 @@ module.exports = function(grunt) {
     grunt.registerTask('production', [
         'clean:pre',
         'copy',
-        'requirejs',
         'concat',
         'less',
         'uglify',
