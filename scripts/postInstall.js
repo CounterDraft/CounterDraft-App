@@ -9,7 +9,7 @@ try {
         .into(require('../config/local_config'));
 } catch (err) {
     console.error('No local configurations found in config/ Error=' + JSON.stringify(err));
-    config = require('./config/master_config');
+    config = require('../config/master_config');
 }
 
 if (config.environment === 'development') {
