@@ -20,9 +20,7 @@ module.exports = function(grunt) {
             js: {
                 files: [{
                     //NOTE- All controllers should go here;
-                    src: ['build/js/min/<%= pkg.name %>.js',
-                        'build/js/controllers/account-controller.js'
-                    ],
+                    src: ['build/js/min/<%= pkg.name %>.js'],
                     dest: 'build/js/min/<%= pkg.name %>.min.js'
                 }]
             }
@@ -85,6 +83,7 @@ module.exports = function(grunt) {
         'clean:pre',
         'copy',
         'concat',
+        'uglify',
         'less',
         'clean:post'
     ]);
