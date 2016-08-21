@@ -22,8 +22,6 @@ app = angular.module('CounterDraft-app', [])
                 return config;
             }
         };
+    }).config(function($httpProvider) {
+        $httpProvider.interceptors.push('httpRequestInterceptor');
     });
-
-app.config(function($httpProvider) {
-    $httpProvider.interceptors.push('httpRequestInterceptor');
-});
