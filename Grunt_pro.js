@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                     'node_modules/bootstrap/dist/js/bootstrap.js',
                     'build/js/common.js'
                 ],
-                dest: 'build/js/min/<%= pkg.name %>.js'
+                dest: 'build/js/min/<%= pkg.name %>.min.js'
             }
         },
 
