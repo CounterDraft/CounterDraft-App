@@ -3,20 +3,41 @@
 function loginApi() {
     this.tag = 'login-api';
     this.login = function(req, res) {
-        var employee_user_model = models.employee_user;
+        var self = this;
+        var Employee = models.employee_user;
         if (!req.body.username) {
             this.getErrorApi().sendError(1001, 403, res);
         } else if (!req.body.password) {
             this.getErrorApi().sendError(1001, 403, res);
         } else {
-            req.session.user = {
-                username: req.body.username,
-                permissions: 'user'
-            }
-            res.status(200).json({
-                user: req.session.user,
-                success: true
-            });
+            // search for attributes
+            Employee.findOne({
+                    where: {
+                        username: req.body.username
+                    }
+                })
+                .then(function(employee) {
+                    if (employee && employee.password === req.body.password) {
+                        var permission = 'user';
+                        if (employee.is_admin) {
+                            permission = 'admin';
+                        }
+                        req.session.user = {
+                            employee_id: employee.id,
+                            username: employee.username,
+                            permissions: permission
+                        }
+                        var employee_out = employee;
+                        employee_out.password = '****';
+                        res.json({
+                            user: employee_out,
+                            success: true
+                        });
+                    } else {
+                        //user not found.
+                        self.getErrorApi().sendError(1002, 401, res);
+                    }
+                });
         }
     }
 
