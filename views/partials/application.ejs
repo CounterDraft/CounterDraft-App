@@ -1,5 +1,5 @@
 <% if(process.env.MODE  === 'production'){ %>
-   <script type="text/javascript" defer async src="build/js/min/<%= process.env.npm_package_name %>.min.js"></script>
+   <script type="text/javascript" src="build/js/min/<%= process.env.npm_package_name %>.min.js"></script>
  <% } else{ %>  
 	<script type="text/javascript" src="/node_modules/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="/node_modules/angular/angular.min.js"></script>
@@ -16,5 +16,7 @@
 		var data = <%- JSON.stringify(data) %> || "";
 		app.value("data", data);
 	}
-	$( document ).ready(function() { });
+	$(document).ready(function() { 
+
+	});
 </script>
