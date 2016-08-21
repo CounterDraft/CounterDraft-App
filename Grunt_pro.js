@@ -36,7 +36,8 @@ module.exports = function(grunt) {
                     'node_modules/angular/angular.js',
                     'node_modules/angular-ui-router/release/angular-ui-router.min.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
-                    'build/js/common.js'
+                    'build/js/common.js',
+                    'build/js/controllers/account-controller.js'
                 ],
                 dest: 'build/js/min/<%= pkg.name %>.js'
             }
@@ -84,7 +85,6 @@ module.exports = function(grunt) {
         'clean:pre',
         'copy',
         'concat',
-        'uglify',
         'less',
         'clean:post'
     ]);
