@@ -3,6 +3,7 @@
 function loginApi() {
     this.tag = 'login-api';
     this.login = function(req, res) {
+        var employee_user_model = models.employee_user;
         if (!req.body.username) {
             this.getErrorApi().sendError(1001, 403, res);
         } else if (!req.body.password) {

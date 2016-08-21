@@ -1,4 +1,7 @@
 "use strict";
+var _sendRegistrationEmail = function(user_email) {
+    console.log(user_email);
+}
 
 function registationApi() {
     this.tag = 'registation-api';
@@ -15,6 +18,7 @@ function registationApi() {
         } else if (!req.body.password_confirm) {
             this.getErrorApi().sendError(1007, 403, res);
         } else {
+
             employee_user_model.create({
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
@@ -23,23 +27,28 @@ function registationApi() {
                 password: req.body.password,
                 is_admin: false,
                 employee_organization: 1,
-            }).spread(function(user, created) {
-                if (created) {
+            }).then(function(data) {
+                if (typeof 'undefined' != data && data.$options['isNewRecord']) {
+                    // _sendRegistrationEmail(data.dataValues.email_address);
                     req.session.user = {
-                        username: req.body.email_address,
+                        username: data.dataValues.username,
                         permissions: 'user'
                     }
-                    var jsonO = user.get({ plain: true });
-                    jsonO.success = true;
-                    res.status(200).json(jsonO);
+                    data.dataValues.password = '****';
+                    res.status(200).json({
+                        user: data.dataValues,
+                        success: true
+                    });
+                } else {
+                    this.getErrorApi().sendError(1008, 422, res);
                 }
-                this.getErrorApi().sendError(1008, 422, res);
             });
         }
     }
     this.getUserRegistration = function(req, res) {
 
     }
+
 }
 
 module.exports = registationApi;
