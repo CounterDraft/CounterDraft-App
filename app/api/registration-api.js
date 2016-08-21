@@ -18,11 +18,6 @@ function registationApi() {
         } else if (!req.body.password_confirm) {
             this.getErrorApi().sendError(1007, 403, res);
         } else {
-            //testing
-            res.status(200).json({
-                user: req.body,
-                success: true
-            });
 
             employee_user_model.create({
                 first_name: req.body.first_name,
@@ -31,7 +26,7 @@ function registationApi() {
                 email_address: req.body.email_address,
                 password: req.body.password,
                 is_admin: false,
-                employee_organization: 1,
+                employee_organization: 999,
             }).then(function(data) {
                 if (typeof 'undefined' != data && data.$options['isNewRecord']) {
                     // _sendRegistrationEmail(data.dataValues.email_address);
@@ -40,10 +35,10 @@ function registationApi() {
                         permissions: 'user'
                     }
                     data.dataValues.password = '****';
-                    // res.status(200).json({
-                    //     user: data.dataValues,
-                    //     success: true
-                    // });
+                    res.status(200).json({
+                        user: data.dataValues,
+                        success: true
+                    });
                 } else {
                     this.getErrorApi().sendError(1008, 422, res);
                 }

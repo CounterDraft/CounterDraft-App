@@ -58,7 +58,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
                 // headers: {
                 //    "Content-Type":application/json;charset=UTF-8
                 // },
-                data: JSON.stringify(formData),
+                data: formData,
             }).then(function successCallback(response) {
                 console.log(response);
                 $window.location.href = '/dashboard';
@@ -85,7 +85,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
             $http({
                 method: 'POST',
                 url: _url_login,
-                data: JSON.stringify(formData),
+                data: formData,
             }).then(function successCallback(response) {
                 $window.location.href = '/dashboard';
             }, function errorCallback(response) {
