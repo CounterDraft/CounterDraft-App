@@ -95,39 +95,6 @@ module.exports = function(grunt) {
                     'build/css/<%= pkg.name %>.min.css': 'css/counter-main.less'
                 }
             }
-        },
-
-        requirejs: {
-            compile: {
-                options: {
-                    optimize: "uglify",
-                    baseUrl: "build/js/r/main/",
-                    modules: [{
-                        name: "about-main"
-                    }, {
-                        name: "bad-main"
-                    }, {
-                        name: "careers-page"
-                    }, {
-                        name: "login-page"
-                    }, {
-                        name: "contact-page"
-                    }, {
-                        name: "create-page"
-                    }, {
-                        name: "faq-page"
-                    }, {
-                        name: "forgot-page"
-                    }, {
-                        name: "home-page"
-                    }, {
-                        name: "legal-page"
-                    }, {
-                        name: "signin-page"
-                    }],
-                    dir: "build/js/r"
-                }
-            }
         }
     });
 
@@ -137,7 +104,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
 
     // Default task(s).
     grunt.registerTask('default', [
