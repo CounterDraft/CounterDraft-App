@@ -54,7 +54,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
             //post call to backend;
             $http({
                 method: 'POST',
-                url: _url_login,
+                url: _url_registration,
                 data: formData
             }).then(function successCallback(response) {
                 $window.location.href = '/dashboard';

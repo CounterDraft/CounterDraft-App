@@ -32,9 +32,26 @@ var errorList = {
     1001: {
         msg: 'Invaild username/password.'
     },
-
     1002: {
         msg: 'Username does not exists in the systems.'
+    },
+    1003: {
+        msg: 'Registration missing required field, first_name.'
+    },
+    1004: {
+        msg: 'Registration missing required field, last_name.'
+    },
+    1005: {
+        msg: 'Registration missing required field, email_address.'
+    },
+    1006: {
+        msg: 'Registration missing required field, password.'
+    },
+    1007: {
+        msg: 'Registration missing required field, password_confirm.'
+    },
+    1008: {
+        msg: 'Failed to insert table, possible duplicate record or incorrect organization.'
     }
 }
 
@@ -74,10 +91,10 @@ function errorApi() {
         });
     }
 
-    this.getError = function(msg){
+    this.getError = function(msg) {
         var eo = new this.errorObject();
-        if(msg){
-           eo.msg = msg; 
+        if (msg) {
+            eo.msg = msg;
         }
         return eo;
     }
