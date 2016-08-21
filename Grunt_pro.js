@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                     'node_modules/bootstrap/dist/js/bootstrap.js',
                     'build/js/common.js'
                 ],
-                dest: 'build/js/min/<%= pkg.name %>.min.js'
+                dest: 'build/js/min/<%= pkg.name %>.js'
             }
         },
 
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
         'clean:pre',
         'copy',
         'concat',
-        // 'uglify',
+        'uglify',
         'less',
         'clean:post'
     ]);

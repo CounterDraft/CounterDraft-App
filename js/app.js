@@ -16,7 +16,7 @@ app = angular.module('CounterDraft-app', [])
 
                 // use this to prevent destroying other existing headers
                 // config.headers['Accept'] = '*/*';
-                // config.headers['Cache-Control'] = 'no-cache';
+                config.headers['Cache-Control'] = 'no-cache';
                 return config;
             }
         };
