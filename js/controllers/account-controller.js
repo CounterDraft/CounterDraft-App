@@ -85,7 +85,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
             $http({
                 method: 'POST',
                 url: _url_registration,
-                data: formData
+                data: JSON.stringify(formData),
             }).then(function successCallback(response) {
                 $window.location.href = '/dashboard';
             }, function errorCallback(response) {
