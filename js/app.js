@@ -6,4 +6,24 @@
         Filter should be placed here and other comment app related stuff.
 */
 
-app = angular.module('CounterDraft-app', []);
+app = angular.module('CounterDraft-app', [])
+    .factory('httpRequestInterceptor', function() {
+        return {
+            request: function(config) {
+
+                // use this to destroying other existing headers
+                // config.headers = { 'Content-Type': 'application/x-www-form-urlencoded',
+                // 					 'Cache-Control': 'no-cache'};
+
+                // use this to prevent destroying other existing headers
+                config.headers['Accept'] = '*/*';
+                config.headers['Cache-Control'] = 'no-cache';
+                // config.headers['Content-Type'] = 'application/json, application/x-www-form-urlencoded';
+                return config;
+            }
+        };
+    });
+
+app.config(function($httpProvider) {
+    $httpProvider.interceptors.push('httpRequestInterceptor');
+});
