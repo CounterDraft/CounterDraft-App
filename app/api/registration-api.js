@@ -18,6 +18,11 @@ function registationApi() {
         } else if (!req.body.password_confirm) {
             this.getErrorApi().sendError(1007, 403, res);
         } else {
+            //testing
+            res.status(200).json({
+                user: req.body,
+                success: true
+            });
 
             employee_user_model.create({
                 first_name: req.body.first_name,
@@ -35,10 +40,10 @@ function registationApi() {
                         permissions: 'user'
                     }
                     data.dataValues.password = '****';
-                    res.status(200).json({
-                        user: data.dataValues,
-                        success: true
-                    });
+                    // res.status(200).json({
+                    //     user: data.dataValues,
+                    //     success: true
+                    // });
                 } else {
                     this.getErrorApi().sendError(1008, 422, res);
                 }
