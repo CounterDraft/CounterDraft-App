@@ -85,7 +85,7 @@ module.exports = function(grunt) {
         'clean:pre',
         'copy',
         'concat',
-        'uglify',
+        // 'uglify',
         'less',
         'clean:post'
     ]);
