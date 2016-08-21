@@ -6,9 +6,7 @@ module.exports = function(grunt) {
 
         clean: {
             pre: ['build'],
-            post: ['build/js/base',
-                'build/js/main',
-                'build/js/modules',
+            post: ['build/js/controllers',
                 'build/js/*js',
                 'build/css/css',
                 'build/css/*less'
@@ -21,29 +19,11 @@ module.exports = function(grunt) {
             },
             js: {
                 files: [{
-                    src: ['node_modules/requirejs/*js'],
-                    dest: 'build/js/r/require.min.js'
-                }, {
-                    src: ['build/js/text.js'],
-                    dest: 'build/js/r/text.js'
-                }, {
-                    //NOTE- new js Modules files go here.
-                    src: ['build/js/r/min/<%= pkg.name %>.js',
-                        'build/js/main/about-main.js',
-                        'build/js/main/bad-main-main.js',
-                        'build/js/main/careers-main.js',
-                        'build/js/main/contact-main.js',
-                        'build/js/main/create-account-main.js',
-                        'build/js/main/dashboard-main.js',
-                        'build/js/main/faq-main.js',
-                        'build/js/main/forgot-main.js',
-                        'build/js/main/legal-main.js',
-                        'build/js/main/login-main.js',
-                        'build/js/main/meet-the-team-main.js',
-                        'build/js/main/signin-main.js',
-                        'build/js/main/terms-of-service-main.js'
+                    //NOTE- All controllers should go here;
+                    src: ['build/js/min/<%= pkg.name %>.js',
+                        'build/js/controllers/account-controller.js'
                     ],
-                    dest: 'build/js/r/min/<%= pkg.name %>.min.js'
+                    dest: 'build/js/min/<%= pkg.name %>.min.js'
                 }]
             }
         },
@@ -53,12 +33,12 @@ module.exports = function(grunt) {
                 src: [
                     //NOTE- If we add more libs there need to be added to the build here;
                     'node_modules/jquery/dist/jquery.js',
-                    'node_modules/underscore/underscore.js',
                     'node_modules/angular/angular.js',
+                    'node_modules/angular-ui-router/release/angular-ui-router.min.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
                     'build/js/common.js'
                 ],
-                dest: 'build/js/r/min/<%= pkg.name %>.js'
+                dest: 'build/js/min/<%= pkg.name %>.js'
             }
         },
 
@@ -73,12 +53,6 @@ module.exports = function(grunt) {
                 src: 'css/*less',
                 dest: 'build/'
             }
-
-            // pages: {
-            //     expand: true,
-            //     src: ['views/*/*ejs'],
-            //     dest: 'build/'
-            // }
         },
 
         less: {
