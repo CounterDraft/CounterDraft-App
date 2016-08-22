@@ -1,12 +1,29 @@
-<div class="counter-page-header">
-    <row>
-        <div class="col-xs-12">
-        	<h1 class="text-center">Dashboard</h1></div>
-    </row>
-    <div class="container">
-        <p>This is the dashboard, we will dispaly a summary of the activities and stuff.</p>
+<section class="counter-dashboard" ng-controller="DashboardCtrl as dCtrl">
+    <div class="row">
+        <div class="col-xs-12 dashboard-header">
+            <h1 class="text-center">Dashboard - Welcome {{user_model.username}}</h1>
+        </div>
     </div>
-</div>
-<div class="counter-page-header">
-</div>
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="row">
+        <div class="col-xs-12 dashboard-body">
+            <div class="container">
+                <p>This is the dashboard, we will dispaly a summary of the activities and stuff.</p>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">&nbsp;</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 dashboard-footer">
+            <div class="col-xs-9"></div>
+            <div class="col-xs-3"><a class="btn btn-block primary" href="/logout">LOGOUT</a></div>
+        </div>
+    </div>
+</section>
 <%- contentFor('title') %>Dashboard<%- contentFor('mainjs') %>dashboard<%- contentFor('articleID') %>dashboard<%- contentFor('appname') %>counterApp

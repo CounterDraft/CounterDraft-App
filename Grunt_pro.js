@@ -35,6 +35,8 @@ module.exports = function(grunt) {
                     'build/js/directives.js',
                     //controllers
                     'build/js/controllers/account-controller.js',
+                    'build/js/controllers/dashboard-controller.js',
+                    //libs
                     'node_modules/jquery/dist/jquery.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
                     'build/js/common.js'
