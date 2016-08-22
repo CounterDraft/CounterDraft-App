@@ -14,14 +14,23 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
         last_name: '',
         email_address: '',
         password: '',
-        password_confirm: ''
+        password_confirm: '',
+        organization_name: '',
+        organization_type: '',
+        organization_description: '',
+        organization_hash: ''
     };
     $scope.loginModel = {
         username: '',
         password: ''
     };
+    $scope.organization_types = [];
 
     var _init = function() {
+        if(typeof 'undefined' != data && data.organization_types){
+            $scope.organization_types = data.organization_types;
+        }
+
         //default page;
         $scope.currentPage = _getDefaultPage();
     };

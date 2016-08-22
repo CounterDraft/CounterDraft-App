@@ -4,7 +4,7 @@ function OrganizationApi() {
     this.tag = 'organization-api';
 
     this.getOrganizationTypes = function(req, res) {
-        var Organization_types = model.organization_types;
+        var Organization_types = models.organization_type;
         Organization_types.all().then(function(organization_types) {
             if (organization_types) {
                 res.status(200).json({
@@ -14,7 +14,6 @@ function OrganizationApi() {
             }else{
                 this.getErrorApi().sendError(1009, 500, res);
             }
-
         });
     }
 }

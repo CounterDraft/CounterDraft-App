@@ -78,12 +78,17 @@ module.exports = {
             if (req.session.user) {
                 res.redirect('/dashboard');
             } else {
-                res.render('pages/login', { 
-                    data: { first_name: "Jerum",
-                            last_name: "Hubbert",
-                            ts: Date.now()}
-                        });
+                var Organization_types = models.organization_type;
+                Organization_types.all().then(function(organization_types) {
+                    res.render('pages/login', {
+                        data: {
+                            organization_types: organization_types,
+                            ts: Date.now()
+                        }
+                    });
+                });
             }
+            return false;
         });
 
 
@@ -114,7 +119,7 @@ module.exports = {
         });
 
         routerWeb.get('/*', function(req, res, next) {
-            if (req.originalUrl.split('/').indexOf('api') > -1) {
+            if (req.originalUrl.split('/').indexOf('api') > -1 || req.originalUrl.split('/').indexOf('application') > -1 ) {
                 next();
             } else if (req.session.user) {
                 res.render('pages/badURL', {
