@@ -46,8 +46,14 @@ div#counter-login-modal {
     div.retrieve-container {
         max-height: 0;
         .addTransition();
+        form {
+            display: none;
+        }
         &.active {
             max-height: 500px;
+            form {
+                display: block;
+            }
         }
     }
 }

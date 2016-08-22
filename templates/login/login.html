@@ -9,13 +9,11 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="username" class="sr-only col-sm-1">Email or Username:</label>
                                 <div class="col-sm-12">
                                     <input type="email" class="form-control" id="username" placeholder="Email or Username" ng-model="loginModel.username" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="username" class="sr-only">Password:</label>
                                 <div class="col-sm-12">
                                     <input type="password" class="form-control" id="password" placeholder="Password" ng-model="loginModel.password" required>
                                 </div>
@@ -32,13 +30,13 @@
                                 </div>
                                 <div class="col-xs-12 text-center">
                                     <a class="link-text" ng-click="onRoute('registration')">
-                                        <u>create a account</u></a><span>&nbsp;or&nbsp;</span><a class="link-text active-reset"><u>forgot username/password</u></a>
+                                        <u>create a account</u></a><span>&nbsp;or&nbsp;</span><a class="link-text active-reset" ng-click="onShowReset()"><u>forgot username/password</u></a>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <div class="retrieve-container">
-                        <form role="form" name="retrieve-form" class="form-horizontal" id="retrieve-form" ng-submit="onSubmit('retrieve-form')">
+                    <div  ng-class="showResetPassword ? 'active' : ''" class="retrieve-container">
+                        <form role="form" name="retrieve-form" class="form-horizontal" id="retrieve-form" ng-submit="onReset()">
                             <div class="modal-header">
                                 <h4 class="modal-title text-center">Reset Your Password</h4>
                             </div>
@@ -46,24 +44,22 @@
                                 <div class="form-group">
                                     <label for="username" class="sr-only col-sm-1">Username:</label>
                                     <div class="col-sm-12">
-                                        <input type="email" class="form-control" id="username" placeholder="Username" ng-model="retdata.username">
+                                        <input type="text" class="form-control" id="username" placeholder="Username" ng-model="resetModal.username" ng-disabled="resetModal.email_address">
                                     </div>
-                                    <div class="col-xs-12"><span class="modal-title">&nbsp;or&nbsp;</span></div>
+                                    <div class="col-xs-12 modal-title">&nbsp;or&nbsp;</div>
                                     <label for="username" class="sr-only col-sm-1">Email</label>
                                     <div class="col-sm-12">
-                                        <input type="email" class="form-control" id="email" placeholder="Email" ng-model="retdata.email">
+                                        <input type="email" class="form-control" id="email" placeholder="Email" ng-model="resetModal.email_address" ng-disabled="resetModal.username">
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <div class="form-group">
+                                    <div class="col-xs-12 col-sm-4">&nbsp;</div>
                                     <div class="col-xs-12 col-sm-4">
+                                        <button type="submit" class="btn primary btn-block">RESET</button>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4">
-                                        <button type="submit" class="btn primary btn-block">Continue</button>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-4">
-                                    </div>
+                                    <div class="col-xs-12 col-sm-4">&nbsp;</div>
                                 </div>
                             </div>
                         </form>

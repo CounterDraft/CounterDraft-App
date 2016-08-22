@@ -55,6 +55,9 @@ var errorList = {
     },
     1009: {
         msg: 'Failed to get organizations from organization_type table.'
+    },
+    1010: {
+        msg: 'Reset needs either a username or email address.'
     }
 }
 

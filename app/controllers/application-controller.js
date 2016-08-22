@@ -20,6 +20,25 @@ function AccountController() {
                     this.getErrorApi().sendError(1001, 403, res);
                     break;
             }
+        },
+         reset: function(verb, req, res) {
+            switch (verb) {
+                case 'get':
+                    this.getErrorApi().sendError(1001, 403, res);
+                    break;
+                case 'post':
+                    this.getErrorApi().sendError(1001, 403, res);
+                    break;
+                case 'put':
+                    getApi('reset-api').resetUsernamePassword(req, res);
+                    break;
+                case 'delete':
+                    this.getErrorApi().sendError(1001, 403, res);
+                    break;
+                default:
+                    this.getErrorApi().sendError(1001, 403, res);
+                    break;
+            }
         }
     }
 }
