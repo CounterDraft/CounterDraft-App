@@ -47,23 +47,7 @@ module.exports = {
         });
 
         routerWeb.get("/dashboard", isAuthorized, function(req, res) {
-            if (req.session && req.session.user) { // Check if session exists
-                // lookup the user in the DB by pulling their email from the session
-                // User.findOne({ email: req.session.user.email }, function(err, user) {
-                //     if (!user) {
-                //         // if the user isn't found in the DB, reset the session info and
-                //         // redirect the user to the login page
-                //         req.session.reset();
-                //         res.redirect('/login');
-                //     } else {
-                //         // expose the user to the template
-                //         res.locals.user = user;
-
-                //         // render the dashboard page
-                //         res.render('dashboard.jade');
-                //     }
-                // });
-                // res.locals.user = user;
+            if (req.session && req.session.user) {
                 res.render('pages/dashboard', {
                     data: {
                         user: req.session.user
@@ -119,7 +103,7 @@ module.exports = {
         });
 
         routerWeb.get('/*', function(req, res, next) {
-            if (req.originalUrl.split('/').indexOf('api') > -1 || req.originalUrl.split('/').indexOf('application') > -1 ) {
+            if (req.originalUrl.split('/').indexOf('api') > -1 || req.originalUrl.split('/').indexOf('application') > -1) {
                 next();
             } else if (req.session.user) {
                 res.render('pages/badURL', {
