@@ -103,7 +103,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
             return "Error: Last name is required!";
         } else if (formData.password != formData.password_confirm || !formData.password) {
             return "Error: Password field is required!";
-        } else if (!formData.organization_name || !formData.organization_hash) {
+        } else if (!formData.organization_name || !formData.organization_type  && !formData.organization_hash) {
             return "Error: A organization is needed to registration an employee.";
         } else {
             //post call to backend;
