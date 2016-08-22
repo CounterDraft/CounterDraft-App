@@ -24,5 +24,10 @@ module.exports = {
         app.post(version + '/reset', function(req, res) {
             getController('account-controller').reset(req, res);
         });
+
+        // Application servers.
+        app.all('/application/*', function(req, res){
+            getController('application-controller').rest(req, res);
+        })
     },
 };

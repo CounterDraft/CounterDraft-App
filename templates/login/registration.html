@@ -24,11 +24,29 @@
             <div class="form-group">
                 <input type="password" class="form-control" placeholder="Enter password again *" ng-model="registrationModel.password_confirm">
             </div>
+            
+            <div class="row">
+                <h3 class="col-xs-12">Tells us about your organization</h3>
+                <div class="col-xs-12">&nbsp;</div>
+                <div class="form-group col-sm-6 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="registrationModel.organization_name">
+                </div>
+                <div class="form-group col-sm-6 col-xs-12">
+                    <select class="form-control" id="organization-type-select">
+                        <option value="" disabled selected>Type *</option>
+                        <option>somthing</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Describe the organization" ng-model="registrationModel.organization_description">
+            </div>
             <div class="form-group">
                 <div class="col-xs-3">&nbsp;</div>
                 <button class="btn col-xs-6 primary">SUBMIT</button>
                 <div class="col-xs-3">&nbsp;</div>
             </div>
+            <div class="col-xs-12">&nbsp;</div>
         </form>
     </div>
 </section>

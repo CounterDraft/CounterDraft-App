@@ -52,6 +52,9 @@ var errorList = {
     },
     1008: {
         msg: 'Failed to insert table, possible duplicate record or incorrect organization.'
+    },
+    1009: {
+        msg: 'Failed to get organizations from organization_type table.'
     }
 }
 
