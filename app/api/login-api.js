@@ -1,6 +1,6 @@
 "use strict";
 
-function loginApi() {
+function LoginApi() {
     this.tag = 'login-api';
     this.login = function(req, res) {
         var self = this;
@@ -58,4 +58,4 @@ function loginApi() {
     }
 }
 
-module.exports = loginApi;
+module.exports = LoginApi;
