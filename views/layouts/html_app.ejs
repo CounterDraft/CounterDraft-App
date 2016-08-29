@@ -24,6 +24,7 @@
     <% include ../partials/css.ejs %>
 </head>
 <body ng-app="CounterDraft-app">
+	<% include ../partials/off-canvas.ejs %>
 	<article id="counterdraft-main" class="container">
 		<div class="row">
 			<div id="cd-alert-box" class="cd-alert ">
@@ -32,7 +33,18 @@
 	 		</div>
 	 	</div>
 	 	<div class="row">
-	 		<%- body %>
+	 	<% if (login) { %>
+	 		<div class="col-sm-9 col-xs-12">
+		 		<%- body %>
+		 	</div>
+		 	<div class="col-sm-3">
+		 		<%- include ../partials/off-canvas-nav-items.ejs %>
+		 	</div>
+	 	<% } else { %>
+	 		<div class="col-xs-12">
+		 		<%- body %>
+		 	</div>
+	 	<% } %>
 	 	</div>
     </article>
 </body>

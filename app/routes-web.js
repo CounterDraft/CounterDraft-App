@@ -33,8 +33,10 @@ module.exports = {
         var sess;
 
         routerWeb.use(function timeLog(req, res, next) {
-            //TODO: added a object in here that passes isAuth to the front-end;
-            // console.log('Time: ', Date.now());
+            res.locals.login = false;
+            if(typeof req.session.user != 'undefined'){
+                res.locals.login = true;
+            }
             next();
         });
 
