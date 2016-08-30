@@ -49,11 +49,25 @@ nav.counter-nav {
     }
 }
 
-div#js-bootstrap-offcanvas{
-    background-color: @off-canvas-menu-background-color;
+div#js-bootstrap-offcanvas {
+    padding: 0;
+    .border-radius();
     ul.off-canvas-list {
-        li.off-canvas-list-item {
+        a.off-canvas-list-item {
+            opacity: .9;
+            .modal-list-item !important;
+            .box-shadow();
+            background-color: @off-canvas-menu-background-color;
+            padding: .5em;
             list-style: none;
+            &:hover, &:focus{
+                text-decoration: none;
+                opacity: 1;
+                background-color: darken(@off-canvas-menu-background-color, 10%);
+            }
         }
+    }
+    i.glyphicon-plus{
+        font-size: 13px;
     }
 }

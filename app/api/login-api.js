@@ -25,7 +25,10 @@ function LoginApi() {
                         req.session.user = {
                             employee_id: employee.id,
                             username: employee.username,
-                            permissions: permission
+                            permissions: permission,
+                            first_name: employee.first_name,
+                            last_name: employee.last_name,
+                            email_address: employee.email_address
                         }
                         var employee_out = employee;
                         employee_out.password = '****';
