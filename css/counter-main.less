@@ -12,8 +12,6 @@
 @import "libs/bootstrap";
 @import "libs/off-canvas";
 
-
-
 /*pages*/
 @import "pages/login";
 @import "pages/dashboard";
@@ -27,6 +25,26 @@ body {
 }
 article#counterdraft-main{
     min-height: @app-body-min-height;
+}
+
+fieldset.counter-widget{
+	.not-box-shadow();
+	position: relative;
+	padding: 0;
+	padding-top: 53px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	legend{
+		margin: 0;
+		position: absolute;
+		top: 0;
+		background-color: @color-secondary-3;
+		border: 1px solid @color-secondary-3;
+		.text-color-white;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		padding: .5em;
+	}
 }
 
 

@@ -49,10 +49,18 @@ nav.counter-nav {
     }
 }
 
+#counter-side-menu {
+    margin-top: 10px;
+    @media screen and (max-width: @bootstrap-med) {
+            margin-top: 60px;
+        }
+}
+
 div#js-bootstrap-offcanvas {
     padding: 0;
     .border-radius();
-    ul.off-canvas-list {
+    div.off-canvas-list {
+        padding: 0;
         a.off-canvas-list-item {
             opacity: .9;
             .modal-list-item !important;
@@ -60,14 +68,15 @@ div#js-bootstrap-offcanvas {
             background-color: @off-canvas-menu-background-color;
             padding: .5em;
             list-style: none;
-            &:hover, &:focus{
+            &:hover,
+            &:focus {
                 text-decoration: none;
                 opacity: 1;
                 background-color: darken(@off-canvas-menu-background-color, 10%);
             }
         }
     }
-    i.glyphicon-plus{
+    i.glyphicon-plus {
         font-size: 13px;
     }
 }
