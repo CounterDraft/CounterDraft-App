@@ -34,7 +34,7 @@
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "jquery": "^2.1.4",
-    "less": "^2.5.1",
+    "less": "^2.7.1",
     "method-override": "^2.3.5",
     "mix-into": "*",
     "morgan": "^1.6.1",

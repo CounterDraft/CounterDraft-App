@@ -1,5 +1,5 @@
-<% if(process.env.MODE  === 'production'){ %>
-   <script type="text/javascript" src="build/js/min/<%= process.env.npm_package_name %>.min.js"></script>
+<% if(environment  === 'production'){ %>
+   <script type="text/javascript" src="build/js/min/<%= npm_package_name %>.min.js"></script>
  <% } else{ %>  
 	<script type="text/javascript" src="/node_modules/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="/node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js"></script>

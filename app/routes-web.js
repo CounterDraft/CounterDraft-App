@@ -34,6 +34,8 @@ module.exports = {
 
         routerWeb.use(function timeLog(req, res, next) {
             res.locals.login = false;
+            res.locals.environment = GLOBAL.config['environment'];
+            res.locals.npm_package_name = GLOBAL.config['npm_package_name'];
             if(typeof req.session.user != 'undefined'){
                 res.locals.login = true;
             }

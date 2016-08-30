@@ -1,5 +1,6 @@
 module.exports = {
     environment: process.env.MODE || 'development',
+    npm_package_name: process.env.npm_package_name || 'UNKNOWN',
     server: {
         ip: 'localhost',
         port: process.env.PORT || 8080
