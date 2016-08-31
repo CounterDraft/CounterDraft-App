@@ -18,11 +18,18 @@
 @import "pages/profile";
 @import "pages/admin";
 @import "pages/password";
+@import "pages/reports";
 
 
 body {
     background-color: @clientColorLightestGray;
 }
+
+//only for login page;
+body.login-background {
+	.addImage("login-fantasy-football-small.jpg", center, cover);
+}
+
 article#counterdraft-main{
     min-height: @app-body-min-height;
 }

@@ -96,7 +96,11 @@
 .addImage(@url, @position: left, @size: 100%){
     background: url('@{img-dir}/@{url}') @position no-repeat;
     background-size: @size;
+    -webkit-background-size: @size;
+    -moz-background-size: @size;
+    -o-background-size: @size;
 }
+
 
 // sets the color of a swtich
 .setSwtichColor(@color: @standardSwtichSelectorColor) {

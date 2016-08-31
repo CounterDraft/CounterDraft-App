@@ -37,6 +37,8 @@ module.exports = function(grunt) {
                     'build/js/controllers/account-controller.js',
                     'build/js/controllers/dashboard-controller.js',
                     'build/js/controllers/patron-controller.js',
+                    'build/js/controllers/game-controller.js',
+                    'build/js/controllers/reports-controller.js',
                     //libs
                     'node_modules/jquery/dist/jquery.js',
                     'node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js',

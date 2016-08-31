@@ -47,10 +47,12 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
     };
 
     var _getDefaultPage = function() {
+        $('body:not(.login-background)').addClass('login-background');
         return _base_templates + 'login.html';
     }
 
     $scope.onRoute = function(page) {
+        $('body').removeClass('login-background');
         if (page) {
             $scope.currentPage = _base_templates + page + '.html';
         }
