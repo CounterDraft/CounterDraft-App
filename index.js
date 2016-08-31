@@ -5,14 +5,10 @@ require('./bootstrap.js').init();
 var express = require('express');
 var cors = require('cors')
 var app = express();
-
 var routesApi = require('./app/routes-api');
 var routesWeb = require('./app/routes-web');
-
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-// var cors = require('./lib/cors');
-// var session = require('express-session')
 var sessionFactory = require('./lib/session');
 var expressLayouts = require('express-ejs-layouts');
 var grunt = require("grunt");
@@ -26,20 +22,23 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(sessionFactory());
-
-
-// app.use(function(req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type');
-//     next();
-// });
 app.use(cors());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('layout', 'layouts/html_app');
 app.set('port', config.server.port);
 app.use(expressLayouts);
+
+app.use(function(req, res, next) {
+    //defaults variables;
+    res.locals.login = false;
+    res.locals.environment = global.config['environment'];
+    res.locals.npm_package_name = global.config['npm_package_name'];
+    if (typeof req.session.user != 'undefined') {
+        res.locals.login = true;
+    }
+    next();
+});
 
 routesWeb.setup(app);
 routesApi.setup(app);
@@ -56,7 +55,7 @@ var _addWatcher = function() {
 var _launchApp = function() {
 
     //init database and starts server after the init;
-    GLOBAL.models.sequelize.sync().then(function() {
+    global.models.sequelize.sync().then(function() {
         try {
             app.listen(app.get('port'), function() {
                 logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
@@ -64,12 +63,12 @@ var _launchApp = function() {
                 logger.info('Listening on port: ' + app.get('port'));
             });
         } catch (err) {
-            logger.log('error', 'Failed to start express', { error: err });
+            logger.log('Error', 'Failed to start express', { error: err });
         }
     });
 }
 
-if (config.environment === 'production') {
+if (global.config.environment === 'production') {
     logger.warn('Creating the build, please wait...');
     grunt.cli({
         gruntfile: __dirname + "/Grunt_pro.js",
@@ -81,7 +80,7 @@ if (config.environment === 'production') {
         _launchApp();
     });
 } else {
-    logger.info('Bypassing build we are in ' + config.environment + ' please wait...');
+    logger.info('Bypassing build we are in ' + global.config.environment + ' please wait...');
     _addWatcher();
     _launchApp();
 }

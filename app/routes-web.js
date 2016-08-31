@@ -3,7 +3,7 @@
 module.exports = {
 
     setup: function(app) {
-        var authorization = GLOBAL.getAuthorization();
+        var authorization = global.getAuthorization();
         var routerWeb = require('express').Router();
 
         // setup permission
@@ -20,27 +20,7 @@ module.exports = {
             'user:permission:superadmin'
         ]);
 
-        var wr = {
-            'login': '/login',
-            'dashboard': '/dashboard',
-            'profile': '/profile',
-            'changepassword': '/password',
-            'logout': '/logout',
-            'superadmin': '/admin',
-            'bad': '/*'
-        }
-
         var sess;
-
-        routerWeb.use(function timeLog(req, res, next) {
-            res.locals.login = false;
-            res.locals.environment = GLOBAL.config['environment'];
-            res.locals.npm_package_name = GLOBAL.config['npm_package_name'];
-            if(typeof req.session.user != 'undefined'){
-                res.locals.login = true;
-            }
-            next();
-        });
 
         routerWeb.get("/", isAuthorized, function(req, res) {
             res.render('pages/dashboard', {
@@ -87,21 +67,21 @@ module.exports = {
                 }
             });
         });
-        routerWeb.get(wr['superadmin'], isAuthorizedAdmin, function(req, res) {
+        routerWeb.get('/superadmin', isAuthorizedAdmin, function(req, res) {
             res.render('pages/superadmin', {
                 data: {
                     user: 'jerum hubbert2'
                 }
             });
         });
-        routerWeb.get(wr['changepassword'], isAuthorized, function(req, res) {
+        routerWeb.get('/changepassword', isAuthorized, function(req, res) {
             res.render('pages/password', {
                 data: {
                     user: 'jerum hubbert3'
                 }
             });
         });
-        routerWeb.get(wr['logout'], function(req, res) {
+        routerWeb.get('/logout', function(req, res) {
             req.session.destroy();
             res.redirect('/');
         });

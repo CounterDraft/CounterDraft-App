@@ -62,11 +62,12 @@ div#js-bootstrap-offcanvas {
     div.off-canvas-list {
         padding: 0;
         a.off-canvas-list-item {
+            padding-top: 1em;
+            padding-bottom: 1em;
             opacity: .9;
-            .modal-list-item !important;
+            .modal-list-item;
             .box-shadow();
-            background-color: @off-canvas-menu-background-color;
-            padding: .5em;
+            background-color: lighten(@off-canvas-menu-background-color, 30%);
             list-style: none;
             &:hover,
             &:focus {
@@ -76,7 +77,28 @@ div#js-bootstrap-offcanvas {
             }
         }
     }
-    i.glyphicon-plus {
-        font-size: 13px;
+    i.glyphicon {
+        font-size: 20px;
+    }
+    a.link-add-game{
+        color: @color-secondary-0;
+    }
+    a.link-add-patron{
+        color: @color-secondary-1;
+    }
+    a.link-my-account{
+        color: @color-secondary-2;
+    }
+    a.link-organization-settings{
+        color: @color-secondary-3;
+    }
+    a.link-reports{
+        color: @color-secondary-4;
+    }
+    a.link-settings{
+        color: @color-primary-0;
+    }
+    a.link-logout{
+        color: @color-primary-1;
     }
 }

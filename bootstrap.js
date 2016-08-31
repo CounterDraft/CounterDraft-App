@@ -1,103 +1,103 @@
 module.exports = {
     init: function() {
-        GLOBAL.dirBase = process.env.PWD;
-        GLOBAL.mix = require('mix-into');
+        global.dirBase = process.env.PWD;
+        global.mix = require('mix-into');
 
         // Setup the configuration
         try {
             var local_config = require('./config/local_config');
-            GLOBAL.config = mix(require('./config/master_config'))
+            global.config = mix(require('./config/master_config'))
                 .into(require('./config/local_config'));
         } catch (err) {
             console.error('No local configurations found in config/ Error=' + JSON.stringify(err));
-            GLOBAL.config = require('./config/master_config');
+            global.config = require('./config/master_config');
         }
 
-        GLOBAL.getDatabase_url = function() {
-            if (GLOBAL.config.database_url) {
-                return GLOBAL.config.database_url;
+        global.getDatabase_url = function() {
+            if (global.config.database_url) {
+                return global.config.database_url;
             } else {
-                database_url = 'postgres://' + GLOBAL.config.database.user +
-                    ':' + GLOBAL.config.database.password +
-                    '@' + GLOBAL.config.database.host +
-                    ':' + GLOBAL.config.database.port +
-                    '/' + GLOBAL.config.database.database;
+                database_url = 'postgres://' + global.config.database.user +
+                    ':' + global.config.database.password +
+                    '@' + global.config.database.host +
+                    ':' + global.config.database.port +
+                    '/' + global.config.database.database;
                 return database_url;
             }
         }
 
-        GLOBAL.getUtil = require('util');
+        global.getUtil = require('util');
 
-        GLOBAL.BASE_URL = 'http://' + GLOBAL.config.server.ip + ':' + GLOBAL.config.server.port + '/';
-        GLOBAL.CONTROLLER_DIR = dirBase + '/app/controllers/';
-        GLOBAL.MODEL_DIR = dirBase + '/app/models/';
-        GLOBAL.REPOSITORY_DIR = dirBase + '/app/repositories/';
-        GLOBAL.API_DIR = dirBase + '/app/api/';
-        GLOBAL.BASE_DIR = dirBase + '/app/base/';
+        global.BASE_URL = 'http://' + global.config.server.ip + ':' + global.config.server.port + '/';
+        global.CONTROLLER_DIR = dirBase + '/app/controllers/';
+        global.MODEL_DIR = dirBase + '/app/models/';
+        global.REPOSITORY_DIR = dirBase + '/app/repositories/';
+        global.API_DIR = dirBase + '/app/api/';
+        global.BASE_DIR = dirBase + '/app/base/';
 
-        GLOBAL.Promise = require('promise');
+        global.Promise = require('promise');
 
-        GLOBAL.getdbConnection = function(){
+        global.getdbConnection = function(){
             return require('pg');
         }
 
-        GLOBAL.generateUUID = function() {
+        global.generateUUID = function() {
             var uuid = require('uuid');
             return uuid.v4();
         }
 
-        GLOBAL.getAuthorization = function() {
+        global.getAuthorization = function() {
             return require('express-authorization');
         }
 
-        GLOBAL.getExpressSession = function() {
+        global.getExpressSession = function() {
             return require('express-session');
         }
 
-        GLOBAL.getController = function(controllerName) {
-            var Controller = require(GLOBAL.CONTROLLER_DIR + controllerName);
+        global.getController = function(controllerName) {
+            var Controller = require(global.CONTROLLER_DIR + controllerName);
             return mix(getBase('counter-controller')).into(new Controller());
         }
 
-        GLOBAL.getApi = function(apiName) {
-            var api = require(GLOBAL.API_DIR + apiName);
+        global.getApi = function(apiName) {
+            var api = require(global.API_DIR + apiName);
             return mix(getBase('counter-api')).into(new api());
         }
 
-        GLOBAL.getRepository = function(repositoryName) {
-            var repository = require(GLOBAL.REPOSITORY_DIR + repositoryName);
+        global.getRepository = function(repositoryName) {
+            var repository = require(global.REPOSITORY_DIR + repositoryName);
             return mix(getBase('counter-repository')).into(new repository());
         }
 
-        GLOBAL.getBase = function(base) {
-            var baseController = require(GLOBAL.BASE_DIR + base);
+        global.getBase = function(base) {
+            var baseController = require(global.BASE_DIR + base);
             return new baseController();
         }
 
-        GLOBAL.getModel = function(modelName) {
-            var Model = require(GLOBAL.MODEL_DIR + modelName);
+        global.getModel = function(modelName) {
+            var Model = require(global.MODEL_DIR + modelName);
             return new Model();
         }
 
 
-        GLOBAL.generatePasswordHash = function(password, salt) {
-            var shasum = GLOBAL.getSHA1();
+        global.generatePasswordHash = function(password, salt) {
+            var shasum = global.getSHA1();
             shasum.update(salt + password + salt);
             var hash = shasum.digest('hex');
             return hash;
         }
 
-        GLOBAL.getCrypt = function() {
+        global.getCrypt = function() {
             return require('crypto');
         }
 
-        GLOBAL.getSHA1 = function() {
-            var crypt = GLOBAL.getCrypt();
+        global.getSHA1 = function() {
+            var crypt = global.getCrypt();
             var shasum = crypt.createHash('sha1');
             return shasum;
         }
 
-        GLOBAL.getValidator = function() {
+        global.getValidator = function() {
             var validator = require('validator');
             validator.extend('isPassword', function(str) {
                 // TODO: Finish writing the regex to test passwords
@@ -110,19 +110,19 @@ module.exports = {
             return new Validator();
         }
 
-        GLOBAL.getDateFormatter = function() {
+        global.getDateFormatter = function() {
             return require('dateformat');
         }
 
-        GLOBAL.smtpTransport = require("nodemailer").createTransport(GLOBAL.config.email);
+        global.smtpTransport = require("nodemailer").createTransport(global.config.email);
 
 
-        GLOBAL.logger = require('./lib/logger').init();
-        GLOBAL.models = require("./models");
+        global.logger = require('./lib/logger').init();
+        global.models = require("./models");
 
-        // GLOBAL.Sequelize = require('sequelize');
-        // require('./model.bak/database.js').init(GLOBAL.config.database, function(models){
-        //     GLOBAL.models = models;
+        // global.Sequelize = require('sequelize');
+        // require('./model.bak/database.js').init(global.config.database, function(models){
+        //     global.models = models;
         // });
     }
 }
