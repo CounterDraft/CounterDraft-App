@@ -1,0 +1,59 @@
+<section class="beta">
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12">
+        <button type="button" class="btn close quinary" ng-click="onClose()">&times;</button>
+        <div class="col-xs-2">&nbsp;</div>
+        <h1 class="col-xs-8 text-center">New Patron</h1>
+    </div>
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12">
+        <form ng-submit="onRegistration()">
+            <div class="form-group">
+                <input type="text" id="patron-first-name" class="form-control" placeholder="Frist Name *" ng-model="patronModel.first_name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Last Name *" ng-model="patronModel.last_name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Enter email *" ng-model="patronModel.email_address" required>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Enter password *" ng-model="patronModel.password" required>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Enter password again *" ng-model="patronModel.password_confirm" required>
+            </div>
+            <div class="row">
+                <h3 class="col-xs-12">Tells us about your organization</h3>
+                <div class="col-xs-12">&nbsp;</div>
+                <div class="form-group col-sm-6 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="patronModel.organization_name" ng-disabled="patronModel.organization_hash">
+                </div>
+                <div class="form-group col-sm-6 col-xs-12">
+                    <select class="form-control" ng-model="patronModel.organization_type" ng-options="organization_type.id as organization_type.name for organization_type in organization_types" ng-disabled="patronModel.organization_hash">
+                        <option value="" selected>Type *</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Describe the organization" ng-model="patronModel.organization_description" ng-disabled="patronModel.organization_hash">
+            </div>
+            <div class="row">
+                <h3 class="col-xs-12">OR</h3>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="form-group">
+                <input id="organization-hash" type="text" class="form-control" placeholder="Organization invite #" ng-model="patronModel.organization_hash" ng-disabled="patronModel.organization_name || patronModel.organization_type || patronModel.organization_description">
+                <small id="organization-hash-help" class="form-text text-muted">&nbsp;Note please check your organization email invitation.</small>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="form-group">
+                <div class="col-xs-3">&nbsp;</div>
+                <button class="btn col-xs-6 primary">SUBMIT</button>
+                <div class="col-xs-3">&nbsp;</div>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+        </form>
+    </div>
+</section>

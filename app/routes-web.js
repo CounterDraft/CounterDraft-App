@@ -58,8 +58,20 @@ module.exports = {
             }
             return false;
         });
-
-
+        routerWeb.get('/game', isAuthorized, function(req, res) {
+            res.render('pages/game', {
+                data: {
+                    user: 'jerum hubbert1'
+                }
+            });
+        });
+        routerWeb.get('/patron', isAuthorized, function(req, res) {
+            res.render('pages/patron', {
+                data: {
+                    user: 'jerum hubbert1'
+                }
+            });
+        });
         routerWeb.get('/profile', isAuthorized, function(req, res) {
             res.render('pages/profile', {
                 data: {
@@ -67,23 +79,30 @@ module.exports = {
                 }
             });
         });
-        routerWeb.get('/superadmin', isAuthorizedAdmin, function(req, res) {
-            res.render('pages/superadmin', {
+        routerWeb.get('/organization', isAuthorized, function(req, res) {
+            res.render('pages/organization', {
                 data: {
-                    user: 'jerum hubbert2'
+                    user: 'jerum hubbert1'
                 }
             });
         });
-        routerWeb.get('/changepassword', isAuthorized, function(req, res) {
-            res.render('pages/password', {
+        routerWeb.get('/reports', isAuthorized, function(req, res) {
+            res.render('pages/reports', {
                 data: {
-                    user: 'jerum hubbert3'
+                    user: 'jerum hubbert1'
+                }
+            });
+        });
+        routerWeb.get('/settings', isAuthorized, function(req, res) {
+            res.render('pages/reports', {
+                data: {
+                    user: 'jerum hubbert1'
                 }
             });
         });
         routerWeb.get('/logout', function(req, res) {
             req.session.destroy();
-            res.redirect('/');
+            res.redirect('/login');
         });
 
         routerWeb.get('/*', function(req, res, next) {
