@@ -41,7 +41,7 @@ module.exports = function(grunt) {
                     'build/js/controllers/reports-controller.js',
 
                     //libs
-                    '/node_modules/sweetalert/dist/sweetalert.min.js',
+                    'node_modules/sweetalert/dist/sweetalert.min.js',
                     'node_modules/jquery/dist/jquery.js',
                     'node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
