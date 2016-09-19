@@ -24,7 +24,6 @@ module.exports = function(grunt) {
                 }]
             }
         },
-
         concat: {
             libsJS: {
                 src: [
@@ -33,13 +32,16 @@ module.exports = function(grunt) {
                     'node_modules/angular-ui-router/release/angular-ui-router.min.js',
                     'build/js/app.js',
                     'build/js/directives.js',
+
                     //controllers
                     'build/js/controllers/account-controller.js',
                     'build/js/controllers/dashboard-controller.js',
                     'build/js/controllers/patron-controller.js',
                     'build/js/controllers/game-controller.js',
                     'build/js/controllers/reports-controller.js',
+
                     //libs
+                    '/node_modules/sweetalert/dist/sweetalert.min.js',
                     'node_modules/jquery/dist/jquery.js',
                     'node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',

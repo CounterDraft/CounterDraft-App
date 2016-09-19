@@ -105,7 +105,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
             return "Error: Last name is required!";
         } else if (formData.password != formData.password_confirm || !formData.password) {
             return "Error: Password field is required!";
-        } else if (!formData.organization_name || !formData.organization_type  && !formData.organization_hash) {
+        } else if (!formData.organization_name || !formData.organization_type && !formData.organization_hash) {
             return "Error: A organization is needed to registration an employee.";
         } else {
             //post call to backend;
@@ -117,7 +117,21 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
                 console.log(response);
                 $window.location.href = '/dashboard';
             }, function errorCallback(response) {
-                console.error(response);
+                var data = response.data || null;
+                if (data && data.error.length > 0) {
+                    var error = data.error[0];
+                    $window.swal({
+                        title: "Error" ,
+                        text: error.msg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    }, function() {
+                        //callback
+                    });
+                }
             });
         }
     };
@@ -146,7 +160,22 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
             }).then(function successCallback(response) {
                 $window.location.href = '/dashboard';
             }, function errorCallback(response) {
-                console.error(response);
+                var data = response.data || null;
+                if (data && data.error.length > 0) {
+                    var error = data.error[0];
+                    $window.swal({
+                        title: "Error" ,
+                        text: error.msg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    }, function() {
+                        //callback
+                    });
+                }
+
             });
         }
     };
