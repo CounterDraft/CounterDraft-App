@@ -1,25 +1,21 @@
-<section class="counter-dashboard ng-clock" ng-controller="DashboardCtrl as dCtrl">
+<section class="counter-dashboard ng-clock" ng-controller="DashboardCtrl as dCtrl" ng-init="dCtrl.getCharts()">
     <div class="row">
         <div class="col-xs-12 dashboard-header">
             <h1 class="text-center">Welcome&nbsp;Back,&nbsp;{{user_model.first_name}}</h1>
         </div>
     </div>
     <div class="col-xs-12">&nbsp;</div>
-    <fieldset class="col-xs-12 counter-widget">
-        <legend>Quick Search</legend>
-        <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-4 col-sm-3 pull-right">
-            <button class="btn primay btn-block">SEARCH</button>
-        </div>
-        <div class="col-xs-12">&nbsp;</div>
-    </fieldset>
+    <div class="col-xs-12" id="chat-container">&nbsp;</div>
     <div class="col-xs-12">&nbsp;</div>
-    <fieldset class="col-xs-12 counter-widget dashboard-body">
-        <legend>Games</legend>
-        <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-12">&nbsp;</div>
-    </fieldset>
+    <div class="row quick-view-container">
+        <div class="col-xs-12">
+            <div class="col-xs-6 label-font">Total Patrons:</div>
+            <div class="col-xs-6 text-right">{{total_patrons | number : fractionSize}}</div>
+        </div>
+        <div class="col-xs-12">
+            <div class="col-xs-8 label-font">Daily Active Users:</div>
+            <div class="col-xs-4 text-right">{{daily_active_users | number : fractionSize}}</div>
+        </div>
+    </div>
     <div class="col-xs-12">&nbsp;</div>
 </section>
