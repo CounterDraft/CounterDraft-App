@@ -42,7 +42,7 @@ module.exports = function(grunt) {
 
                     //libs
                     'node_modules/sweetalert/dist/sweetalert.min.js',
-                    'node_modules/d3/build/d3.min.js',
+  
                     'node_modules/jquery/dist/jquery.js',
                     'node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
