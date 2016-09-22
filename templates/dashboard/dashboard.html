@@ -8,14 +8,14 @@
     <div class="col-xs-12" id="chat-container">
         <div class="col-xs-12">&nbsp;</div>
         <div class="col-xs-12 line-chart" line-chart line-data='[
-            { y: "2006", a: 100, b: 90 },
-            { y: "2007", a: 75,  b: 65 },
-            { y: "2008", a: 50,  b: 40 },
-            { y: "2009", a: 75,  b: 65 },
-            { y: "2010", a: 50,  b: 40 },
+            { y: "2010", a: 100, b: 90 },
             { y: "2011", a: 75,  b: 65 },
-            { y: "2012", a: 100, b: 90 }
-        ]' line-xkey='y' line-ykeys='["a", "b"]' line-labels='["Serie A", "Serie B"]' line-colors='["#31C0BE", "#c7254e"]'>
+            { y: "2012", a: 50,  b: 40 },
+            { y: "2013", a: 75,  b: 65 },
+            { y: "2014", a: 50,  b: 40 },
+            { y: "2015", a: 75,  b: 65 },
+            { y: "2016", a: 999, b: 999 }
+        ]' line-xkey='y' line-ykeys='["a", "b"]' line-labels='["Patrons", "Daily Active Users"]' line-colors='["#31C0BE", "#c7254e"]'>
         </div>
         <div class="col-xs-12">&nbsp;</div>
     </div>
@@ -23,11 +23,11 @@
     <div class="col-xs-12">&nbsp;</div>
     <div class="row quick-view-container">
         <div class="box">
-            <div class="col-xs-7 label-font text-right">Total Patrons:</div>
+            <div class="col-xs-7 label-font text-right">Current Total Patrons:</div>
             <div class="col-xs-5 text-left">{{total_patrons | number : fractionSize}}</div>
         </div>
         <div class="box">
-            <div class="col-xs-7 label-font text-right">Daily Active Users:</div>
+            <div class="col-xs-7 label-font text-right">Current Daily Active Users:</div>
             <div class="col-xs-5 text-left">{{daily_active_users | number : fractionSize}}</div>
         </div>
     </div>
