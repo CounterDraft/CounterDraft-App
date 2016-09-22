@@ -6,4 +6,4 @@
         Filter should be placed here and other comment app related stuff.
 */
 
-app = angular.module('CounterDraft-app', []);
+app =  angular.module('CounterDraft-app', ['angular.morris']);

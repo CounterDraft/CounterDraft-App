@@ -29,20 +29,20 @@ module.exports = function(grunt) {
                 src: [
                     //NOTE- If we add more libs there need to be added to the build here;
                     'node_modules/angular/angular.js',
+                    'node_modules/angular-morris/build/module/angular-morris/angular-morris.min.js',
                     'node_modules/angular-ui-router/release/angular-ui-router.min.js',
                     'build/js/app.js',
                     'build/js/directives.js',
-
                     //controllers
                     'build/js/controllers/account-controller.js',
                     'build/js/controllers/dashboard-controller.js',
                     'build/js/controllers/patron-controller.js',
                     'build/js/controllers/game-controller.js',
                     'build/js/controllers/reports-controller.js',
-
                     //libs
                     'node_modules/sweetalert/dist/sweetalert.min.js',
-  
+                    'node_modules/raphael/raphael.js',
+                    'node_modules/morris.js/morris.js',
                     'node_modules/jquery/dist/jquery.js',
                     'node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
