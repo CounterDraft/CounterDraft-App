@@ -14,12 +14,16 @@ module.exports = {
                     _path = arr[1];
                 }
 
-                res.render('pages/unauthorized', {
-                    data: {
-                        user: req.session.user,
-                        path: _path
-                    }
-                });
+                if(_path === '' && !req.session.user){
+                    res.redirect('/login');
+                }else{
+                    res.render('pages/unauthorized.ejs', {
+                        data: {
+                            user: req.session.user,
+                            path: _path
+                        }
+                    });
+                }
             }
         }
 
@@ -46,7 +50,7 @@ module.exports = {
 
         routerWeb.get("/dashboard", isAuthorized, function(req, res) {
             if (req.session && req.session.user) {
-                res.render('pages/dashboard', {
+                res.render('pages/dashboard.ejs', {
                     data: {
                         user: req.session.user
                     }
@@ -62,7 +66,7 @@ module.exports = {
             } else {
                 var Organization_types = models.organization_type;
                 Organization_types.all().then(function(organization_types) {
-                    res.render('pages/login', {
+                    res.render('pages/login.ejs', {
                         data: {
                             organization_types: organization_types,
                             ts: Date.now()
@@ -70,45 +74,44 @@ module.exports = {
                     });
                 });
             }
-            return false;
         });
         routerWeb.get('/game', isAuthorized, function(req, res) {
-            res.render('pages/game', {
+            res.render('pages/game.ejs', {
                 data: {
                     user: 'jerum hubbert1'
                 }
             });
         });
         routerWeb.get('/patron', isAuthorized, function(req, res) {
-            res.render('pages/patron', {
+            res.render('pages/patron.ejs', {
                 data: {
                     user: 'jerum hubbert1'
                 }
             });
         });
         routerWeb.get('/profile', isAuthorized, function(req, res) {
-            res.render('pages/profile', {
+            res.render('pages/profile.ejs', {
                 data: {
                     user: 'jerum hubbert1'
                 }
             });
         });
         routerWeb.get('/organization', isAuthorizedAdmin, function(req, res) {
-            res.render('pages/organization', {
+            res.render('pages/organization.ejs', {
                 data: {
                     user: 'jerum hubbert1'
                 }
             });
         });
         routerWeb.get('/reports', isAuthorized, function(req, res) {
-            res.render('pages/reports', {
+            res.render('pages/reports.ejs', {
                 data: {
                     user: 'jerum hubbert1'
                 }
             });
         });
         routerWeb.get('/settings', isAuthorized, function(req, res) {
-            res.render('pages/reports', {
+            res.render('pages/reports.ejs', {
                 data: {
                     user: 'jerum hubbert1'
                 }
@@ -123,7 +126,7 @@ module.exports = {
             if (req.originalUrl.split('/').indexOf('api') > -1 || req.originalUrl.split('/').indexOf('application') > -1) {
                 next();
             } else if (req.session.user) {
-                res.render('pages/badURL', {
+                res.render('pages/badURL.ejs', {
                     data: {
                         user: req.session.user
                     }
@@ -131,7 +134,6 @@ module.exports = {
             } else {
                 res.redirect('/login');
             }
-
         });
 
         app.use('', routerWeb);
