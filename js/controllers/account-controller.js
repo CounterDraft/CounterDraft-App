@@ -114,7 +114,6 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
                 url: _url_registration,
                 data: formData,
             }).then(function successCallback(response) {
-                console.log(response);
                 $window.location.href = '/dashboard';
             }, function errorCallback(response) {
                 var data = response.data || null;

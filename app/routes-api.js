@@ -5,9 +5,8 @@ module.exports = {
     setup: function(app) {
 
         // Register account
-        app.all(version + '/registration', function(req, res) {
-            var accountController = getController('account-controller');
-            accountController.rest(req, res);
+        app.all(version + '/registration/*', function(req, res) {
+           getController('account-controller').rest(req, res);
         });
 
         // Account Controller - This should do control any call account related.
@@ -21,17 +20,17 @@ module.exports = {
         });
 
         // Verify account
-        app.post(version + '/verify/*', function(req, res) {
-            getController('account-controller').verify(req, res);
+        app.all(version + '/verify/*', function(req, res) {
+            getController('account-controller').rest(req, res);
         });
 
         // Reset password
-        app.post(version + '/reset/*', function(req, res) {
-            getController('account-controller').reset(req, res);
+        app.all(version + '/reset/*', function(req, res) {
+            getController('account-controller').rest(req, res);
         });
 
         // Application servers.
-        app.all('/application/*', function(req, res){
+        app.all(version +'/application/*', function(req, res){
             getController('application-controller').rest(req, res);
         })
     },

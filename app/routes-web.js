@@ -4,21 +4,33 @@ module.exports = {
 
     setup: function(app) {
         var authorization = global.getAuthorization();
+        authorization.ensureRequest.options = {
+            onDenied: function(req, res, next){
+                var _path = '';
+                if(req.route['path']){
+                    var arr = req.route['path'].split('/');
+                    _path = arr[1];
+                }
+
+                res.render('pages/unauthorized', {
+                    data: {
+                        user: req.session.user,
+                        path: _path
+                    }
+                });
+            }
+        }
         var routerWeb = require('express').Router();
 
         // setup permission
         var isAuthorizedSuperAdmin = authorization.ensureRequest.
-        isPermitted(['user:permission:superadmin']);
+        isPermitted('restricted:superadmin');
 
         var isAuthorizedAdmin = authorization.ensureRequest.
-        isPermitted(['user:permission:admin']);
+        isPermitted('restricted:admin');
 
         var isAuthorized = authorization.ensureRequest.
-        isPermitted(['user:permission:user',
-            'user:permission:employee',
-            'user:permission:admin',
-            'user:permission:superadmin'
-        ]);
+        isPermitted('restricted:employee');
 
         var sess;
 
@@ -58,7 +70,7 @@ module.exports = {
             }
             return false;
         });
-        routerWeb.get('/game', isAuthorized, function(req, res) {
+        routerWeb.get('/game', isAuthorizedAdmin, function(req, res) {
             res.render('pages/game', {
                 data: {
                     user: 'jerum hubbert1'
@@ -110,7 +122,9 @@ module.exports = {
                 next();
             } else if (req.session.user) {
                 res.render('pages/badURL', {
-                    data: {}
+                    data: {
+                        user: req.session.user
+                    }
                 });
             } else {
                 res.redirect('/login');

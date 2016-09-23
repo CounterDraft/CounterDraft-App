@@ -30,13 +30,24 @@ function registationApi() {
             }).then(function(data) {
                 if (typeof 'undefined' != data && data.$options['isNewRecord']) {
                     // _sendRegistrationEmail(data.dataValues.email_address);
-                    req.session.user = {
-                        username: data.dataValues.username,
-                        permissions: 'user'
-                    }
                     data.dataValues.password = '****';
+                    var dataSave = data.dataValues;
+
+                    req.session.user = {
+                        first_name: dataSave.first_name,
+                        last_name: dataSave.last_name,
+                        username: dataSave.email_address,
+                        email_address: dataSave.email_address,
+                        employee_organization: dataSave.employee_organization,
+                        permissions: ['restricted:employee']
+                    }
+
+                    if(dataSave.is_admin){
+                        req.session.user['permissions'] = ['restricted:admin']
+                    }
+
                     res.status(200).json({
-                        user: data.dataValues,
+                        user: dataSave,
                         success: true
                     });
                 } else {
