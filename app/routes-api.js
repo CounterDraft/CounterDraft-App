@@ -15,13 +15,18 @@ module.exports = {
             getController('account-controller').rest(req, res);
         });
 
+        // Dashboard Controller
+        app.all(version + '/dashboard/*', function(req, res) {
+            getController('dashboard-controller').rest(req, res);
+        });
+
         // Verify account
-        app.post(version + '/verify', function(req, res) {
+        app.post(version + '/verify/*', function(req, res) {
             getController('account-controller').verify(req, res);
         });
 
         // Reset password
-        app.post(version + '/reset', function(req, res) {
+        app.post(version + '/reset/*', function(req, res) {
             getController('account-controller').reset(req, res);
         });
 

@@ -35,8 +35,8 @@ app.controller('DashboardCtrl', ['$scope', '$http', '$window', 'data', function(
     }
 
     this.getCharts = function() {
-        $scope.total_patrons = 999999;
-        $scope.daily_active_users = 999999;
+        $scope.total_patrons = 99;
+        $scope.daily_active_users = 99;
     }
 
     _init();

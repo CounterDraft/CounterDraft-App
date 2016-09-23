@@ -8,23 +8,23 @@ function AccountController() {
                     getApi('organization-api').getOrganizationTypes(req, res);
                     break;
                 case 'post':
-                    this.getErrorApi().sendError(1001, 403, res);
+                    this.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'put':
-                    this.getErrorApi().sendError(1001, 403, res);
+                    this.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'delete':
-                    this.getErrorApi().sendError(1001, 403, res);
+                    this.getErrorApi().sendError(1011, 403, res);
                     break;
                 default:
-                    this.getErrorApi().sendError(1001, 403, res);
+                    this.getErrorApi().sendError(1011, 403, res);
                     break;
             }
         },
          reset: function(verb, req, res) {
             switch (verb) {
                 case 'get':
-                    this.getErrorApi().sendError(1001, 403, res);
+                    this.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'post':
                     this.getErrorApi().sendError(1001, 403, res);
@@ -33,10 +33,10 @@ function AccountController() {
                     getApi('reset-api').resetUsernamePassword(req, res);
                     break;
                 case 'delete':
-                    this.getErrorApi().sendError(1001, 403, res);
+                    this.getErrorApi().sendError(1011, 403, res);
                     break;
                 default:
-                    this.getErrorApi().sendError(1001, 403, res);
+                    this.getErrorApi().sendError(1011, 403, res);
                     break;
             }
         }

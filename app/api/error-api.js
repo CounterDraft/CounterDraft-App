@@ -58,7 +58,10 @@ var errorList = {
     },
     1010: {
         msg: 'Reset needs either a username or email address.'
-    }
+    },
+    1011: {
+        msg: 'Not supported call.'
+    },
 }
 
 function errorApi() {

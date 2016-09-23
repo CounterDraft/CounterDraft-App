@@ -25,11 +25,11 @@ function baseController() {
             	var apiRouter = this.ApiRouter[restCallStr];
             	apiRouter(req.method.toLowerCase(), req, res);
             }else{
-            	logger.warn(this.tag + 'A error has been generated for return json a error json.');
+            	logger.warn(this.tag + ' - Does not support this call. Please check your call.');
             }
 
         } else {
-            logger.warn(this.tag + 'A error has been generated for return json a error json.');
+            logger.warn(this.tag + ' - Does not support this call. Please check your call.');
         }
         return this;
     }
