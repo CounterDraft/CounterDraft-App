@@ -18,22 +18,23 @@ function LoginApi() {
                 })
                 .then(function(employee) {
                     if (employee && employee.password === req.body.password) {
-                        var permission = 'user';
-                        if (employee.is_admin) {
-                            permission = 'admin';
-                        }
+
                         req.session.user = {
                             employee_id: employee.id,
                             username: employee.username,
-                            permissions: permission,
                             first_name: employee.first_name,
                             last_name: employee.last_name,
-                            email_address: employee.email_address
+                            email_address: employee.email_address,
+                            permissions: ['restricted:employee']
                         }
-                        var employee_out = employee;
-                        employee_out.password = '****';
+
+                        if (employee.is_admin) {
+                            req.session.user['permissions'] = ['restricted:admin'];
+                        }
+                        
+                        employee.password = '****';
                         res.json({
-                            user: employee_out,
+                            user: employee,
                             success: true
                         });
                     } else {

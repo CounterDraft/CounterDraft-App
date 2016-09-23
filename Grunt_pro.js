@@ -39,6 +39,7 @@ module.exports = function(grunt) {
                     'build/js/controllers/patron-controller.js',
                     'build/js/controllers/game-controller.js',
                     'build/js/controllers/reports-controller.js',
+                    'build/js/controllers/general-controller.js',
                     //libs
                     'node_modules/sweetalert/dist/sweetalert.min.js',
                     'node_modules/jquery/dist/jquery.js',

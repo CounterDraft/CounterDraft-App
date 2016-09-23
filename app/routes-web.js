@@ -3,11 +3,13 @@
 module.exports = {
 
     setup: function(app) {
+        var routerWeb = require('express').Router();
+
         var authorization = global.getAuthorization();
         authorization.ensureRequest.options = {
-            onDenied: function(req, res, next){
+            onDenied: function(req, res, next) {
                 var _path = '';
-                if(req.route['path']){
+                if (req.route['path']) {
                     var arr = req.route['path'].split('/');
                     _path = arr[1];
                 }
@@ -20,7 +22,6 @@ module.exports = {
                 });
             }
         }
-        var routerWeb = require('express').Router();
 
         // setup permission
         var isAuthorizedSuperAdmin = authorization.ensureRequest.
@@ -33,6 +34,7 @@ module.exports = {
         isPermitted('restricted:employee');
 
         var sess;
+
 
         routerWeb.get("/", isAuthorized, function(req, res) {
             res.render('pages/dashboard', {
@@ -70,7 +72,7 @@ module.exports = {
             }
             return false;
         });
-        routerWeb.get('/game', isAuthorizedAdmin, function(req, res) {
+        routerWeb.get('/game', isAuthorized, function(req, res) {
             res.render('pages/game', {
                 data: {
                     user: 'jerum hubbert1'
@@ -91,7 +93,7 @@ module.exports = {
                 }
             });
         });
-        routerWeb.get('/organization', isAuthorized, function(req, res) {
+        routerWeb.get('/organization', isAuthorizedAdmin, function(req, res) {
             res.render('pages/organization', {
                 data: {
                     user: 'jerum hubbert1'
