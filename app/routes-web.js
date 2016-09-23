@@ -14,7 +14,7 @@ module.exports = {
                     _path = arr[1];
                 }
 
-                if(_path === '' && !req.session.user){
+                if(!req.session.user){
                     res.redirect('/login');
                 }else{
                     res.render('pages/unauthorized.ejs', {
