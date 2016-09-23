@@ -62,6 +62,9 @@ var errorList = {
     1011: {
         msg: 'Not supported call.'
     },
+    1012: {
+        msg: 'Call missing required parameter.'
+    },
 }
 
 function errorApi() {
