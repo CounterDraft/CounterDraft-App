@@ -65,6 +65,9 @@ var errorList = {
     1012: {
         msg: 'Call missing required parameter.'
     },
+    1013: {
+        msg: 'Failed to hash password, please check your password.'
+    },
 }
 
 function errorApi() {

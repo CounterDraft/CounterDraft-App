@@ -79,23 +79,27 @@ module.exports = {
             return new Model();
         }
 
-
-        global.generatePasswordHash = function(password, salt) {
-            var shasum = global.getSHA1();
-            shasum.update(salt + password + salt);
-            var hash = shasum.digest('hex');
-            return hash;
+        global.getHash = function() { 
+            return require('password-hash');
         }
 
-        global.getCrypt = function() {
-            return require('crypto');
-        }
+        
+        // global.generatePasswordHash = function(password, salt) {
+        //     var shasum = global.getSHA1();
+        //     shasum.update(salt + password + salt);
+        //     var hash = shasum.digest('hex');
+        //     return hash;
+        // }
 
-        global.getSHA1 = function() {
-            var crypt = global.getCrypt();
-            var shasum = crypt.createHash('sha1');
-            return shasum;
-        }
+        // global.getCrypt = function() {
+        //     return require('crypto');
+        // }
+
+        // global.getSHA1 = function() {
+        //     var crypt = global.getCrypt();
+        //     var shasum = crypt.createHash('sha1');
+        //     return shasum;
+        // }
 
         global.getValidator = function() {
             var validator = require('validator');

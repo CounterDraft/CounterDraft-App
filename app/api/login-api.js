@@ -17,7 +17,14 @@ function LoginApi() {
                     }
                 })
                 .then(function(employee) {
-                    if (employee && employee.password === req.body.password) {
+                    var hash = getHash();
+
+                    //this code may not be needed.
+                    if(employee && employee.password && !hash.isHashed(employee.password)){
+                        employee.password = hash.generate(employee.password);
+                    }
+   
+                    if (employee && hash.verify(req.body.password, employee.password)) {
                         req.session.user = {
                             employee_id: employee.id,
                             username: employee.username,

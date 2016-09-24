@@ -18,33 +18,37 @@ function registationApi() {
         } else if (!req.body.password_confirm) {
             this.getErrorApi().sendError(1007, 403, res);
         } else {
-
+            var passwordWithHash = getHash().generate(req.body.password);
+            if(!passwordWithHash){
+                this.getErrorApi().sendError(1013, 422, res);
+                return;
+            }
             employee_user_model.create({
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
                 username: req.body.email_address,
                 email_address: req.body.email_address,
-                password: req.body.password,
+                password: passwordWithHash,
                 is_admin: false,
                 employee_organization: 999,
             }).then(function(data) {
                 if (typeof 'undefined' != data && data.$options['isNewRecord']) {
                     // _sendRegistrationEmail(data.dataValues.email_address);
-                    data.dataValues.password = '****';
-                    var dataSave = data.dataValues;
-
-                    req.session.user = {
-                        first_name: dataSave.first_name,
-                        last_name: dataSave.last_name,
-                        username: dataSave.email_address,
-                        email_address: dataSave.email_address,
-                        employee_organization: dataSave.employee_organization,
+     
+                    var dataSave = {
+                        first_name: data.dataValues.first_name,
+                        last_name: data.dataValues.last_name,
+                        username: data.dataValues.email_address,
+                        email_address: data.dataValues.email_address,
+                        employee_organization: data.dataValues.employee_organization,
                         permissions: ['restricted:employee']
                     }
 
-                    if(dataSave.is_admin){
-                        req.session.user['permissions'] = ['restricted:admin']
+                     if(data.dataValues.is_admin){
+                        dataSave['permissions'] = ['restricted:admin']
                     }
+
+                    req.session.user = dataSave;
 
                     res.status(200).json({
                         user: dataSave,
