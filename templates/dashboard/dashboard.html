@@ -4,17 +4,19 @@
             <h1 class="text-center">Welcome&nbsp;Back,&nbsp;{{user_model.first_name}}</h1>
         </div>
     </div>
-    <div class="col-xs-12">&nbsp;</div>
-    <div class="form-group counter-group">
-        <div class="input-group">
-            <div class="input-group-addon">Time</div>
-            <select class="form-control" id="time-select">
-                <option>day</option>
-                <option>week</option>
-                <option>month</option>
-                <option>year</option>
-                <option>max</option>
-            </select>
+    <div class="row">
+        <div class="form-group col-xs-6 counter-group">
+            <div class="input-group">
+                <div class="input-group-addon">Time</div>
+                <select class="form-control" id="time-select">
+                    <option>day</option>
+                    <option>week</option>
+                    <option>month</option>
+                    <option>year</option>
+                    <option>max</option>
+                </select>
+            </div>
+            <i class="glyphicon glyphicon-triangle-bottom"></i>
         </div>
     </div>
     <div class="col-xs-12" id="chat-container">

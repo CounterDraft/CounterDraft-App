@@ -47,6 +47,7 @@ module.exports = function(grunt) {
                     'node_modules/morris.js/morris.js',
                     'node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
+                    'node_modules/bootstrap-validator/dist/validator.min.js',
                     'build/js/common.js'
                 ],
                 dest: 'build/js/min/<%= pkg.name %>.js'

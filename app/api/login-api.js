@@ -18,7 +18,6 @@ function LoginApi() {
                 })
                 .then(function(employee) {
                     if (employee && employee.password === req.body.password) {
-
                         req.session.user = {
                             employee_id: employee.id,
                             username: employee.username,
@@ -37,9 +36,10 @@ function LoginApi() {
                             user: employee,
                             success: true
                         });
-                    } else {
-                        //user not found.
+                    } else if(!employee) {
                         self.getErrorApi().sendError(1002, 401, res);
+                    } else{
+                        self.getErrorApi().sendError(1001, 401, res);
                     }
                 });
         }
