@@ -9,6 +9,13 @@
 function DashboardApi() {
     this.tag = 'dashboard-api';
 
+    this.getGameChartDate = function(req, res) {
+        res.status(200).json({
+            msg: 'Call for getting open games on a line graph',
+            success: true
+        });
+    }
+
 
     /* duration = 'week' | 'day' | 'month'  | 'year' | 'max';
         {
@@ -16,7 +23,7 @@ function DashboardApi() {
             timeZone: string ex. pst
         }
      */
-    this.getChartData = function(req, res) {
+    this.getPatronChartData = function(req, res) {
         var self = this;
         var duration = 'week';
         var numOfOutput = 7;
@@ -80,7 +87,7 @@ function DashboardApi() {
     }
 
     var _getChart = function(patronCount, numOfOutput, res) {
-        var Patron = models.employee_user;
+        var Patron = models.patron_player;
         Patron.findAndCountAll({
             where: {
                 createdAt: {
