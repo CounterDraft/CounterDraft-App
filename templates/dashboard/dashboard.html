@@ -5,6 +5,18 @@
         </div>
     </div>
     <div class="col-xs-12">&nbsp;</div>
+    <div class="form-group counter-group">
+        <div class="input-group">
+            <div class="input-group-addon">Time</div>
+            <select class="form-control" id="time-select">
+                <option>day</option>
+                <option>week</option>
+                <option>month</option>
+                <option>year</option>
+                <option>max</option>
+            </select>
+        </div>
+    </div>
     <div class="col-xs-12" id="chat-container">
         <div class="col-xs-12">&nbsp;</div>
         <div class="col-xs-12 line-chart" line-chart line-data='[
@@ -29,6 +41,10 @@
         <div class="box">
             <div class="col-xs-7 label-font text-right">Current Daily Active Users:</div>
             <div class="col-xs-5 text-left">{{daily_active_users | number : fractionSize}}</div>
+        </div>
+        <div class="box">
+            <div class="col-xs-7 label-font text-right">Current Active Games:</div>
+            <div class="col-xs-5 text-left">{{active_games | number : fractionSize}}</div>
         </div>
     </div>
     <div class="col-xs-12">&nbsp;</div>

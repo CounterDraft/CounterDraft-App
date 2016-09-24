@@ -12,6 +12,7 @@ app.controller('DashboardCtrl', ['$scope', '$http', '$window', 'data', function(
     //quick data;
     $scope.total_patrons = null;
     $scope.daily_active_users = null;
+    $scope.active_games = null;
 
     //models
     $scope.user_model = { username: 'anonymous' };
@@ -37,6 +38,7 @@ app.controller('DashboardCtrl', ['$scope', '$http', '$window', 'data', function(
     this.getCharts = function() {
         $scope.total_patrons = 99;
         $scope.daily_active_users = 99;
+        $scope.active_games = 59;
     }
 
     _init();
