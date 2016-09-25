@@ -12,7 +12,8 @@ function registationApi() {
     var self = this;
     this.tag = 'registation-api';
     this.registerUser = function(req, res) {
-        var Model = models.employee_user;
+        var ModelEmployee = models.employee_user;
+        var ModelOrganization = models.organization;
         if (!req.body.first_name || req.body.first_name === "") {
             this.getErrorApi().sendError(1003, 403, res);
         } else if (!req.body.last_name || req.body.last_name === "") {
@@ -34,43 +35,54 @@ function registationApi() {
         } else {
             //code for organization hash should go here.
             var passwordWithHash = getHash().generate(req.body.password);
+            var employeeOrganization = 999;
+
             if (!passwordWithHash) {
                 this.getErrorApi().sendError(1013, 422, res);
                 return;
             }
-            //create the organization;
 
-            Model.findAndCountAll({
-                where: {
-                    email_address: req.body.email_address
+            ModelOrganization.create({
+                name: req.body.organization_name,
+                description: req.body.organization_description,
+                has_multi_admin: true,
+                type: req.body.organization_type
+            }).then(function(organization) {
+                if (organization.dataValues.id) {
+                    employeeOrganization = organization.dataValues.id;
                 }
+                return ModelEmployee.findAndCountAll({
+                    where: {
+                        email_address: req.body.email_address
+                    }
+                });
             }).then(function(result) {
                 if (result.count > 0) {
                     self.getErrorApi().sendError(1018, 403, res);
                     return;
                 }
-                Model.create({
+                ModelEmployee.create({
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
                     username: req.body.email_address,
                     email_address: req.body.email_address,
                     password: passwordWithHash,
                     is_admin: false,
-                    employee_organization: 999,
-                }).then(function(data) {
-                    if (typeof 'undefined' != data && data.$options['isNewRecord']) {
+                    employee_organization: employeeOrganization
+                }).then(function(employee) {
+                    if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
                         // _sendRegistrationEmail(data.dataValues.email_address);
 
                         var dataSave = {
-                            first_name: data.dataValues.first_name,
-                            last_name: data.dataValues.last_name,
-                            username: data.dataValues.email_address,
-                            email_address: data.dataValues.email_address,
-                            employee_organization: data.dataValues.employee_organization,
+                            first_name: employee.dataValues.first_name,
+                            last_name: employee.dataValues.last_name,
+                            username: employee.dataValues.email_address,
+                            email_address: employee.dataValues.email_address,
+                            employee_organization: employee.dataValues.employee_organization,
                             permissions: ['restricted:employee']
                         }
 
-                        if (data.dataValues.is_admin) {
+                        if (employee.dataValues.is_admin) {
                             dataSave['permissions'] = ['restricted:admin']
                         }
 
