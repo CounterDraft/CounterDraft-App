@@ -42,7 +42,7 @@ var errorList = {
         msg: 'Registration missing required field, last_name.'
     },
     1005: {
-        msg: 'Registration missing required field, email_address.'
+        msg: 'Registration missing required field, email_address Or email is not a acceptable form'
     },
     1006: {
         msg: 'Registration missing required field, password.'
@@ -68,6 +68,21 @@ var errorList = {
     1013: {
         msg: 'Failed to hash password, please check your password.'
     },
+    1014: {
+        msg: 'Password and password confirm do not match.'
+    },
+    1015: {
+        msg: 'Registration missing required fields, organization_name and organization_type Or organization_hash must be submitted.'
+    },
+    1016: {
+        msg: 'Registration missing required fields, organization_type.'
+    },
+    1017: {
+        msg: 'Registration missing required fields, organization_name.'
+    },
+    1018: {
+        msg: 'Failed, email_address is already registration in the system.'
+    }
 }
 
 function errorApi() {
