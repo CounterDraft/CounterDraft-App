@@ -67,7 +67,7 @@ function registationApi() {
                     username: req.body.email_address,
                     email_address: req.body.email_address,
                     password: passwordWithHash,
-                    is_admin: false,
+                    is_admin: true,
                     employee_organization: employeeOrganization
                 }).then(function(employee) {
                     if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
