@@ -1,4 +1,6 @@
 module.exports = function(grunt) {
+    var myConfig = config;
+    var db_url = getDatabase_url();
     grunt.initConfig({
         less: {
             development: {
