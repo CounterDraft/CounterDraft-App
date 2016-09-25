@@ -8,6 +8,7 @@ module.exports = function(grunt) {
             pre: ['build'],
             post: ['build/js/controllers',
                 'build/js/*js',
+                'build/js/libs',
                 'build/css/css',
                 'build/css/*less'
             ]
@@ -31,6 +32,7 @@ module.exports = function(grunt) {
                     'node_modules/angular/angular.js',
                     'node_modules/angular-morris/build/module/angular-morris/angular-morris.min.js',
                     'node_modules/angular-ui-router/release/angular-ui-router.min.js',
+                    'build/js/libs/showErrors.js',
                     'build/js/app.js',
                     'build/js/directives.js',
                     //controllers
@@ -75,10 +77,10 @@ module.exports = function(grunt) {
                     sourceMap: true,
                     outputSourceFiles: true,
                     sourceMapURL: '<%= pkg.name %>.css.map',
-                    sourceMapFilename: 'build/css/<%= pkg.name %>.css.map'
+                    sourceMapFilename: 'build/css/min/<%= pkg.name %>.css.map'
                 },
                 files: {
-                    'build/css/<%= pkg.name %>.min.css': 'css/counter-main.less'
+                    'build/css/min/<%= pkg.name %>.min.css': 'css/counter-main.less'
                 }
             }
         }

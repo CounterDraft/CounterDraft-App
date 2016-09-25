@@ -3,19 +3,21 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="model-tmpl-0">
-                    <form role="form" name="login-form" class="form-horizontal" id="login-form" ng-submit="onSubmit('login-form')" data-toggle="validator" role="form">
+                    <form name="login-form" name="loginForm" class="form-horizontal counter-form" id="login-form" ng-submit="onSubmit('login-form')" data-toggle="validator" role="form">
                         <div class="modal-header">
                             <h4 class="modal-title text-center">login</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input type="email" class="form-control" id="username" placeholder="Email or Username" ng-model="loginModel.username" required>
+                            <div class="form-group" show-errors>
+                                <div class="col-xs-12">
+                                    <input type="email" name="userName" class="form-control" id="username" placeholder="Email *" ng-model="loginModel.username" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="loginModel.password" required>
+                                <div class="col-xs-12">
+                                    <input type="password" class="form-control" id="password" placeholder="Password *" ng-model="loginModel.password" data-minlength="6" required>
+                                    <div class="help-block with-errors"></div>
                                 </div>
                             </div>
                         </div>

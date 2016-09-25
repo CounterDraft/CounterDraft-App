@@ -1,6 +1,9 @@
 #npm libs
 node_modules/
 
+#bower libs
+bower_components/
+
 #build files
 build/
 

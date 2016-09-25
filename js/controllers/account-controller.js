@@ -12,25 +12,25 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
     var _url_reset = "application/reset";
 
     $scope.registrationModel = {
-        first_name: '',
-        last_name: '',
-        email_address: '',
-        password: '',
-        password_confirm: '',
-        organization_name: '',
-        organization_type: '',
-        organization_description: '',
-        organization_hash: ''
+        first_name: null,
+        last_name: null,
+        email_address: null,
+        password: null,
+        password_confirm: null,
+        organization_name: null,
+        organization_type: null,
+        organization_description: null,
+        organization_hash: null
     };
 
     $scope.loginModel = {
-        username: '',
-        password: ''
+        username: null,
+        password: null
     };
 
     $scope.resetModal = {
-        username: '',
-        email_address: ''
+        username: null,
+        email_address: null
     };
 
     $scope.showResetPassword = null;
@@ -93,46 +93,67 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
 
     $scope.onRegistration = function() {
         var formData = $scope.registrationModel;
+        var errorMessage = [];
         if (!formData) {
-            return "Error: no data submitted";
+            errorMessage.push("No data submitted");
         } else if (!formData.first_name) {
-            return "Error: First name is required!";
+            errorMessage.push("First name is required");
         } else if (!formData.last_name) {
-            return "Error: Last name is required!";
+            errorMessage.push("Last name is required");
         } else if (!formData.email_address) {
-            return "Error: Email address is required!";
+            errorMessage.push("Email address is required");
         } else if (!formData.last_name) {
-            return "Error: Last name is required!";
-        } else if (formData.password != formData.password_confirm || !formData.password) {
-            return "Error: Password field is required!";
-        } else if (!formData.organization_name || !formData.organization_type && !formData.organization_hash) {
-            return "Error: A organization is needed to registration an employee.";
-        } else {
-            //post call to backend;
-            $http({
-                method: 'POST',
-                url: _url_registration,
-                data: formData,
-            }).then(function successCallback(response) {
-                $window.location.href = '/dashboard';
-            }, function errorCallback(response) {
-                var data = response.data || null;
-                if (data && data.error.length > 0) {
-                    var error = data.error[0];
-                    $window.swal({
-                        title: "Error" ,
-                        text: error.msg,
-                        type: "error",
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "OK",
-                        closeOnConfirm: true,
-                        html: true
-                    }, function() {
-                        //callback
-                    });
-                }
-            });
+            errorMessage.push("Last name is required");
+        } else if (!formData.password) {
+            errorMessage.push("Password is required");
+        } else if (formData.password != formData.password_confirm) {
+            errorMessage.push("Password does not match password confirmation");
+        } else if (!formData.organization_name  && !formData.organization_type && !formData.organization_hash) {
+            errorMessage.push("Organization name and type Or Oranization invite must be entered.");
+        } else if (!formData.organization_hash  && !formData.organization_type && formData.organization_name) {
+            errorMessage.push("Organization type must be selected");
+        } else if (!formData.organization_hash && formData.organization_type && !formData.organization_name) {
+            errorMessage.push("Organization name must be entered");
         }
+
+        if(errorMessage.length > 0){
+            $window.swal({
+                    title: "Error",
+                    text: errorMessage,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            return;
+        }
+
+        //post call to backend;
+        $http({
+            method: 'POST',
+            url: _url_registration,
+            data: formData,
+        }).then(function successCallback(response) {
+            $window.location.href = '/dashboard';
+        }, function errorCallback(response) {
+            var data = response.data || null;
+            if (data && data.error.length > 0) {
+                var error = data.error[0];
+                $window.swal({
+                    title: "Error",
+                    text: error.msg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                }, function() {
+                    //callback
+                });
+            }
+        });
+
     };
 
     $scope.onClose = function() {
@@ -163,7 +184,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
                 if (data && data.error.length > 0) {
                     var error = data.error[0];
                     $window.swal({
-                        title: "Error" ,
+                        title: "Error",
                         text: error.msg,
                         type: "error",
                         confirmButtonColor: "#DD6B55",
