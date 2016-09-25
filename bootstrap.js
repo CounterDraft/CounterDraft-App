@@ -118,7 +118,8 @@ module.exports = {
             return require('dateformat');
         }
 
-        global.smtpTransport = require("nodemailer").createTransport(global.config.email);
+        //creaete transportor
+        global.emailTransport = require("nodemailer").createTransport(global.config.email);
 
 
         global.logger = require('./lib/logger').init();

@@ -13,17 +13,26 @@ var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber) {
             token: genToken,
             valid_until: vUntil
         }).then(function(registration_user) {
-            if (typeof 'undefined' != registration_user) {
-                //TODO: send email to user. 
-                logger.info('Sending email to user');
-            } else {
+            if (typeof 'undefined' == registration_user) {
                 logger.error(errorMsg, {
                     error: {
                         email_address: user_email,
                         error: errorNumber
                     }
                 });
+                return;
             }
+
+            return new Promise(resolve, reject) {
+                transporter.sendMail(emailOptions, function(err, data) {
+                    if (err) {
+                        return reject(err);
+                    } else {
+                        return resolve(data);
+                    }
+                });
+            };
+
         });
     });
 }
