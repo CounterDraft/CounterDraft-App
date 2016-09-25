@@ -35,7 +35,7 @@ module.exports = {
         global.API_DIR = dirBase + '/app/api/';
         global.BASE_DIR = dirBase + '/app/base/';
 
-        global.Promise = require('promise');
+        global.getPromise = require('bluebird');
 
         global.getdbConnection = function(){
             return require('pg');

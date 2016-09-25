@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
     var myConfig = config;
     var db_url = getDatabase_url();
+
     grunt.initConfig({
         less: {
             development: {
@@ -26,5 +27,5 @@ module.exports = function(grunt) {
 
     // Default task(s).
     grunt.registerTask('default', ['less', 'watch']);
-    
+
 };

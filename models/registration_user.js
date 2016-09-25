@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
             comment: "Email address of user."
         },
         token: {
-            type: DataTypes.STRING(64),
+            type: DataTypes.STRING(128),
             allowNull: false,
             comment: "Unique key for confirmation of email."
         },

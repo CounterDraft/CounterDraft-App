@@ -82,6 +82,11 @@ var errorList = {
     },
     1018: {
         msg: 'Failed, email_address is already registration in the system.'
+    },
+
+    //Internal Server Errors
+    9901: {
+        msg: 'Failed to generate and save registration token for user'
     }
 }
 
@@ -119,6 +124,10 @@ function errorApi() {
             error: [eo],
             success: false
         });
+    }
+
+    this.getErrorMsg = function(errorNum){
+        return errorList[errorNum].msg;
     }
 
     this.getError = function(msg) {

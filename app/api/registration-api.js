@@ -1,6 +1,31 @@
 "use strict";
-var _sendRegistrationEmail = function(user_email) {
-    console.log(user_email);
+var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber) {
+    var ModelRegistrationUser = models.registration_user;
+    var currentTime = new Date();
+
+    require('crypto').randomBytes(48, function(err, buffer) {
+        var genToken = buffer.toString('hex');
+        // add a week for vaildation of token;
+        var vUntil = currentTime.setDate(currentTime.getDate() + 14);
+
+        ModelRegistrationUser.create({
+            email_address: user_email,
+            token: genToken,
+            valid_until: vUntil
+        }).then(function(registration_user) {
+            if (typeof 'undefined' != registration_user) {
+                //TODO: send email to user. 
+                logger.info('Sending email to user');
+            } else {
+                logger.error(errorMsg, {
+                    error: {
+                        email_address: user_email,
+                        error: errorNumber
+                    }
+                });
+            }
+        });
+    });
 }
 
 var _validEmail = function(email) {
@@ -14,6 +39,7 @@ function registationApi() {
     this.registerUser = function(req, res) {
         var ModelEmployee = models.employee_user;
         var ModelOrganization = models.organization;
+
         if (!req.body.first_name || req.body.first_name === "") {
             this.getErrorApi().sendError(1003, 403, res);
         } else if (!req.body.last_name || req.body.last_name === "") {
@@ -67,11 +93,12 @@ function registationApi() {
                     username: req.body.email_address,
                     email_address: req.body.email_address,
                     password: passwordWithHash,
-                    is_admin: true,
+                    is_admin: false,
                     employee_organization: employeeOrganization
                 }).then(function(employee) {
                     if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
-                        // _sendRegistrationEmail(data.dataValues.email_address);
+                        var emailErrorNumber = 9901
+                        _sendRegistrationEmail(employee.dataValues.email_address, self.getErrorApi().getErrorMsg(emailErrorNumber), emailErrorNumber);
 
                         var dataSave = {
                             first_name: employee.dataValues.first_name,
