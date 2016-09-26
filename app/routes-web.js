@@ -110,6 +110,14 @@ module.exports = {
                 }
             });
         });
+        routerWeb.get('/confirmation', isAuthorized, function(req, res) {
+            //call api to do need logic to confirmation the token;
+            res.render('pages/confirmation.ejs', {
+                data: {
+                    user: 'jerum hubbert1'
+                }
+            });
+        });
         routerWeb.get('/settings', isAuthorized, function(req, res) {
             res.render('pages/reports.ejs', {
                 data: {
