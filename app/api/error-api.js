@@ -86,7 +86,10 @@ var errorList = {
 
     //Internal Server Errors
     9901: {
-        msg: 'Failed to generate and save registration token for user'
+        msg: 'Failed to generate and save registration token for user.'
+    },
+    9902: {
+        msg: 'Failed to send email to user, verify the email configs are correct.'
     }
 }
 

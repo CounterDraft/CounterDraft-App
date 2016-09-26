@@ -35,7 +35,13 @@ module.exports = {
         global.API_DIR = dirBase + '/app/api/';
         global.BASE_DIR = dirBase + '/app/base/';
 
-        global.getPromise = require('bluebird');
+        global.getPromise = function(){
+            return require('bluebird');
+        }
+
+        global.getEmailTemplate = function(){
+            return require('email-templates').EmailTemplate;
+        }
 
         global.getdbConnection = function(){
             return require('pg');
@@ -82,24 +88,6 @@ module.exports = {
         global.getHash = function() { 
             return require('password-hash');
         }
-
-        
-        // global.generatePasswordHash = function(password, salt) {
-        //     var shasum = global.getSHA1();
-        //     shasum.update(salt + password + salt);
-        //     var hash = shasum.digest('hex');
-        //     return hash;
-        // }
-
-        // global.getCrypt = function() {
-        //     return require('crypto');
-        // }
-
-        // global.getSHA1 = function() {
-        //     var crypt = global.getCrypt();
-        //     var shasum = crypt.createHash('sha1');
-        //     return shasum;
-        // }
 
         global.getValidator = function() {
             var validator = require('validator');

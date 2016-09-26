@@ -2,7 +2,7 @@ module.exports = {
     environment: process.env.MODE || 'development',
     npm_package_name: process.env.npm_package_name || 'UNKNOWN',
     server: {
-        ip: 'localhost',
+        ip: process.env.app_url || '127.0.0.1',
         port: process.env.PORT || 8080
     },
     database: {
@@ -17,14 +17,5 @@ module.exports = {
     log_table: 'server_log',
     database_url: process.env.DATABASE_URL || false,
     secret: process.env.secret || '71b6c615-8f93-4b20-8dd7-6e1c5110e583',
-    email: {
-        service: "Gmail",
-        secureConnection: true, // use SSL
-        port: 465, // port for secure SMTP
-        transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts
-        auth: {
-            user: '',
-            pass: ''
-        }
-    }
+    email : process.env.email_str || 'smtps://support@counterdraft.com:password@smtp.gmail.com'
 };

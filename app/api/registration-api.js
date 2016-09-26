@@ -1,38 +1,90 @@
 "use strict";
-var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber) {
+var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber, errorMsgEmail, errorNumberEmail) {
+    var Promise = getPromise();
+    var eTemplate = getEmailTemplate();
     var ModelRegistrationUser = models.registration_user;
     var currentTime = new Date();
 
-    require('crypto').randomBytes(48, function(err, buffer) {
-        var genToken = buffer.toString('hex');
-        // add a week for vaildation of token;
-        var vUntil = currentTime.setDate(currentTime.getDate() + 14);
-
-        ModelRegistrationUser.create({
-            email_address: user_email,
-            token: genToken,
-            valid_until: vUntil
-        }).then(function(registration_user) {
-            if (typeof 'undefined' == registration_user) {
-                logger.error(errorMsg, {
-                    error: {
-                        email_address: user_email,
-                        error: errorNumber
-                    }
-                });
-                return;
+    new Promise(function(resolve, reject) {
+        require('crypto').randomBytes(48, function(err, buffer) {
+            var genToken = buffer.toString('hex');
+            if (genToken) {
+                return resolve(genToken);
+            } else {
+                return reject(err);
             }
+        });
+    }).then(function(token) {
+        var vUntil = currentTime.setDate(currentTime.getDate() + 14);
+        return ModelRegistrationUser.create({
+            email_address: user_email,
+            token: token,
+            valid_until: vUntil
+        });
+    }).then(function(registration_user) {
+        if (!registration_user) {
+            var eo = {
+                email_address: user_email,
+                error: errorNumber
+            }
+            logger.error(errorMsg, {
+                error: eo
+            });
+            return new Promise(function(resolve, reject) {
+                return reject(eo);
+            });
+        }
+        return new Promise(function(resolve, reject) {
+            //TODO: fix this so we can use templates and look pretty;
+            // var sendRegistrationConfirmation = emailTransport.templateSender(new eTemplate('templates/email/registration-confirmation.html'), sendRegistrationConfirmationEmailOptions);
 
-            return new Promise(resolve, reject) {
-                transporter.sendMail(emailOptions, function(err, data) {
-                    if (err) {
-                        return reject(err);
-                    } else {
-                        return resolve(data);
-                    }
-                });
+            // sendRegistrationConfirmation({
+
+            //     }, {
+
+            //     },
+            //     function(err, data) {
+            //         if (err) {
+            //             var eo = {
+            //                 email_address: user_email,
+            //                 error: errorNumberEmail
+            //             }
+            //             logger.error(errorMsgEmail, {
+            //                 error: eo
+            //             });
+            //             return reject(err);
+            //         } else {
+            //             logger.info('Email confirmation sent to', { email_address: user_email });
+            //             return resolve(data);
+            //         }
+            //     });
+
+
+            var url_link = 'http://' + config.server.ip + ':' + config.server.port + '/confirmation?token=' + registration_user.dataValues.token;
+            var sendRegistrationConfirmationEmailOptions = {
+                from: '"Do-Not-Reply" <do-not-reply@counterDraft.com>',
+                to: user_email,
+                subject: 'Email Confirmation',
+                html:   '<div>Welcome to Counter Draft, a Fantasy sport experience!</div><br>' +
+                        '<div>Please click on the link to confirmation your email and account</div><br>' +
+                        '<a href="' + url_link + '">Confirmation My Email Address</a>'
             };
 
+            emailTransport.sendMail(sendRegistrationConfirmationEmailOptions, function(err, data) {
+                if (err) {
+                    var eo = {
+                        email_address: user_email,
+                        error: errorNumberEmail
+                    }
+                    logger.error(errorMsgEmail, {
+                        error: eo
+                    });
+                    return reject(err);
+                } else {
+                    logger.info('Email confirmation sent to', { email_address: user_email });
+                    return resolve(data);
+                }
+            });
         });
     });
 }
@@ -61,11 +113,11 @@ function registationApi() {
             this.getErrorApi().sendError(1007, 403, res);
         } else if (req.body.password_confirm != req.body.password) {
             this.getErrorApi().sendError(1014, 403, res);
-        } else if (!req.body.organization_name || req.body.organization_name === "" && !req.body.organization_type && !req.body.organization_hash || req.body.organization_hash === "") {
+        } else if ((!req.body.organization_name || req.body.organization_name === "") && !req.body.organization_type && (!req.body.organization_hash || req.body.organization_hash === "")) {
             this.getErrorApi().sendError(1015, 403, res);
         } else if (!req.body.organization_hash && !req.body.organization_type && req.body.organization_name) {
             this.getErrorApi().sendError(1016, 403, res);
-        } else if (!req.body.organization_hash && req.body.organization_type && !req.body.organization_name || req.body.organization_name === "") {
+        } else if (!req.body.organization_hash && req.body.organization_type && (!req.body.organization_name || req.body.organization_name === "")) {
             this.getErrorApi().sendError(1017, 403, res);
         } else {
             //code for organization hash should go here.
@@ -107,7 +159,13 @@ function registationApi() {
                 }).then(function(employee) {
                     if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
                         var emailErrorNumber = 9901
-                        _sendRegistrationEmail(employee.dataValues.email_address, self.getErrorApi().getErrorMsg(emailErrorNumber), emailErrorNumber);
+                        var sendEmailErrorNumber = 9902;
+
+                        _sendRegistrationEmail(employee.dataValues.email_address,
+                            self.getErrorApi().getErrorMsg(emailErrorNumber),
+                            emailErrorNumber,
+                            self.getErrorApi().getErrorMsg(sendEmailErrorNumber),
+                            sendEmailErrorNumber);
 
                         var dataSave = {
                             first_name: employee.dataValues.first_name,
