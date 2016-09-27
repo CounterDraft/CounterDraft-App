@@ -6,22 +6,14 @@ var Sequelize = require('sequelize');
 var basename = path.basename(module.filename);
 // var env       = process.env.NODE_ENV || 'development';
 // var config    = require(__dirname + '/../config/config.json')[env];
-var db_config = GLOBAL.config.database;
+var db_url = global.getDatabase_url() || null;
 var db = {};
 
-if (config.database_url) {
-    var sequelize = new Sequelize(config.database_url);
+if (db_url) {
+    var sequelize = new Sequelize(db_url, {dialect: 'postgres'});
 } else {
-    var sequelize = new Sequelize(db_config.database, db_config.user, db_config.password, {
-        host: db_config.host,
-        port: db_config.port,
-        dialect: 'postgres',
-        pool: {
-            max: 5,
-            min: 0,
-            idle: 10000
-        }
-    });
+    console.error('Missing db configurations.');
+    return;
 }
 sequelize.authenticate()
     .then(function(err) {

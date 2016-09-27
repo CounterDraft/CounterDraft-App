@@ -16,13 +16,15 @@ module.exports = {
         global.getDatabase_url = function() {
             if (global.config.database_url) {
                 return global.config.database_url;
-            } else {
+            } else if(global.config.database) {
                 database_url = 'postgres://' + global.config.database.user +
                     ':' + global.config.database.password +
                     '@' + global.config.database.host +
                     ':' + global.config.database.port +
                     '/' + global.config.database.database;
                 return database_url;
+            }else{
+                return null;
             }
         }
 
