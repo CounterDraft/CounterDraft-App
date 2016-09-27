@@ -12,6 +12,9 @@ var bodyParser = require('body-parser');
 var sessionFactory = require('./lib/session');
 var expressLayouts = require('express-ejs-layouts');
 var grunt = require("grunt");
+var Umzug = require('umzug');
+var Promise = getPromise();
+
 
 //Server settings;
 app.use(express.static(__dirname));
@@ -53,20 +56,64 @@ var _addWatcher = function() {
 }
 
 var _launchApp = function() {
-
     //init database and starts server after the init;
-    global.models.sequelize.sync().then(function() {
-        try {
-            app.listen(app.get('port'), function() {
-                logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
-                logger.info('Server started in ' + config.environment + ' mode.');
-                logger.info('Listening on port: ' + app.get('port'));
+    var createSequelizedb = global.models.sequelize.sync().then(function() {
+        if (global.config['migration_run']) {
+            var umzug = new Umzug({
+                storage: 'sequelize',
+                storageOptions: {
+                    sequelize: models.sequelize,
+                    model: models.sequelize_meta,
+                    modelName: 'sequelize_meta',
+                    columnType: new models.Sequelize.STRING(100)
+                },
+                migrations: { params: [models.sequelize.getQueryInterface(), models.Sequelize] }
             });
-        } catch (err) {
-            logger.log('Error', 'Failed to start express', { error: err });
+
+            umzug.executed().then(function(migrations) {
+                // No need to log this;
+                for (var x in migrations) {
+                    console.log("Existing migration in system = " + migrations[x].file);
+                }
+
+            });
+            if (global.config['migration_order'] && global.config['migration_order'] === 'down') {
+                return umzug.down();
+            } else {
+                return umzug.up();
+            }
         }
     });
-}
+    return createSequelizedb.then(function(migrations) {
+        if (migrations && migrations.length > 0) {
+            if (global.config['migration_order'] && global.config['migration_order'] === 'down') {
+        
+                for (var r in migrations) {
+                    logger.info("migration applied down() = " + migrations[r].file);
+                }
+            } else {
+             
+                for (var x in migrations) {
+                    logger.info("migration applied up() = " + migrations[x].file);
+                }
+            }
+
+        }
+        return new Promise(function(resolve, reject) {
+            try {
+                app.listen(app.get('port'), function() {
+                    logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
+                    logger.info('Server started in ' + config.environment + ' mode.');
+                    logger.info('Listening on port: ' + app.get('port'));
+                    return resolve(true);
+                });
+            } catch (err) {
+                logger.log('Error', 'Failed to start express', { error: err });
+                return reject(err);
+            }
+        });
+    });
+};
 
 if (global.config.environment === 'production') {
     logger.warn('Creating the build, please wait...');
