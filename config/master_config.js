@@ -10,7 +10,7 @@ module.exports = {
     log_table: 'server_log',
     database_url: process.env.DATABASE_URL || false,
     secret: process.env.secret || '71b6c615-8f93-4b20-8dd7-6e1c5110e583',
-    email : process.env.email_str || 'smtps://support@counterdraft.com:password@smtp.gmail.com',
+    email : process.env.email || 'smtps://support@counterdraft.com:password@smtp.gmail.com',
     migration_run: process.env.migration_run || true,
     migration_order: process.env.migration_order || 'up'
 };
