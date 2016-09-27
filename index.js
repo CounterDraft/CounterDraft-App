@@ -121,14 +121,18 @@ var _launchApp = function() {
 
 if (global.config.environment === 'production') {
     logger.warn('Creating the build, please wait...');
-    grunt.cli({
-        gruntfile: __dirname + "/Grunt_pro.js",
-        extra: {
-            key: "run"
-        }
-    }, function() {
-        //callback;
-        _launchApp();
+    new Promise(function(resolve, reject) {
+        grunt.cli({
+            gruntfile: __dirname + "/Grunt_pro.js",
+            extra: {
+                key: "run"
+            }
+        }, function(){
+           return resolve(true); 
+        });
+        
+    }).then(function(result) {
+        return _launchApp();
     });
 } else {
     logger.info('Bypassing build we are in ' + global.config.environment + ' please wait...');
