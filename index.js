@@ -54,8 +54,9 @@ var _addWatcher = function() {
             extra: {
                 key: "run"
             }
+        }, function(){
+              return resolve(true);
         });
-        return resolve(true);
     });
 };
 
@@ -127,8 +128,11 @@ if (global.config.environment === 'production') {
             extra: {
                 key: "run"
             }
+        }, function(){
+           return resolve(true); 
         });
-    }).then(function() {
+        
+    }).then(function(result) {
         return _launchApp();
     });
 } else {
