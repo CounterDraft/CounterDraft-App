@@ -10,13 +10,13 @@
                         <div class="modal-body">
                             <div class="form-group" show-errors>
                                 <div class="col-xs-12">
-                                    <input type="email" name="userName" class="form-control" id="username" placeholder="Email *" ng-model="loginModel.username" required>
+                                    <input type="email" name="emailAddress" class="form-control" id="username" placeholder="Email *" ng-model="loginModel.username" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" show-errors>
                                 <div class="col-xs-12">
-                                    <input type="password" class="form-control" id="password" placeholder="Password *" ng-model="loginModel.password" data-minlength="6" required>
+                                    <input type="password" name="password" class="form-control" id="password" placeholder="Password *" ng-model="loginModel.password" data-minlength="6" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </form>
-                    <div  ng-class="showResetPassword ? 'active' : ''" class="retrieve-container">
+                    <div ng-class="showResetPassword ? 'active' : ''" class="retrieve-container">
                         <form role="form" name="retrieve-form" class="form-horizontal" id="retrieve-form" ng-submit="onReset()">
                             <div class="modal-header">
                                 <h4 class="modal-title text-center">Reset Your Password</h4>
