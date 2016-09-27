@@ -47,13 +47,17 @@ routesWeb.setup(app);
 routesApi.setup(app);
 
 var _addWatcher = function() {
-    grunt.cli({
-        gruntfile: __dirname + "/Grunt_dev.js",
-        extra: {
-            key: "run"
-        }
+    return new Promise(function(resolve, reject) {
+        grunt.cli({
+            gruntfile: __dirname + "/Grunt_dev.js",
+            extra: {
+                key: "run"
+            }
+        }, function(){
+              return resolve(true);
+        });
     });
-}
+};
 
 var _launchApp = function() {
     //init database and starts server after the init;
@@ -128,6 +132,7 @@ if (global.config.environment === 'production') {
     });
 } else {
     logger.info('Bypassing build we are in ' + global.config.environment + ' please wait...');
-    _addWatcher();
-    _launchApp();
+    _launchApp().then(function(result){
+        _addWatcher();
+    });
 }
