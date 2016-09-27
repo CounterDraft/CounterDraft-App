@@ -1,7 +1,4 @@
 module.exports = function(grunt) {
-    var myConfig = config;
-    var db_url = getDatabase_url();
-
     grunt.initConfig({
         less: {
             development: {
@@ -22,6 +19,7 @@ module.exports = function(grunt) {
             }
         }
     });
+
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
 

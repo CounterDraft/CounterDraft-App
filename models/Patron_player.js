@@ -29,6 +29,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false,
             comment: "Defines the organization."
+        },
+        is_active: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true,
+            comment: "Is the patron active or not"
         }
     }, {
         freezeTableName: true,

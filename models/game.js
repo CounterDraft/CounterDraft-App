@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: DataTypes.UUIDV4,
             comment: "Unique number for the game"
         },
-        type:{
+        type: {
             type: DataTypes.INTEGER,
             allowNull: false,
             comment: "Defines the type of game this is."
@@ -27,13 +27,19 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.BIGINT,
             allowNull: true,
             comment: "Links to tranaction record, null = game has not ended or was cancelled."
+        },
+        is_active: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+            comment: "Is the game active or not"
         }
     }, {
         freezeTableName: true,
         classMethods: {
             associate: function(models) {
-                Game.belongsTo(models.game_type, { foreignKey: 'type', target:'id'});
-                Game.belongsTo(models.payout, { foreignKey: 'transaction'});
+                Game.belongsTo(models.game_type, { foreignKey: 'type', target: 'id' });
+                Game.belongsTo(models.payout, { foreignKey: 'transaction' });
             }
         }
     });

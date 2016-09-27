@@ -1,10 +1,7 @@
 module.exports = function(grunt) {
-    var myConfig = config;
-    var db_url = getDatabase_url();
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        db_url: process.env.DATABASE_URL,
 
         clean: {
             pre: ['build'],
