@@ -59,16 +59,21 @@ var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber, errorMs
             //             return resolve(data);
             //         }
             //     });
+            
+            var url_link;
+            if(global.config.environment === 'production'){
+                url_link = 'http://' + config.server.ip + '/confirmation?token=' + registration_user.dataValues.token;
+            }else{
+                url_link = 'http://' + config.server.ip + ':' + config.server.port + '/confirmation?token=' + registration_user.dataValues.token;
+            }
 
-
-            var url_link = 'http://' + config.server.ip + ':' + config.server.port + '/confirmation?token=' + registration_user.dataValues.token;
             var sendRegistrationConfirmationEmailOptions = {
                 from: '"Do-Not-Reply" <do-not-reply@counterDraft.com>',
                 to: user_email,
                 subject: 'Email Confirmation',
                 html: '<div>Welcome to Counter Draft, a Fantasy sport experience!</div><br>' +
                     '<div>Please click on the link to confirmation your email and account</div><br>' +
-                    '<a href="' + url_link + '">Confirmation My Email Address</a>'
+                    '<a href="' + url_link + '">Confirmation</a>'
             };
 
             emailTransport.sendMail(sendRegistrationConfirmationEmailOptions, function(err, data) {
