@@ -1,4 +1,5 @@
 "use strict";
+
 var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber, errorMsgEmail, errorNumberEmail) {
     var Promise = getPromise();
     var eTemplate = getEmailTemplate();
@@ -65,9 +66,9 @@ var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber, errorMs
                 from: '"Do-Not-Reply" <do-not-reply@counterDraft.com>',
                 to: user_email,
                 subject: 'Email Confirmation',
-                html:   '<div>Welcome to Counter Draft, a Fantasy sport experience!</div><br>' +
-                        '<div>Please click on the link to confirmation your email and account</div><br>' +
-                        '<a href="' + url_link + '">Confirmation My Email Address</a>'
+                html: '<div>Welcome to Counter Draft, a Fantasy sport experience!</div><br>' +
+                    '<div>Please click on the link to confirmation your email and account</div><br>' +
+                    '<a href="' + url_link + '">Confirmation My Email Address</a>'
             };
 
             emailTransport.sendMail(sendRegistrationConfirmationEmailOptions, function(err, data) {
@@ -96,11 +97,13 @@ var _validEmail = function(email) {
 
 function registationApi() {
     var self = this;
+    var Promise = getPromise();
     this.tag = 'registation-api';
-    this.registerUser = function(req, res) {
-        var ModelEmployee = models.employee_user;
-        var ModelOrganization = models.organization;
+    var ModelRegistrationUser = models.registration_user;
+    var ModelEmployee = models.employee_user;
+    var ModelOrganization = models.organization;
 
+    this.registerUser = function(req, res) {
         if (!req.body.first_name || req.body.first_name === "") {
             this.getErrorApi().sendError(1003, 403, res);
         } else if (!req.body.last_name || req.body.last_name === "") {
@@ -198,6 +201,51 @@ function registationApi() {
 
     }
 
+    this.confirmRegistation = function(req, res) {
+        var self = this;
+        return new Promise(function(resolve, reject) {
+            var errorNumber = 1019;
+            var errorNumberNotFound = 1020;
+            var errorExpired = 1021;
+            var errorTokenUsed = 1022;
+            var token = req.query.token || null;
+            var eo = {};
+            if (!token) {
+                return reject(self.getErrorApi().sendError(errorNumber, 422));
+            }
+            ModelRegistrationUser.findOne({ where: { token: token } })
+                .then(function(registration_user) {
+                    if (registration_user) {
+
+                        //check valid until;
+                        if ((new Date(registration_user.dataValues.valid_until) < new Date())) {
+                            return reject(self.getErrorApi().sendError(errorExpired, 400));
+                        }
+
+                        if (!registration_user.dataValues.is_active) {
+                            return reject(self.getErrorApi().sendError(errorTokenUsed, 400));
+                        }
+                        return ModelRegistrationUser.update({
+                            is_active: false
+                        }, {
+                            where: {
+                                token: registration_user.dataValues.token
+                            }
+                        }).then(function(did_update){
+                            return getApi('login-api').loginUser(req, res, registration_user.dataValues.email_address);
+                        });
+                    } else {
+                        return reject(self.getErrorApi().sendError(errorNumberNotFound, 400));
+                    }
+                })
+                .then(function(employee) {
+                    eo.employee = employee.dataValues;
+                    return resolve(employee.dataValues);
+                }).catch(function(error) {
+                    return reject(error);
+                });
+        });
+    }
 }
 
 module.exports = registationApi;

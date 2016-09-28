@@ -6,11 +6,18 @@
 */
 
 app.controller('ConfirmationCtrl', ['$scope', '$window', 'data', function($scope, $window, data) {
-    var _base_templates = "templates/reports/";
-    $scope.currentPage = null;
-    
+    $scope.userData = {};
+    $scope.showError = false;
+
     var _init = function() {
-        //default page;
+        var self = this;
+        if(data.hasOwnProperty('error')){
+            $scope.userData.errorMessage = data.error[0].msg;
+            $scope.showError = true;
+        }else{
+            console.log(data);
+           $scope.userData.email_address = data.email_address; 
+        }
     };
 
     _init();

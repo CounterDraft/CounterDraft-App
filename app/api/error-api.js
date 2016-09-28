@@ -83,6 +83,21 @@ var errorList = {
     1018: {
         msg: 'Failed, email_address is already registration in the system.'
     },
+    1019: {
+        msg: 'Failed to registration email, no token provided.'
+    },
+    1020: {
+        msg: 'Registration failed please request a new email to be sent.'
+    },
+    1021: {
+        msg: 'Registration failed, token has expired.'
+    },
+    1022: {
+        msg: 'Your email address has already been confirmed, please login to enjoy the CounterDraft experience.'
+    },
+
+
+
 
     //Internal Server Errors
     9901: {
@@ -90,6 +105,9 @@ var errorList = {
     },
     9902: {
         msg: 'Failed to send email to user, verify the email configs are correct.'
+    },
+    9903: {
+        msg: 'Unknown error, failed to find user in system.'
     }
 }
 
@@ -108,15 +126,31 @@ function errorApi() {
 
         if (errorList[errorNum]) {
             eo.msg = errorList[errorNum].msg;
-            res.status(status).json({
-                error: [eo],
-                success: false
-            });
+            if (res) {
+                res.status(status).json({
+                    error: [eo],
+                    success: false
+                });
+            } else {
+                return {
+                    error: [eo],
+                    success: false
+                }
+            }
+
         } else {
-            res.status(status).json({
-                error: [eo],
-                success: false
-            });
+            if (res) {
+                res.status(status).json({
+                    error: [eo],
+                    success: false
+                });
+            } else {
+                return {
+                    error: [eo],
+                    success: false
+                }
+            }
+
         }
     }
 
@@ -129,7 +163,7 @@ function errorApi() {
         });
     }
 
-    this.getErrorMsg = function(errorNum){
+    this.getErrorMsg = function(errorNum) {
         return errorList[errorNum].msg;
     }
 

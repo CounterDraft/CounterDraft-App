@@ -14,9 +14,9 @@ module.exports = {
                     _path = arr[1];
                 }
 
-                if(!req.session.user){
+                if (!req.session.user) {
                     res.redirect('/login');
-                }else{
+                } else {
                     res.render('pages/unauthorized.ejs', {
                         data: {
                             user: req.session.user,
@@ -110,13 +110,24 @@ module.exports = {
                 }
             });
         });
-        routerWeb.get('/confirmation', isAuthorized, function(req, res) {
-            //call api to do need logic to confirmation the token;
-            res.render('pages/confirmation.ejs', {
-                data: {
-                    user: 'jerum hubbert1'
-                }
-            });
+        routerWeb.get('/confirmation', function(req, res) {
+            if (req.session.user) {
+                res.redirect('/dashboard');
+
+            } else {
+                res.locals.login = false;
+                getApi('registration-api').confirmRegistation(req, res)
+                    .then(function(data) {
+                        res.render('pages/confirmation.ejs', {
+                            data: {email_address: data.email_address}
+                        });
+                    }).catch(function(error) {
+                        res.render('pages/confirmation.ejs', {
+                            data: error
+                        });
+                    });
+            }
+
         });
         routerWeb.get('/settings', isAuthorized, function(req, res) {
             res.render('pages/reports.ejs', {

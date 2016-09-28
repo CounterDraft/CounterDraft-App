@@ -2,9 +2,40 @@
 
 function LoginApi() {
     this.tag = 'login-api';
+    var Promise = getPromise();
+    var Employee = models.employee_user;
+
+    this.loginUser = function(req, res, email_address) {
+        var self = this;
+        return new Promise(function(resolve, reject) {
+            Employee.findOne({
+                where: {
+                    username: email_address
+                }
+            }).then(function(employee) {
+                if (employee) {
+                    req.session.user = {
+                        employee_id: employee.id,
+                        username: employee.username,
+                        first_name: employee.first_name,
+                        last_name: employee.last_name,
+                        email_address: employee.email_address,
+                        permissions: ['restricted:employee']
+                    }
+                    if (employee.is_admin) {
+                        req.session.user['permissions'] = ['restricted:admin'];
+                    }
+                    return resolve(employee);
+                } else {
+                    return resolve(self.getErrorApi().sendError(9903, 404));
+                }
+            });
+        });
+    }
+
     this.login = function(req, res) {
         var self = this;
-        var Employee = models.employee_user;
+
         if (!req.body.username) {
             this.getErrorApi().sendError(1001, 403, res);
         } else if (!req.body.password) {
@@ -20,10 +51,10 @@ function LoginApi() {
                     var hash = getHash();
 
                     //this code may not be needed.
-                    if(employee && employee.password && !hash.isHashed(employee.password)){
+                    if (employee && employee.password && !hash.isHashed(employee.password)) {
                         employee.password = hash.generate(employee.password);
                     }
-   
+
                     if (employee && hash.verify(req.body.password, employee.password)) {
                         req.session.user = {
                             employee_id: employee.id,
@@ -37,15 +68,15 @@ function LoginApi() {
                         if (employee.is_admin) {
                             req.session.user['permissions'] = ['restricted:admin'];
                         }
-                        
+
                         employee.password = '****';
                         res.json({
                             user: employee,
                             success: true
                         });
-                    } else if(!employee) {
+                    } else if (!employee) {
                         self.getErrorApi().sendError(1002, 401, res);
-                    } else{
+                    } else {
                         self.getErrorApi().sendError(1001, 401, res);
                     }
                 });

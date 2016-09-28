@@ -16,6 +16,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DATE,
             allowNull: false,
             comment: "Token will expire on this date."
+        },
+        is_active: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true,
+            comment: "Defines if the token has been used or not."
         }
     }, {
         freezeTableName: true,
