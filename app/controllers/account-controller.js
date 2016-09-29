@@ -14,14 +14,14 @@ function AccountController() {
                     break;
                     // @put(/api/login) 
                 case 'put':
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
                     // @delete(/api/login)     
                 case 'delete':
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
                 default:
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
             }
         },
@@ -38,14 +38,14 @@ function AccountController() {
                     break;
                     // @put(/api/register)       
                 case 'put':
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
                     // @delete(/api/register)     
                 case 'delete':
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
                 default:
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
             }
 
@@ -54,22 +54,45 @@ function AccountController() {
             switch (verb) {
                 // @post(/api/verify) 
                 case 'post':
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
                     // @get(/api/verify)    
                 case 'get':
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api') sendError(1011, 403, res);
                     break;
                     // @put(/api/verify)     
                 case 'put':
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
                     // @delete(/api/verify)     
                 case 'delete':
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
                 default:
-                    this.getErrorApi().sendError(1011, 403, res);
+                    getApi('error-api').sendError(1011, 403, res);
+                    break;
+            }
+        },
+        default: function(verb, req, res) {
+            switch (verb) {
+                // @post(/api/verify) 
+                case 'post':
+                    getApi('error-api').sendError(1011, 403, res);
+                    break;
+                    // @get(/api/verify)    
+                case 'get':
+                    getApi('error-api') sendError(1011, 403, res);
+                    break;
+                    // @put(/api/verify)     
+                case 'put':
+                    getApi('error-api').sendError(1011, 403, res);
+                    break;
+                    // @delete(/api/verify)     
+                case 'delete':
+                    getApi('error-api').sendError(1011, 403, res);
+                    break;
+                default:
+                    getApi('error-api').sendError(1011, 403, res);
                     break;
             }
         }
