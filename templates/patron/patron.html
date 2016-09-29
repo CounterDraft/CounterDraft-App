@@ -8,15 +8,34 @@
         </div>
     </div>
     <div class="col-xs-12">&nbsp;</div>
-    <fieldset class="col-xs-12 counter-widget">
-        <legend>Patron Search</legend>
-        <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-4 col-sm-3 pull-right">
-            <button class="btn primay btn-block">SEARCH</button>
-        </div>
-        <div class="col-xs-12">&nbsp;</div>
-    </fieldset>
+    <form name="patronSearchForm" data-toggle="validator" class="counter-form" role="form" ng-submit="onPatronSearch()">
+        <fieldset class="col-xs-12 counter-widget">
+            <legend>Patron Search</legend>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">
+                <div class="form-group" show-errors>
+                    <input type="text" placeholder="patron id" ng-model="patronModel.patron_id" name="patron_id" class="form-control" />
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group" show-errors>
+                    <input type="text" placeholder="first name" ng-model="patronModel.first_name" name="first_name" class="form-control" />
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group" show-errors>
+                    <input type="text" placeholder="last name" name="last_name" ng-model="patronModel.last_name" class="form-control" />
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group" show-errors>
+                    <input type="email" placeholder="email" name="email_address" ng-model="patronModel.email_address" class="form-control" />
+                    <div class="help-block" ng-if="patronSearchForm.email_address.$error">Email address is invalid</div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-xs-6 pull-right">
+                        <button class="btn primay btn-block" ng-disabled="patronSearchForm.$invalid">SEARCH</button>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
     <div class="col-xs-12">&nbsp;</div>
 </section>
