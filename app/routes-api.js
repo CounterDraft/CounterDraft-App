@@ -3,6 +3,17 @@ var version  = "/api/v1";
 
 module.exports = {
     setup: function(app) {
+        
+        //used for checking errors;
+        var CONTROLLERS = [
+            'registration',
+            'patron',
+            'account',
+            'dashboard',
+            'verify',
+            'reset',
+            'application'
+        ];
 
         // Register account
         app.all(version + '/:type(registration)/:id(*)', function(req, res) {
@@ -40,11 +51,11 @@ module.exports = {
 
         // Error router.
         app.all(version +'/:type(*)', function(req, res){
-            var ea = require(GLOBAL.API_DIR + 'error-api');
-            var errorApi = new ea();
-            if(req.params['type']){
-                //TODO: add a '/' to the end of the call and redirect it.
-                errorApi.setErrorWithMessage(req.params['type'] + ' cannot be called at this time.', 422, res);
+            var error = require(GLOBAL.API_DIR + 'error-api');
+            var errorApi = new error();
+            if(req.params['type'] && CONTROLLERS.indexOf(req.params['type']) > -1){
+                var urlWithSlash = req.url + '/';
+                res.redirect(urlWithSlash);
             }else{
                 errorApi.sendError(1024, 422, res);
             }
