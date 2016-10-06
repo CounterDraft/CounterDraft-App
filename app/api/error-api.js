@@ -95,6 +95,9 @@ var errorList = {
     1022: {
         msg: 'Your email address has already been confirmed, please login to enjoy the CounterDraft experience.'
     },
+    1023: {
+        msg: 'Missing parameter in call.'
+    },
 
 
 

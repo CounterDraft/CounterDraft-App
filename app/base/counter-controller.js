@@ -28,14 +28,15 @@ function baseController() {
             }
 
             if(this.ApiRouter.hasOwnProperty(restCallStr)){
-            	var apiRouter = this.ApiRouter[restCallStr];
-            	apiRouter(req.method.toLowerCase(), req, res);
+            	var route = this.ApiRouter[restCallStr];
+            	route(req.method.toLowerCase(), req, res, this);
             }else{
-            	logger.warn(this.tag + ' - Does not support this call. Please check your call.');
+            	this.getErrorApi().sendError(1011, 422, res);
+                return;
             }
 
         } else {
-            logger.warn(this.tag + ' - Does not support this call. Please check your call.');
+            this.getErrorApi().sendError(1023, 422, res);
         }
         return this;
     }

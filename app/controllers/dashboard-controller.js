@@ -2,66 +2,62 @@ function DashboardController() {
     this.tag = 'dashboardController';
 
     this.ApiRouter = {
-        patron: function(verb, req, res) {
+        patron: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'get':
                     getApi('dashboard-api').getPatronChartData(req, res);
                     break;
                 case 'put':
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'delete':
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 default:
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
             }
         },
 
-        game: function(verb, req, res) {
+        game: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'get':
                     getApi('dashboard-api').getGameChartDate(req, res);
                     break;
                 case 'put':
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'delete':
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 default:
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
             }
         },
 
-        default: function(verb, req, res) {
+        default: function(verb, req, res, self) {
             switch (verb) {
-                // @post(/api/verify) 
                 case 'post':
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
-                    // @get(/api/verify)    
                 case 'get':
-                    getApi('error-api') sendError(1011, 403, res);
-                    break;
-                    // @put(/api/verify)     
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break; 
                 case 'put':
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
-                    // @delete(/api/verify)     
                 case 'delete':
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 default:
-                    getApi('error-api').sendError(1011, 403, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
             }
         }
