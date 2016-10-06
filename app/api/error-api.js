@@ -98,6 +98,9 @@ var errorList = {
     1023: {
         msg: 'Missing parameter in call.'
     },
+    1024: {
+        msg: 'Unknown server error, please check your rest call for proper usage.'
+    },
 
 
 
