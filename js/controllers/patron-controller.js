@@ -15,30 +15,57 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         first_name: null,
         last_name: null,
         email_address: null,
-        username: null,
-        patron_organization: null
+        password: null,
+        password_confirm: null,
+        organization: null
+    };
+
+    $scope.patronSearchModel = {
+        patron_id: null,
+        first_name: null,
+        last_name: null,
+        email_address: null
     };
 
     var _init = function() {
         //default page;
         $scope.currentPage = _getDefaultPage();
+        if(typeof 'undefined' != data && data.hasOwnProperty('organization')){
+            $scope.patronModel.organization = data.organization.name;
+        }
+    };
+
+    $scope.patronSearchFormValue = function(){
+        var is_good = true;
+       for(var x in $scope.patronSearchModel){
+            if($scope.patronSearchModel[x]){
+                is_good = false;
+            }
+       }
+       return is_good;
     };
 
     $scope.onRoute = function(page) {
         if (page) {
             $scope.currentPage = _base_templates + page + '.html';
         }
+        angular.forEach($scope.patronSearchModel, function(value, key) {
+            $scope.patronSearchModel[key] = '';
+        });
     };
 
     $scope.onClose = function() {
         $scope.currentPage = _getDefaultPage();
         angular.forEach($scope.patronModel, function(value, key) {
+            if(key === 'organization'){
+                return;
+            }
             $scope.patronModel[key] = '';
         });
     };
 
     $scope.onPatronSearch = function() {
-        var formData = $scope.patronModel;
+        var formData = $scope.patronSearchModel;
         var hasData = false;
 
         for (var x in formData) {

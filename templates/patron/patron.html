@@ -10,24 +10,24 @@
             <div class="col-xs-12">&nbsp;</div>
             <div class="col-xs-12">
                 <div class="form-group" show-errors>
-                    <input type="text" placeholder="patron id" ng-model="patronModel.patron_id" name="patron_id" class="form-control" />
+                    <input type="text" placeholder="patron id" ng-model="patronSearchModel.patron_id" name="patron_id" class="form-control" />
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group" show-errors>
-                    <input type="text" placeholder="first name" ng-model="patronModel.first_name" name="first_name" class="form-control" />
+                    <input type="text" placeholder="first name" ng-model="patronSearchModel.first_name" name="first_name" class="form-control" />
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group" show-errors>
-                    <input type="text" placeholder="last name" name="last_name" ng-model="patronModel.last_name" class="form-control" />
+                    <input type="text" placeholder="last name" name="last_name" ng-model="patronSearchModel.last_name" class="form-control" />
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group" show-errors>
-                    <input type="email" placeholder="email" name="email_address" ng-model="patronModel.email_address" class="form-control" />
+                    <input type="email" placeholder="email" name="email_address" ng-model="patronSearchModel.email_address" class="form-control" />
                     <div class="help-block" ng-if="patronSearchForm.email_address.$error">Email address is invalid</div>
                 </div>
                 <div class="row">
                     <div class="form-group col-xs-6 pull-right">
-                        <button class="btn primay btn-block" ng-disabled="patronSearchForm.$invalid">SEARCH</button>
+                        <button class="btn primary btn-block" ng-disabled="patronSearchForm.$invalid || patronSearchFormValue()">SEARCH</button>
                     </div>
                 </div>
             </div>

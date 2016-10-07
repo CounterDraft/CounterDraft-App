@@ -82,13 +82,34 @@ module.exports = {
                 }
             });
         });
+
         routerWeb.get('/patron', isAuthorized, function(req, res) {
-            res.render('pages/patron.ejs', {
-                data: {
-                    user: 'jerum hubbert1'
-                }
-            });
+            var user = req.session.user;
+            if (!user.employee_id) {
+                res.redirect('/logout');
+            }
+            getApi('employee-api').retrieve(user.employee_id)
+                .then(function(results) {
+                    var employee = results.dataValues;
+                    return getApi('organization-api').retrieve(employee.employee_organization);
+                }).then(function(results) {
+                    var organization = results.dataValues;
+                    res.render('pages/patron.ejs', {
+                        data: {
+                            organization: {
+                                name: organization.name,
+                                id: organization.id,
+                                description: organization.description
+                            }
+                        }
+                    });
+                }).catch(function(err) {
+                    logger.log('Error', 'Failed to retrieve employee, check database connection.', { error: err });
+                    res.redirect('/logout');
+                });
         });
+
+
         routerWeb.get('/profile', isAuthorized, function(req, res) {
             res.render('pages/profile.ejs', {
                 data: {
