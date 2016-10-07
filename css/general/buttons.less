@@ -90,13 +90,12 @@ button.quaternary {
 }
 
 .btn.quinary {
-    padding: 0px 10px;
-    font-size: 50px;
     color: @color-secondary-0;
     opacity: 1;
     background: @clientColorLightGray;
     cursor: auto;
     z-index: 10;
+    font-size: 35px;
     .box-shadow();
     .border-radius(40px);
     &:hover, &:focus  {
@@ -110,6 +109,21 @@ button.quaternary {
     // @media screen and (max-width: @bootstrap-med) {
     //     .text-size-small;
     // }
+}
+
+a.senary, button.senary {
+    .box-shadow();
+    .border-radius();
+    color: @color-secondary-0;
+    background: @clientColorLightGray;
+    z-index: 10;
+    font-size: 20px;
+    &:hover, &:focus  {
+        opacity: .8;
+        color: @color-secondary-4;
+        outline:0px !important;
+        -webkit-appearance:none;
+    }
 }
 
 .btn.nmb {

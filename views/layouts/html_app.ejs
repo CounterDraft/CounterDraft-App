@@ -49,7 +49,9 @@
 		 	</div>
 	    </article>
 	</body>
-	<% include ../partials/footer.ejs %>
+	<% if (login) { %>
+		<% include ../partials/footer.ejs %>
+	<% } %>
 	<% include ../partials/modals.ejs %>
 	<% include ../partials/application.ejs %>
 	<div id="counter-load">
