@@ -78,7 +78,7 @@ module.exports = {
         routerWeb.get('/game', isAuthorized, function(req, res) {
             res.render('pages/game.ejs', {
                 data: {
-                    user: 'jerum hubbert1'
+                    user: 'counterDraft_user'
                 }
             });
         });
@@ -86,7 +86,7 @@ module.exports = {
         routerWeb.get('/patron', isAuthorized, function(req, res) {
             var user = req.session.user;
             if (!user.employee_id) {
-                // res.redirect('/logout');
+                res.redirect('/logout');
             }
             getApi('employee-api').retrieve(user.employee_id)
                 .then(function(results) {
@@ -105,7 +105,7 @@ module.exports = {
                     });
                 }).catch(function(err) {
                     logger.log('Error', 'Failed to retrieve employee, check database connection.', { error: err });
-                    // res.redirect('/logout');
+                    res.redirect('/logout');
                 });
         });
 
@@ -113,21 +113,21 @@ module.exports = {
         routerWeb.get('/profile', isAuthorized, function(req, res) {
             res.render('pages/profile.ejs', {
                 data: {
-                    user: 'jerum hubbert1'
+                    user: 'counterDraft_user'
                 }
             });
         });
         routerWeb.get('/organization', isAuthorizedAdmin, function(req, res) {
             res.render('pages/organization.ejs', {
                 data: {
-                    user: 'jerum hubbert1'
+                    user: 'counterDraft_user'
                 }
             });
         });
         routerWeb.get('/reports', isAuthorized, function(req, res) {
             res.render('pages/reports.ejs', {
                 data: {
-                    user: 'jerum hubbert1'
+                    user: 'counterDraft_user'
                 }
             });
         });
@@ -153,7 +153,7 @@ module.exports = {
         routerWeb.get('/settings', isAuthorized, function(req, res) {
             res.render('pages/reports.ejs', {
                 data: {
-                    user: 'jerum hubbert1'
+                    user: 'counterDraft_user'
                 }
             });
         });

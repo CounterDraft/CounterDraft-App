@@ -49,33 +49,43 @@ function PatronApi() {
                 this.getErrorApi().sendError(1013, 422, res);
                 return;
             }
-            getApi('employee-api').retrieve(user.employee_id)
-                .then(function(results) {
-                    var employee = results.dataValues;
-                    return ModelPatron.create({
-                        first_name: req.body.first_name,
-                        last_name: req.body.last_name,
-                        username: req.body.email_address,
-                        email_address: req.body.email_address,
-                        password: passwordWithHash,
-                        patron_organization: employee.employee_organization
+            ModelPatron.findAndCountAll({
+                where: {
+                    email_address: req.body.email_address
+                }
+            }).then(function(results) {
+                if (results.count > 0) {
+                    return new Promise(function(resolve, reject) {
+                        return reject(self.getErrorApi().getErrorMsg(1018));
                     });
-                }).then(function(results) {
-                    var patron = results.dataValues;
-                    var dataSave = {
-                        first_name: patron.first_name,
-                        last_name: patron.last_name,
-                        username: patron.username,
-                        email_address: patron.email_address,
-                        patron_organization: patron.patron_organization
-                    }
-                    res.status(200).json({
-                        user: dataSave,
-                        success: true
-                    });
-                }).catch(function(err) {
-                    self.getErrorApi().setErrorWithMessage(err.toString(), 422, res);
+                }
+                return getApi('employee-api').retrieve(user.employee_id);
+            }).then(function(results) {
+                var employee = results.dataValues;
+                return ModelPatron.create({
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
+                    username: req.body.email_address,
+                    email_address: req.body.email_address,
+                    password: passwordWithHash,
+                    patron_organization: employee.employee_organization
                 });
+            }).then(function(results) {
+                var patron = results.dataValues;
+                var dataSave = {
+                    first_name: patron.first_name,
+                    last_name: patron.last_name,
+                    username: patron.username,
+                    email_address: patron.email_address,
+                    patron_organization: patron.patron_organization
+                }
+                res.status(200).json({
+                    user: dataSave,
+                    success: true
+                });
+            }).catch(function(err) {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 422, res);
+            });
         }
     }
 }

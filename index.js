@@ -32,6 +32,7 @@ app.set('layout', 'layouts/html_app');
 app.set('port', config.server.port);
 app.use(expressLayouts);
 
+//pre-route
 app.use(function(req, res, next) {
     //defaults variables;
     res.locals.login = false;
@@ -39,6 +40,9 @@ app.use(function(req, res, next) {
     res.locals.npm_package_name = global.config['npm_package_name'];
     if (typeof req.session.user != 'undefined') {
         res.locals.login = true;
+    }
+    if(req.headers && req.get('token')){
+        // req.session.api_user = // cehck token then set api_user data;
     }
     next();
 });

@@ -31,39 +31,43 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     var _init = function() {
         //default page;
         $scope.currentPage = _getDefaultPage();
-        if(typeof 'undefined' != data && data.hasOwnProperty('organization')){
+        if (typeof 'undefined' != data && data.hasOwnProperty('organization')) {
             $scope.patronModel.organization_name = data.organization.name;
             $scope.patronModel.organization = data.organization.id;
         }
     };
+    var _clearModel = function(modalName) {
+        if (!$scope[modalName]) {
+            return;
+        }
+        angular.forEach($scope[modalName], function(value, key) {
+            if (key.match(/organization/g)) {
+                return;
+            }
+            $scope[modalName][key] = null;
+        });
+    };
 
-    $scope.patronSearchFormValue = function(){
+    $scope.patronSearchFormValue = function() {
         var is_good = true;
-       for(var x in $scope.patronSearchModel){
-            if($scope.patronSearchModel[x]){
+        for (var x in $scope.patronSearchModel) {
+            if ($scope.patronSearchModel[x]) {
                 is_good = false;
             }
-       }
-       return is_good;
+        }
+        return is_good;
     };
 
     $scope.onRoute = function(page) {
         if (page) {
             $scope.currentPage = _base_templates + page + '.html';
         }
-        angular.forEach($scope.patronSearchModel, function(value, key) {
-            $scope.patronSearchModel[key] = null;
-        });
+        _clearModel('patronSearchModel');
     };
 
     $scope.onClose = function() {
         $scope.currentPage = _getDefaultPage();
-        angular.forEach($scope.patronModel, function(value, key) {
-            if(key.match(/organization/g)){
-                return;
-            }
-            $scope.patronModel[key] = null;
-        });
+        _clearModel('patronModel');
     };
 
     $scope.onPatronSearch = function() {
@@ -91,7 +95,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         }
     }
 
-    $scope.onPatronRegistration = function(){
+    $scope.onPatronRegistration = function() {
         var formData = $scope.patronModel;
         var hasData = true;
 
@@ -108,12 +112,41 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
                 url: _url_patron,
                 data: formData,
             }).then(function successCallback(response) {
-                console.log(response);
-                //show message to check your email.
+                var data = response.data.user || null;
+                var msg = data.first_name + ' ' + data.last_name + ' has been registration. The patron can now log in with their email address.';
+
+                $window.swal({
+                    title: "Success",
+                    text: msg,
+                    type: "success",
+                    confirmButtonColor: "#64d46f",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                }, function() {
+                    // _clearModel('patronModel');
+                    // $scope.$apply();
+                     $scope.addPatronForm.$setPristine();
+                });
+
             }, function errorCallback(response) {
-                console.error(response);
+                var data = response.data || null;
+                if (data && data.error.length > 0) {
+                    var error = data.error[0];
+                    $window.swal({
+                        title: "Error",
+                        text: error.msg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    }, function() {
+                        //callback
+                    });
+                }
             });
-        }else{
+        } else {
             console.error('Missing data in form.')
         }
     }
