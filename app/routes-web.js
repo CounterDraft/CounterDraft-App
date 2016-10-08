@@ -86,7 +86,7 @@ module.exports = {
         routerWeb.get('/patron', isAuthorized, function(req, res) {
             var user = req.session.user;
             if (!user.employee_id) {
-                res.redirect('/logout');
+                // res.redirect('/logout');
             }
             getApi('employee-api').retrieve(user.employee_id)
                 .then(function(results) {
@@ -105,7 +105,7 @@ module.exports = {
                     });
                 }).catch(function(err) {
                     logger.log('Error', 'Failed to retrieve employee, check database connection.', { error: err });
-                    res.redirect('/logout');
+                    // res.redirect('/logout');
                 });
         });
 

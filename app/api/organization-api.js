@@ -19,14 +19,16 @@ function OrganizationApi() {
                     organization_types: organization_types,
                     success: true
                 });
-            }else{
+            } else {
                 this.getErrorApi().sendError(1009, 500, res);
             }
         });
     }
-    this.retrieve = function(organization_id){
-        return ModelOrganization.findOne({
-            id: organization_id
+    this.retrieve = function(organization_id) {
+        return ModelOrganization.find({
+            where: {
+                id: organization_id
+            }
         });
     }
 }

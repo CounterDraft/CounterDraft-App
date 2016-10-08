@@ -11,9 +11,11 @@ function EmployeeApi() {
     var Promise = getPromise();
     var ModelEmployee = models.employee_user;
 
-    this.retrieve = function(employee_id){
-        return ModelEmployee.findOne({
-            id: employee_id
+    this.retrieve = function(employee_id) {
+        return ModelEmployee.find({
+            where: {
+                id: employee_id
+            }
         });
     }
 }
