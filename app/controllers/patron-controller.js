@@ -5,7 +5,7 @@ function PatronController() {
         default: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('patron-api').create(req, res);
                     break;
                 case 'get':
                     getApi('patron-api').getPatron(req, res);

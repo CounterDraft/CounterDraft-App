@@ -17,6 +17,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         email_address: null,
         password: null,
         password_confirm: null,
+        organization_name: null,
         organization: null
     };
 
@@ -31,7 +32,8 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         //default page;
         $scope.currentPage = _getDefaultPage();
         if(typeof 'undefined' != data && data.hasOwnProperty('organization')){
-            $scope.patronModel.organization = data.organization.name;
+            $scope.patronModel.organization_name = data.organization.name;
+            $scope.patronModel.organization = data.organization.id;
         }
     };
 
@@ -50,17 +52,17 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
             $scope.currentPage = _base_templates + page + '.html';
         }
         angular.forEach($scope.patronSearchModel, function(value, key) {
-            $scope.patronSearchModel[key] = '';
+            $scope.patronSearchModel[key] = null;
         });
     };
 
     $scope.onClose = function() {
         $scope.currentPage = _getDefaultPage();
         angular.forEach($scope.patronModel, function(value, key) {
-            if(key === 'organization'){
+            if(key.match(/organization/g)){
                 return;
             }
-            $scope.patronModel[key] = '';
+            $scope.patronModel[key] = null;
         });
     };
 
@@ -86,6 +88,33 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
             }, function errorCallback(response) {
                 console.error(response);
             });
+        }
+    }
+
+    $scope.onPatronRegistration = function(){
+        var formData = $scope.patronModel;
+        var hasData = true;
+
+        for (var x in formData) {
+            if (!formData[x]) {
+                hasData = false;
+            }
+        }
+
+        //POST create patron;
+        if (hasData) {
+            $http({
+                method: 'POST',
+                url: _url_patron,
+                data: formData,
+            }).then(function successCallback(response) {
+                console.log(response);
+                //show message to check your email.
+            }, function errorCallback(response) {
+                console.error(response);
+            });
+        }else{
+            console.error('Missing data in form.')
         }
     }
 

@@ -95,11 +95,6 @@ var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber, errorMs
     });
 }
 
-var _validEmail = function(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return !re.test(email);
-}
-
 function registationApi() {
     var self = this;
     var Promise = getPromise();
@@ -113,7 +108,7 @@ function registationApi() {
             this.getErrorApi().sendError(1003, 403, res);
         } else if (!req.body.last_name || req.body.last_name === "") {
             this.getErrorApi().sendError(1004, 403, res);
-        } else if (!req.body.email_address || _validEmail(req.body.email_address)) {
+        } else if (!req.body.email_address || self.validEmail(req.body.email_address)) {
             this.getErrorApi().sendError(1005, 403, res);
         } else if (!req.body.password || req.body.password === "") {
             this.getErrorApi().sendError(1006, 403, res);
