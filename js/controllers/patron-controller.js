@@ -96,6 +96,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     }
 
     $scope.onPatronRegistration = function() {
+        var self = this;
         var formData = $scope.patronModel;
         var hasData = true;
 
@@ -124,10 +125,12 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
                     closeOnConfirm: true,
                     html: true
                 }, function() {
-                    // _clearModel('patronModel');
-                    // $scope.$apply();
-                     $scope.addPatronForm.$setPristine();
+                    _clearModel('patronModel');
+                    self.addPatronForm.$setPristine();
+                    self.addPatronForm.$setUntouched();
+                     $scope.$apply();
                 });
+
 
             }, function errorCallback(response) {
                 var data = response.data || null;
