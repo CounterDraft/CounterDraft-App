@@ -29,6 +29,7 @@ module.exports = {
         }
 
         global.getUtil = require('util');
+        global.Enum = require('enum');
 
         global.BASE_URL = 'http://' + global.config.server.ip + ':' + global.config.server.port + '/';
         global.CONTROLLER_DIR = dirBase + '/app/controllers/';
@@ -68,7 +69,7 @@ module.exports = {
         }
 
         global.getApi = function(apiName) {
-            var api = require(global.API_DIR + apiName);
+            var api = require(global.API_DIR + apiName + '-api');
             return mix(getBase('counter-api')).into(new api());
         }
 

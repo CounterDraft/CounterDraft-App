@@ -37,26 +37,28 @@ module.exports = {
         var isAuthorized = authorization.ensureRequest.
         isPermitted('restricted:employee');
 
-        var sess;
-
-
         routerWeb.get("/", isAuthorized, function(req, res) {
-            res.render('pages/dashboard', {
-                data: {
-                    user: req.session.user
-                }
-            });
+            res.redirect("/dashboard");
         });
 
         routerWeb.get("/dashboard", isAuthorized, function(req, res) {
             if (req.session && req.session.user) {
-                res.render('pages/dashboard.ejs', {
+                var time_spans = getApi("dashboard").getTimeSpans().enums;
+                var user_data = {
+                    employee_id: req.session.user.id,
+                    username: req.session.user.username,
+                    first_name: req.session.user.first_name,
+                    last_name: req.session.user.last_name,
+                    email_address: req.session.user.email_address
+                }
+                res.render("pages/dashboard.ejs", {
                     data: {
-                        user: req.session.user
+                        user: user_data,
+                        timeSpans: time_spans
                     }
                 });
             } else {
-                res.redirect('/login');
+                res.redirect("/login");
             }
         });
 
@@ -88,10 +90,10 @@ module.exports = {
             if (!user.employee_id) {
                 res.redirect('/logout');
             }
-            getApi('employee-api').retrieve(user.employee_id)
+            getApi('employee').retrieve(user.employee_id)
                 .then(function(results) {
                     var employee = results.dataValues;
-                    return getApi('organization-api').retrieve(employee.employee_organization);
+                    return getApi('organization').retrieve(employee.employee_organization);
                 }).then(function(results) {
                     var organization = results.dataValues;
                     res.render('pages/patron.ejs', {
@@ -137,10 +139,10 @@ module.exports = {
 
             } else {
                 res.locals.login = false;
-                getApi('registration-api').confirmRegistation(req, res)
+                getApi('registration').confirmRegistation(req, res)
                     .then(function(data) {
                         res.render('pages/confirmation.ejs', {
-                            data: {email_address: data.email_address}
+                            data: { email_address: data.email_address }
                         });
                     }).catch(function(error) {
                         res.render('pages/confirmation.ejs', {

@@ -5,10 +5,10 @@ function AccountController() {
         login: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
-                    getApi('login-api').login(req, res);
+                    getApi('login').login(req, res);
                     break;
                 case 'get':
-                    getApi('login-api').getLogin(req, res);
+                    getApi('login').getLogin(req, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);
@@ -25,10 +25,10 @@ function AccountController() {
         registration: function(verb, req, res, self) {
             switch (verb) { 
                 case 'post':
-                    getApi('registration-api').registerUser(req, res);
+                    getApi('registration').registerUser(req, res);
                     break;
                 case 'get':
-                    getApi('registration-api').getUserRegistration(req, res);
+                    getApi('registration').getUserRegistration(req, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);

@@ -11,9 +11,14 @@
         duration: string,
     }
  */
+var TIMESPANS = new Enum(['day', 'week', 'month', 'year', 'max']);
 
 function DashboardApi() {
     this.tag = 'dashboard-api';
+
+    this.getTimeSpans = function(){
+        return TIMESPANS;
+    }
 
     this.getGameChartDate = function(req, res) {
         var self = this;

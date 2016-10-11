@@ -232,7 +232,7 @@ function registationApi() {
                                 token: registration_user.dataValues.token
                             }
                         }).then(function(did_update){
-                            return getApi('login-api').loginUser(req, res, registration_user.dataValues.email_address);
+                            return getApi('login').loginUser(req, res, registration_user.dataValues.email_address);
                         });
                     } else {
                         return reject(self.getErrorApi().sendError(errorNumberNotFound, 400));

@@ -8,7 +8,7 @@ function DashboardController() {
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'get':
-                    getApi('dashboard-api').getPatronChartData(req, res);
+                    getApi('dashboard').getPatronChartData(req, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);
@@ -28,7 +28,7 @@ function DashboardController() {
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'get':
-                    getApi('dashboard-api').getGameChartDate(req, res);
+                    getApi('dashboard').getGameChartDate(req, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);

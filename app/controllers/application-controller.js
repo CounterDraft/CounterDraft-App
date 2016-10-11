@@ -5,7 +5,7 @@ function AccountController() {
         organization: function(verb, req, res, self) {
             switch (verb) {
                 case 'get':
-                    getApi('organization-api').getOrganizationTypes(req, res);
+                    getApi('organization').getOrganizationTypes(req, res);
                     break;
                 case 'post':
                     self.getErrorApi().sendError(1011, 403, res);
@@ -30,7 +30,7 @@ function AccountController() {
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'put':
-                    getApi('reset-api').resetUsernamePassword(req, res);
+                    getApi('reset').resetUsernamePassword(req, res);
                     break;
                 case 'delete':
                     self.getErrorApi().sendError(1011, 403, res);

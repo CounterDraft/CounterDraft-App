@@ -59,7 +59,7 @@ function PatronApi() {
                         return reject(self.getErrorApi().getErrorMsg(1018));
                     });
                 }
-                return getApi('employee-api').retrieve(user.employee_id);
+                return getApi('employee').retrieve(user.employee_id);
             }).then(function(results) {
                 var employee = results.dataValues;
                 return ModelPatron.create({
