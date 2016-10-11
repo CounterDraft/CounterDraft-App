@@ -24,6 +24,22 @@ function PatronApi() {
             });
         });
     }
+
+    this.getTotalPatron = function(req, res) {
+        ModelPatron.findAndCountAll({
+            where: {
+                is_active: true
+            }
+        }).then(function(results) {
+            res.status(200).json({
+                total: results.count,
+                success: true
+            });
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+        });
+    }
+
     this.create = function(req, res) {
         var self = this;
         var user = req.session.user || req.sess;

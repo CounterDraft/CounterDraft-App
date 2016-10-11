@@ -12,7 +12,8 @@ module.exports = {
             'dashboard',
             'verify',
             'reset',
-            'application'
+            'application',
+            'game'
         ];
 
         // Register account
@@ -22,6 +23,10 @@ module.exports = {
 
         app.all(version + '/:type(patron)/:id(*)', function(req, res) {
             getController('patron-controller').rest(req, res);
+        });
+
+        app.all(version + '/:type(game)/:id(*)', function(req, res) {
+            getController('game-controller').rest(req, res);
         });
 
         // Account Controller - This should do control any call account related.

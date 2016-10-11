@@ -8,7 +8,10 @@
 app.controller('DashboardCtrl', ['$scope', '$http', '$window', 'data', function($scope, $http, $window, data) {
     var _base_templates = "templates/dashboard/";
     var _dashboard_patron_url = "/api/v1/dashboard/patron";
-    var _dashboard_games_url = "/api/v1/dashboard/game";
+    var _dashboard_game_url = "/api/v1/dashboard/game";
+    var _patron_total_url = "/api/v1/patron/total";
+    var _game_total_url = "/api/v1/game/total";
+
     $scope.currentPage = null;
     $scope.timeSelect = null;
 
@@ -16,9 +19,9 @@ app.controller('DashboardCtrl', ['$scope', '$http', '$window', 'data', function(
     $scope.timeSpan = ['none'];
 
     //quick data;
-    $scope.total_patrons = null;
-    $scope.daily_active_users = null;
-    $scope.active_games = null;
+    $scope.total_patrons = 0;
+    $scope.daily_active_users = 0;
+    $scope.active_games = 0;
 
     //models
     $scope.user_model = { username: 'anonymous' };
@@ -29,9 +32,6 @@ app.controller('DashboardCtrl', ['$scope', '$http', '$window', 'data', function(
     }
 
     this.initDash = function() {
-        $scope.total_patrons = 99;
-        $scope.daily_active_users = 99;
-        $scope.active_games = 59;
         if (typeof 'undefined' != data) {
             if (data.user) {
                 $scope.user_model = data.user;
@@ -42,10 +42,58 @@ app.controller('DashboardCtrl', ['$scope', '$http', '$window', 'data', function(
                 this.onTimeChange();
             }
         }
+
+        $http({
+            method: 'GET',
+            url: _patron_total_url
+        }).then(function successCallback(response) {
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.hasOwnProperty('total')) {
+                $scope.total_patrons = response.data['total'];
+            }
+        }, function errorCallback(response) {
+            console.error(response);
+        });
+
+        $http({
+            method: 'GET',
+            url: _game_total_url
+        }).then(function successCallback(response) {
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.hasOwnProperty('total')) {
+                $scope.active_games = response.data['total'];
+            }
+        }, function errorCallback(response) {
+            console.error(response);
+        });
     }
 
-    this.onTimeChange = function(){
-        console.log($scope.timeSelect);
+    this.onTimeChange = function() {
+        var formData = {
+            duration: $scope.timeSelect
+        }
+
+        $http({
+            method: 'GET',
+            url: _dashboard_patron_url,
+            params: formData
+        }).then(function successCallback(response) {
+            console.log(response.data);
+            return $http({
+                method: 'GET',
+                url: _dashboard_game_url,
+                params: formData
+            });
+        }, function errorCallback(response) {
+            console.error(response);
+        }).then(function successCallback(response) {
+            console.log(response.data);
+
+        }, function errorCallback(response) {
+            console.error(response);
+        });
     }
 
     $scope.onRoute = function(page) {

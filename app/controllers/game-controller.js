@@ -1,15 +1,22 @@
-function PatronController() {
-    this.tag = 'patronController';
+"use strict";
+/*  Title: Game-contorller
+    Author:  Hubbert
+    Date: Oct 11 2016
+    Comment: 
+        This is the contoller for game calls, no busniess logic should be in here, just routing.
+*/
+
+function GameController() {
+    this.tag = 'gameController';
 
     this.ApiRouter = {
-
         total: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'get':
-                    getApi('patron').getTotalPatron(req, res);
+                    getApi('game').getTotalGame(req, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);
@@ -26,10 +33,10 @@ function PatronController() {
         default: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
-                    getApi('patron').create(req, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'get':
-                    getApi('patron').getPatron(req, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);
@@ -45,4 +52,4 @@ function PatronController() {
     }
 }
 
-module.exports = PatronController;
+module.exports = GameController;

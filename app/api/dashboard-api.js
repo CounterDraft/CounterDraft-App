@@ -240,7 +240,7 @@ function DashboardApi() {
                 count: result.count
             }
             res.status(200).json({
-                count: list,
+                counts: list,
                 success: true
             });
         });
