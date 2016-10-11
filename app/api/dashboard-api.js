@@ -6,36 +6,36 @@
         This is the api which is used for all dashboard calls.
 */
 
-/* duration = 'week' | 'day' | 'month'  | 'year' | 'max';
-    {
-        duration: string,
-    }
- */
 var TIMESPANS = new Enum(['day', 'week', 'month', 'year', 'max']);
 
 function DashboardApi() {
     this.tag = 'dashboard-api';
 
-    this.getTimeSpans = function(){
+    this.getTimeSpans = function() {
         return TIMESPANS;
     }
 
     this.getGameChartDate = function(req, res) {
         var self = this;
-        var duration = 'week';
+        var duration = null;
         var numOfOutput = 7;
         var list = {};
-
         var model = models.game;
-
         if (!req.query.duration) {
             this.getErrorApi().sendError(1012, 400, res);
             return;
         } else {
-            duration = req.query.duration;
+            try {
+                duration = TIMESPANS.get(req.query.duration);
+                if (!duration) {
+                    throw this.getErrorApi().getErrorMsg(1012);
+                }
+            } catch (err) {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 400, res);
+                return;
+            }
         }
-
-        switch (duration) {
+        switch (duration.key) {
             case 'day':
                 for (var x = 0; x < numOfOutput; x++) {
                     var d = new Date();
@@ -87,20 +87,25 @@ function DashboardApi() {
 
     this.getPatronChartData = function(req, res) {
         var self = this;
-        var duration = 'week';
+        var duration = null;
         var numOfOutput = 7;
         var list = {};
-
         var model = models.patron_player;
-
         if (!req.query.duration) {
             this.getErrorApi().sendError(1012, 400, res);
             return;
         } else {
-            duration = req.query.duration;
+            try {
+                duration = TIMESPANS.get(req.query.duration);
+                if (!duration) {
+                    throw this.getErrorApi().getErrorMsg(1012);
+                }
+            } catch (err) {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 400, res);
+                return;
+            }
         }
-
-        switch (duration) {
+        switch (duration.key) {
             case 'day':
                 for (var x = 0; x < numOfOutput; x++) {
                     var d = new Date();

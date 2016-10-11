@@ -69,8 +69,6 @@ function LoginApi() {
                             req.session.user['permissions'] = ['restricted:admin,employee'];
                         }
 
-                        console.log(employee);
-
                         employee.password = '****';
                         res.json({
                             user: employee,
