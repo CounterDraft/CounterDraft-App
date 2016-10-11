@@ -3,7 +3,7 @@ Backend & web app code for all CounterDraft
 
 #Running the project locally / development.
 1. Download postgre from https://www.postgresql.org/download/
-2. Create database counter and copy the master_config.js file in the /config directory.
+2. Create database counter and copy the master_config.js file in the /config directory, save it in the same dir and name it local_config.js .
 3. Add a new database config:
 	module.exports = {
 	    database: {
