@@ -8,6 +8,7 @@
 app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($scope, $http, $window, data) {
     var _base_templates = "templates/patron/";
     var _url_patron = "/api/v1/patron/";
+    $scope.allowEdit = null;
     $scope.prevPage = null;
     $scope.currentPage = null;
 
@@ -46,7 +47,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     }
 
     this.initDetails = function() {
-        //nothing;
+        $scope.allowEdit = false;
     }
 
     var _clearModel = function(modalName) {
@@ -78,21 +79,25 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         return is_good;
     }
 
-    $scope.onRoute = function(page) {
+    $scope.onRoute = function(page, doNotClear) {
         $scope.prevPage = $scope.currentPage;
         if (page) {
             $scope.currentPage = _base_templates + page + '.html';
         }
-        _clearModel('patronSearchModel');
-        _clearModel('patronModel');
+        if (!doNotClear) {
+            _clearModel('patronSearchModel');
+            _clearModel('patronModel');
+        }
     }
 
     $scope.onBack = function(page) {
-        if($scope.prevPage){
-            $scope.currentPage = $scope.prevPage; 
+        if ($scope.prevPage) {
+            $scope.currentPage = $scope.prevPage;
         }
-        // _clearModel('patronSearchModel');
-        // _clearModel('patronModel');
+    }
+
+    $scope.onEdit = function(){
+        $scope.allowEdit = !$scope.allowEdit;
     }
 
     $scope.onPatronSearch = function() {
@@ -149,11 +154,11 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
                     confirmButtonText: "OK",
                     closeOnConfirm: true,
                     html: true
-                }, function(){
-                    $scope.onRoute('patron-details');
+                }, function() {
+                    $scope.onRoute('patron-details', true);
                     $scope.$apply();
                 });
-                _resetForm(self.addPatronForm, 'patronModel');
+                // _resetForm(self.addPatronForm, 'patronModel');
 
             }, function errorCallback(response) {
                 var data = response.data || null;

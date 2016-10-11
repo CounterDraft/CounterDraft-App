@@ -1,46 +1,30 @@
 <section class="beta">
     <div class="col-xs-12">
         <button type="button" class="btn senary add" ng-click="onBack()"><i class="glyphicon glyphicon-circle-arrow-left"></i></button>
+        <button type="button" class="btn senary edit" ng-click="onEdit()"><i class="glyphicon glyphicon-pencil"></i></button>
         <h2 class="text-left-xs text-left-sm text-center">Patron Details</h2>
     </div>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
         <form ng-submit="onPatronUpdate()" class="counter-form" data-toggle="validator" role="form" name="addPatronDetailForm" ng-init="pCtrl.initDetails()">
             <div class="form-group" show-errors>
-                <input type="text" id="patron-first-name" name="firstName" class="form-control" pattern="^[_A-z]{1,}$" placeholder="Frist Name *" ng-model="patronModel.first_name" required>
+                <input type="text" id="patron-first-name" name="firstName" class="form-control" pattern="^[_A-z]{1,}$" placeholder="Frist Name *" ng-model="patronModel.first_name" ng-disabled="!allowEdit" required>
                 <div class="help-block" ng-if="addPatronForm.firstName.$error.required">First name is required</div>
                 <div class="help-block" ng-if="addPatronForm.firstName.$error && !addPatronForm.firstName.$error.required">First name contains invalid characters</div>
             </div>
             <div class="form-group" show-errors>
-                <input type="text" class="form-control" name="lastName" placeholder="Last Name *" pattern="^[_A-z]{1,}$" ng-model="patronModel.last_name" required>
+                <input type="text" class="form-control" name="lastName" placeholder="Last Name *" pattern="^[_A-z]{1,}$" ng-model="patronModel.last_name" ng-disabled="!allowEdit" required>
                 <div class="help-block" ng-if="addPatronForm.lastName.$error.required">Last name is required</div>
                 <div class="help-block" ng-if="addPatronForm.lastName.$error && !addPatronForm.lastName.$error.required">Last name contains invalid characters</div>
             </div>
             <div class="form-group" show-errors>
-                <input type="email" class="form-control" name="emailAddress" placeholder="Enter email *" ng-model="patronModel.email_address" required>
+                <input type="email" class="form-control" name="emailAddress" placeholder="Enter email *" ng-model="patronModel.email_address" ng-disabled="!allowEdit" required>
                 <div class="help-block" ng-if="addPatronForm.emailAddress.$error.required">Email address is required</div>
                 <div class="help-block" ng-if="addPatronForm.emailAddress.$error && !addPatronForm.emailAddress.$error.required">Email address is invalid</div>
             </div>
-            <div class="form-group" show-errors>
-                <input type="password" data-minlength="6"  class="form-control" name="password" placeholder="Enter password *" ng-model="patronModel.password" required>
-                <div class="help-block" ng-if="addPatronForm.password.$error.required">Password is required</div>
-                <div class="help-block" ng-if="addPatronForm.password.$error && !addPatronForm.password.$error.required">Not long enough</div>
-            </div>
-            <div class="form-group" show-errors>
-                <input type="password" data-minlength="6"  class="form-control" name="passwordConfirm" placeholder="Enter password again *" ng-model="patronModel.password_confirm" required>
-                <div class="help-block" ng-if="addPatronForm.passwordConfirm.$error.required">Password confirm is required</div>
-                <div class="help-block" ng-if="addPatronForm.passwordConfirm.$error && !addPatronForm.passwordConfirm.$error.required">Not long enough</div>
-            </div>
-            <div class="row">
-            <h3 class="col-xs-12">Organization</h3>
-            </div>
-            <div class="form-group" show-errors>
-                <input id="organization" type="text" class="form-control" name="organization" placeholder="Organization *" ng-model="patronModel.organization_name" required disabled>
-                <div class="help-block" ng-if="addPatronForm.organization.$error.required">Organization is required</div>
-            </div>
             <div class="form-group">
                 <div class="col-xs-3">&nbsp;</div>
-                <button class="btn col-xs-6 primary" ng-disabled="addPatronForm.$invalid">SUBMIT</button>
+                <button class="btn col-xs-6 primary" ng-show="allowEdit" ng-disabled="addPatronForm.$invalid && !allowEdit">SAVE</button>
                 <div class="col-xs-3">&nbsp;</div>
             </div>
         </form>
