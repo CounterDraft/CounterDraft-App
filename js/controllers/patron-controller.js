@@ -8,6 +8,7 @@
 app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($scope, $http, $window, data) {
     var _base_templates = "templates/patron/";
     var _url_patron = "/api/v1/patron/";
+    $scope.prevPage = null;
     $scope.currentPage = null;
 
     //models
@@ -31,11 +32,23 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     var _init = function() {
         //default page;
         $scope.currentPage = _getDefaultPage();
+    }
+
+    this.initSearch = function() {
+        //nothing;
+    }
+
+    this.initAddPatron = function() {
         if (typeof 'undefined' != data && data.hasOwnProperty('organization')) {
             $scope.patronModel.organization_name = data.organization.name;
             $scope.patronModel.organization = data.organization.id;
         }
-    };
+    }
+
+    this.initDetails = function() {
+        //nothing;
+    }
+
     var _clearModel = function(modalName) {
         if (!$scope[modalName]) {
             return;
@@ -46,7 +59,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
             }
             $scope[modalName][key] = null;
         });
-    };
+    }
 
     var _resetForm = function(form, modelName) {
         _clearModel(modelName);
@@ -63,19 +76,24 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
             }
         }
         return is_good;
-    };
+    }
 
     $scope.onRoute = function(page) {
+        $scope.prevPage = $scope.currentPage;
         if (page) {
             $scope.currentPage = _base_templates + page + '.html';
         }
         _clearModel('patronSearchModel');
-    };
-
-    $scope.onClose = function() {
-        $scope.currentPage = _getDefaultPage();
         _clearModel('patronModel');
-    };
+    }
+
+    $scope.onBack = function(page) {
+        if($scope.prevPage){
+            $scope.currentPage = $scope.prevPage; 
+        }
+        // _clearModel('patronSearchModel');
+        // _clearModel('patronModel');
+    }
 
     $scope.onPatronSearch = function() {
         var formData = $scope.patronSearchModel;
@@ -131,6 +149,9 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
                     confirmButtonText: "OK",
                     closeOnConfirm: true,
                     html: true
+                }, function(){
+                    $scope.onRoute('patron-details');
+                    $scope.$apply();
                 });
                 _resetForm(self.addPatronForm, 'patronModel');
 

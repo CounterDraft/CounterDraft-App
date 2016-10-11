@@ -1,11 +1,11 @@
 <section class="beta">
     <div class="col-xs-12">
-        <button type="button" class="btn close quinary" ng-click="onRoute('patron')">&times;</button>
-        <h2 class="text-left-xs text-left-sm text-center">New Patron</h2>
+        <button type="button" class="btn senary add" ng-click="onBack()"><i class="glyphicon glyphicon-circle-arrow-left"></i></button>
+        <h2 class="text-left-xs text-left-sm text-center">Patron Details</h2>
     </div>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
-        <form ng-submit="onPatronRegistration()" class="counter-form" data-toggle="validator" role="form" name="addPatronForm" ng-init="pCtrl.initAddPatron()">
+        <form ng-submit="onPatronUpdate()" class="counter-form" data-toggle="validator" role="form" name="addPatronDetailForm" ng-init="pCtrl.initDetails()">
             <div class="form-group" show-errors>
                 <input type="text" id="patron-first-name" name="firstName" class="form-control" pattern="^[_A-z]{1,}$" placeholder="Frist Name *" ng-model="patronModel.first_name" required>
                 <div class="help-block" ng-if="addPatronForm.firstName.$error.required">First name is required</div>
