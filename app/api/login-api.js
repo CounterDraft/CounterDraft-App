@@ -5,7 +5,7 @@ function LoginApi() {
     var Promise = getPromise();
     var Employee = models.employee_user;
 
-    this.loginUser = function(req, res, email_address) {
+    this.loginUser = function(req, email_address) {
         var self = this;
         return new Promise(function(resolve, reject) {
             Employee.findOne({
@@ -23,7 +23,7 @@ function LoginApi() {
                         permissions: ['restricted:employee']
                     }
                     if (employee.is_admin) {
-                        req.session.user['permissions'] = ['restricted:admin'];
+                        req.session.user['permissions'] = ['restricted:admin,employee'];
                     }
                     return resolve(employee);
                 } else {
@@ -66,8 +66,10 @@ function LoginApi() {
                         }
 
                         if (employee.is_admin) {
-                            req.session.user['permissions'] = ['restricted:admin'];
+                            req.session.user['permissions'] = ['restricted:admin,employee'];
                         }
+
+                        console.log(employee);
 
                         employee.password = '****';
                         res.json({

@@ -42,7 +42,13 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,
-            comment: "Is the employee active or not"
+            comment: "Is the employee active or not."
+        },
+        is_email_confirmed: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+            comment: "If false we have yet to confirmed the email_address."
         }
     }, {
         freezeTableName: true,

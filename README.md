@@ -1,47 +1,37 @@
 #CounterDraft WebApp and API
 Backend & web app code for all CounterDraft
 
-// //add Salt to password and remember me keys;
-//         "bcryptjs": "^2.2.1",
+#Running the project locally / development.
+1. Download postgre from https://www.postgresql.org/download/
+2. Create database counter and copy the master_config.js file in the /config directory.
+3. Add a new database config:
+	module.exports = {
+	    database: {
+	        "user": "postgres",
+	        "password": "postgres",
+	        "database": "counter",
+	        "host": "localhost",
+	        "port": 5432,
+	        "dialect": "postgres"
+	    },
+	    environment: 'development',
+	    migration_run: false
+	};
+	This file is used to override any master configs for your local enviroment.
+	note - migration_run needs to be set to false the first time you run the project.
+4. Install npm via brew. 
+	'brew install node'
+5. Install all npm libs via the root directory of project. (where the package.json file is located)
+	'npm install'
+6. Run the project with the following command:
+	'npm start'
+7. The project should create all the tables and relationships. Now run the querys on the counter database, located in scripts/testData.sql.
+8. Run the project with the following command:
+	'npm start'
+9. You can comment out the migration_run property in your local_config.js if you dont want migrations to try to run.
 
-//         //Orchestrate is a database service. 
-//         //It is a simple REST API that is optimized for queries. 
-//         //Orchestrate combines full-text search, graph, time-series, and key/value.
-//         "orchestrate": "^0.5.0",
+#Running the project in production.
 
-//         //HTTP request logger middleware for node.js
-//         "morgan": "^1.6.1",
-        
-//         //body parsing middleware
-//         "body-parser": "^1.14.0",
 
-//         // Parse Cookie header and populate req.cookies
-//         // with an object keyed by the cookie names.
-//         // Optionally you may enable signed cookie support
-//         // by passing a secret string, which assigns req.secret
-//         // so it may be used by other middleware.
-//         "cookie-parser": "^1.3.5",
+[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
-//         //Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
-//         "method-override": "^2.3.5",
-
-//         //Simple session middleware for Express
-//         "express-session": "^1.11.3",
-        
-//         //Simple, unobtrusive authentication for Node.js.
-//         "passport": "^0.3.0 ",
-
-//         //Facebook authentication strategy for Passport.
-//         "passport-facebook": "^2.0.0",
-
-//         //Google (OpenID) authentication strategy for Passport.
-//         "passport-google": "^0.3.0",
-
-//         //Local username and password authentication strategy for Passport.
-//         "passport-local": "^1.0.0",
-
-//         //Twitter authentication strategy for Passport.
-//         "passport-twitter": "^1.0.3",
-
-//         //A library for promises (CommonJS/Promises/A,B,D)
-//         "q": "^1.4.1"
