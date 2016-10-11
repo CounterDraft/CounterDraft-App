@@ -48,6 +48,13 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         });
     };
 
+    var _resetForm = function(form, modelName) {
+        _clearModel(modelName);
+        form.$setPristine();
+        form.$setUntouched();
+        $scope.$broadcast('show-errors-reset');
+    }
+
     $scope.patronSearchFormValue = function() {
         var is_good = true;
         for (var x in $scope.patronSearchModel) {
@@ -124,13 +131,8 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
                     confirmButtonText: "OK",
                     closeOnConfirm: true,
                     html: true
-                }, function() {
-                    _clearModel('patronModel');
-                    self.addPatronForm.$setPristine();
-                    self.addPatronForm.$setUntouched();
-                     $scope.$apply();
                 });
-
+                _resetForm(self.addPatronForm, 'patronModel');
 
             }, function errorCallback(response) {
                 var data = response.data || null;
