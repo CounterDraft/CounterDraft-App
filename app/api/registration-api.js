@@ -59,11 +59,11 @@ var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber, errorMs
             //             return resolve(data);
             //         }
             //     });
-            
+
             var url_link;
-            if(global.config.environment === 'production'){
+            if (global.config.environment === 'production') {
                 url_link = 'http://' + config.server.ip + '/confirmation?token=' + registration_user.dataValues.token;
-            }else{
+            } else {
                 url_link = 'http://' + config.server.ip + ':' + config.server.port + '/confirmation?token=' + registration_user.dataValues.token;
             }
 
@@ -102,6 +102,7 @@ function registationApi() {
     var ModelRegistrationUser = models.registration_user;
     var ModelEmployee = models.employee_user;
     var ModelOrganization = models.organization;
+    var ModelPatron = models.patron_player;
 
     this.registerUser = function(req, res) {
         if (!req.body.first_name || req.body.first_name === "") {
@@ -146,12 +147,24 @@ function registationApi() {
                         email_address: req.body.email_address
                     }
                 });
+            }).then(function(results) {
+                if (results.count > 0) {
+                    return new Promise(function(resolve, reject) {
+                        return reject(self.getErrorApi().getErrorMsg(1018));
+                    });
+                }
+                return ModelPatron.findAndCountAll({
+                    where: {
+                        email_address: req.body.email_address
+                    }
+                });
             }).then(function(result) {
                 if (result.count > 0) {
-                    self.getErrorApi().sendError(1018, 403, res);
-                    return;
+                    return new Promise(function(resolve, reject) {
+                        return reject(self.getErrorApi().getErrorMsg(1018));
+                    });
                 }
-                ModelEmployee.create({
+                return ModelEmployee.create({
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
                     username: req.body.email_address,
@@ -159,40 +172,47 @@ function registationApi() {
                     password: passwordWithHash,
                     is_admin: false,
                     employee_organization: employeeOrganization
-                }).then(function(employee) {
-                    if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
-                        var emailErrorNumber = 9901
-                        var sendEmailErrorNumber = 9902;
-
-                        _sendRegistrationEmail(employee.dataValues.email_address,
-                            self.getErrorApi().getErrorMsg(emailErrorNumber),
-                            emailErrorNumber,
-                            self.getErrorApi().getErrorMsg(sendEmailErrorNumber),
-                            sendEmailErrorNumber);
-
-                        var dataSave = {
-                            first_name: employee.dataValues.first_name,
-                            last_name: employee.dataValues.last_name,
-                            username: employee.dataValues.email_address,
-                            email_address: employee.dataValues.email_address,
-                            employee_organization: employee.dataValues.employee_organization,
-                            permissions: ['restricted:employee']
-                        }
-
-                        if (employee.dataValues.is_admin) {
-                            dataSave['permissions'] = ['restricted:admin,employee'];
-                        }
-
-                        req.session.user = dataSave;
-
-                        res.status(200).json({
-                            user: dataSave,
-                            success: true
-                        });
-                    } else {
-                        self.getErrorApi().sendError(1008, 422, res);
-                    }
                 });
+            }).then(function(employee) {
+                if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
+                    var emailErrorNumber = 9901
+                    var sendEmailErrorNumber = 9902;
+
+                    _sendRegistrationEmail(employee.dataValues.email_address,
+                        self.getErrorApi().getErrorMsg(emailErrorNumber),
+                        emailErrorNumber,
+                        self.getErrorApi().getErrorMsg(sendEmailErrorNumber),
+                        sendEmailErrorNumber);
+
+                    var dataSave = {
+                        first_name: employee.dataValues.first_name,
+                        last_name: employee.dataValues.last_name,
+                        username: employee.dataValues.email_address,
+                        email_address: employee.dataValues.email_address,
+                        employee_organization: employee.dataValues.employee_organization,
+                        permissions: ['restricted:employee']
+                    }
+
+                    if (employee.dataValues.is_admin) {
+                        dataSave['permissions'] = ['restricted:admin,employee'];
+                    }
+
+                    req.session.user = dataSave;
+
+                    res.status(200).json({
+                        user: dataSave,
+                        success: true
+                    });
+                    return new Promise(function(resolve, reject) {
+                        return resolve(dataSave);
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        return reject(self.getErrorApi().getErrorMsg(1018));
+                    });
+                }
+            }).catch(function(err) {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 422, res);
             });
         }
     }
@@ -231,7 +251,7 @@ function registationApi() {
                             where: {
                                 token: registration_user.dataValues.token
                             }
-                        }).then(function(did_update){
+                        }).then(function(did_update) {
                             return getApi('login').loginUser(req, registration_user.dataValues.email_address);
                         });
                     } else {
