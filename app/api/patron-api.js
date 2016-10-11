@@ -10,6 +10,7 @@ function PatronApi() {
     this.tag = 'patron-api';
     var Promise = getPromise();
     var ModelPatron = models.patron_player;
+    var ModelEmployee = models.employee_user;
 
     this.getPatron = function(req, res) {
         var self = this;
@@ -25,7 +26,7 @@ function PatronApi() {
     }
     this.create = function(req, res) {
         var self = this;
-        var user = req.session.user;
+        var user = req.session.user || req.sess;
 
         if (!req.body.first_name || req.body.first_name === "") {
             this.getErrorApi().sendError(1003, 403, res);
@@ -53,6 +54,18 @@ function PatronApi() {
                 where: {
                     email_address: req.body.email_address
                 }
+            }).then(function(results) {
+                if (results.count > 0) {
+                    return new Promise(function(resolve, reject) {
+                        return reject(self.getErrorApi().getErrorMsg(1018));
+                    });
+                }
+
+                return ModelEmployee.findAndCountAll({
+                    where: {
+                        email_address: req.body.email_address
+                    }
+                });
             }).then(function(results) {
                 if (results.count > 0) {
                     return new Promise(function(resolve, reject) {
