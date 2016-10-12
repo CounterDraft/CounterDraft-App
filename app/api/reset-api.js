@@ -6,7 +6,8 @@
         This is the api which is used for all reseting stuff all logic should be here.
 */
 var _sendResetEmail = function(user_email) {
-
+    //generate a token for reseting password;
+    //send email to email address.
 }
 
 function ResetApi() {

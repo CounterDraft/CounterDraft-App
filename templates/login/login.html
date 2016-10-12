@@ -11,13 +11,15 @@
                             <div class="form-group" show-errors>
                                 <div class="col-xs-12">
                                     <input type="email" name="emailAddress" class="form-control" id="username" placeholder="Email *" ng-model="loginModel.username" required>
-                                    <div class="help-block with-errors"></div>
+                                    <div class="help-block" ng-if="loginForm.emailAddress.$error.required">Email address is required</div>
+                                    <div class="help-block" ng-if="loginForm.emailAddress.$error && !loginForm.emailAddress.$error.required">Email address is invalid</div>
                                 </div>
                             </div>
                             <div class="form-group" show-errors>
                                 <div class="col-xs-12">
                                     <input type="password" name="password" class="form-control" id="password" placeholder="Password *" ng-model="loginModel.password" data-minlength="6" required>
-                                    <div class="help-block with-errors"></div>
+                                    <div class="help-block" ng-if="loginForm.password.$error.required">Password is required</div>
+                                    <div class="help-block" ng-if="loginForm.password.$error && !loginForm.password.$error.required">Not long enough</div>
                                 </div>
                             </div>
                         </div>
@@ -26,7 +28,7 @@
                                 <div class="col-xs-12 col-sm-4">
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
-                                    <button type="submit" class="btn primary btn-block">Login</button>
+                                    <button type="submit" class="btn primary btn-block" ng-disabled="loginForm.$invalid">Login</button>
                                 </div>
                                 <div class="col-xs-12 col-sm-4">
                                 </div>
