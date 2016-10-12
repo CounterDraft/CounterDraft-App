@@ -46,7 +46,7 @@ module.exports = {
 
         // Reset password
         app.all(version + '/:type(reset)/:id(*)', function(req, res) {
-            getController('account-controller').rest(req, res);
+            getController('reset-controller').rest(req, res);
         });
 
         // Application servers.

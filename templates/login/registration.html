@@ -5,7 +5,7 @@
     </div>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
-        <form ng-submit="onRegistration()" class="counter-form" data-toggle="validator" role="form" name="registrationForm">
+        <form ng-submit="onRegistration()" class="counter-form" data-toggle="validator" role="form" name="registrationForm" ng-init="aCtrl.initRegistration()">
             <div class="form-group" show-errors>
                 <input type="text" id="registation-first-name" class="form-control" placeholder="Frist Name *" ng-model="registrationModel.first_name" name="firstName" pattern="^[_A-z]{1,}$" required>
                 <div class="help-block" ng-if="registrationForm.firstName.$error.required">First name is required</div>

@@ -1,9 +1,9 @@
 <section class="counter-login">
-    <div id="counter-login-modal" class="login-modal">
+    <div id="counter-login-modal" class="login-modal" ng-init="aCtrl.initLogin()">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="model-tmpl-0">
-                    <form name="login-form" name="loginForm" class="form-horizontal counter-form" id="login-form" ng-submit="onSubmit('login-form')" data-toggle="validator" role="form">
+                    <form name="login-form" name="loginForm" class="form-horizontal counter-form" id="login-form" ng-submit="onSubmit()" data-toggle="validator" role="form">
                         <div class="modal-header">
                             <h4 class="modal-title text-center">login</h4>
                         </div>
@@ -38,20 +38,16 @@
                         </div>
                     </form>
                     <div ng-class="showResetPassword ? 'active' : ''" class="retrieve-container">
-                        <form role="form" name="retrieve-form" class="form-horizontal" id="retrieve-form" ng-submit="onReset()">
+                        <form role="form" name="resetPasswordForm" class="form-horizontal counter-form" id="retrieve-form" ng-submit="onReset()" data-toggle="validator" role="form">
                             <div class="modal-header">
                                 <h4 class="modal-title text-center">Reset Your Password</h4>
                             </div>
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="username" class="sr-only col-sm-1">Username:</label>
+                                <div class="form-group" show-errors>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="username" placeholder="Username" ng-model="resetModal.username" ng-disabled="resetModal.email_address">
-                                    </div>
-                                    <div class="col-xs-12 modal-title">&nbsp;or&nbsp;</div>
-                                    <label for="username" class="sr-only col-sm-1">Email</label>
-                                    <div class="col-sm-12">
-                                        <input type="email" class="form-control" id="email" placeholder="Email" ng-model="resetModal.email_address" ng-disabled="resetModal.username">
+                                        <input type="email" class="form-control" name="emailAddress" id="reset-email" placeholder="Email *" ng-model="resetModal.email_address" ng-model="resetModal.email_address" required>
+                                        <div class="help-block" ng-if="resetPasswordForm.emailAddress.$error.required">Email address is required</div>
+                                        <div class="help-block" ng-if="resetPasswordForm.emailAddress.$error && !resetPasswordForm.emailAddress.$error.required">Email address is invalid</div>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +55,7 @@
                                 <div class="form-group">
                                     <div class="col-xs-12 col-sm-4">&nbsp;</div>
                                     <div class="col-xs-12 col-sm-4">
-                                        <button type="submit" class="btn primary btn-block">RESET</button>
+                                        <button type="submit" class="btn primary btn-block" ng-disabled="resetPasswordForm.$invalid">RESET</button>
                                     </div>
                                     <div class="col-xs-12 col-sm-4">&nbsp;</div>
                                 </div>

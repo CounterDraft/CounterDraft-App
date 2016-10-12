@@ -9,7 +9,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
     var _url_login = "/api/v1/account/login";
     var _url_registration = "/api/v1/account/registration";
     var _base_templates = "templates/login/";
-    var _url_reset = "application/reset";
+    var _url_reset = "/api/v1/reset/password";
 
     $scope.registrationModel = {
         first_name: null,
@@ -29,7 +29,6 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
     };
 
     $scope.resetModal = {
-        username: null,
         email_address: null
     };
 
@@ -37,14 +36,18 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
     $scope.organization_types = [];
 
     var _init = function() {
+        //default page;
+        $scope.currentPage = _getDefaultPage();
+    }
+    this.initLogin = function() {
+        $scope.showResetPassword = false;
+    }
+
+    this.initRegistration = function() {
         if (typeof 'undefined' != data && data.organization_types) {
             $scope.organization_types = data.organization_types;
         }
-        $scope.showResetPassword = false;
-
-        //default page;
-        $scope.currentPage = _getDefaultPage();
-    };
+    }
 
     var _getDefaultPage = function() {
         $('body:not(.login-background)').addClass('login-background');
@@ -60,7 +63,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
             $scope.resetModal[key] = '';
         });
         $scope.showResetPassword = false;
-    };
+    }
 
     $scope.onShowReset = function() {
         if ($scope.showResetPassword) {
@@ -68,28 +71,76 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
         } else {
             $scope.showResetPassword = true;
         }
-    };
+    }
 
     $scope.onReset = function() {
+        var self = this;
         var formData = $scope.resetModal;
-        if (!formData) {
-            return "Error: no data submitted";
-        } else if (!formData.username && !formData.email_address) {
-            return "Error: Username is required or email address";
-        } else {
-            //post call to backend;
-            $http({
-                method: 'PUT',
-                url: _url_reset,
-                data: formData,
-            }).then(function successCallback(response) {
-                console.log(response);
-                //show message to check your email.
-            }, function errorCallback(response) {
-                console.error(response);
-            });
+        var hasData = true;
+
+        for (var x in formData) {
+            if (!formData[x]) {
+                hasData = false;
+            }
         }
-    };
+
+        if (!hasData) {
+            $window.swal({
+                title: "Error",
+                text: 'A email_address is reuqired to reset password',
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+            return;
+        }
+        //post call to backend;
+        $http({
+            method: 'PUT',
+            url: _url_reset,
+            data: formData,
+        }).then(function successCallback(response) {
+            var msg = "Please check your email for instructions on reseting your account.";
+            var data = response.data;
+
+            $window.swal({
+                title: "Success",
+                text: msg,
+                type: "success",
+                confirmButtonColor: "#64d46f",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            }, function() {
+                $scope.resetModal.email_address = null;
+                self.resetPasswordForm.$setPristine();
+                self.resetPasswordForm.$setUntouched();
+                $scope.$apply();
+                $scope.$broadcast('show-errors-reset');
+                $scope.onShowReset();
+            });
+
+        }, function errorCallback(response) {
+            var message = 'An unexpected error has occuried!';
+
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.error.length > 0) {
+                message = response.data.error[0].msg;
+            }
+            $window.swal({
+                title: "Error",
+                text: message,
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+        });
+    }
 
     $scope.onRegistration = function() {
         var formData = $scope.registrationModel;
@@ -108,24 +159,24 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
             errorMessage.push("Password is required");
         } else if (formData.password != formData.password_confirm) {
             errorMessage.push("Password does not match password confirmation");
-        } else if (!formData.organization_name  && !formData.organization_type && !formData.organization_hash) {
+        } else if (!formData.organization_name && !formData.organization_type && !formData.organization_hash) {
             errorMessage.push("Organization name and type Or Oranization invite must be entered.");
-        } else if (!formData.organization_hash  && !formData.organization_type && formData.organization_name) {
+        } else if (!formData.organization_hash && !formData.organization_type && formData.organization_name) {
             errorMessage.push("Organization type must be selected");
         } else if (!formData.organization_hash && formData.organization_type && !formData.organization_name) {
             errorMessage.push("Organization name must be entered");
         }
 
-        if(errorMessage.length > 0){
+        if (errorMessage.length > 0) {
             $window.swal({
-                    title: "Error",
-                    text: errorMessage,
-                    type: "error",
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "OK",
-                    closeOnConfirm: true,
-                    html: true
-                });
+                title: "Error",
+                text: errorMessage,
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
             return;
         }
 
@@ -153,15 +204,14 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
                 });
             }
         });
-
-    };
+    }
 
     $scope.onClose = function() {
         $scope.currentPage = _getDefaultPage();
         angular.forEach($scope.registrationModel, function(value, key) {
             $scope.registrationModel[key] = '';
         });
-    };
+    }
 
     $scope.onSubmit = function() {
         var formData = $scope.loginModel;
@@ -198,7 +248,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
 
             });
         }
-    };
+    }
 
     _init();
 
