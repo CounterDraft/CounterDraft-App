@@ -3,14 +3,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="model-tmpl-0">
-                    <form name="login-form" name="loginForm" class="form-horizontal counter-form" id="login-form" ng-submit="onSubmit()" data-toggle="validator" role="form">
+                    <form name="loginForm" class="form-horizontal counter-form" id="login-form" ng-submit="onSubmit()" data-toggle="validator" role="form">
                         <div class="modal-header">
                             <h4 class="modal-title text-center">login</h4>
                         </div>
                         <div class="modal-body">
                             <div class="form-group" show-errors>
                                 <div class="col-xs-12">
-                                    <input type="email" name="emailAddress" class="form-control" id="username" placeholder="Email *" ng-model="loginModel.username" required>
+                                    <input type="email" name="emailAddress" class="form-control" id="username" placeholder="Email *" ng-model="loginModel.email_address" required>
                                     <div class="help-block" ng-if="loginForm.emailAddress.$error.required">Email address is required</div>
                                     <div class="help-block" ng-if="loginForm.emailAddress.$error && !loginForm.emailAddress.$error.required">Email address is invalid</div>
                                 </div>

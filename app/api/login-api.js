@@ -10,7 +10,7 @@ function LoginApi() {
         return new Promise(function(resolve, reject) {
             Employee.findOne({
                 where: {
-                    username: email_address
+                    email_address: email_address
                 }
             }).then(function(employee) {
                 if (employee) {
@@ -36,7 +36,7 @@ function LoginApi() {
     this.login = function(req, res) {
         var self = this;
 
-        if (!req.body.username) {
+        if (!req.body.email_address) {
             this.getErrorApi().sendError(1001, 403, res);
         } else if (!req.body.password) {
             this.getErrorApi().sendError(1001, 403, res);
@@ -44,7 +44,7 @@ function LoginApi() {
             // search for attributes
             Employee.findOne({
                     where: {
-                        username: req.body.username
+                        email_address: req.body.email_address
                     }
                 })
                 .then(function(employee) {

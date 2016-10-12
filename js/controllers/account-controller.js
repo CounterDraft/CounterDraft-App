@@ -24,7 +24,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
     };
 
     $scope.loginModel = {
-        username: null,
+        email_address: null,
         password: null
     };
 
@@ -217,7 +217,7 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
         var formData = $scope.loginModel;
         if (!formData) {
             return "Error: no data submitted";
-        } else if (!formData.username) {
+        } else if (!formData.email_address) {
             return "Error: Username is required!";
         } else if (!formData.password) {
             return "Error: Username is password!";
