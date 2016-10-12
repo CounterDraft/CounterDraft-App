@@ -5,7 +5,7 @@
         This should all the logic for the Dashboard page.
 */
 
-app.controller('DashboardCtrl', ['$scope', '$http', '$window', 'data', function($scope, $http, $window, data) {
+app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scope, $http, $window, data) {
     var _base_templates = "templates/dashboard/";
     var _dashboard_patron_url = "/api/v1/dashboard/patron";
     var _dashboard_game_url = "/api/v1/dashboard/game";

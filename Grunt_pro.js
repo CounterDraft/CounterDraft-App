@@ -36,7 +36,7 @@ module.exports = function(grunt) {
                     'build/js/directives.js',
                     //controllers
                     'build/js/controllers/account-controller.js',
-                    'build/js/controllers/dashboard-controller.js',
+                    'build/js/controllers/dash-controller.js',
                     'build/js/controllers/patron-controller.js',
                     'build/js/controllers/game-controller.js',
                     'build/js/controllers/reports-controller.js',
@@ -49,7 +49,6 @@ module.exports = function(grunt) {
                     'node_modules/morris.js/morris.js',
                     'node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js',
                     'node_modules/bootstrap/dist/js/bootstrap.js',
-                    'node_modules/bootstrap-validator/dist/validator.min.js',
                     'build/js/common.js'
                 ],
                 dest: 'build/js/min/<%= pkg.name %>.js'

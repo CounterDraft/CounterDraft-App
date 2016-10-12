@@ -8,6 +8,7 @@
 app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($scope, $http, $window, data) {
     var _base_templates = "templates/patron/";
     var _url_patron = "/api/v1/patron/";
+    var _url_patron_search = "/api/v1/patron/search/";
     $scope.allowEdit = null;
     $scope.prevPage = null;
     $scope.currentPage = null;
@@ -36,6 +37,10 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     }
 
     this.initSearch = function() {
+        //nothing;
+    }
+
+    this.initResults = function() {
         //nothing;
     }
 
@@ -96,7 +101,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         }
     }
 
-    $scope.onEdit = function(){
+    $scope.onEdit = function() {
         $scope.allowEdit = !$scope.allowEdit;
     }
 
@@ -114,7 +119,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
             //GET call to backend;
             $http({
                 method: 'GET',
-                url: _url_patron,
+                url: _url_patron_search,
                 params: formData,
             }).then(function successCallback(response) {
                 console.log(response);

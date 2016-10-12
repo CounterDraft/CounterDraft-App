@@ -5,6 +5,17 @@
     Comment: 
         This is the api which is used for all patron search and create logic.
 */
+var _removeUneededAttr = function(patron) {
+    return {
+        email_address: patron.email_address,
+        first_name: patron.first_name,
+        id: patron.id,
+        is_active: patron.is_active,
+        last_name: patron.last_name,
+        patron_organization: patron.patron_organization,
+        username: patron.username
+    }
+}
 
 function PatronApi() {
     this.tag = 'patron-api';
@@ -22,6 +33,74 @@ function PatronApi() {
             res.status(200).json({
                 success: true
             });
+        });
+    }
+
+    this.find = function(req, res) {
+        var self = this;
+        var serachParams = [
+            'email_address',
+            'first_name',
+            'last_name',
+            'patron_id'
+        ];
+        var searchObject = {};
+        var patrons = [];
+        var whereSerach = {};
+        var searchLimt = 50;
+
+        if (Object.keys(req.query).length === 0) {
+            res.status(200).json({
+                patrons: patrons,
+                success: true
+            });
+        }
+        for (var x in req.query) {
+            if (serachParams.indexOf(x) > -1 && req.query[x] != '' && req.query[x] != null) {
+                searchObject[x] = req.query[x];
+            }
+        }
+        // if we have patron_id we dont search the other stuff;
+        if (searchObject.hasOwnProperty('patron_id')) {
+            ModelPatron.find({
+                where: {
+                    id: searchObject.patron_id
+                }
+            }).then(function(results) {
+                if (results) {
+                    patrons.push(_removeUneededAttr(results.dataValues));
+                }
+                res.status(200).json({
+                    patrons: patrons,
+                    success: true
+                });
+            }).catch(function(err) {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            });
+            return;
+        }
+
+        //add where search for pg only;
+        for (var x in searchObject) {
+            whereSerach[x] = {
+                $iLike: '%' + searchObject[x] + '%'
+            }
+        }
+        ModelPatron.findAll({
+            where: whereSerach,
+            limit: searchLimt
+        }).then(function(results) {
+            if (results) {
+                for (var x in results) {
+                    patrons.push(_removeUneededAttr(results[x].dataValues));
+                }
+            }
+            res.status(200).json({
+                patrons: patrons,
+                success: true
+            });
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
         });
     }
 
