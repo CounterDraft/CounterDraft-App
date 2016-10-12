@@ -24,6 +24,8 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         organization: null
     };
 
+    $scope.searchArr = [];
+
     $scope.patronSearchModel = {
         patron_id: null,
         first_name: null,
@@ -123,9 +125,37 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
                 params: formData,
             }).then(function successCallback(response) {
                 console.log(response);
-                //show message to check your email.
+                var data = null;
+                if(response && response.hasOwnProperty('data') && response.data.patrons.length > 0){
+                    $scope.searchArr = response.data.patrons;
+                    $scope.onRoute('patron-results', true);
+                    $scope.$apply();
+                }else{
+                    $window.swal({
+                        title: "results",
+                        text: "No patrons found.",
+                        type: "info",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                }
             }, function errorCallback(response) {
-                console.error(response);
+                var data = response.data || null;
+                if (data && data.error.length > 0) {
+                    var error = data.error[0];
+                    $window.swal({
+                        title: "Error",
+                        text: error.msg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                }else{
+                    console.error(response);
+                }
             });
         }
     }

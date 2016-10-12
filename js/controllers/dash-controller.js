@@ -53,7 +53,7 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
                 $scope.total_patrons = response.data['total'];
             }
         }, function errorCallback(response) {
-            console.error(response);
+            // console.error(response);
         });
 
         $http({
@@ -66,7 +66,7 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
                 $scope.active_games = response.data['total'];
             }
         }, function errorCallback(response) {
-            console.error(response);
+            // console.error(response);
         });
     }
 
