@@ -57,6 +57,13 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         $scope.allowEdit = false;
     }
 
+    this.onPatronSelected = function(patron){
+        $scope.patronModel.first_name = patron.first_name;
+        $scope.patronModel.last_name = patron.last_name;
+        $scope.patronModel.email_address = patron.email_address;
+        $scope.onRoute('patron-details', true);
+    }
+
     var _clearModel = function(modalName) {
         if (!$scope[modalName]) {
             return;

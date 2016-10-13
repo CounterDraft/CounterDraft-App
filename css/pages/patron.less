@@ -10,14 +10,27 @@ article.counter-patron {
             min-height: 60px;
             li.patron-list-item {
                 border-top: 1px solid @light-gray-border;
+                background-color: @color-primary-4;
+                opacity: .9;
                 padding-top: 5px;
                 padding-bottom: 5px;
+                color: @very-light-gray;
                 .box-shadow();
-                img {
-                    height: 100px;
-                    border: 1px solid @light-gray-border;
-                    width: 100px;
-                    .border-radius();
+                cursor: pointer;
+                .patron-img {
+                    img {
+                        height: 100px;
+                        border: 1px solid @light-gray-border;
+                        width: 100px;
+                        .border-radius();
+                        background-color: white;
+                    }
+                }
+                .patron-info {
+                    padding-top: 10px;
+                    span {
+                        .label-font;
+                    }
                 }
             }
         }
