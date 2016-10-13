@@ -39,7 +39,9 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
         //default page;
         $scope.currentPage = _getDefaultPage();
     }
+
     this.initLogin = function() {
+        $('body:not(.login-background)').addClass('login-background');
         $scope.showResetPassword = false;
     }
 
@@ -50,7 +52,6 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
     }
 
     var _getDefaultPage = function() {
-        $('body:not(.login-background)').addClass('login-background');
         return _base_templates + 'login.html';
     }
 

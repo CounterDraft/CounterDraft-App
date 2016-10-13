@@ -26,7 +26,7 @@
 	</head>
 	<body ng-app="CounterDraft-app">
 		<% include ../partials/off-canvas.ejs %>
-		<article id="counterdraft-main" class="container">
+		<div id="counterdraft-main" class="container">
 			<div class="row">
 				<div id="cd-alert-box" class="cd-alert ">
 		 			<button type="button" class="close" alert-dismiss>&times;</button>
@@ -47,7 +47,7 @@
 			 	</div>
 		 	<% } %>
 		 	</div>
-	    </article>
+	    </div>
 	</body>
 	<% if (login) { %>
 		<% include ../partials/footer.ejs %>
