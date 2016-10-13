@@ -1,8 +1,25 @@
+@import "../general/tools";
 article.counter-patron {
     section.alpha {}
     section.beta {
         button.results-close {
             right: 0px;
+        }
+        ul.patron-list {
+            list-style: none;
+            min-height: 60px;
+            li.patron-list-item {
+                border-top: 1px solid @light-gray-border;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                .box-shadow();
+                img {
+                    height: 100px;
+                    border: 1px solid @light-gray-border;
+                    width: 100px;
+                    .border-radius();
+                }
+            }
         }
     }
 }

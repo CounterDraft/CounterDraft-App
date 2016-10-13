@@ -7,7 +7,19 @@
     <fieldset class="col-xs-12 counter-widget">
         <legend>Results</legend>
         <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-12">
-        </div>
+        <ul ng-repeat="patron in searchArr" class="patron-list col-xs-12">
+            <li class="patron-list-item row">
+                <div class="col-xs-4 col-sm-3 col-md-2">
+                    <img src="images/blue-person-plceholder.svg" alt="user" />
+                </div>
+                <div class="col-xs-8 col-sm-9 col-md-10">
+                    <div class="col-xs-12">id:&nbsp;{{patron.id}}</div>
+                    <div class="col-xs-12">First Name:&nbsp;{{patron.first_name}}</div>
+                    <div class="col-xs-12">Last Name:&nbsp;{{patron.last_name}}</div>
+                    <div class="col-xs-12">Email Address:&nbsp;{{patron.email_address}}</div>
+                </div>
+            </li>
+        </ul>
+        <div class="col-xs-12"></div>
     </fieldset>
 </section>

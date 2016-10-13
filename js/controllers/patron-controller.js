@@ -124,12 +124,10 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
                 url: _url_patron_search,
                 params: formData,
             }).then(function successCallback(response) {
-                console.log(response);
                 var data = null;
                 if(response && response.hasOwnProperty('data') && response.data.patrons.length > 0){
                     $scope.searchArr = response.data.patrons;
                     $scope.onRoute('patron-results', true);
-                    $scope.$apply();
                 }else{
                     $window.swal({
                         title: "results",
