@@ -12,6 +12,8 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     $scope.allowEdit = null;
     $scope.prevPage = null;
     $scope.currentPage = null;
+    $scope.image_dir = '/';
+    $scope.image_bucket_url = null;
 
     //models
     $scope.patronModel = {
@@ -43,7 +45,14 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     }
 
     this.initResults = function() {
-        //nothing;
+        if (typeof 'undefined' != data && data.hasOwnProperty('dir')) {
+            if (data.dir.hasOwnProperty('image_dir')) {
+                $scope.image_dir = data.dir['image_dir'];
+            }
+            if (data.dir.hasOwnProperty('image_bucket_url')) {
+                $scope.image_bucket_url = data.dir['image_bucket_url'];
+            }
+        }
     }
 
     this.initAddPatron = function() {
@@ -57,11 +66,19 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         $scope.allowEdit = false;
     }
 
-    this.onPatronSelected = function(patron){
+    this.onPatronSelected = function(patron) {
         $scope.patronModel.first_name = patron.first_name;
         $scope.patronModel.last_name = patron.last_name;
         $scope.patronModel.email_address = patron.email_address;
         $scope.onRoute('patron-details', true);
+    }
+
+    this.getProfileImageUrl = function(uuid) {
+        if (!uuid || !$scope.image_bucket_url) {
+            return $scope.image_dir + 'blue-person-plceholder.svg';
+        }
+        //check for image in s3;
+        //return the image_url to front-end;
     }
 
     var _clearModel = function(modalName) {
@@ -132,10 +149,10 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
                 params: formData,
             }).then(function successCallback(response) {
                 var data = null;
-                if(response && response.hasOwnProperty('data') && response.data.patrons.length > 0){
+                if (response && response.hasOwnProperty('data') && response.data.patrons.length > 0) {
                     $scope.searchArr = response.data.patrons;
                     $scope.onRoute('patron-results', true);
-                }else{
+                } else {
                     $window.swal({
                         title: "results",
                         text: "No patrons found.",
@@ -158,7 +175,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
                         closeOnConfirm: true,
                         html: true
                     });
-                }else{
+                } else {
                     console.error(response);
                 }
             });

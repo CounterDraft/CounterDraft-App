@@ -102,6 +102,9 @@ module.exports = {
                                 name: organization.name,
                                 id: organization.id,
                                 description: organization.description
+                            },
+                            dir: {
+                                image_dir: global.config['image_dir']
                             }
                         }
                     });

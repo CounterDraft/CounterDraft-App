@@ -12,5 +12,7 @@ module.exports = {
     secret: process.env.secret || '71b6c615-8f93-4b20-8dd7-6e1c5110e583',
     email : process.env.email || 'smtps://support@counterdraft.com:password@smtp.gmail.com',
     migration_run: process.env.migration_run || true,
-    migration_order: process.env.migration_order || 'up'
+    migration_order: process.env.migration_order || 'up',
+    image_dir: process.env.image_dir || 'images/',
+    image_bucket_url: process.env.image_bucket_url || null
 };

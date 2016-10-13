@@ -8,7 +8,7 @@
         <ul ng-repeat="patron in searchArr" class="patron-list col-xs-12">
             <li class="patron-list-item col-xs-12 text-size-small" ng-click="pCtrl.onPatronSelected(patron)">
                 <div class="col-xs-4 col-sm-3 col-md-2 patron-img">
-                    <img src="images/blue-person-plceholder.svg" alt="Patron Image" />
+                    <img ng-src="{{pCtrl.getProfileImageUrl(patron.uuid)}}" alt="Patron_Image"/>
                 </div>
                 <div class="col-xs-8 col-sm-9 col-md-10 patron-info row">
                     <div class="col-xs-12"><span>id:</span>&nbsp;{{patron.id}}</div>
