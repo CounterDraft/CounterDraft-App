@@ -8,20 +8,20 @@ INSERT INTO organization(id, name, description, has_multi_admin, type, "createdA
 #add un-need migrations to your database;
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
-	VALUES ('20160926231604-adding-isActive-migration.js',current_timestamp ,current_timestamp );
+	VALUES ('20160926231604-adding-isActive-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
-	VALUES ('20160928045755-adding-valid-registration-user.js',current_timestamp ,current_timestamp );
+	VALUES ('20160928045755-adding-valid-registration-user.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
-	VALUES ('20161011165604-adding-isemail-employee-migration.js',current_timestamp ,current_timestamp );
+	VALUES ('20161011165604-adding-isemail-employee-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
-	VALUES ('20161013230505-add-uuid-to-patron-and-employee-migration.js',current_timestamp ,current_timestamp );
+	VALUES ('20161013230505-add-uuid-to-patron-and-employee-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 	
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
-	VALUES ('20161013233039-add-email-support-patron-player-migration.js',current_timestamp ,current_timestamp );
+	VALUES ('20161013233039-add-email-support-patron-player-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
