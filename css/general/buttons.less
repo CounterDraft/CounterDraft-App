@@ -5,11 +5,11 @@
         .box-shadow(-1px, 0, 2px, 0.2);
         .text-shadow(-1px, 0, 0, 0.2);
         .border-radius();
-        height: 50px;
+        height: 40px;
         .gradient(top, @clientColorGreen, darken(@clientColorGreen, 20%));
         .text-size-larger;
         color: white !important;
-        border: none;
+        border: 1px solid @clientColorGreen;
         &:hover {
             opacity: .8;
         }
@@ -120,6 +120,27 @@ a.senary, button.senary {
         color: @color-secondary-4;
         outline:0px !important;
         -webkit-appearance:none;
+    }
+}
+
+
+.septenary {
+    &.btn {
+        .box-shadow(-1px, 0, 2px, 0.2);
+        .text-shadow(-1px, 0, 0, 0.2);
+        .border-radius();
+        height: 40px;
+        .gradient(top, @clientColorRedDelete, darken(@clientColorRedDelete, 20%));
+        .text-size-larger;
+        color: white !important;
+        border: 1px solid @delete-button-border;
+        &:hover {
+            opacity: .8;
+        }
+        i {
+            position: relative;
+            top: 3px;
+        }
     }
 }
 
