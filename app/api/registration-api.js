@@ -185,19 +185,19 @@ function registationApi() {
                         sendEmailErrorNumber);
 
                     var dataSave = {
+                        employee_id: employee.dataValues.id,
                         first_name: employee.dataValues.first_name,
                         last_name: employee.dataValues.last_name,
                         username: employee.dataValues.email_address,
                         email_address: employee.dataValues.email_address,
-                        employee_organization: employee.dataValues.employee_organization,
                         permissions: ['restricted:employee']
                     }
-
                     if (employee.dataValues.is_admin) {
                         dataSave['permissions'] = ['restricted:admin,employee'];
                     }
 
                     req.session.user = dataSave;
+                    dataSave.employee_organization = employee.dataValues.employee_organization;
 
                     res.status(200).json({
                         user: dataSave,
