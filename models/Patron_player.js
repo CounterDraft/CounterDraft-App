@@ -35,6 +35,18 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             defaultValue: true,
             comment: "Is the patron active or not"
+        },
+        is_email_confirmed: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+            comment: "If false we have yet to confirmed the email_address."
+        },
+        p_uuid: {
+            type: DataTypes.UUID,
+            allowNull: true,
+            defaultValue: DataTypes.UUIDV4,
+            comment: "The UUID which is used to save images and user data in the cloud."
         }
     }, {
         freezeTableName: true,

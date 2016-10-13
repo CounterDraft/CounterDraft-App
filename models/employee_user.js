@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
         is_active: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
-            defaultValue: false,
+            defaultValue: true,
             comment: "Is the employee active or not."
         },
         is_email_confirmed: {
@@ -49,6 +49,12 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             defaultValue: false,
             comment: "If false we have yet to confirmed the email_address."
+        },
+        e_uuid: {
+            type: DataTypes.UUID,
+            allowNull: true,
+            defaultValue: DataTypes.UUIDV4,
+            comment: "The UUID which is used to save images and user data in the cloud."
         }
     }, {
         freezeTableName: true,

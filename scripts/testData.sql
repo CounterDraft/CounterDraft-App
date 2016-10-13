@@ -17,3 +17,11 @@ INSERT INTO public.sequelize_meta(
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161011165604-adding-isemail-employee-migration.js',current_timestamp ,current_timestamp );
+
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161013230505-add-uuid-to-patron-and-employee-migration.js',current_timestamp ,current_timestamp );
+	
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161013233039-add-email-support-patron-player-migration.js',current_timestamp ,current_timestamp );
