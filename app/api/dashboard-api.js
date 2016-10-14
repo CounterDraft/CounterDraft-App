@@ -17,10 +17,12 @@ function DashboardApi() {
 
     this.getGameChartDate = function(req, res) {
         var self = this;
+        var user = req.session.user || req.sess.api_user;
         var duration = null;
         var numOfOutput = 7;
         var list = {};
         var model = models.game;
+        var organization_id = 999;
         if (!req.query.duration) {
             this.getErrorApi().sendError(1012, 400, res);
             return;
@@ -34,6 +36,9 @@ function DashboardApi() {
                 self.getErrorApi().setErrorWithMessage(err.toString(), 400, res);
                 return;
             }
+        }
+        if(user){
+            organization_id = user.organization_id;
         }
         switch (duration.key) {
             case 'day':
