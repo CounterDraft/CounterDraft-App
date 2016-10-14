@@ -31,6 +31,24 @@ function OrganizationApi() {
             }
         });
     }
+
+    this.getImage = function(req, res) {
+        res.status(200).json({
+            success: true
+        });
+    }
+
+    this.postImage = function(req, res) {
+        res.status(200).json({
+            success: true
+        });
+    }
+
+    this.updateImage = function(req, res) {
+        res.status(200).json({
+            success: true
+        });
+    }
 }
 
 module.exports = OrganizationApi;

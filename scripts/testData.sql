@@ -25,3 +25,9 @@ INSERT INTO public.sequelize_meta(
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161013233039-add-email-support-patron-player-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+	
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161014041404-add-organization-uuid-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+
+

@@ -13,7 +13,8 @@ var _removeUneededAttr = function(patron) {
         is_active: patron.is_active,
         last_name: patron.last_name,
         patron_organization: patron.patron_organization,
-        username: patron.username
+        username: patron.username,
+        uuid: patron.p_uuid
     }
 }
 
@@ -33,6 +34,24 @@ function PatronApi() {
             res.status(200).json({
                 success: true
             });
+        });
+    }
+
+    this.getImage = function(req, res) {
+        res.status(200).json({
+            success: true
+        });
+    }
+
+    this.postImage = function(req, res) {
+        res.status(200).json({
+            success: true
+        });
+    }
+
+    this.updateImage = function(req, res) {
+        res.status(200).json({
+            success: true
         });
     }
 

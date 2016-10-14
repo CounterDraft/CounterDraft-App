@@ -74,11 +74,13 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     }
 
     this.getProfileImageUrl = function(uuid) {
-        if (!uuid || !$scope.image_bucket_url) {
-            return $scope.image_dir + 'blue-person-plceholder.svg';
+        if (!uuid) {
+            // return $scope.image_dir + 'blue-person-plceholder.svg';
+            return $scope.image_bucket_url + 'default.png';
         }
-        //check for image in s3;
-        //return the image_url to front-end;
+        return $scope.image_bucket_url + 'employee/' + uuid + '-profile.png';
+        // check for image in s3;
+        // return the image_url to front-end;
     }
 
     var _clearModel = function(modalName) {

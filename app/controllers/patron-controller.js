@@ -21,7 +21,25 @@ function PatronController() {
                     break;
             }
         },
-
+        image: function(verb, req, res, self) {
+            switch (verb) {
+                case 'post':
+                    getApi('patron').postImage(req, res);
+                    break;
+                case 'get':
+                    getApi('patron').getImage(req, res);
+                    break;
+                case 'put':
+                    getApi('patron').updateImage(req, res)
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
         total: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':

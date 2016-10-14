@@ -26,6 +26,12 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             defaultValue: true,
             comment: "Is the organization active or not"
+        },
+        o_uuid: {
+            type: DataTypes.UUID,
+            allowNull: true,
+            defaultValue: DataTypes.UUIDV4,
+            comment: "The UUID which is used to save images and user data in the cloud."
         }
     }, {
         freezeTableName: true,
