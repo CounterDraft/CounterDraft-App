@@ -46,6 +46,16 @@ function baseController() {
                         this.getErrorApi().sendError(1025, 400, res);
                     }
                     return;
+                } else if(req.session.api_user){
+                 
+                    var meta = {
+                        id: req.session.organization.id,
+                        name: req.session.organization.name,
+                        key: req.session.organization.api_key,
+                        url: req.url,
+                        method: req.method.toLowerCase()
+                    }
+                    logger.info('info', 'API Request being accessed by organization.', meta);
                 }
 
                 var route = this.ApiRouter[restCallStr];
