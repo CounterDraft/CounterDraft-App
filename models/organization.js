@@ -32,6 +32,11 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true,
             defaultValue: DataTypes.UUIDV4,
             comment: "The UUID which is used to save images and user data in the cloud."
+        },
+        api_key: {
+            type: DataTypes.STRING(16),
+            allowNull: false,
+            comment: "Secret api key for a organziation, we check this on every rest request."
         }
     }, {
         freezeTableName: true,

@@ -182,6 +182,75 @@ module.exports = {
             }
         });
 
+        //pre-route
+        app.use(function(req, res, next) {
+            var organizationModal = models.organization;
+            var employeeModal = models.employee_user;
+            var user = null;
+
+            //defaults variables;
+            res.locals.login = false;
+            res.locals.environment = global.config['environment'];
+            res.locals.npm_package_name = global.config['npm_package_name'];
+
+            if (typeof req.session.user != 'undefined') {
+                res.locals.login = true;
+            }
+
+            //create the api_user object;
+            if (!req.hasOwnProperty('session')) {
+                req.session = {};
+                req.session.api_user = {};
+                req.session.organization = {};
+            }
+
+            //gets data from header and addes it to the api_user
+            if (!res.locals.login && req.headers && req.get('key') && req.get('employee_id')) {
+                var key = req.get('key');
+                var employee_id = req.get('employee_id');
+                organizationModal.findOne({
+                    where: {
+                        api_key: key
+                    }
+                }).then(function(result) {
+                    if (result) {
+                        req.session.organization = result.dataValues;
+                    } else {
+                        var err = {
+                            key: key,
+                            modal: 'organization'
+                        };
+                        logger.log('Error', 'Couldn\'t find organization in db', { error: err });
+                    }
+                    return employeeModal.findOne({
+                        where: {
+                            id: employee_id
+                        }
+                    });
+                }).then(function(result) {
+                    if (result) {
+                        req.session.api_user = result.dataValues;
+                    } else {
+                        var err = {
+                            employee_id: employee_id,
+                            modal: 'employee'
+                        };
+                        logger.log('Error', 'Couldn\'t find employee in db', { error: err });
+                    }
+
+                    //keep going;
+                    next();
+                    
+                }).catch(function(err) {
+                    getApi('error').setErrorWithMessage(err.toString(), 500, res);
+                    return;
+                });
+            } else {
+                //keep going;
+                next();
+            }
+        });
+
         app.use('', routerWeb);
     }
 };

@@ -30,4 +30,6 @@ INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161014041404-add-organization-uuid-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
-
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161014182454-add-organization-key-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );

@@ -60,10 +60,30 @@ function PatronController() {
             }
         },
 
+        registration: function(verb, req, res, self) {
+            switch (verb) {
+                case 'post':
+                    getApi('registration').registerPatron(req, res);
+                    break;
+                case 'get':
+                    getApi('registration').getPatronRegistration(req, res);
+                    break;
+                case 'put':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
+
         default: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
-                    getApi('patron').create(req, res);
+                    getApi('registration').createPatron(req, res);
                     break;
                 case 'get':
                     getApi('patron').getPatron(req, res);

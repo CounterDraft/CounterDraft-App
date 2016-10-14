@@ -18,6 +18,13 @@ function EmployeeApi() {
             }
         });
     }
+    
+    //TODO: what should I return?
+    this.getEmployee = function(req, res){
+        res.status(200).json({
+            success: true
+        });
+    }
 
     this.getImage = function(req, res) {
         res.status(200).json({

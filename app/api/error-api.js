@@ -101,6 +101,16 @@ var errorList = {
     1024: {
         msg: 'Unknown server error, please check your rest call for proper usage.'
     },
+    1025: {
+        msg: 'Failed, api_key and employee_id combination, user not found.'
+    },
+    1026: {
+        msg: 'Missing api_key in header. ex = {api_key: <secret_key>, employee_id: <id_of_employee>}'
+    },
+    1027: {
+        msg: 'Missing employee_id in header. ex = {api_key: <secret_key>, employee_id: <id_of_employee>}'
+    },
+
 
 
 
