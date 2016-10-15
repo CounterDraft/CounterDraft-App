@@ -57,6 +57,8 @@ function PatronApi() {
 
     this.find = function(req, res) {
         var self = this;
+        var user = req.session.user;
+        var organization = req.session.organization;
         var serachParams = [
             'email_address',
             'first_name',
@@ -83,7 +85,8 @@ function PatronApi() {
         if (searchObject.hasOwnProperty('patron_id')) {
             ModelPatron.find({
                 where: {
-                    id: searchObject.patron_id
+                    id: searchObject.patron_id,
+                    organization_id: organization.id
                 }
             }).then(function(results) {
                 if (results) {
@@ -105,6 +108,8 @@ function PatronApi() {
                 $iLike: '%' + searchObject[x] + '%'
             }
         }
+        whereSerach.organization_id = organization.id;
+        
         ModelPatron.findAll({
             where: whereSerach,
             limit: searchLimt

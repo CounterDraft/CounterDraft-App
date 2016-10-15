@@ -5,14 +5,15 @@ function LoginApi() {
     var Promise = getPromise();
     var Employee = models.employee_user;
     var Organization = models.organization;
-    var fEmployee = null;
 
     this.loginPatron = function(req, email_address) {
-
+        var self = this;
+        return new Promise(function(resolve, reject) {});
     }
 
     this.loginUser = function(req, email_address) {
         var self = this;
+        var fEmployee = null;
         return new Promise(function(resolve, reject) {
             Employee.findOne({
                 where: {
@@ -47,12 +48,16 @@ function LoginApi() {
                     });
                 } else {
                     return new Promise(function(resolve, reject) {
-                        reject({errNum: 9903, status:404});
+                        reject({ errNum: 9903, status: 404 });
                     });
                 }
             }).then(function(organization) {
                 if (organization && fEmployee) {
-                    req.session.organization = organization;
+                    req.session.organization = {
+                        id: organization.id,
+                        name: organization.name,
+                        description: organization.description
+                    }
                     resolve(fEmployee);
                 } else {
                     reject(self.getErrorApi().getErrorMsg(1028));
@@ -70,7 +75,6 @@ function LoginApi() {
     this.login = function(req, res) {
         var self = this;
         var fEmployee = null;
-
         if (!req.body.email_address) {
             this.getErrorApi().sendError(1001, 403, res);
         } else if (!req.body.password) {
@@ -130,7 +134,11 @@ function LoginApi() {
 
             }).then(function(organization) {
                 if (organization) {
-                    req.session.organization = organization;
+                    req.session.organization = {
+                        id: organization.id,
+                        name: organization.name,
+                        description: organization.description
+                    }
                     res.json({
                         user: fEmployee,
                         success: true

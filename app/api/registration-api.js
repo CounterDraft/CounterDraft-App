@@ -181,7 +181,7 @@ function registationApi() {
                     username: req.body.email_address,
                     email_address: req.body.email_address,
                     password: passwordWithHash,
-                    is_admin: false,
+                    is_admin: true, //we are admin if we are createing the organization;
                     organization_id: employeeOrganization
                 });
             }).then(function(employee) {
@@ -194,28 +194,6 @@ function registationApi() {
                         emailErrorNumber,
                         self.getErrorApi().getErrorMsg(sendEmailErrorNumber),
                         sendEmailErrorNumber);
-
-                    // var dataSave = {
-                    //     employee_id: employee.dataValues.id,
-                    //     first_name: employee.dataValues.first_name,
-                    //     last_name: employee.dataValues.last_name,
-                    //     username: employee.dataValues.email_address,
-                    //     email_address: employee.dataValues.email_address,
-                    //     is_admin: employee.dataValues.is_admin,
-                    //     organization_id: employee.dataValues.organization_id
-                    // }
-
-                    // // req.session.user = dataSave;
-                    // dataSave.organization_id = employee.dataValues.organization_id;
-
-
-                    // res.status(200).json({
-                    //     user: dataSave,
-                    //     success: true
-                    // });
-                    // return new Promise(function(resolve, reject) {
-                    //     return resolve(dataSave);
-                    // });
                     return getApi('login').loginUser(req, employee.dataValues.email_address);
                 } else {
                     return new Promise(function(resolve, reject) {
