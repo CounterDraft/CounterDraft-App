@@ -12,8 +12,10 @@ function GameApi() {
     var ModelGame = models.game;
 
     this.getTotalGame = function(req, res) {
+        var organization = req.session.organization;
         ModelGame.findAndCountAll({
             where: {
+                organization_id: organization.id,
                 is_active: true
             }
         }).then(function(results) {

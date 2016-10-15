@@ -23,11 +23,6 @@ function DashboardApi() {
         var list = {};
         var model = models.game;
 
-        if (!organization || !user) {
-            this.getErrorApi().sendError(1028, 400, res);
-            return;
-        }
-
         if (!req.query.duration) {
             this.getErrorApi().sendError(1012, 400, res);
             return;

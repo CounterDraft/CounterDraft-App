@@ -195,33 +195,38 @@ function registationApi() {
                         self.getErrorApi().getErrorMsg(sendEmailErrorNumber),
                         sendEmailErrorNumber);
 
-                    var dataSave = {
-                        employee_id: employee.dataValues.id,
-                        first_name: employee.dataValues.first_name,
-                        last_name: employee.dataValues.last_name,
-                        username: employee.dataValues.email_address,
-                        email_address: employee.dataValues.email_address,
-                        permissions: ['restricted:employee']
-                    }
-                    if (employee.dataValues.is_admin) {
-                        dataSave['permissions'] = ['restricted:admin,employee'];
-                    }
+                    // var dataSave = {
+                    //     employee_id: employee.dataValues.id,
+                    //     first_name: employee.dataValues.first_name,
+                    //     last_name: employee.dataValues.last_name,
+                    //     username: employee.dataValues.email_address,
+                    //     email_address: employee.dataValues.email_address,
+                    //     is_admin: employee.dataValues.is_admin,
+                    //     organization_id: employee.dataValues.organization_id
+                    // }
 
-                    req.session.user = dataSave;
-                    dataSave.organization_id = employee.dataValues.organization_id;
+                    // // req.session.user = dataSave;
+                    // dataSave.organization_id = employee.dataValues.organization_id;
 
-                    res.status(200).json({
-                        user: dataSave,
-                        success: true
-                    });
-                    return new Promise(function(resolve, reject) {
-                        return resolve(dataSave);
-                    });
+
+                    // res.status(200).json({
+                    //     user: dataSave,
+                    //     success: true
+                    // });
+                    // return new Promise(function(resolve, reject) {
+                    //     return resolve(dataSave);
+                    // });
+                    return getApi('login').loginUser(req, employee.dataValues.email_address);
                 } else {
                     return new Promise(function(resolve, reject) {
                         return reject(self.getErrorApi().getErrorMsg(1018));
                     });
                 }
+            }).then(function(employee) {
+                res.status(200).json({
+                    user: employee,
+                    success: true
+                });
             }).catch(function(err) {
                 self.getErrorApi().setErrorWithMessage(err.toString(), 422, res);
             });
@@ -296,6 +301,7 @@ function registationApi() {
                     email_address: patron.email_address,
                     organization_id: patron.organization_id
                 }
+
                 res.status(200).json({
                     user: dataSave,
                     success: true

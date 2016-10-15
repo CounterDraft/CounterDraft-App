@@ -5,6 +5,11 @@ function LoginApi() {
     var Promise = getPromise();
     var Employee = models.employee_user;
     var Organization = models.organization;
+    var fEmployee = null;
+
+    this.loginPatron = function(req, email_address) {
+
+    }
 
     this.loginUser = function(req, email_address) {
         var self = this;
@@ -26,6 +31,15 @@ function LoginApi() {
                     if (employee.is_admin) {
                         req.session.user['permissions'] = ['restricted:admin,employee'];
                     }
+                    fEmployee = {
+                        employee_id: employee.id,
+                        username: employee.username,
+                        first_name: employee.first_name,
+                        last_name: employee.last_name,
+                        email_address: employee.email_address,
+                        is_admin: employee.is_admin,
+                        organization_id: employee.organization_id
+                    }
                     return Organization.findOne({
                         where: {
                             id: employee.organization_id
@@ -33,19 +47,19 @@ function LoginApi() {
                     });
                 } else {
                     return new Promise(function(resolve, reject) {
-                        reject(9903, 404);
+                        reject({errNum: 9903, status:404});
                     });
                 }
             }).then(function(organization) {
-                if (organization) {
+                if (organization && fEmployee) {
                     req.session.organization = organization;
-                    resolve(req.session);
+                    resolve(fEmployee);
                 } else {
                     reject(self.getErrorApi().getErrorMsg(1028));
                 }
-            }).catch(function(err, status) {
-                if (typeof err === "number") {
-                    reject(self.getErrorApi().getErrorMsg(err));
+            }).catch(function(err) {
+                if (err.errNum) {
+                    reject(self.getErrorApi().getErrorMsg(err.errNum));
                 } else {
                     reject(err);
                 }
@@ -106,11 +120,11 @@ function LoginApi() {
 
                 } else if (!employee) {
                     return new Promise(function(resolve, reject) {
-                        reject(1002, 401);
+                        reject({ errNum: 1002, status: 401 });
                     });
                 } else {
                     return new Promise(function(resolve, reject) {
-                        reject(1001, 401);
+                        reject({ errNum: 1001, status: 401 });
                     });
                 }
 
@@ -124,9 +138,9 @@ function LoginApi() {
                 } else {
                     self.getErrorApi().sendError(1028, 422, res);
                 }
-            }).catch(function(err, status){
-                if (typeof err === "number") {
-                    self.getErrorApi().sendError(err, status, res);
+            }).catch(function(err) {
+                if (err.errNum) {
+                    self.getErrorApi().sendError(err.errNum, err.status, res);
                 } else {
                     self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
                 }

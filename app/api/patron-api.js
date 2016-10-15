@@ -125,10 +125,11 @@ function PatronApi() {
 
     this.getTotalPatron = function(req, res) {
         var self = this;
-        var user = req.session.user || req.session.api_user;
+        var organization = req.session.organization;
 
         ModelPatron.findAndCountAll({
             where: {
+                organization_id: organization.id,
                 is_active: true
             }
         }).then(function(results) {
