@@ -93,7 +93,7 @@ module.exports = {
             getApi('employee').retrieve(user.employee_id)
                 .then(function(results) {
                     var employee = results.dataValues;
-                    return getApi('organization').retrieve(employee.employee_organization);
+                    return getApi('organization').retrieve(employee.organization_id);
                 }).then(function(results) {
                     var organization = results.dataValues;
                     res.render('pages/patron.ejs', {

@@ -28,7 +28,7 @@ function LoginApi() {
                     }
                     return Organization.findOne({
                         where: {
-                            id: employee.employee_organization
+                            id: employee.organization_id
                         }
                     });
                 } else {
@@ -100,7 +100,7 @@ function LoginApi() {
 
                     return Organization.findOne({
                         where: {
-                            id: employee.employee_organization
+                            id: employee.organization_id
                         }
                     });
 

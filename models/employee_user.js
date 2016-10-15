@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: false,
             comment: "defines if a employee is a admin or not. true = admin, false = not admin."
         },
-        employee_organization: {
+        organization_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             comment: "defines the organization."
@@ -60,7 +60,7 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName: true,
         classMethods: {
             associate: function(models) {
-                EmployeeUser.belongsTo(models.organization, { foreignKey: 'employee_organization', target: 'id' });
+                EmployeeUser.belongsTo(models.organization, { foreignKey: 'organization_id', target: 'id' });
             }
         }
     });

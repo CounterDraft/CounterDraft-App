@@ -33,3 +33,9 @@ INSERT INTO public.sequelize_meta(
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161014182454-add-organization-key-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+	
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161015074349-add-organization-id-to-tables-and-rename.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+
+	

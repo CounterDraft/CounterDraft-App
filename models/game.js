@@ -28,6 +28,11 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true,
             comment: "Links to tranaction record, null = game has not ended or was cancelled."
         },
+        organization_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            comment: "defines the organization."
+        },
         is_active: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
@@ -40,6 +45,7 @@ module.exports = function(sequelize, DataTypes) {
             associate: function(models) {
                 Game.belongsTo(models.game_type, { foreignKey: 'type', target: 'id' });
                 Game.belongsTo(models.payout, { foreignKey: 'transaction' });
+                Game.belongsTo(models.organization, { foreignKey: 'organization_id', target: 'id' });
             }
         }
     });

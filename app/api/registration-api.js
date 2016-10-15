@@ -182,7 +182,7 @@ function registationApi() {
                     email_address: req.body.email_address,
                     password: passwordWithHash,
                     is_admin: false,
-                    employee_organization: employeeOrganization
+                    organization_id: employeeOrganization
                 });
             }).then(function(employee) {
                 if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
@@ -208,7 +208,7 @@ function registationApi() {
                     }
 
                     req.session.user = dataSave;
-                    dataSave.employee_organization = employee.dataValues.employee_organization;
+                    dataSave.organization_id = employee.dataValues.organization_id;
 
                     res.status(200).json({
                         user: dataSave,
@@ -285,7 +285,7 @@ function registationApi() {
                     username: req.body.email_address,
                     email_address: req.body.email_address,
                     password: passwordWithHash,
-                    organization_id: employee.employee_organization
+                    organization_id: employee.organization_id
                 });
             }).then(function(results) {
                 var patron = results.dataValues;
