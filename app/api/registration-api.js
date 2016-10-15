@@ -285,7 +285,7 @@ function registationApi() {
                     username: req.body.email_address,
                     email_address: req.body.email_address,
                     password: passwordWithHash,
-                    patron_organization: employee.employee_organization
+                    organization_id: employee.employee_organization
                 });
             }).then(function(results) {
                 var patron = results.dataValues;
@@ -294,7 +294,7 @@ function registationApi() {
                     last_name: patron.last_name,
                     username: patron.username,
                     email_address: patron.email_address,
-                    patron_organization: patron.patron_organization
+                    organization_id: patron.organization_id
                 }
                 res.status(200).json({
                     user: dataSave,

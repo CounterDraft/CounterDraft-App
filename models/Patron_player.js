@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING(64),
             comment: "Patron's hashed password"
         },
-        patron_organization: {
+        organization_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             comment: "Defines the organization."
@@ -52,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName: true,
         classMethods: {
             associate: function(models) {
-                PatronPlayer.belongsTo(models.organization, { foreignKey: 'patron_organization', target: 'id' });
+                PatronPlayer.belongsTo(models.organization, { foreignKey: 'organization_id', target: 'id' });
             }
         }
     });

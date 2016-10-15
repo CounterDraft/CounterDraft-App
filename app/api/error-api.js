@@ -110,6 +110,9 @@ var errorList = {
     1027: {
         msg: 'Missing employee_id in header. ex = {api_key: <secret_key>, employee_id: <id_of_employee>}'
     },
+    1028: {
+        msg: 'UKNOWN Error employee does not have a valid organization, please contact a adminstrator for assistance.'
+    },
 
 
 

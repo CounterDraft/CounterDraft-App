@@ -12,7 +12,7 @@ var _removeUneededAttr = function(patron) {
         id: patron.id,
         is_active: patron.is_active,
         last_name: patron.last_name,
-        patron_organization: patron.patron_organization,
+        organization_id: patron.organization_id,
         username: patron.username,
         uuid: patron.p_uuid
     }

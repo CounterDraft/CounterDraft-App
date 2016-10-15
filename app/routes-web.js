@@ -164,8 +164,10 @@ module.exports = {
             });
         });
         routerWeb.get('/logout', function(req, res) {
-            req.session.destroy();
-            res.redirect('/login');
+            req.session.destroy(function() {
+                res.redirect('/login');
+                res.end();
+            });
         });
 
         routerWeb.get('/*', function(req, res, next) {
@@ -240,7 +242,7 @@ module.exports = {
 
                     //keep going;
                     next();
-                    
+
                 }).catch(function(err) {
                     getApi('error').setErrorWithMessage(err.toString(), 500, res);
                     return;

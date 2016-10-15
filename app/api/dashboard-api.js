@@ -17,12 +17,17 @@ function DashboardApi() {
 
     this.getGameChartDate = function(req, res) {
         var self = this;
-        var user = req.session.user || req.sess.api_user;
+        var organization = req.session.organization || null;
         var duration = null;
         var numOfOutput = 7;
         var list = {};
         var model = models.game;
-        var organization_id = 999;
+
+        if (!organization || !user) {
+            this.getErrorApi().sendError(1028, 400, res);
+            return;
+        }
+
         if (!req.query.duration) {
             this.getErrorApi().sendError(1012, 400, res);
             return;
@@ -37,9 +42,7 @@ function DashboardApi() {
                 return;
             }
         }
-        if(user){
-            organization_id = user.organization_id;
-        }
+
         switch (duration.key) {
             case 'day':
                 for (var x = 0; x < numOfOutput; x++) {
@@ -47,7 +50,7 @@ function DashboardApi() {
                     var date = d.setHours(d.getHours() - (x * 3.4));
                     list[x] = date;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             case 'week':
@@ -55,7 +58,7 @@ function DashboardApi() {
                     var ts = new Date().setDate(new Date().getDate() - x);
                     list[x] = ts;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             case 'month':
@@ -63,7 +66,7 @@ function DashboardApi() {
                     var ts = new Date().setDate(new Date().getDate() - (x * 7));
                     list[x] = ts;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             case 'year':
@@ -72,7 +75,7 @@ function DashboardApi() {
                     var date = d.setMonth(d.getMonth() - x);
                     list[x] = date;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             case 'max':
@@ -81,7 +84,7 @@ function DashboardApi() {
                     var date = d.setFullYear(d.getFullYear() - x);
                     list[x] = date;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             default:
@@ -92,6 +95,7 @@ function DashboardApi() {
 
     this.getPatronChartData = function(req, res) {
         var self = this;
+        var organization = req.session.organization || null;
         var duration = null;
         var numOfOutput = 7;
         var list = {};
@@ -117,7 +121,7 @@ function DashboardApi() {
                     var date = d.setHours(d.getHours() - (x * 3.4));
                     list[x] = date;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             case 'week':
@@ -125,7 +129,7 @@ function DashboardApi() {
                     var ts = new Date().setDate(new Date().getDate() - x);
                     list[x] = ts;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             case 'month':
@@ -133,7 +137,7 @@ function DashboardApi() {
                     var ts = new Date().setDate(new Date().getDate() - (x * 7));
                     list[x] = ts;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             case 'year':
@@ -142,7 +146,7 @@ function DashboardApi() {
                     var date = d.setMonth(d.getMonth() - x);
                     list[x] = date;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             case 'max':
@@ -151,7 +155,7 @@ function DashboardApi() {
                     var date = d.setFullYear(d.getFullYear() - x);
                     list[x] = date;
                 }
-                _getChart(list, numOfOutput, model, res);
+                _getChart(organization.id, list, numOfOutput, model, res);
                 break;
 
             default:
@@ -160,9 +164,10 @@ function DashboardApi() {
         }
     }
 
-    var _getChart = function(list, numOfOutput, Model, res) {
+    var _getChart = function(organization_id, list, numOfOutput, Model, res) {
         Model.findAndCountAll({
             where: {
+                organization_id: organization_id,
                 createdAt: {
                     $lte: new Date(list[0])
                 }
@@ -174,6 +179,7 @@ function DashboardApi() {
             }
             return Model.findAndCountAll({
                 where: {
+                    organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[1])
                     }
@@ -186,6 +192,7 @@ function DashboardApi() {
             }
             return Model.findAndCountAll({
                 where: {
+                    organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[2])
                     }
@@ -198,6 +205,7 @@ function DashboardApi() {
             }
             return Model.findAndCountAll({
                 where: {
+                    organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[3])
                     }
@@ -222,6 +230,7 @@ function DashboardApi() {
             }
             return Model.findAndCountAll({
                 where: {
+                    organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[5])
                     }
@@ -234,6 +243,7 @@ function DashboardApi() {
             }
             return Model.findAndCountAll({
                 where: {
+                    organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[6])
                     }
