@@ -213,7 +213,7 @@ function registationApi() {
 
     this.createPatron = function(req, res) {
         var self = this;
-        var user = req.session.user || req.sess;
+        var user = this.getUser(req, res);
 
         if (!req.body.first_name || req.body.first_name === "") {
             this.getErrorApi().sendError(1003, 403, res);

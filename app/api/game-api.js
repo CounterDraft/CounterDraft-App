@@ -12,7 +12,8 @@ function GameApi() {
     var ModelGame = models.game;
 
     this.getTotalGame = function(req, res) {
-        var organization = req.session.organization;
+        var self = this;
+        var organization = this.getOrganization(req, res);
         ModelGame.findAndCountAll({
             where: {
                 organization_id: organization.id,
@@ -30,7 +31,10 @@ function GameApi() {
 
     this.create = function(req, res) {
         var self = this;
-        var user = req.session.user || req.sess;
+        var organization = self.getOrganization(req, res);
+        res.status(200).json({
+            success: true
+        });
     }
 }
 

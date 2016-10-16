@@ -4,6 +4,9 @@ module.exports = {
 
     setup: function(app) {
         var routerWeb = require('express').Router();
+        var Promise = getPromise();
+        var organizationModal = models.organization;
+        var employeeModal = models.employee_user;
 
         var authorization = global.getAuthorization();
         authorization.ensureRequest.options = {
@@ -186,24 +189,16 @@ module.exports = {
 
         //pre-route
         app.use(function(req, res, next) {
-            var organizationModal = models.organization;
-            var employeeModal = models.employee_user;
-            var user = null;
-
+            var self = this;
             //defaults variables;
             res.locals.login = false;
+            res.locals.user = null;
+            res.locals.organization = null;
             res.locals.environment = global.config['environment'];
             res.locals.npm_package_name = global.config['npm_package_name'];
 
             if (typeof req.session.user != 'undefined') {
                 res.locals.login = true;
-            }
-
-            //create the api_user object;
-            if (!req.hasOwnProperty('session')) {
-                req.session = {};
-                req.session.api_user = {};
-                req.session.organization = {};
             }
 
             //gets data from header and addes it to the api_user
@@ -216,35 +211,46 @@ module.exports = {
                     }
                 }).then(function(result) {
                     if (result) {
-                        req.session.organization = result.dataValues;
+                        var organization = result.dataValues;
+                        res.locals.organization = organization;
+                        return employeeModal.findOne({
+                            where: {
+                                id: employee_id,
+                                organization_id: organization.id
+                            }
+                        });
                     } else {
                         var err = {
                             key: key,
                             modal: 'organization'
                         };
-                        logger.log('Error', 'Couldn\'t find organization in db', { error: err });
+                        logger.error('Error', 'API CALL FAILED - Couldn\'t find organization from key', { error: err });
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1030, status: 401 });
+                        });
                     }
-                    return employeeModal.findOne({
-                        where: {
-                            id: employee_id
-                        }
-                    });
+
                 }).then(function(result) {
                     if (result) {
-                        req.session.api_user = result.dataValues;
+                        res.locals.user = result.dataValues;
+                        //keep going;
+                        next();
                     } else {
                         var err = {
                             employee_id: employee_id,
                             modal: 'employee'
                         };
-                        logger.log('Error', 'Couldn\'t find employee in db', { error: err });
+                        logger.error('Error', 'API CALL FAILED - Couldn\'t find employee in organization', { error: err });
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1029, status: 401 });
+                        });
                     }
-
-                    //keep going;
-                    next();
-
                 }).catch(function(err) {
-                    getApi('error').setErrorWithMessage(err.toString(), 500, res);
+                    if (err.errNum) {
+                        getApi('error').sendError(err.errNum, err.status, res);
+                    } else {
+                        getApi('error').setErrorWithMessage(err.toString(), 500, res);
+                    }
                     return;
                 });
             } else {

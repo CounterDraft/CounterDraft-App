@@ -17,7 +17,7 @@ function DashboardApi() {
 
     this.getGameChartDate = function(req, res) {
         var self = this;
-        var organization = req.session.organization || null;
+        var organization = self.getOrganization(req, res);
         var duration = null;
         var numOfOutput = 7;
         var list = {};
@@ -90,7 +90,7 @@ function DashboardApi() {
 
     this.getPatronChartData = function(req, res) {
         var self = this;
-        var organization = req.session.organization || null;
+        var organization = self.getOrganization(req, res);
         var duration = null;
         var numOfOutput = 7;
         var list = {};

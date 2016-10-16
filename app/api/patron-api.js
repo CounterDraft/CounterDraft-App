@@ -57,8 +57,8 @@ function PatronApi() {
 
     this.find = function(req, res) {
         var self = this;
-        var user = req.session.user;
-        var organization = req.session.organization;
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
         var serachParams = [
             'email_address',
             'first_name',
@@ -130,7 +130,7 @@ function PatronApi() {
 
     this.getTotalPatron = function(req, res) {
         var self = this;
-        var organization = req.session.organization;
+        var organization = self.getOrganization(req, res);
 
         ModelPatron.findAndCountAll({
             where: {

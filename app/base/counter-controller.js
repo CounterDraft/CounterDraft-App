@@ -7,13 +7,33 @@ function baseController() {
         return this.name;
     }
 
+    this.getUser = function(req, res) {
+        var user = null;
+        if (typeof req.session.user != 'undefined') {
+            user = req.session.user;
+        } else if (typeof res.locals.user != 'undefined') {
+            user = res.locals.user;
+        }
+        return user;
+    }
+
+    this.getOrganization = function(req, res) {
+        var organization = null;
+        if (typeof req.session.organization != 'undefined') {
+            organization = req.session.organization;
+        } else if (typeof res.locals.organization != 'undefined') {
+            organization = res.locals.organization;
+        }
+        return organization;
+    }
+
     this.getErrorApi = function() {
         var errorApi = require(GLOBAL.API_DIR + 'error-api');
         return new errorApi();
     }
 
     this.rest = function(req, res) {
-        
+
         var nonAuthRestList = [
             'confirmation',
             'registration',
@@ -35,8 +55,9 @@ function baseController() {
             }
 
             if (this.ApiRouter.hasOwnProperty(restCallStr)) {
-                var user = req.session.user || req.session.api_user;
-
+                var user = this.getUser(req, res);
+                var organization = this.getOrganization(req, res);
+      
                 if (!user && nonAuthRestList.indexOf(restCallStr) == -1) {
                     if (!req.get('key')) {
                         this.getErrorApi().sendError(1026, 400, res);
@@ -46,12 +67,11 @@ function baseController() {
                         this.getErrorApi().sendError(1025, 400, res);
                     }
                     return;
-                } else if(req.session.api_user){
-                 
+                } else if (res.locals.user) {
                     var meta = {
-                        id: req.session.organization.id,
-                        name: req.session.organization.name,
-                        key: req.session.organization.api_key,
+                        id: organization.id,
+                        name: organization.name,
+                        key: organization.api_key,
                         url: req.url,
                         method: req.method.toLowerCase()
                     }

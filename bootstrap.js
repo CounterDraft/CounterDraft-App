@@ -16,14 +16,14 @@ module.exports = {
         global.getDatabase_url = function() {
             if (global.config.database_url) {
                 return global.config.database_url;
-            } else if(global.config.database) {
+            } else if (global.config.database) {
                 database_url = 'postgres://' + global.config.database.user +
                     ':' + global.config.database.password +
                     '@' + global.config.database.host +
                     ':' + global.config.database.port +
                     '/' + global.config.database.database;
                 return database_url;
-            }else{
+            } else {
                 return null;
             }
         }
@@ -38,15 +38,15 @@ module.exports = {
         global.API_DIR = dirBase + '/app/api/';
         global.BASE_DIR = dirBase + '/app/base/';
 
-        global.getPromise = function(){
+        global.getPromise = function() {
             return require('bluebird');
         }
 
-        global.getEmailTemplate = function(){
+        global.getEmailTemplate = function() {
             return require('email-templates').EmailTemplate;
         }
 
-        global.getdbConnection = function(){
+        global.getdbConnection = function() {
             return require('pg');
         }
 
@@ -88,7 +88,7 @@ module.exports = {
             return new Model();
         }
 
-        global.getHash = function() { 
+        global.getHash = function() {
             return require('password-hash');
         }
 
