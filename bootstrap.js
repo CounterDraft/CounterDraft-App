@@ -64,7 +64,7 @@ module.exports = {
         }
 
         global.getController = function(controllerName) {
-            var Controller = require(global.CONTROLLER_DIR + controllerName);
+            var Controller = require(global.CONTROLLER_DIR + controllerName + '-controller');
             return mix(getBase('counter-controller')).into(new Controller());
         }
 

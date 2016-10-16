@@ -119,8 +119,8 @@ module.exports = {
         });
 
 
-        routerWeb.get('/profile', isAuthorized, function(req, res) {
-            res.render('pages/profile.ejs', {
+        routerWeb.get('/account', isAuthorized, function(req, res) {
+            res.render('pages/account.ejs', {
                 data: {
                     user: 'counterDraft_user'
                 }
