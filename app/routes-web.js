@@ -118,14 +118,17 @@ module.exports = {
                 });
         });
 
-
         routerWeb.get('/account', isAuthorized, function(req, res) {
+            var employee = {
+                id: req.session.user.employee_id,
+            }
             res.render('pages/account.ejs', {
                 data: {
-                    user: 'counterDraft_user'
+                    employee: employee
                 }
             });
         });
+
         routerWeb.get('/organization', isAuthorizedAdmin, function(req, res) {
             res.render('pages/organization.ejs', {
                 data: {

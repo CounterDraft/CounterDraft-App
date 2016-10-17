@@ -109,16 +109,14 @@ module.exports = {
             return require('dateformat');
         }
 
+        global.getUnixTimeStamp = function(dateStr){
+            return new Date(dateStr).getTime() / 1000;
+        }
+
         //creaete transportor
         global.emailTransport = require("nodemailer").createTransport(global.config.email);
 
-
         global.logger = require('./lib/logger').init();
         global.models = require("./models");
-
-        // global.Sequelize = require('sequelize');
-        // require('./model.bak/database.js').init(global.config.database, function(models){
-        //     global.models = models;
-        // });
     }
 }

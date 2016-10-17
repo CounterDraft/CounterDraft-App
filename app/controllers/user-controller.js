@@ -21,6 +21,7 @@ function UserController() {
                     break;
             }
         },
+        
         image: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
@@ -40,6 +41,7 @@ function UserController() {
                     break;
             }
         },
+
         total: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
@@ -83,10 +85,10 @@ function UserController() {
         default: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
-                    getApi('registration').createPatron(req, res);
+                    self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'get':
-                    getApi('patron').getPatron(req, res);
+                    getApi('employee').getEmployee(req, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);

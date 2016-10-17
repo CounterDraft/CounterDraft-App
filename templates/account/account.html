@@ -1,45 +1,63 @@
 <section class="alpha" ng-clock>
+    <ul class="patron-list col-xs-12">
+        <li class="patron-list-item col-xs-12 text-size-small" ng-click="aCtrl.onPatronSelected(patron)">
+            <div class="col-xs-4 col-sm-3 col-md-2 patron-img">
+                <img ng-src="{{pCtrl.getEmployeeImage()}}" alt="Patron_Image" />
+            </div>
+            <div class="col-xs-8 col-sm-9 col-md-10 patron-info row">
+                <div class="col-xs-12"><span>id:&nbsp;</span>{{employeeModal.id}}</div>
+                <div class="col-xs-12"><span>First Name:&nbsp;</span>{{employeeModal.first_name}}</div>
+                <div class="col-xs-12"><span>Last Name:&nbsp;</span>{{employeeModal.last_name}}</div>
+                <div class="col-xs-12"><span>Email:&nbsp;</span>{{employeeModal.email_address}}</div>
+            </div>
+        </li>
+    </ul>
     <div class="col-xs-12">
-        <h3>&nbsp;</h3>
-        <button type="button" class="btn senary" ng-click="pCtrl.onEdit()"><i class="glyphicon glyphicon-pencil"></i></button>
+        <button type="button" class="btn senary" ng-click="pCtrl.onEdit()" ng-show="showEdit"><i class="glyphicon glyphicon-pencil"></i></button>
     </div>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
-        <form ng-submit="pCtrl.onEmployeeEdit()" class="counter-form" data-toggle="validator" role="form" name="addEmployeeEditForm" ng-init="pCtrl.initAccount()">
+        <form ng-submit="pCtrl.onEmployeeEdit()" class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" ng-init="pCtrl.initAccount()">
             <div class="form-group" show-errors>
-                <input type="text" id="registation-first-name" class="form-control" placeholder="Frist Name *" ng-model="registrationModel.first_name" name="firstName" pattern="^[_A-z]{1,}$" required>
+                <input type="text" id="registation-first-name" class="form-control" placeholder="Frist Name *" ng-model="employeeModel.first_name" name="firstName" pattern="^[_A-z]{1,}$" ng-disabled="!editForm" required>
                 <div class="help-block" ng-if="registrationForm.firstName.$error.required">First name is required</div>
                 <div class="help-block" ng-if="registrationForm.firstName.$error && !registrationForm.firstName.$error.required">First name contains invalid characters</div>
             </div>
             <div class="form-group" show-errors>
-                <input type="text" class="form-control" placeholder="Last Name *" name="lastName" pattern="^[_A-z]{1,}$" ng-model="registrationModel.last_name" required>
+                <input type="text" class="form-control" placeholder="Last Name *" name="lastName" pattern="^[_A-z]{1,}$" ng-model="employeeModel.last_name" ng-disabled="!editForm" required>
                 <div class="help-block" ng-if="registrationForm.lastName.$error.required">Last name is required</div>
                 <div class="help-block" ng-if="registrationForm.lastName.$error && !registrationForm.lastName.$error.required">Last name contains invalid characters</div>
             </div>
             <div class="form-group" show-errors>
-                <input type="email" class="form-control" name="emailAddress" placeholder="Email *" ng-model="registrationModel.email_address" required>
+                <input type="email" class="form-control" name="emailAddress" placeholder="Email *" ng-model="employeeModel.email_address" ng-disabled="!editForm" required>
                 <div class="help-block" ng-if="registrationForm.emailAddress.$error.required">Email address is required</div>
                 <div class="help-block" ng-if="registrationForm.emailAddress.$error && !registrationForm.emailAddress.$error.required">Email address is invalid</div>
             </div>
-            <div class="form-group" show-errors>
-                <input type="password" class="form-control" name="password" placeholder="Enter password *" ng-model="registrationModel.password" data-minlength="6" required>
-                <div class="help-block" ng-if="registrationForm.password.$error.required">Password is required</div>
-                <div class="help-block" ng-if="registrationForm.password.$error && !registrationForm.password.$error.required">Not long enough</div>
+            <div class="input-group">
+                <a class="input-group-addon btn secondary"><span class="glyphicon glyphicon-lock"></span></a>
+                <input type="password" class="form-control" name="password" placeholder="password *" disabled value="placeholder_goes_here" />
             </div>
-            <div class="form-group" show-errors>
-                <input type="password" class="form-control" name="passwordConfirm" placeholder="Enter password again *" data-minlength="6" ng-model="registrationModel.password_confirm" required>
-                <div class="help-block" ng-if="registrationForm.passwordConfirm.$error.required">Password Confirm is required</div>
-                <div class="help-block" ng-if="registrationForm.passwordConfirm.$error && !registrationForm.passwordConfirm.$error.required">Not long enough</div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="form-group" ng-show="editForm">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4 pull-right">
+                        <button class="btn btn-block" ng-click="pCtrl.onEditPassword()">Change Password</button>
+                    </div>
+                </div>
             </div>
             <div class="row">
-                <div class="form-group col-sm-6 col-xs-12" show-errors>
-                    <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="registrationModel.organization_name" ng-disabled="registrationModel.organization_hash" name="organizationName" pattern="^[a-zA-Z0-9_ ]*$">
-                    <div class="help-block" ng-if="registrationForm.organizationName.$error">Organization name contains invalid characters</div>
+                <h3 class="col-xs-12">Organization</h3>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="organizationModel.name" ng-disabled="true" name="organizationName">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="organizationModel.description" ng-disabled="true" name="organizationDescription">
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6 col-xs-12">
                 </div>
                 <div class="form-group col-sm-6 col-xs-12">
-                    <select class="form-control" ng-model="registrationModel.organization_type" ng-options="organization_type.id as organization_type.name for organization_type in organization_types" ng-disabled="registrationModel.organization_hash">
-                        <option value="" selected>Type *</option>
-                    </select>
                 </div>
             </div>
         </form>

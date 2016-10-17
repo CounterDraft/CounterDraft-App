@@ -119,6 +119,12 @@ var errorList = {
     1030: {
         msg: 'Failed to find organization, the attempt has been logged.'
     },
+    1031: {
+        msg: 'Missing required parameter, id'
+    },
+    1032: {
+        msg: 'Employee not found in the system.'
+    },
 
 
 
