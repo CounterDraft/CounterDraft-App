@@ -35,6 +35,13 @@ function EmployeeApi() {
         });
     }
 
+    this.changePassword = function(req, res) {
+        var self = this;
+        res.status(200).json({
+            success: true
+        });
+    }
+
     this.getEmployee = function(req, res) {
         var self = this;
         var user = self.getUser(req, res);

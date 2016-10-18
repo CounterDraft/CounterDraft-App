@@ -1,5 +1,5 @@
 function UserController() {
-    this.tag = 'patronController';
+    this.tag = 'userController';
 
     this.ApiRouter = {
         search: function(verb, req, res, self) {
@@ -21,7 +21,27 @@ function UserController() {
                     break;
             }
         },
-        
+
+        password: function(verb, req, res, self) {
+            switch (verb) {
+                case 'post':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'get':
+                    getApi('employee').getPassword(req, res);
+                    break;
+                case 'put':
+                    getApi('employee').changePassword(req, res);
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
+
         image: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
