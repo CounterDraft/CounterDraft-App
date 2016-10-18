@@ -107,10 +107,9 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal','$http', '$window', 'data',
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             templateUrl: 'change-password-modal.html',
-            // controller: 'ModalInstanceCtrl',
-            // controllerAs: '$ctrl',
+            controller: 'ChangePasswordCtrl',
+            controllerAs: 'mCtrl',
             size: 'lg',
-            // appendTo: self,
             resolve: {
                 items: function() {
                     return self.items;
