@@ -106,11 +106,11 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal','$http', '$window', 'data',
             animation: self.animationsEnabled,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
-            templateUrl: 'myModalContent.html',
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl',
-            size: 'sm',
-            appendTo: self,
+            templateUrl: 'change-password-modal.html',
+            // controller: 'ModalInstanceCtrl',
+            // controllerAs: '$ctrl',
+            size: 'lg',
+            // appendTo: self,
             resolve: {
                 items: function() {
                     return self.items;
