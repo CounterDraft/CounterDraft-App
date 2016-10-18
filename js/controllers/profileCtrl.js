@@ -5,7 +5,7 @@
         This should all the front end logic for the my account page.
 */
 
-app.controller('ProfileCtrl', ['$scope', '$uibModal','$http', '$window', 'data', function($scope, $uibModal, $http, $window, data) {
+app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data', function($scope, $uibModal, $http, $window, data) {
     var _base_templates = "templates/account/";
     var _url_employee = "/api/v1/user/";
 
@@ -18,7 +18,8 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal','$http', '$window', 'data',
         first_name: null,
         last_name: null,
         email_address: null,
-        organization_id: null
+        organization_id: null,
+        password: 'placeholder'
     }
     $scope.organizationModel = {
         description: null,
@@ -47,15 +48,16 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal','$http', '$window', 'data',
             $http({
                 method: 'GET',
                 url: _url_employee,
-                params: {id:$scope.employeeModel.id},
+                params: { id: $scope.employeeModel.id },
             }).then(function successCallback(response) {
                 if (response && response.status === 200) {
                     var employee = response.data.employee;
                     var organization = response.data.organization;
-                    if(employee){
+                    if (employee) {
                         $scope.employeeModel = employee;
+                        $scope.employeeModel.password = 'placeholder';
                     }
-                    if(organization){
+                    if (organization) {
                         $scope.organizationModel = organization;
                     }
                 } else {
@@ -100,8 +102,11 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal','$http', '$window', 'data',
         }
     }
 
-    this.onEditPassword = function(){
+    this.onEditPassword = function(canEdit) {
         var self = this;
+        if (!canEdit) {
+            return false;
+        }
         var modalInstance = $uibModal.open({
             animation: self.animationsEnabled,
             ariaLabelledBy: 'modal-title',
@@ -132,6 +137,10 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal','$http', '$window', 'data',
 
     this.getEmployeeImage = function() {
 
+    }
+
+    this.onSubmit = function(form){
+        console.log(form);
     }
 
     var _getDefaultPage = function() {

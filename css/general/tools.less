@@ -135,6 +135,24 @@
     border-radius: @radius;
 }
 
+.border-radius-all (@top-right: 5px, @bottom-right: 5px, @bottom-left: 5px, @top-left: 5px) {
+    -webkit-border-border-top-left-radius: @top-left;
+    -moz-border-border-top-left-radius: @top-left;
+    border-top-left-radius: @top-left;
+
+    -webkit-border-border-top-right-radius: @top-right;
+    -moz-border-border-top-right-radius: @top-right;
+    border-top-right-radius: @top-right;
+
+    -webkit-border-border-bottom-left-radius: @bottom-left;
+    -moz-border-border-bottom-left-radius: @bottom-left;
+    border-bottom-left-radius: @bottom-left;
+
+    -webkit-border-border-bottom-right-radius: @bottom-right;
+    -moz-border-border-bottom-right-radius: @bottom-right;
+    border-bottom-right-radius: @bottom-right;
+}
+
 .box-shadow (@x: 0px, @y: 3px, @blur: 5px, @alpha: 0.5) {
     -webkit-box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
     -moz-box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);

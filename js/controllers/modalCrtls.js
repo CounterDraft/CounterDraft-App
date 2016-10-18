@@ -8,21 +8,22 @@
 app.controller('ChangePasswordCtrl', ['$scope', '$uibModalInstance', 'data', function($scope, $uibModalInstance, data) {
 
     this.initChangePasswordModal = function() {
-        console.log('hreerer');
+        console.log('init change password modal');
     }
 
     this.cancel = function() {
-        console.log("asasdsd");
+        console.log('cancelled button clicked.');
+         $uibModalInstance.dismiss('cancel');
     }
 
-    this.cancel = function() {
-        console.log('herer');
-        $uibModalInstance.dismiss('cancel');
-        return false;
-    }
+    // this.cancel = function() {
+    //     console.log('herer');
+       
+    //     return false;
+    // }
 
     this.onSubmit = function() {
-        console.log('here');
+        console.log('submit button has been pressed!');
     }
 
 }]);
