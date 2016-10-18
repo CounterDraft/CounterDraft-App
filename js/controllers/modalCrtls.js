@@ -4,8 +4,7 @@
     Comment: 
         All modal ctrls should go in this file.
 */
-
-app.controller('ChangePasswordCtrl', ['$scope', '$http','$window','$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
+app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
     var _url_user_password = "/api/v1/user/password";
     $scope.passwordModel = {
         password: null,
@@ -13,7 +12,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http','$window','$uibModalInst
     }
 
     this.initChangePasswordModal = function() {
-
+        //nothing;
     }
 
     this.cancel = function() {
@@ -41,7 +40,23 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http','$window','$uibModalInst
                 data: formData,
             }).then(function successCallback(response) {
                 if (response && response.status === 200) {
-                    console.log(response);
+                    var msg = 'Your password has been changed.';
+                    $window.swal({
+                        title: "Success",
+                        text: msg,
+                        type: "success",
+                        confirmButtonColor: "#64d46f",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    }, function() {
+                        $scope.passwordModel = null;
+                        $scope.changePasswordForm.$setPristine();
+                        $scope.changePasswordForm.$setUntouched();
+                        $scope.$apply();
+                        $scope.$broadcast('show-errors-reset');
+                        $uibModalInstance.dismiss('cancel');
+                    });
                 } else {
                     $window.swal({
                         title: "Error",
