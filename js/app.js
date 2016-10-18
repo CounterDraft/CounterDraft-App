@@ -6,7 +6,7 @@
         Filter should be placed here and other comment app related stuff.
 */
 
-app = angular.module('CounterDraft-app', ['angular.morris', 'ui.bootstrap.showErrors'])
+app = angular.module('CounterDraft-app', ['ngAnimate', 'ui.bootstrap','angular.morris', 'ui.bootstrap.showErrors'])
     .config(['showErrorsConfigProvider', function(showErrorsConfigProvider) {
         showErrorsConfigProvider.showSuccess(true);
     }]);

@@ -5,7 +5,7 @@
         This should all the front end logic for the my account page.
 */
 
-app.controller('ProfileCtrl', ['$scope', '$http', '$window', 'data', function($scope, $http, $window, data) {
+app.controller('ProfileCtrl', ['$scope', '$uibModal','$http', '$window', 'data', function($scope, $uibModal, $http, $window, data) {
     var _base_templates = "templates/account/";
     var _url_employee = "/api/v1/user/";
 
@@ -25,6 +25,9 @@ app.controller('ProfileCtrl', ['$scope', '$http', '$window', 'data', function($s
         id: null,
         name: null
     }
+
+    this.items = ['item1', 'item2', 'item3'];
+    this.animationsEnabled = true;
 
     var _init = function() {
         //default page;
@@ -95,6 +98,32 @@ app.controller('ProfileCtrl', ['$scope', '$http', '$window', 'data', function($s
             });
             $scope.showEdit = false;
         }
+    }
+
+    this.onEditPassword = function(){
+        var self = this;
+        var modalInstance = $uibModal.open({
+            animation: self.animationsEnabled,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'myModalContent.html',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            size: 'sm',
+            appendTo: self,
+            resolve: {
+                items: function() {
+                    return self.items;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(selectedItem) {
+            self.selected = selectedItem;
+        }, function() {
+            console.info('Modal dismissed at: ' + new Date());
+        });
+
     }
 
     this.onEdit = function() {
