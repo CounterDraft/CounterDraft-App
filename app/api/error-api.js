@@ -125,6 +125,9 @@ var errorList = {
     1032: {
         msg: 'Employee not found in the system.'
     },
+    1033: {
+        msg: 'Failed to update employee.'
+    },
 
 
 

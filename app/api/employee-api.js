@@ -37,9 +37,58 @@ function EmployeeApi() {
 
     this.changePassword = function(req, res) {
         var self = this;
-        res.status(200).json({
-            success: true
-        });
+        //user should be in the system.
+        var user = self.getUser(req, res);
+        if (!req.body.password || req.body.password === "") {
+            this.getErrorApi().sendError(1006, 403, res);
+        } else if (!req.body.password_confirm || req.body.password_confirm === "") {
+            this.getErrorApi().sendError(1007, 403, res);
+        } else if (req.body.password_confirm != req.body.password) {
+            this.getErrorApi().sendError(1014, 403, res);
+        } else {
+            ModelEmployee.findOne({
+                where: {
+                    id: user.employee_id
+                }
+            }).then(function(result) {
+                if (result) {
+                    var employee = result.dataValues;
+                    var passwordWithHash = getHash().generate(req.body.password);
+                    if (!passwordWithHash) {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1013, status: 422 });
+                        });
+                    }
+                    return ModelEmployee.update({
+                        password: passwordWithHash
+                    }, {
+                        where: {
+                            id: employee.id
+                        }
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1032, status: 500 });
+                    });
+                }
+            }).then(function(result) {
+                if (result) {
+                    var employee = result.dataValues;
+                    res.status(200).json({
+                        employee: employee,
+                        success: true
+                    });
+                } else {
+                    self.getErrorApi().sendError(1033, 500, res);
+                }
+            }).catch(function(err) {
+                if (err.errNum) {
+                    self.getErrorApi().sendError(err.errNum, err.status, res);
+                } else {
+                    self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+                }
+            });
+        }
     }
 
     this.getEmployee = function(req, res) {

@@ -30,10 +30,11 @@ module.exports = function(grunt) {
                     //NOTE- If we add more libs there need to be added to the build here;
                     'node_modules/angular/angular.js',
                     'node_modules/angular-morris/build/module/angular-morris/angular-morris.min.js',
-                    'node_modules/angular-ui-router/release/angular-ui-router.min.js',
+                    'node_modules/angular-animate/angular-animate.min.js',
                     'build/js/libs/showErrors.js',
                     'build/js/app.js',
                     'build/js/directives.js',
+
                     //controllers
                     'build/js/controllers/accountCtrl.js',
                     'build/js/controllers/dashboardCtrl.js',
@@ -42,8 +43,12 @@ module.exports = function(grunt) {
                     'build/js/controllers/reportsCtrl.js',
                     'build/js/controllers/generalCtrl.js',
                     'build/js/controllers/confirmationCtrl.js',
-                    'build/js/controllers/accountCtrl.js',
+                    'build/js/controllers/profileCtrl.js',
+                    'build/js/controllers/modalCrtls.js',
+
                     //libs
+                    'build/js/libs/ui-bootstrap-custom-2.2.0.js',
+                    'build/js/libs/ui-bootstrap-custom-tpls-2.2.0.js',
                     'node_modules/sweetalert/dist/sweetalert.min.js',
                     'node_modules/jquery/dist/jquery.js',
                     'node_modules/raphael/raphael.js',

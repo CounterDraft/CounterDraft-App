@@ -22,7 +22,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
 
     this.onSubmit = function() {
         var self = this;
-        var formData = $scope.resetModal;
+        var formData = $scope.passwordModel;
         var hasData = true;
 
         var errorMsg = 'Unknown error failed to update password.';
@@ -34,6 +34,19 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         }
 
         if (hasData) {
+            errorMsg = "Password and password confirm do not match.";
+            if (formData.password !== formData.password_confirm) {
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+                return;
+            }
             $http({
                 method: 'PUT',
                 url: _url_user_password,
