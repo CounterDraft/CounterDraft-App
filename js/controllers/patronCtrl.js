@@ -26,7 +26,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         password_confirm: null,
         organization_name: null,
         organization: null,
-        dob: null
+        dob: null,
         address: {
             street_number: null,
             route: null,
