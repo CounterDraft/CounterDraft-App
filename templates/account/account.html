@@ -5,10 +5,10 @@
                 <img ng-src="{{pCtrl.getEmployeeImage()}}" alt="Patron_Image" />
             </div>
             <div class="col-xs-8 col-sm-9 col-md-10 patron-info row">
-                <div class="col-xs-12"><span>id:&nbsp;</span>{{employeeModal.id}}</div>
-                <div class="col-xs-12"><span>First Name:&nbsp;</span>{{employeeModal.first_name}}</div>
-                <div class="col-xs-12"><span>Last Name:&nbsp;</span>{{employeeModal.last_name}}</div>
-                <div class="col-xs-12"><span>Email:&nbsp;</span>{{employeeModal.email_address}}</div>
+                <div class="col-xs-12"><span>id:&nbsp;</span>{{employeeModel.id}}</div>
+                <div class="col-xs-12"><span>First Name:&nbsp;</span>{{employeeModel.first_name}}</div>
+                <div class="col-xs-12"><span>Last Name:&nbsp;</span>{{employeeModel.last_name}}</div>
+                <div class="col-xs-12"><span>Email:&nbsp;</span>{{employeeModel.email_address}}</div>
             </div>
         </li>
     </ul>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
-        <form ng-submit="pCtrl.onEmployeeEdit()" class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" ng-init="pCtrl.initAccount()">
+        <form ng-submit="pCtrl.onSubmit()" class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" ng-init="pCtrl.initAccount()" auto-save-form="pCtrl.saveForm()">
             <div class="form-group" show-errors>
                 <input type="text" id="registation-first-name" class="form-control" placeholder="Frist Name *" ng-model="employeeModel.first_name" name="firstName" pattern="^[_A-z]{1,}$" ng-disabled="!editForm" required>
                 <div class="help-block" ng-if="registrationForm.firstName.$error.required">First name is required</div>
@@ -36,6 +36,12 @@
             <div class="input-group">
                 <a class="input-group-addon btn secondary" ng-click="pCtrl.onEditPassword(editForm)" ng-disabled="!editForm">Change Password</a>
                 <input type="password" class="form-control" name="password" placeholder="password *" ng-model="employeeModel.password" disabled />
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="row">
+                <div class="col-xs-3 pull-right">
+                    <button class="btn primary btn-block" ng-disabled="!editForm" ng-show="editForm" type="submit">Save</button>
+                </div>
             </div>
             <div class="col-xs-12">&nbsp;</div>
             <div class="row">

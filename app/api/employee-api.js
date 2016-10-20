@@ -35,6 +35,41 @@ function EmployeeApi() {
         });
     }
 
+    this.update = function(req, res) {
+        var self = this;
+        var user = self.getUser(req, res);
+        console.log(ModelEmployee);
+        // ModelEmployee.findOne({
+        //     where: {
+        //         id: user.employee_id
+        //     }
+        // }).then(function(result) {
+        //     if (result) {
+        //         var employee = result.dataValues;
+        //         var passwordWithHash = getHash().generate(req.body.password);
+        //         if (!passwordWithHash) {
+        //             return new Promise(function(resolve, reject) {
+        //                 reject({ errNum: 1013, status: 422 });
+        //             });
+        //         }
+        //         return ModelEmployee.update({
+        //             password: passwordWithHash
+        //         }, {
+        //             where: {
+        //                 id: employee.id
+        //             }
+        //         });
+        //     } else {
+        //         return new Promise(function(resolve, reject) {
+        //             reject({ errNum: 1032, status: 500 });
+        //         });
+        //     }
+        // });
+        res.status(200).json({
+            success: true
+        });
+    }
+
     this.changePassword = function(req, res) {
         var self = this;
         //user should be in the system.

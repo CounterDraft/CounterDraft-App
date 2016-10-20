@@ -35,6 +35,10 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
         $scope.currentPage = _getDefaultPage();
     }
 
+    this.saveForm = function(){
+        console.log(arguments);
+    }
+
     this.initAccount = function() {
         $scope.editForm = false;
         $scope.showEdit = true;
@@ -139,8 +143,8 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
 
     }
 
-    this.onSubmit = function(form){
-        console.log(form);
+    this.onSubmit = function(){
+        console.log($scope.employeeModel);
     }
 
     var _getDefaultPage = function() {

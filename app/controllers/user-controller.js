@@ -111,7 +111,7 @@ function UserController() {
                     getApi('employee').getEmployee(req, res);
                     break;
                 case 'put':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('employee').update(req, res);
                     break;
                 case 'delete':
                     self.getErrorApi().sendError(1011, 403, res);
