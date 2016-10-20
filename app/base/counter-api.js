@@ -7,6 +7,23 @@ function baseApi() {
         return this.name;
     }
 
+    this.getModelPattern = function(fieldName) {
+        switch (fieldName) {
+            case "first_name":
+                return new RegExp("^[_A-z]{1,}$");
+                break;
+            case "last_name":
+                return new RegExp("^[_A-z]{1,}$");
+                break;
+            case "password":
+                return new RegExp("/^.{6,}$/");
+                break;
+            default:
+                return new RegExp();
+                break;
+        }
+    }
+
     this.getUser = function(req, res) {
         var user = null;
         if (typeof req.session.user != 'undefined') {

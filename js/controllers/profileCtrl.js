@@ -53,7 +53,7 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
                 },
             }).then(function successCallback(response) {
                 if (response && response.status === 200) {
-                    console.info('data saved.');
+                    // console.log(response);
                 } else {
                     $window.swal({
                         title: "Error",

@@ -47,7 +47,6 @@ module.exports = function(grunt) {
                     'build/js/controllers/modalCrtls.js',
 
                     //libs
-                    'build/js/libs/ui-bootstrap-custom-2.2.0.js',
                     'build/js/libs/ui-bootstrap-custom-tpls-2.2.0.js',
                     'node_modules/sweetalert/dist/sweetalert.min.js',
                     'node_modules/jquery/dist/jquery.js',

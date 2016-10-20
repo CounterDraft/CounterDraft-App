@@ -128,6 +128,25 @@ var errorList = {
     1033: {
         msg: 'Failed to update employee.'
     },
+    1034: {
+        msg: 'A field you are trying to update cannot be changed.'
+    },
+    1035: {
+        msg: 'first_name does not meet pattern.'
+    },
+    1036: {
+        msg: 'last_name does not meet pattern.'
+    },
+    1037: {
+        msg: 'username does not meet pattern.'
+    },
+    1038: {
+        msg: 'email_address does not meet pattern.'
+    },
+    1039: {
+        msg: 'Password doesn\'t meet min length.'
+    },
+
 
 
 
