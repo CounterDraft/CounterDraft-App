@@ -27,7 +27,11 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
         name: null
     }
 
-    this.items = ['item1', 'item2', 'item3'];
+    $scope.form = {
+        state: {},
+        data: {}
+    }
+
     this.animationsEnabled = true;
 
     var _init = function() {
@@ -35,8 +39,59 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
         $scope.currentPage = _getDefaultPage();
     }
 
-    this.saveForm = function(){
-        console.log(arguments);
+    this.saveForm = function() {
+        var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
+
+        if ($scope.employeeModel) {
+            $http({
+                method: 'PUT',
+                url: _url_employee,
+                data: {
+                    first_name: $scope.employeeModel.first_name,
+                    last_name: $scope.employeeModel.last_name,
+                    email_address: $scope.employeeModel.email_address
+                },
+            }).then(function successCallback(response) {
+                if (response && response.status === 200) {
+                    console.info('data saved.');
+                } else {
+                    $window.swal({
+                        title: "Error",
+                        text: userNotFoundErrorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                    $scope.showEdit = false;
+                }
+            }, function errorCallback(response) {
+                var errorMsg = userNotFoundErrorMsg;
+                if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
+                    errorMsg = response.data.error[0].msg;
+                }
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            });
+        } else {
+            $window.swal({
+                title: "Error",
+                text: userNotFoundErrorMsg,
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+        }
     }
 
     this.initAccount = function() {
@@ -119,11 +174,11 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
             controller: 'ChangePasswordCtrl',
             controllerAs: 'mCtrl',
             size: 'lg',
-            resolve: {
-                items: function() {
-                    return self.items;
-                }
-            }
+            // resolve: {
+            //     items: function() {
+            //         return self.items;
+            //     }
+            // }
         });
 
         modalInstance.result.then(function(selectedItem) {
@@ -141,10 +196,6 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
 
     this.getEmployeeImage = function() {
 
-    }
-
-    this.onSubmit = function(){
-        console.log($scope.employeeModel);
     }
 
     var _getDefaultPage = function() {

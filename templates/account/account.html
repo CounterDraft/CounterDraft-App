@@ -17,7 +17,8 @@
     </div>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
-        <form ng-submit="pCtrl.onSubmit()" class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" ng-init="pCtrl.initAccount()" auto-save-form="pCtrl.saveForm()">
+        <span ng-if="employeeEditForm.$dirty && employeeEditForm.$valid" class="help-block">Save...</span>
+        <form class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" ng-init="pCtrl.initAccount()" auto-save-form="pCtrl.saveForm()">
             <div class="form-group" show-errors>
                 <input type="text" id="registation-first-name" class="form-control" placeholder="Frist Name *" ng-model="employeeModel.first_name" name="firstName" pattern="^[_A-z]{1,}$" ng-disabled="!editForm" required>
                 <div class="help-block" ng-if="registrationForm.firstName.$error.required">First name is required</div>
@@ -39,12 +40,6 @@
             </div>
             <div class="col-xs-12">&nbsp;</div>
             <div class="row">
-                <div class="col-xs-3 pull-right">
-                    <button class="btn primary btn-block" ng-disabled="!editForm" ng-show="editForm" type="submit">Save</button>
-                </div>
-            </div>
-            <div class="col-xs-12">&nbsp;</div>
-            <div class="row">
                 <h3 class="col-xs-12">Organization</h3>
             </div>
             <div class="form-group">
@@ -52,12 +47,6 @@
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="organizationModel.description" ng-disabled="true" name="organizationDescription">
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-xs-12">
-                </div>
-                <div class="form-group col-sm-6 col-xs-12">
-                </div>
             </div>
         </form>
     </div>
