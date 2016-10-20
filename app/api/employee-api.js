@@ -125,6 +125,7 @@ function EmployeeApi() {
                 });
             }
         }).then(function(result) {
+            //TODO: refresh the session with the new information;
             if (result) {
                 res.status(200).json({
                     employee: _removeUneededAttr(empOut),
