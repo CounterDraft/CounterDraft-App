@@ -28,7 +28,10 @@ module.exports = function(grunt) {
             libsJS: {
                 src: [
                     //NOTE- If we add more libs there need to be added to the build here;
+                    'node_modules/moment/moment.js',
                     'node_modules/angular/angular.js',
+                    'node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
+                    'node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js',
                     'node_modules/angular-morris/build/module/angular-morris/angular-morris.min.js',
                     'node_modules/angular-animate/angular-animate.min.js',
                     'build/js/libs/showErrors.js',

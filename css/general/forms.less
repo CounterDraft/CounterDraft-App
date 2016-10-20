@@ -1,7 +1,15 @@
 @import "tools";
 .counter-group {
-    select.form-control {
+    select.form-control,
+    input[type="date"] {
         -webkit-appearance: none;
+    }
+    input[type="date"]::-webkit-inner-spin-button{
+        display: none;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        color: @color-secondary-3;
+        font-size: 20px;
     }
     i.glyphicon-triangle-bottom {
         position: absolute;

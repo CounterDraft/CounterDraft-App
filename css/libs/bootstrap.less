@@ -1,6 +1,7 @@
 @import "../general/tools";
 
 @bootstrap-dir: "../node_modules/bootstrap/less";
+@datetimepicker-dir: "../node_modules/angular-bootstrap-datetimepicker/src/css";
 
 // Core variables and mixins
 @import "@{bootstrap-dir}/mixins.less";
@@ -51,3 +52,6 @@
 // Utility classes
 @import "@{bootstrap-dir}/utilities.less";
 @import "@{bootstrap-dir}/responsive-utilities.less";
+
+// Bootstrap-datetimepicker
+@import (css) "@{datetimepicker-dir}/datetimepicker.css";

@@ -14,5 +14,6 @@ module.exports = {
     migration_run: process.env.migration_run || true,
     migration_order: process.env.migration_order || 'up',
     image_dir: process.env.image_dir || 'images/',
-    image_bucket_url: process.env.image_bucket_url || null
+    image_bucket_url: process.env.image_bucket_url || null,
+    google_maps_key: process.env.google_maps_key || 'AIzaSyCzGvxA7NsKgggEHtm_TEjkZNSF9fDIndc'
 };

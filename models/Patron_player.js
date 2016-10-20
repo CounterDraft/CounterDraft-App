@@ -42,6 +42,11 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: false,
             comment: "If false we have yet to confirmed the email_address."
         },
+        is_email_confirmed: {
+            type: DataTypes.STRING(64),
+            defaultValue: false,
+            comment: "Main address line."
+        },
         p_uuid: {
             type: DataTypes.UUID,
             allowNull: true,

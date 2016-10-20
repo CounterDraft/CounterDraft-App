@@ -14,6 +14,8 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     $scope.currentPage = null;
     $scope.image_dir = '/';
     $scope.image_bucket_url = null;
+    $scope.minAge = 18;
+    $scope.searchArr = [];
 
     //models
     $scope.patronModel = {
@@ -23,10 +25,18 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         password: null,
         password_confirm: null,
         organization_name: null,
-        organization: null
+        organization: null,
+        dob: null
+        address: {
+            street_number: null,
+            route: null,
+            locality: null,
+            administrative_area_level_2: null,
+            administrative_area_level_1: null,
+            country: null,
+            postal_code: null
+        }
     };
-
-    $scope.searchArr = [];
 
     $scope.patronSearchModel = {
         patron_id: null,
@@ -56,10 +66,12 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     }
 
     this.initAddPatron = function() {
+        var today = new Date();
         if (typeof 'undefined' != data && data.hasOwnProperty('organization')) {
             $scope.patronModel.organization_name = data.organization.name;
             $scope.patronModel.organization = data.organization.id;
         }
+        $scope.minAge = new Date(today.getFullYear() - $scope.minAge, today.getMonth(), today.getDate());
     }
 
     this.initDetails = function() {

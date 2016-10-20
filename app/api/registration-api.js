@@ -115,27 +115,45 @@ function registationApi() {
     var ModelPatron = models.patron_player;
 
     this.registerUser = function(req, res) {
-        if (!req.body.first_name || req.body.first_name === "") {
+        var employee = req.body;
+
+        //verify data;
+        if (employee.hasOwnProperty('first_name') &&
+            !this.getModelPattern('first_name').test(employee.first_name)) {
+            this.getErrorApi().sendError(1035, 422, res);
+            return;
+        }
+        if (employee.hasOwnProperty('last_name') &&
+            !this.getModelPattern('last_name').test(employee.last_name)) {
+            this.getErrorApi().sendError(1036, 422, res);
+            return;
+        }
+        if (employee.hasOwnProperty('username') &&
+            this.validEmail(employee.username)) {
+            this.getErrorApi().sendError(1037, 422, res);
+            return;
+        }
+        if (!employee.first_name || employee.first_name === "") {
             this.getErrorApi().sendError(1003, 403, res);
-        } else if (!req.body.last_name || req.body.last_name === "") {
+        } else if (!employee.last_name || employee.last_name === "") {
             this.getErrorApi().sendError(1004, 403, res);
-        } else if (!req.body.email_address || self.validEmail(req.body.email_address)) {
+        } else if (!employee.email_address || self.validEmail(employee.email_address)) {
             this.getErrorApi().sendError(1005, 403, res);
-        } else if (!req.body.password || req.body.password === "") {
+        } else if (!employee.password || employee.password === "") {
             this.getErrorApi().sendError(1006, 403, res);
-        } else if (!req.body.password_confirm || req.body.password_confirm === "") {
+        } else if (!employee.password_confirm || employee.password_confirm === "") {
             this.getErrorApi().sendError(1007, 403, res);
-        } else if (req.body.password_confirm != req.body.password) {
+        } else if (employee.password_confirm != employee.password) {
             this.getErrorApi().sendError(1014, 403, res);
-        } else if ((!req.body.organization_name || req.body.organization_name === "") && !req.body.organization_type && (!req.body.organization_hash || req.body.organization_hash === "")) {
+        } else if ((!employee.organization_name || employee.organization_name === "") && !employee.organization_type && (!employee.organization_hash || employee.organization_hash === "")) {
             this.getErrorApi().sendError(1015, 403, res);
-        } else if (!req.body.organization_hash && !req.body.organization_type && req.body.organization_name) {
+        } else if (!employee.organization_hash && !employee.organization_type && employee.organization_name) {
             this.getErrorApi().sendError(1016, 403, res);
-        } else if (!req.body.organization_hash && req.body.organization_type && (!req.body.organization_name || req.body.organization_name === "")) {
+        } else if (!employee.organization_hash && employee.organization_type && (!employee.organization_name || employee.organization_name === "")) {
             this.getErrorApi().sendError(1017, 403, res);
         } else {
             //code for organization hash should go here.
-            var passwordWithHash = getHash().generate(req.body.password);
+            var passwordWithHash = getHash().generate(employee.password);
             var employeeOrganization = 999;
 
             if (!passwordWithHash) {
@@ -144,10 +162,10 @@ function registationApi() {
             }
 
             ModelOrganization.create({
-                name: req.body.organization_name,
-                description: req.body.organization_description,
+                name: employee.organization_name,
+                description: employee.organization_description,
                 has_multi_admin: true,
-                type: req.body.organization_type,
+                type: employee.organization_type,
                 api_key: _generateApiKey()
             }).then(function(organization) {
                 if (organization.dataValues.id) {
@@ -155,7 +173,7 @@ function registationApi() {
                 }
                 return ModelEmployee.findAndCountAll({
                     where: {
-                        email_address: req.body.email_address
+                        email_address: employee.email_address
                     }
                 });
             }).then(function(results) {
@@ -166,7 +184,7 @@ function registationApi() {
                 }
                 return ModelPatron.findAndCountAll({
                     where: {
-                        email_address: req.body.email_address
+                        email_address: employee.email_address
                     }
                 });
             }).then(function(result) {
@@ -176,10 +194,10 @@ function registationApi() {
                     });
                 }
                 return ModelEmployee.create({
-                    first_name: req.body.first_name,
-                    last_name: req.body.last_name,
-                    username: req.body.email_address,
-                    email_address: req.body.email_address,
+                    first_name: employee.first_name,
+                    last_name: employee.last_name,
+                    username: employee.email_address,
+                    email_address: employee.email_address,
                     password: passwordWithHash,
                     is_admin: true, //we are admin if we are createing the organization;
                     organization_id: employeeOrganization
@@ -214,32 +232,46 @@ function registationApi() {
     this.createPatron = function(req, res) {
         var self = this;
         var user = this.getUser(req, res);
+        var patron = req.body;
 
-        if (!req.body.first_name || req.body.first_name === "") {
-            this.getErrorApi().sendError(1003, 403, res);
-        } else if (!req.body.last_name || req.body.last_name === "") {
-            this.getErrorApi().sendError(1004, 403, res);
-        } else if (!req.body.email_address || self.validEmail(req.body.email_address)) {
-            this.getErrorApi().sendError(1005, 403, res);
-        } else if (!req.body.password || req.body.password === "") {
-            this.getErrorApi().sendError(1006, 403, res);
-        } else if (!req.body.password_confirm || req.body.password_confirm === "") {
-            this.getErrorApi().sendError(1007, 403, res);
-        } else if (req.body.password_confirm != req.body.password) {
-            this.getErrorApi().sendError(1014, 403, res);
+        //verify data;
+        if (patron.hasOwnProperty('first_name') &&
+            !this.getModelPattern('first_name').test(patron.first_name)) {
+            this.getErrorApi().sendError(1035, 422, res);
+            return;
         }
-        // else if (!req.body.organization || req.body.organization === "") {
-        //     this.getErrorApi().sendError(1015, 403, res);
-        // } 
-        else {
-            var passwordWithHash = getHash().generate(req.body.password);
+        if (patron.hasOwnProperty('last_name') &&
+            !this.getModelPattern('last_name').test(patron.last_name)) {
+            this.getErrorApi().sendError(1036, 422, res);
+            return;
+        }
+        if (patron.hasOwnProperty('username') &&
+            this.validEmail(patron.username)) {
+            this.getErrorApi().sendError(1037, 422, res);
+            return;
+        }
+
+        if (!patron.first_name || patron.first_name === "") {
+            this.getErrorApi().sendError(1003, 403, res);
+        } else if (!patron.last_name || patron.last_name === "") {
+            this.getErrorApi().sendError(1004, 403, res);
+        } else if (!patron.email_address || self.validEmail(patron.email_address)) {
+            this.getErrorApi().sendError(1005, 403, res);
+        } else if (!patron.password || patron.password === "") {
+            this.getErrorApi().sendError(1006, 403, res);
+        } else if (!patron.password_confirm || patron.password_confirm === "") {
+            this.getErrorApi().sendError(1007, 403, res);
+        } else if (patron.password_confirm != patron.password) {
+            this.getErrorApi().sendError(1014, 403, res);
+        } else {
+            var passwordWithHash = getHash().generate(patron.password);
             if (!passwordWithHash) {
                 this.getErrorApi().sendError(1013, 422, res);
                 return;
             }
             ModelPatron.findAndCountAll({
                 where: {
-                    email_address: req.body.email_address
+                    email_address: patron.email_address
                 }
             }).then(function(results) {
                 if (results.count > 0) {
@@ -250,7 +282,7 @@ function registationApi() {
 
                 return ModelEmployee.findAndCountAll({
                     where: {
-                        email_address: req.body.email_address
+                        email_address: patron.email_address
                     }
                 });
             }).then(function(results) {
@@ -263,25 +295,23 @@ function registationApi() {
             }).then(function(results) {
                 var employee = results.dataValues;
                 return ModelPatron.create({
-                    first_name: req.body.first_name,
-                    last_name: req.body.last_name,
-                    username: req.body.email_address,
-                    email_address: req.body.email_address,
+                    first_name: patron.first_name,
+                    last_name: patron.last_name,
+                    username: patron.email_address,
+                    email_address: patron.email_address,
                     password: passwordWithHash,
                     organization_id: employee.organization_id
                 });
             }).then(function(results) {
-                var patron = results.dataValues;
-                var dataSave = {
-                    first_name: patron.first_name,
-                    last_name: patron.last_name,
-                    username: patron.username,
-                    email_address: patron.email_address,
-                    organization_id: patron.organization_id
-                }
-
+                var newPatron = results.dataValues;
                 res.status(200).json({
-                    user: dataSave,
+                    user: {
+                        first_name: newPatron.first_name,
+                        last_name: newPatron.last_name,
+                        username: newPatron.username,
+                        email_address: newPatron.email_address,
+                        organization_id: newPatron.organization_id
+                    },
                     success: true
                 });
             }).catch(function(err) {
