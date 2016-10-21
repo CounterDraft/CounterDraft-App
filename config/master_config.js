@@ -15,7 +15,6 @@ module.exports = {
     migration_order: process.env.migration_order || 'up',
     image_dir: process.env.image_dir || 'images/',
     image_bucket_url: process.env.image_bucket_url || null,
-    google_maps_key: process.env.google_maps_key || 'AIzaSyCzGvxA7NsKgggEHtm_TEjkZNSF9fDIndc',
-    aws_access_key_id: process.env.aws_access_key_id || 'AKIAIRYFPUUZ4NV2XTJQ',
-    aws_secret_access_key: process.env.aws_secret_access_key || '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'
-};
+    google_maps_key: process.env.google_maps_key || null,
+    aws_access_key_id: process.env.aws_access_key_id || null
+    aws_secret_access_key: process.env.aws_secret_access_key || null
