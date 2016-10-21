@@ -52,6 +52,46 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true,
             defaultValue: DataTypes.UUIDV4,
             comment: "The UUID which is used to save images and user data in the cloud."
+        },
+        dob: {
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+            comment: "Date of brith for the patron."
+        },
+        street_number: {
+            type: DataTypes.STRING(16),
+            allowNull: true,
+            comment: "address field for patron."
+        },
+        route: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            comment: "address field for patron."
+        },
+        locality: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            comment: "address field for patron."
+        },
+        administrative_area_level_1: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            comment: "address field for patron."
+        },
+        administrative_area_level_2: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            comment: "address field for patron."
+        },
+        country: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            comment: "address field for patron."
+        },
+        postal_code: {
+            type: DataTypes.STRING(16),
+            allowNull: true,
+            comment: "address field for patron."
         }
     }, {
         freezeTableName: true,

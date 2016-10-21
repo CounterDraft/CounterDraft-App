@@ -38,4 +38,19 @@ INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161015074349-add-organization-id-to-tables-and-rename.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161020233338-adding-address-and-dob-patron.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+
+
+
+
+#set all users to password = password
+UPDATE public.employee_user
+	SET password='sha1$864f5f30$1$fe38b7457a4c2e466f635a3382a207570298d0e2';
+
+UPDATE public.patron_player
+	SET password='sha1$864f5f30$1$fe38b7457a4c2e466f635a3382a207570298d0e2';
+
+
 	
