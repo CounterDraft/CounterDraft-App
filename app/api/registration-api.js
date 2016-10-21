@@ -113,6 +113,7 @@ function registationApi() {
     var ModelEmployee = models.employee_user;
     var ModelOrganization = models.organization;
     var ModelPatron = models.patron_player;
+    var moment = getMoment();
 
     this.registerUser = function(req, res) {
         var employee = req.body;
@@ -251,6 +252,7 @@ function registationApi() {
             return;
         }
 
+
         if (!patron.first_name || patron.first_name === "") {
             this.getErrorApi().sendError(1003, 403, res);
         } else if (!patron.last_name || patron.last_name === "") {
@@ -263,6 +265,8 @@ function registationApi() {
             this.getErrorApi().sendError(1007, 403, res);
         } else if (patron.password_confirm != patron.password) {
             this.getErrorApi().sendError(1014, 403, res);
+        } else if (!patron.dob || patron.dob === "" || !moment(patron.dob, moment.ISO_8601).isValid()) {
+            this.getErrorApi().sendError(1040, 403, res);
         } else {
             var passwordWithHash = getHash().generate(patron.password);
             if (!passwordWithHash) {
@@ -300,6 +304,7 @@ function registationApi() {
                     username: patron.email_address,
                     email_address: patron.email_address,
                     password: passwordWithHash,
+                    dob: patron.dob,
                     organization_id: employee.organization_id
                 });
             }).then(function(results) {

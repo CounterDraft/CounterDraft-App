@@ -42,6 +42,7 @@
     "less": "^2.7.1",
     "method-override": "^2.3.5",
     "mix-into": "*",
+    "moment": "^2.15.1",
     "morgan": "^1.6.1",
     "morris.js": "^0.5.0",
     "nodemailer": "^1.11.0",

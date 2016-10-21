@@ -55,6 +55,10 @@ module.exports = {
             return uuid.v4();
         }
 
+        global.getMoment = function() {
+            return require('moment');
+        }
+
         global.getAuthorization = function() {
             return require('express-authorization');
         }

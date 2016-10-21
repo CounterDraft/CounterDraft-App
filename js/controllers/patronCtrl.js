@@ -28,13 +28,13 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         organization: null,
         dob: null,
         address: {
-            street_number: null,
-            route: null,
-            locality: null,
-            administrative_area_level_2: null,
-            administrative_area_level_1: null,
-            country: null,
-            postal_code: null
+            street_number: "",
+            route: "",
+            locality: "",
+            administrative_area_level_2: "",
+            administrative_area_level_1: "",
+            country: "",
+            postal_code: ""
         }
     };
 
@@ -146,7 +146,8 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     }
 
     $scope.onPatronSearch = function() {
-        var formData = $scope.patronSearchModel;
+        var self = this;
+        var formData = angular.copy($scope.patronSearchModel);
         var hasData = false;
 
         for (var x in formData) {
@@ -198,11 +199,17 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
 
     $scope.onPatronRegistration = function() {
         var self = this;
-        var formData = $scope.patronModel;
+        var formData = angular.copy($scope.patronModel);
         var hasData = true;
 
+        //dob to ISO 86 string;
+        if(formData.hasOwnProperty('dob') && formData.dob){
+            formData.dob = moment(formData.dob).format();
+        }
+
         for (var x in formData) {
-            if (!formData[x]) {
+            // address is a none required field
+            if (!formData[x] && x !== 'address') {
                 hasData = false;
             }
         }

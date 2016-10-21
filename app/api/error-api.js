@@ -146,6 +146,9 @@ var errorList = {
     1039: {
         msg: 'Password doesn\'t meet min length.'
     },
+    1040: {
+        msg: 'Data of birth is missing or not formatted correctly, dates should be in a ISO 8601 string.'
+    },
 
 
 
