@@ -42,15 +42,15 @@ var _addWatcher = function() {
             extra: {
                 key: "run"
             }
-        }, function(){
-              return resolve(true);
+        }, function() {
+            return resolve(true);
         });
     });
-};
+}
 
 var _launchApp = function() {
     //init database and starts server after the init;
-    var createSequelizedb = global.models.sequelize.sync().then(function() {
+    return global.models.sequelize.sync().then(function() {
         if (global.config['migration_run']) {
             var umzug = new Umzug({
                 storage: 'sequelize',
@@ -76,34 +76,24 @@ var _launchApp = function() {
                 return umzug.up();
             }
         }
-    });
-    return createSequelizedb.then(function(migrations) {
+    }).then(function(migrations) {
         if (migrations && migrations.length > 0) {
             if (global.config['migration_order'] && global.config['migration_order'] === 'down') {
-        
                 for (var r in migrations) {
                     logger.info("migration applied down() = " + migrations[r].file);
                 }
             } else {
-             
+
                 for (var x in migrations) {
                     logger.info("migration applied up() = " + migrations[x].file);
                 }
             }
 
         }
-        return new Promise(function(resolve, reject) {
-            try {
-                app.listen(app.get('port'), function() {
-                    logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
-                    logger.info('Server started in ' + config.environment + ' mode.');
-                    logger.info('Listening on port: ' + app.get('port'));
-                    return resolve(true);
-                });
-            } catch (err) {
-                logger.log('Error', 'Failed to start express', { error: err });
-                return reject(err);
-            }
+        return app.listen(app.get('port'), function() {
+            logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
+            logger.info('Server started in ' + config.environment + ' mode.');
+            logger.info('Listening on port: ' + app.get('port') + '\n');
         });
     });
 };
@@ -116,16 +106,21 @@ if (global.config.environment === 'production') {
             extra: {
                 key: "run"
             }
-        }, function(){
-           return resolve(true); 
+        }, function() {
+            return resolve(true);
         });
-        
+
     }).then(function(result) {
         return _launchApp();
+    }).catch(function(err) {
+        logger.log('Error', 'Failed to start express', { error: err });
     });
 } else {
     logger.info('Bypassing build we are in ' + global.config.environment + ' please wait...');
-    _launchApp().then(function(result){
-        _addWatcher();
-    });
+    _launchApp()
+        .then(function(result) {
+            return _addWatcher();
+        }).catch(function(err) {
+            logger.log('Error', 'Failed to start express', { error: err });
+        });
 }
