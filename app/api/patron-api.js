@@ -14,6 +14,16 @@ var _removeUneededAttr = function(patron) {
         last_name: patron.last_name,
         organization_id: patron.organization_id,
         username: patron.username,
+        dob: patron,
+        address: {
+            street_number: patron.street_number,
+            route: patron.route,
+            locality: patron.locality,
+            administrative_area_level_1: patron.administrative_area_level_1,
+            administrative_area_level_2: patron.administrative_area_level_2,
+            country: patron.country,
+            postal_code: patron.postal_code
+        },
         uuid: patron.p_uuid
     }
 }
