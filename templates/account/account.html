@@ -1,10 +1,11 @@
 <section class="alpha" ng-clock>
-    <ul class="patron-list col-xs-12">
-        <li class="patron-list-item col-xs-12 text-size-small" ng-click="aCtrl.onPatronSelected(patron)">
+    <div class="title-header"><h3 class="text-left-xs text-left-sm text-center">&nbsp;</h3></div>
+    <ul class="employee-list col-xs-12">
+        <li class="employee-list-item col-xs-12 text-size-small">
             <div class="col-xs-4 col-sm-3 col-md-2 patron-img">
-                <img ng-src="{{pCtrl.getEmployeeImage()}}" alt="Patron_Image" />
+                <img ng-src="{{getEmployeeImage(employeeModel.uuid)}}" alt="employee_image" />
             </div>
-            <div class="col-xs-8 col-sm-9 col-md-10 patron-info row">
+            <div class="col-xs-8 col-sm-9 col-md-10 employee-info row">
                 <div class="col-xs-12"><span>id:&nbsp;</span>{{employeeModel.id}}</div>
                 <div class="col-xs-12"><span>First Name:&nbsp;</span>{{employeeModel.first_name}}</div>
                 <div class="col-xs-12"><span>Last Name:&nbsp;</span>{{employeeModel.last_name}}</div>
@@ -12,6 +13,7 @@
             </div>
         </li>
     </ul>
+    <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
         <button type="button" class="btn senary" ng-click="pCtrl.onEdit()" ng-show="showEdit"><i class="glyphicon glyphicon-pencil"></i></button>
     </div>

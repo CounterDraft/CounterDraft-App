@@ -122,9 +122,29 @@ module.exports = {
             var employee = {
                 id: req.session.user.employee_id,
             }
+
+            var s3 = getS3().load('s3', process.env.AWS_ACCEESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY)
+
+            s3.setBucket(process.env.AWS2JS_S3_BUCKET)
+
+            s3.head(process.argv[2], function(err, res) {
+                if (err) {
+                    console.log(err)
+                    return
+                }
+                console.log(res)
+            });
+
             res.render('pages/account.ejs', {
                 data: {
-                    employee: employee
+                    employee: employee,
+                    dir: {
+                        image_dir: global.config['image_dir'],
+                        image_bucket_url: global.config['image_bucket_url']
+                    },
+                    extra: {
+                        does_file_exist: false
+                    }
                 }
             });
         });

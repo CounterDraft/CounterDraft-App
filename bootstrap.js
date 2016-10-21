@@ -50,6 +50,10 @@ module.exports = {
             return require('pg');
         }
 
+        global.getS3 = function() {
+            return require('s3');
+        }
+
         global.generateUUID = function() {
             var uuid = require('uuid');
             return uuid.v4();

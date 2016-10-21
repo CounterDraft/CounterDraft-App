@@ -13,14 +13,21 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
     $scope.timeSelect = null;
     $scope.editForm = null;
     $scope.showEdit = null;
+
+    $scope.image_dir = '/';
+    $scope.image_bucket_url = null;
+    $scope.does_file_exist = false;
+
     $scope.employeeModel = {
         id: null,
         first_name: null,
         last_name: null,
         email_address: null,
         organization_id: null,
-        password: 'placeholder'
+        password: 'placeholder',
+        uuid: null
     }
+
     $scope.organizationModel = {
         description: null,
         id: null,
@@ -37,6 +44,16 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
     var _init = function() {
         //default page;
         $scope.currentPage = _getDefaultPage();
+    }
+
+    $scope.getEmployeeImage = function(uuid) {
+        if (!uuid) {
+            return $scope.image_dir + 'blue-person-plceholder.svg';
+            // return $scope.image_bucket_url + 'default.png';
+        }
+        return $scope.image_bucket_url + 'employee/' + uuid + '-profile.png';
+        // check for image in s3;
+        // return the image_url to front-end;
     }
 
     this.saveForm = function() {
@@ -99,8 +116,21 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
         $scope.showEdit = true;
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
 
-        if (typeof 'undefined' != data && data.hasOwnProperty('employee')) {
-            $scope.employeeModel.id = data.employee.id;
+        if (typeof 'undefined' != data) {
+            if (data.hasOwnProperty('employee')) {
+                $scope.employeeModel.id = data.employee.id;
+            }
+            if (data.hasOwnProperty('dir')) {
+                if (data.dir.hasOwnProperty('image_dir')) {
+                    $scope.image_dir = data.dir['image_dir'];
+                }
+                if (data.dir.hasOwnProperty('image_bucket_url')) {
+                    $scope.image_bucket_url = data.dir['image_bucket_url'];
+                }
+                if(data.hasOwnProperty('extra')){
+                    $scope.does_file_exist = data.extra.does_file_exist;
+                }
+            }
         }
 
         if ($scope.employeeModel.id) {

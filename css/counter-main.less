@@ -11,11 +11,13 @@
 @import "general/forms";
 
 /*libs*/
+
 @import "libs/bootstrap";
 @import "libs/off-canvas";
 @import "libs/sweetalert";
 
 /*pages*/
+
 @import "pages/login";
 @import "pages/dashboard";
 @import "pages/account";
@@ -23,44 +25,47 @@
 @import "pages/password";
 @import "pages/reports";
 @import "pages/patron";
-
-
 body {
     background-color: @clientColorLightestGray;
 }
 
 //only for login page;
 body.login-background {
-	.addImage("login-fantasy-football-small.jpg", center, cover);
+    .addImage("login-fantasy-football-small.jpg", center, cover);
 }
 
-div#counterdraft-main{
+div#counterdraft-main {
     min-height: @app-body-min-height;
 }
 
-fieldset.counter-widget{
-	.not-box-shadow();
-	position: relative;
-	padding: 0;
+fieldset.counter-widget {
+    .not-box-shadow();
+    position: relative;
+    padding: 0;
     padding-top: 63px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	legend{
-		margin: 0;
-		position: absolute;
-		top: 0;
-		background-color: @color-secondary-3;
-		border: 1px solid @color-secondary-3;
-		.text-color-white;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
-		padding: .5em;
-	}
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    legend {
+        margin: 0;
+        position: absolute;
+        top: 0;
+        background-color: @color-secondary-3;
+        border: 1px solid @color-secondary-3;
+        .text-color-white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        padding: .5em;
+    }
 }
 
-
-div, span, li, small, input, button, a{
- .font-default;
+div,
+span,
+li,
+small,
+input,
+button,
+a {
+    .font-default;
 }
 
 input,
@@ -92,29 +97,47 @@ select {
     height: 40px !important;
 }
 
-div.cd-alert{
+div.cd-alert {
     display: none;
-} 
+}
 
-.center{
+.center {
     text-align: center;
 }
 
-.text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
+.text-left-not-xs,
+.text-left-not-sm,
+.text-left-not-md,
+.text-left-not-lg {
     text-align: left;
 }
-.text-center-not-xs, .text-center-not-sm, .text-center-not-md, .text-center-not-lg {
+
+.text-center-not-xs,
+.text-center-not-sm,
+.text-center-not-md,
+.text-center-not-lg {
     text-align: center;
 }
-.text-right-not-xs, .text-right-not-sm, .text-right-not-md, .text-right-not-lg {
+
+.text-right-not-xs,
+.text-right-not-sm,
+.text-right-not-md,
+.text-right-not-lg {
     text-align: right;
 }
-.text-justify-not-xs, .text-justify-not-sm, .text-justify-not-md, .text-justify-not-lg {
+
+.text-justify-not-xs,
+.text-justify-not-sm,
+.text-justify-not-md,
+.text-justify-not-lg {
     text-align: justify;
 }
 
 @media (max-width: 767px) {
-    .text-left-not-xs, .text-center-not-xs, .text-right-not-xs, .text-justify-not-xs {
+    .text-left-not-xs,
+    .text-center-not-xs,
+    .text-right-not-xs,
+    .text-justify-not-xs {
         text-align: inherit;
     }
     .text-left-xs {
@@ -130,8 +153,12 @@ div.cd-alert{
         text-align: justify;
     }
 }
+
 @media (min-width: 768px) and (max-width: 991px) {
-    .text-left-not-sm, .text-center-not-sm, .text-right-not-sm, .text-justify-not-sm {
+    .text-left-not-sm,
+    .text-center-not-sm,
+    .text-right-not-sm,
+    .text-justify-not-sm {
         text-align: inherit;
     }
     .text-left-sm {
@@ -144,11 +171,15 @@ div.cd-alert{
         text-align: right;
     }
     .text-justify-sm {
-        text-align: justify; 
+        text-align: justify;
     }
 }
+
 @media (min-width: 992px) and (max-width: 1199px) {
-    .text-left-not-md, .text-center-not-md, .text-right-not-md, .text-justify-not-md {
+    .text-left-not-md,
+    .text-center-not-md,
+    .text-right-not-md,
+    .text-justify-not-md {
         text-align: inherit;
     }
     .text-left-md {
@@ -164,8 +195,12 @@ div.cd-alert{
         text-align: justify;
     }
 }
+
 @media (min-width: 1200px) {
-    .text-left-not-lg, .text-center-not-lg, .text-right-not-lg, .text-justify-not-lg {
+    .text-left-not-lg,
+    .text-center-not-lg,
+    .text-right-not-lg,
+    .text-justify-not-lg {
         text-align: inherit;
     }
     .text-left-lg {
@@ -182,9 +217,37 @@ div.cd-alert{
     }
 }
 
-
-
-
-
-
-
+ul.patron-list,
+ul.employee-list {
+    list-style: none;
+    min-height: 60px;
+    li.patron-list-item,
+    li.employee-list-item {
+        border-top: 1px solid @light-gray-border;
+        background-color: @color-primary-4;
+        opacity: .9;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: @very-light-gray;
+        .box-shadow();
+        .border-radius();
+        .patron-img,
+        .employee-img {
+            padding-left: 0;
+            img {
+                height: 100px;
+                // border: 1px solid @light-gray-border;
+                width: 100px;
+                .border-radius();
+                background-color: white;
+            }
+        }
+        .patron-info,
+        .employee-info {
+            padding-top: 10px;
+            span {
+                .label-font;
+            }
+        }
+    }
+}
