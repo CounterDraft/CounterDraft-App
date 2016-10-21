@@ -18,3 +18,4 @@ module.exports = {
     google_maps_key: process.env.google_maps_key || null,
     aws_access_key_id: process.env.aws_access_key_id || null
     aws_secret_access_key: process.env.aws_secret_access_key || null
+}
