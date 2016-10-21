@@ -149,6 +149,9 @@ var errorList = {
     1040: {
         msg: 'Data of birth is missing or not formatted correctly, dates should be in a ISO 8601 string.'
     },
+    1041: {
+        msg: 'Patron not found in organization.'
+    },
 
 
 

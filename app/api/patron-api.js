@@ -5,7 +5,8 @@
     Comment: 
         This is the api which is used for all patron search and create logic.
 */
-var _removeUneededAttr = function(patron) {
+var _clean = function(patron) {
+    var moment = getMoment();
     return {
         email_address: patron.email_address,
         first_name: patron.first_name,
@@ -14,7 +15,7 @@ var _removeUneededAttr = function(patron) {
         last_name: patron.last_name,
         organization_id: patron.organization_id,
         username: patron.username,
-        dob: patron,
+        dob: moment(patron.dob).unix(),
         address: {
             street_number: patron.street_number,
             route: patron.route,
@@ -32,18 +33,44 @@ function PatronApi() {
     this.tag = 'patron-api';
     var Promise = getPromise();
     var ModelPatron = models.patron_player;
-    var ModelEmployee = models.employee_user;
+    var ModelEmployee = models.employee_user
+
+    this.retrieve = function(patron_id) {
+        var self = this;
+        return ModelPatron.findOne({
+            where: {
+                id: patron_id
+            }
+        });
+    }
 
     this.getPatron = function(req, res) {
         var self = this;
-        console.log(req.query);
-        new Promise(function(resolve, reject) {
-            return resolve(true);
+        var query = req.query;
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
 
+        if (!query.hasOwnProperty('id')) {
+            self.getErrorApi().sendError(1031, 422, res);
+            return;
+        }
+        ModelPatron.findOne({
+            where: {
+                id: query.id,
+                organization_id: organization.id
+            }
         }).then(function(result) {
-            res.status(200).json({
-                success: true
-            });
+            if (result) {
+                var patron = result.dataValues;
+                res.status(200).json({
+                    patron: _clean(patron),
+                    success: true
+                });
+            } else {
+                self.getErrorApi().sendError(1041, 422, res);
+            }
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
         });
     }
 
@@ -100,7 +127,7 @@ function PatronApi() {
                 }
             }).then(function(results) {
                 if (results) {
-                    patrons.push(_removeUneededAttr(results.dataValues));
+                    patrons.push(_clean(results.dataValues));
                 }
                 res.status(200).json({
                     patrons: patrons,
@@ -119,14 +146,14 @@ function PatronApi() {
             }
         }
         whereSerach.organization_id = organization.id;
-        
+
         ModelPatron.findAll({
             where: whereSerach,
             limit: searchLimt
         }).then(function(results) {
             if (results) {
                 for (var x in results) {
-                    patrons.push(_removeUneededAttr(results[x].dataValues));
+                    patrons.push(_clean(results[x].dataValues));
                 }
             }
             res.status(200).json({
