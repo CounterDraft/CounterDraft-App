@@ -5,7 +5,7 @@
         This should all the logic for the patron page.
 */
 
-app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($scope, $http, $window, data) {
+app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data', function($scope, $http, $window, $uibModal, data) {
     var _base_templates = "templates/patron/";
     var _url_patron = "/api/v1/patron/";
     var _url_patron_search = "/api/v1/patron/search/";
@@ -16,6 +16,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
     $scope.image_bucket_url = null;
     $scope.minAge = 18;
     $scope.searchArr = [];
+    this.animationsEnabled = true;
 
     //models
     $scope.patronModel = {
@@ -83,24 +84,22 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         $scope.allowEdit = false;
     }
 
-    this.onAddress = function(error, place) {
-        if (error) {
-            $window.swal({
-                title: "Error",
-                text: error.toString(),
-                type: "error",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "OK",
-                closeOnConfirm: true,
-                html: true
-            });
-            return;
-        }
-        address_com_arr = place.address_components;
-        angular.forEach(address_com_arr, function(value, key) {
-            if (value.hasOwnProperty('types') && value.types.length > 0) {
-                $scope.addressModel[value.types[0]] = value.long_name;
-            }
+    this.onAddAddress = function() {
+        var self = this;
+        var modalInstance = $uibModal.open({
+            animation: self.animationsEnabled,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'add-address-modal.html',
+            controller: 'AddAddressCtrl',
+            controllerAs: 'mCtrl',
+            size: 'lg'
+        });
+
+        modalInstance.result.then(function(place) {
+            $scope.addressModel = place;
+        }, function() {
+            console.info('Modal dismissed at: ' + new Date());
         });
     }
 
@@ -158,6 +157,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         if (!doNotClear) {
             _clearModel('patronSearchModel');
             _clearModel('patronModel');
+            _clearModel('addressModel');
         }
     }
 

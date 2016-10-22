@@ -30,22 +30,28 @@
                 <div class="help-block" ng-if="addPatronForm.passwordConfirm.$error.required">Password confirm is required</div>
                 <div class="help-block" ng-if="addPatronForm.passwordConfirm.$error && !addPatronForm.passwordConfirm.$error.required">Not long enough</div>
             </div>
-            <div class="form-group" show-errors>
-                <div class="input-group counter-group">
-                    <div class="input-group-addon">Date of birth</div>
-                    <input type="date" class="form-control" max="{{minAge | date:'yyyy-MM-dd'}}" name="dateOfBirth" placeholder="date of birth" ng-model="patronModel.dob" required/>
-                </div>
-                <div class="help-block" ng-if="addPatronForm.dateOfBirth.$error.required">Date of birth is required</div>
-            </div>
             <div class="row">
-                <div class="col-sm-2 pull-right">
-                    <button class="btn btn-block secondary" type="button">+ address</button>
+                <div class="form-group col-xs-12 col-md-6" show-errors>
+                    <div class="input-group counter-group">
+                        <div class="input-group-addon">Date of birth</div>
+                        <input type="date" class="form-control" max="{{minAge | date:'yyyy-MM-dd'}}" name="dateOfBirth" placeholder="date of birth" ng-model="patronModel.dob" required/>
+                    </div>
+                    <div class="help-block" ng-if="addPatronForm.dateOfBirth.$error.required">Date of birth is required</div>
+                </div>
+                <div class="form-group col-xs-12 col-md-6" show-errors>
+                    <div class="input-group counter-group">
+                        <div class="input-group-addon">Phone</div>
+                        <input type="number" class="form-control"  name="phone" placeholder="" ng-model="patronModel.phone"/>
+                    </div>
+                    <div class="help-block" ng-if="addPatronForm.phone.$error">Phone number is not correct</div>
                 </div>
             </div>
+            <fieldset class="counter-widget">
+                <legend>Address</legend>
+                <button class="btn senary add" ng-click="pCtrl.onAddAddress()" ng-show="!addressModel.street_number" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+                <div class="col-xs-12">&nbsp;</div>
+            </fieldset>
             <div class="col-xs-12">&nbsp;</div>
-            <div class="form-group">
-                <input type="text" class="form-control" ng-places-autocomplete placeholder="address" ng-model="autoAddress" pa-options="addressAutoOptions" pa-on-place-ready="pCtrl.onAddress" />
-            </div>
             <div class="row">
                 <div class="form-group col-xs-12 col-sm-6" show-errors>
                     <input type="text" class="form-control" name="address1" placeholder="street number" ng-model="addressModel.street_number" />
@@ -93,5 +99,6 @@
                 <div class="col-xs-3">&nbsp;</div>
             </div>
         </form>
+        <div class="col-xs-12">&nbsp;</div>
     </div>
 </section>

@@ -107,4 +107,40 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
             });
         }
     }
+}]).controller('AddAddressCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
+
+    this.initAddAddressModal = function() {
+        console.log("ererer");
+    }
+
+    this.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+        return false;
+    }
+
+    this.onAddress = function(error, place) {
+        var simplePlace = {};
+        if (error) {
+            $window.swal({
+                title: "Error",
+                text: error.toString(),
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+            return;
+        }
+        address_com_arr = place.address_components;
+        angular.forEach(address_com_arr, function(value, key) {
+            if (value.hasOwnProperty('types') && value.types.length > 0) {
+                simplePlace[value.types[0]] = value.long_name;
+            }
+        });
+        $uibModalInstance.close(simplePlace);
+         return false;
+    }
+
+
 }]);

@@ -1,0 +1,19 @@
+<script type="text/ng-template" id="add-address-modal.html" class="counter-modal">
+    <div id="change-password-modal" class="counter-modal" ng-init="mCtrl.initChangePasswordModal()">
+        <div class="model-tmpl-0">
+            <form ng-submit="mCtrl.onSubmit()" class="counter-form" data-toggle="validator" role="form" name="addAddress">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center">Address</h4>
+                    <button type="button" class="btn close quinary" ng-click="mCtrl.cancel()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-places-autocomplete placeholder="address search" ng-model="autoAddress" pa-options="addressAutoOptions" pa-on-place-ready="mCtrl.onAddress" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
