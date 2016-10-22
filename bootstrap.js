@@ -117,7 +117,7 @@ module.exports = {
             return require('dateformat');
         }
 
-        global.getUnixTimeStamp = function(dateStr){
+        global.getUnixTimeStamp = function(dateStr) {
             return new Date(dateStr).getTime() / 1000;
         }
 
@@ -126,5 +126,21 @@ module.exports = {
 
         global.logger = require('./lib/logger').init();
         global.models = require("./models");
+
+        global.getS3Client = function() {
+            return require('s3').createClient({
+                maxAsyncS3: 20,
+                s3RetryCount: 3,
+                s3RetryDelay: 1000,
+                multipartUploadThreshold: 20971520,
+                multipartUploadSize: 15728640,
+                s3Options: {
+                    accessKeyId: global.config['aws_access_key_id'],
+                    secretAccessKey: global.config['aws_secret_access_key'],
+                    // any other options are passed to new AWS.S3() 
+                    // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#constructor-property 
+                }
+            });
+        }
     }
 }
