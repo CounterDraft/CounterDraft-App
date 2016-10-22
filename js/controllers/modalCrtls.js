@@ -7,7 +7,8 @@
 app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
     var _url_user_password = "/api/v1/user/password";
     $scope.passwordModel = {
-        password: null,
+        old_password: null,
+        new_password: null,
         password_confirm: null
     }
 
@@ -22,7 +23,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
 
     this.onSubmit = function() {
         var self = this;
-        var formData = $scope.passwordModel;
+        var formData = angular.copy($scope.passwordModel);
         var hasData = true;
 
         var errorMsg = 'Unknown error failed to update password.';
@@ -35,7 +36,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
 
         if (hasData) {
             errorMsg = "Password and password confirm do not match.";
-            if (formData.password !== formData.password_confirm) {
+            if (formData.new_password !== formData.password_confirm) {
                 $window.swal({
                     title: "Error",
                     text: errorMsg,
@@ -53,58 +54,22 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
                 data: formData,
             }).then(function successCallback(response) {
                 if (response && response.status === 200) {
-                    var msg = 'Your password has been changed.';
-                    $window.swal({
-                        title: "Success",
-                        text: msg,
-                        type: "success",
-                        confirmButtonColor: "#64d46f",
-                        confirmButtonText: "OK",
-                        closeOnConfirm: true,
-                        html: true
-                    }, function() {
-                        $scope.passwordModel = null;
-                        $scope.changePasswordForm.$setPristine();
-                        $scope.changePasswordForm.$setUntouched();
-                        $scope.$apply();
-                        $scope.$broadcast('show-errors-reset');
-                        $uibModalInstance.dismiss('cancel');
-                    });
+                    $scope.passwordModel = null;
+                    $scope.changePasswordForm.$setPristine();
+                    $scope.changePasswordForm.$setUntouched();
+                    $scope.$broadcast('show-errors-reset');
+                    $uibModalInstance.close({status:true});
                 } else {
-                    $window.swal({
-                        title: "Error",
-                        text: errorMsg,
-                        type: "error",
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "OK",
-                        closeOnConfirm: true,
-                        html: true
-                    });
+                    $uibModalInstance.close({status:false, errorMsg: errorMsg});
                 }
             }, function errorCallback(response) {
                 if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
                     errorMsg = response.data.error[0].msg;
                 }
-                $window.swal({
-                    title: "Error",
-                    text: errorMsg,
-                    type: "error",
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "OK",
-                    closeOnConfirm: true,
-                    html: true
-                });
+                $uibModalInstance.close({status:false, errorMsg: errorMsg});
             });
         } else {
-            $window.swal({
-                title: "Error",
-                text: errorMsg,
-                type: "error",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "OK",
-                closeOnConfirm: true,
-                html: true
-            });
+            $uibModalInstance.close({status:false, errorMsg: errorMsg});
         }
     }
 }]).controller('AddAddressCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
@@ -140,8 +105,6 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         });
         simplePlace.id = place.id;
         $uibModalInstance.close(simplePlace);
-         return false;
+        return false;
     }
-
-
 }]);

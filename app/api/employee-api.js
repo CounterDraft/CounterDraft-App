@@ -47,7 +47,7 @@ function EmployeeApi() {
             this.validEmail(employee.email_address)) {
             errorNumber = 1038;
         }
-        if (employee.hasOwnProperty('password')){
+        if (employee.hasOwnProperty('password')) {
             errorNumber = 1034;
         }
         if (employee.hasOwnProperty('organization_id')) {
@@ -106,7 +106,7 @@ function EmployeeApi() {
                             updateData[x] = userData[x];
                         }
                     }
-                    if(updateData.hasOwnProperty('email_address')){
+                    if (updateData.hasOwnProperty('email_address')) {
                         updateData['is_email_confirmed'] = false;
                     }
                 } else {
@@ -147,15 +147,21 @@ function EmployeeApi() {
         var self = this;
         //user should be in the system.
         var user = self.getUser(req, res);
-        if (!req.body.password || req.body.password === "") {
-            this.getErrorApi().sendError(1006, 403, res);
-        } else if (!req.body.password_confirm || req.body.password_confirm === "") {
+        var reqbody = req.body;
+        if (!reqbody.new_password || reqbody.new_password === "") {
+            this.getErrorApi().sendError(1043, 403, res);
+        } else if (!reqbody.old_password || reqbody.old_password === "") {
+            this.getErrorApi().sendError(1042, 403, res);
+        } else if (!reqbody.password_confirm || reqbody.password_confirm === "") {
             this.getErrorApi().sendError(1007, 403, res);
-        } else if (req.body.password_confirm != req.body.password) {
+        } else if (reqbody.password_confirm != reqbody.new_password) {
             this.getErrorApi().sendError(1014, 403, res);
-        } else if (!this.getModelPattern('password').test(req.body.password)) {
+        } else if (!this.getModelPattern('password').test(reqbody.password)) {
             this.getErrorApi().sendError(1039, 422, res);
         } else {
+            //check old pass is good;
+            var hash = getHash();
+
             ModelEmployee.findOne({
                 where: {
                     id: user.employee_id
@@ -163,7 +169,18 @@ function EmployeeApi() {
             }).then(function(result) {
                 if (result) {
                     var employee = result.dataValues;
-                    var passwordWithHash = getHash().generate(req.body.password);
+                    //this code may not be needed.
+                    if (employee && employee.password && !hash.isHashed(employee.password)) {
+                        employee.password = hash.generate(employee.password);
+                    }
+
+                    if (employee && employee.password && !hash.verify(reqbody.old_password, employee.password)) {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1045, status: 422 });
+                        });
+                    }
+
+                    var passwordWithHash = hash.generate(reqbody.new_password);
                     if (!passwordWithHash) {
                         return new Promise(function(resolve, reject) {
                             reject({ errNum: 1013, status: 422 });

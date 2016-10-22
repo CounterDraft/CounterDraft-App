@@ -16,7 +16,7 @@ function baseApi() {
                 return new RegExp("^[_A-z]{1,}$");
                 break;
             case "password":
-                return new RegExp("/^.{6,}$/");
+                return new RegExp("^.{6,}$");
                 break;
             default:
                 return new RegExp();

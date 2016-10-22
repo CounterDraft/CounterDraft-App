@@ -127,7 +127,7 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
                 if (data.dir.hasOwnProperty('image_bucket_url')) {
                     $scope.image_bucket_url = data.dir['image_bucket_url'];
                 }
-                if(data.hasOwnProperty('extra')){
+                if (data.hasOwnProperty('extra')) {
                     $scope.does_file_exist = data.extra.does_file_exist;
                 }
             }
@@ -203,20 +203,38 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
             templateUrl: 'change-password-modal.html',
             controller: 'ChangePasswordCtrl',
             controllerAs: 'mCtrl',
-            size: 'lg',
-            // resolve: {
-            //     items: function() {
-            //         return self.items;
-            //     }
-            // }
+            size: 'lg'
         });
 
-        modalInstance.result.then(function(selectedItem) {
-            self.selected = selectedItem;
+        modalInstance.result.then(function(result) {
+            if (result.status) {
+                $window.swal({
+                    title: "Success",
+                    text: 'Your password has been changed.',
+                    type: "success",
+                    confirmButtonColor: "#64d46f",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            } else {
+                var errorMsg = 'Unknown error failed to update password.';
+                if(result.hasOwnProperty('errorMsg')){
+                    errorMsg = result.errorMsg;
+                }
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            }
         }, function() {
             console.info('Modal dismissed at: ' + new Date());
         });
-
     }
 
     this.onEdit = function() {

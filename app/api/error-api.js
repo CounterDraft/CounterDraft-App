@@ -152,6 +152,16 @@ var errorList = {
     1041: {
         msg: 'Patron not found in organization.'
     },
+    1042: {
+        msg: 'Missing old_password.'
+    },
+    1043: {
+        msg: 'Missing new_password.'
+    },
+    1045: {
+        msg: 'Invaild old_password.'
+    },
+
 
 
 
