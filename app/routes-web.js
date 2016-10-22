@@ -208,6 +208,7 @@ module.exports = {
             res.locals.organization = null;
             res.locals.environment = global.config['environment'];
             res.locals.npm_package_name = global.config['npm_package_name'];
+            res.locals.google_maps_key = global.config['google_maps_key'];
 
             if (typeof req.session.user != 'undefined') {
                 res.locals.login = true;

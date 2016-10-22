@@ -45,6 +45,7 @@
     "moment": "^2.15.1",
     "morgan": "^1.6.1",
     "morris.js": "^0.5.0",
+    "ng-places-autocomplete": "^1.2.1",
     "nodemailer": "^1.11.0",
     "offcanvas-bootstrap": "^2.2.0",
     "orchestrate": "^0.5.0",

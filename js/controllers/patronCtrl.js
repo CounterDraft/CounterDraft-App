@@ -26,16 +26,21 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         password_confirm: null,
         organization_name: null,
         organization: null,
-        dob: null,
-        address: {
-            street_number: "",
-            route: "",
-            locality: "",
-            administrative_area_level_2: "",
-            administrative_area_level_1: "",
-            country: "",
-            postal_code: ""
-        }
+        dob: null
+    };
+
+    $scope.addressModel = {
+        street_number: null,
+        route: null,
+        locality: null,
+        administrative_area_level_1: null,
+        administrative_area_level_2: null,
+        country: null,
+        postal_code: null
+    };
+
+    $scope.addressAutoOptions = {
+        updateModel: true
     };
 
     $scope.patronSearchModel = {
@@ -76,6 +81,27 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
 
     this.initDetails = function() {
         $scope.allowEdit = false;
+    }
+
+    this.onAddress = function(error, place) {
+        if (error) {
+            $window.swal({
+                title: "Error",
+                text: error.toString(),
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+            return;
+        }
+        address_com_arr = place.address_components;
+        angular.forEach(address_com_arr, function(value, key) {
+            if (value.hasOwnProperty('types') && value.types.length > 0) {
+                $scope.addressModel[value.types[0]] = value.long_name;
+            }
+        });
     }
 
     this.onPatronSelected = function(patron) {
@@ -203,7 +229,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', 'data', function($sc
         var hasData = true;
 
         //dob to ISO 86 string;
-        if(formData.hasOwnProperty('dob') && formData.dob){
+        if (formData.hasOwnProperty('dob') && formData.dob) {
             formData.dob = moment(formData.dob).format();
         }
 

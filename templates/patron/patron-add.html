@@ -37,38 +37,46 @@
                 </div>
                 <div class="help-block" ng-if="addPatronForm.dateOfBirth.$error.required">Date of birth is required</div>
             </div>
+            <div class="row">
+                <div class="col-sm-2 pull-right">
+                    <button class="btn btn-block secondary" type="button">+ address</button>
+                </div>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
             <div class="form-group">
-                <input type="text" class="form-control" name="address1" placeholder="address" />
+                <input type="text" class="form-control" ng-places-autocomplete placeholder="address" ng-model="autoAddress" pa-options="addressAutoOptions" pa-on-place-ready="pCtrl.onAddress" />
             </div>
             <div class="row">
                 <div class="form-group col-xs-12 col-sm-6" show-errors>
-                    <input type="text" class="form-control" name="address1" placeholder="street number" ng-model="patronModel.address.street_number" />
+                    <input type="text" class="form-control" name="address1" placeholder="street number" ng-model="addressModel.street_number" />
                     <div class="help-block" ng-if="addPatronForm.address1.$error">Address is required</div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6" show-errors>
-                    <input type="text" class="form-control" name="route" placeholder="route" ng-model="patronModel.address.route" />
+                    <input type="text" class="form-control" name="route" placeholder="street name" ng-model="addressModel.route" />
                     <div class="help-block" ng-if="addPatronForm.route.$error">Address is required</div>
                 </div>
             </div>
-            <div class="form-group" show-errors>
-                <input type="text" class="form-control" name="locality" placeholder="locality" ng-model="patronModel.address.locality" />
-                <div class="help-block" ng-if="addPatronForm.route.$error">Address is required</div>
+            <div class="row">
+                <div class="form-group col-xs-12" show-errors>
+                    <input type="text" class="form-control" name="city" placeholder="city" ng-model="addressModel.locality" />
+                    <div class="help-block" ng-if="addPatronForm.city.$error">Address is required</div>
+                </div>
+                <div class="form-group col-xs-12" show-errors>
+                    <input type="text" class="form-control" name="state" placeholder="state" ng-model="addressModel.administrative_area_level_1" />
+                    <div class="help-block" ng-if="addPatronForm.state.$error">Address is required</div>
+                </div>
             </div>
-            <div class="form-group" show-errors>
-                <input type="text" class="form-control" name="administrative_area_level_1" placeholder="" ng-model="patronModel.address.administrative_area_level_1" />
-                <div class="help-block" ng-if="addPatronForm.administrative_area_level_1.$error">Address is required</div>
-            </div>
-            <div class="form-group" show-errors>
-                <input type="text" class="form-control" name="administrative_area_level_2" placeholder="" ng-model="patronModel.address.administrative_area_level_2" />
-                <div class="help-block" ng-if="addPatronForm.route.$error">Address is required</div>
-            </div>
+            <!--             <div class="form-group" show-errors>
+                <input type="text" class="form-control" name="county" placeholder="county" ng-model="addressModel.administrative_area_level_2" />
+                <div class="help-block" ng-if="addPatronForm.county.$error">Address is required</div>
+            </div> -->
             <div class="row">
                 <div class="form-group col-xs-12 col-sm-6" show-errors>
-                    <input type="text" class="form-control" name="country" placeholder="country" ng-model="patronModel.address.country" />
+                    <input type="text" class="form-control" name="country" placeholder="country" ng-model="addressModel.country" />
                     <div class="help-block" ng-if="addPatronForm.country.$error">Address is required</div>
                 </div>
                 <div class="form-group col-xs-12 col-sm-6" show-errors>
-                    <input type="text" class="form-control" name="postal_code" placeholder="postal code" ng-model="patronModel.address.postal_code" />
+                    <input type="text" class="form-control" name="postal_code" placeholder="postal code" ng-model="addressModel.postal_code" />
                     <div class="help-block" ng-if="addPatronForm.postal_code.$error">Address is required</div>
                 </div>
             </div>

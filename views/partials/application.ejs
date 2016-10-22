@@ -1,12 +1,14 @@
 <% if(environment  === 'production'){ %>
    <script type="text/javascript" src="build/js/min/<%= npm_package_name %>.min.js"></script>
- <% } else{ %>  
+ <% } else{ %>
+ 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&key=<%= google_maps_key %>"></script>  
 	<script type="text/javascript" src="/node_modules/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="/node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js"></script>
 	<script type="text/javascript" src="/node_modules/raphael/raphael.js"></script>
 	<script type="text/javascript" src="/node_modules/morris.js/morris.js"></script>
 	<script type="text/javascript" src="/node_modules/moment/moment.js"></script>
 	<script type="text/javascript" src="/node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="/node_modules/ng-places-autocomplete/ngPlacesAutocomplete.min.js"></script>
 	<script type="text/javascript" src="/node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
 	<script type="text/javascript" src="/node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
 	<script type="text/javascript" src="/node_modules/angular-animate/angular-animate.min.js"></script>

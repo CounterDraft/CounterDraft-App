@@ -10,7 +10,8 @@ app = angular.module('CounterDraft-app', [
         'ui.bootstrap',
         'ui.bootstrap.datetimepicker',
         'angular.morris',
-        'ui.bootstrap.showErrors'
+        'ui.bootstrap.showErrors',
+        'ngPlacesAutocomplete'
     ])
     .config(['showErrorsConfigProvider', function(showErrorsConfigProvider) {
         showErrorsConfigProvider.showSuccess(true);
