@@ -218,11 +218,13 @@ div.cd-alert {
 }
 
 ul.patron-list,
-ul.employee-list {
+ul.employee-list,
+ul.address-list {
     list-style: none;
     min-height: 60px;
     li.patron-list-item,
-    li.employee-list-item {
+    li.employee-list-item,
+    li.address-list-item {
         border-top: 1px solid @light-gray-border;
         background-color: @color-primary-4;
         opacity: .9;
@@ -243,10 +245,21 @@ ul.employee-list {
             }
         }
         .patron-info,
-        .employee-info {
+        .employee-info,
+        .address-info {
             padding-top: 10px;
             span {
                 .label-font;
+            }
+        }
+        .btn.close {
+            top: -10px;
+            right: -10px;
+            width: 30px;
+            height: 30px;
+            font-size: 30px;
+            &:hover, &:focus{
+                opacity: 1;
             }
         }
     }

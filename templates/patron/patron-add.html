@@ -41,51 +41,30 @@
                 <div class="form-group col-xs-12 col-md-6" show-errors>
                     <div class="input-group counter-group">
                         <div class="input-group-addon">Phone</div>
-                        <input type="number" class="form-control"  name="phone" placeholder="" ng-model="patronModel.phone"/>
+                        <input type="number" class="form-control" ng-minlength="10" ng-maxlength="10" name="phone" placeholder="" ng-model="patronModel.phone" />
                     </div>
-                    <div class="help-block" ng-if="addPatronForm.phone.$error">Phone number is not correct</div>
+                    <div class="help-block" ng-show="((addPatronForm.phone.$error.minlength || addPatronForm.phone.$error.maxlength) && addPatronForm.phone.$dirty)">phone number should be 10 digits</div>
                 </div>
             </div>
             <fieldset class="counter-widget">
                 <legend>Address</legend>
-                <button class="btn senary add" ng-click="pCtrl.onAddAddress()" ng-show="!addressModel.street_number" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+                <div class="col-xs-12">&nbsp;</div>
+                <button class="btn senary add" ng-click="pCtrl.onAddAddress()" ng-show="!(addressArr.length > 0)" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+                <ul ng-repeat="address in addressArr" class="address-list col-xs-12">
+                    <li class="address-list-item col-xs-12 text-size-small">
+                        <button type="button" class="btn close quinary" ng-click="pCtrl.removeAddress($index)">&times;</button>
+                        <div class="col-xs-8 col-sm-9 col-md-10 address-info row">
+                            <div class="col-xs-12"><span>{{address.street_number}}&nbsp;{{address.route}}</div>
+                            <div class="col-xs-12"><span>City:&nbsp;</span>{{address.locality}}</div>
+                            <div class="col-xs-12"><span>State:&nbsp;</span>{{address.administrative_area_level_1}}</div>
+                            <div class="col-xs-12"><span>Country:&nbsp;</span>{{address.country}}</div>
+                            <div class="col-xs-12"><span>Postal&nbsp;Code:&nbsp;</span>{{address.postal_code}}</div>
+                            <div class="col-xs-12">&nbsp;</div> 
+                        </div>
+                    </li>
+                </ul>
                 <div class="col-xs-12">&nbsp;</div>
             </fieldset>
-            <div class="col-xs-12">&nbsp;</div>
-            <div class="row">
-                <div class="form-group col-xs-12 col-sm-6" show-errors>
-                    <input type="text" class="form-control" name="address1" placeholder="street number" ng-model="addressModel.street_number" />
-                    <div class="help-block" ng-if="addPatronForm.address1.$error">Address is required</div>
-                </div>
-                <div class="form-group col-xs-12 col-sm-6" show-errors>
-                    <input type="text" class="form-control" name="route" placeholder="street name" ng-model="addressModel.route" />
-                    <div class="help-block" ng-if="addPatronForm.route.$error">Address is required</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-xs-12" show-errors>
-                    <input type="text" class="form-control" name="city" placeholder="city" ng-model="addressModel.locality" />
-                    <div class="help-block" ng-if="addPatronForm.city.$error">Address is required</div>
-                </div>
-                <div class="form-group col-xs-12" show-errors>
-                    <input type="text" class="form-control" name="state" placeholder="state" ng-model="addressModel.administrative_area_level_1" />
-                    <div class="help-block" ng-if="addPatronForm.state.$error">Address is required</div>
-                </div>
-            </div>
-            <!--             <div class="form-group" show-errors>
-                <input type="text" class="form-control" name="county" placeholder="county" ng-model="addressModel.administrative_area_level_2" />
-                <div class="help-block" ng-if="addPatronForm.county.$error">Address is required</div>
-            </div> -->
-            <div class="row">
-                <div class="form-group col-xs-12 col-sm-6" show-errors>
-                    <input type="text" class="form-control" name="country" placeholder="country" ng-model="addressModel.country" />
-                    <div class="help-block" ng-if="addPatronForm.country.$error">Address is required</div>
-                </div>
-                <div class="form-group col-xs-12 col-sm-6" show-errors>
-                    <input type="text" class="form-control" name="postal_code" placeholder="postal code" ng-model="addressModel.postal_code" />
-                    <div class="help-block" ng-if="addPatronForm.postal_code.$error">Address is required</div>
-                </div>
-            </div>
             <div class="row">
                 <h3 class="col-xs-12">Organization</h3>
             </div>

@@ -110,7 +110,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
 }]).controller('AddAddressCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
 
     this.initAddAddressModal = function() {
-        console.log("ererer");
+        //nothing to add?
     }
 
     this.cancel = function() {
@@ -138,6 +138,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
                 simplePlace[value.types[0]] = value.long_name;
             }
         });
+        simplePlace.id = place.id;
         $uibModalInstance.close(simplePlace);
          return false;
     }

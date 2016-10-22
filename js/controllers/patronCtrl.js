@@ -16,6 +16,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
     $scope.image_bucket_url = null;
     $scope.minAge = 18;
     $scope.searchArr = [];
+    $scope.addressArr = [];
     this.animationsEnabled = true;
 
     //models
@@ -27,17 +28,8 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
         password_confirm: null,
         organization_name: null,
         organization: null,
-        dob: null
-    };
-
-    $scope.addressModel = {
-        street_number: null,
-        route: null,
-        locality: null,
-        administrative_area_level_1: null,
-        administrative_area_level_2: null,
-        country: null,
-        postal_code: null
+        dob: null,
+        phone: null
     };
 
     $scope.addressAutoOptions = {
@@ -84,6 +76,10 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
         $scope.allowEdit = false;
     }
 
+    this.removeAddress = function(index) {
+        $scope.addressArr.splice(index, 1);
+    }
+
     this.onAddAddress = function() {
         var self = this;
         var modalInstance = $uibModal.open({
@@ -97,7 +93,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
         });
 
         modalInstance.result.then(function(place) {
-            $scope.addressModel = place;
+            $scope.addressArr.push(place);
         }, function() {
             console.info('Modal dismissed at: ' + new Date());
         });
@@ -157,7 +153,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
         if (!doNotClear) {
             _clearModel('patronSearchModel');
             _clearModel('patronModel');
-            _clearModel('addressModel');
+            $scope.addressArr = [];
         }
     }
 
@@ -220,12 +216,23 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
                     console.error(response);
                 }
             });
+        } else {
+            $window.swal({
+                title: "Error",
+                text: "Missing required field!",
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
         }
     }
 
     $scope.onPatronRegistration = function() {
         var self = this;
         var formData = angular.copy($scope.patronModel);
+        var addressArr = angular.copy($scope.addressArr);
         var hasData = true;
 
         //dob to ISO 86 string;
@@ -233,9 +240,13 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
             formData.dob = moment(formData.dob).format();
         }
 
+        if (addressArr.length > 0) {
+            formData.address = addressArr[0];
+        }
+
         for (var x in formData) {
             // address is a none required field
-            if (!formData[x] && x !== 'address') {
+            if (!formData[x] && x !== 'phone' &&  x !== 'address') {
                 hasData = false;
             }
         }
@@ -282,7 +293,15 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
                 }
             });
         } else {
-            console.error('Missing data in form.')
+            $window.swal({
+                title: "Error",
+                text: "Missing required field!",
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
         }
     }
 
