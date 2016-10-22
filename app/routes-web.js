@@ -124,7 +124,6 @@ module.exports = {
             }
             //TODO: see if a image exist;
             var client = getS3Client();
-
             res.render('pages/account.ejs', {
                 data: {
                     employee: employee,
