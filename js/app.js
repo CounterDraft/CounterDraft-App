@@ -8,7 +8,6 @@
 
 app = angular.module('CounterDraft-app', [
         'ui.bootstrap',
-        'ui.bootstrap.datetimepicker',
         'angular.morris',
         'ui.bootstrap.showErrors',
         'ngPlacesAutocomplete'

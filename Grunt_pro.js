@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
     // Project configuration.
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -11,6 +12,15 @@ module.exports = function(grunt) {
                 'build/css/css',
                 'build/css/*less'
             ]
+        },
+
+        ngAnnotate: {
+            demo: {
+                files: {
+                    'build/js/app.js': ['build/js/app.js'],
+                    'build/js/directives.js': ['build/js/directives.js']
+                },
+            }
         },
 
         uglify: {
@@ -31,8 +41,6 @@ module.exports = function(grunt) {
                     'node_modules/moment/moment.js',
                     'node_modules/angular/angular.js',
                     'node_modules/ng-places-autocomplete/ngPlacesAutocomplete.min.js',
-                    'node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
-                    'node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js',
                     'node_modules/angular-morris/build/module/angular-morris/angular-morris.min.js',
                     'node_modules/angular-animate/angular-animate.min.js',
                     'build/js/libs/showErrors.js',
@@ -100,11 +108,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-ng-annotate');
 
     // Default task(s).
     grunt.registerTask('default', [
         'clean:pre',
         'copy',
+        'ngAnnotate',
         'concat',
         'uglify',
         'less',
