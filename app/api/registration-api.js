@@ -174,7 +174,8 @@ function registationApi() {
                 }
                 return ModelEmployee.findAndCountAll({
                     where: {
-                        email_address: employee.email_address
+                        email_address: employee.email_address,
+                        is_active: true
                     }
                 });
             }).then(function(results) {
@@ -185,7 +186,8 @@ function registationApi() {
                 }
                 return ModelPatron.findAndCountAll({
                     where: {
-                        email_address: employee.email_address
+                        email_address: employee.email_address,
+                        is_active: true
                     }
                 });
             }).then(function(result) {
@@ -275,7 +277,8 @@ function registationApi() {
             }
             ModelPatron.findAndCountAll({
                 where: {
-                    email_address: patron.email_address
+                    email_address: patron.email_address,
+                    is_active: true
                 }
             }).then(function(results) {
                 if (results.count > 0) {
@@ -286,7 +289,8 @@ function registationApi() {
 
                 return ModelEmployee.findAndCountAll({
                     where: {
-                        email_address: patron.email_address
+                        email_address: patron.email_address,
+                        is_active: true
                     }
                 });
             }).then(function(results) {

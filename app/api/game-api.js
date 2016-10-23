@@ -16,8 +16,7 @@ function GameApi() {
         var organization = this.getOrganization(req, res);
         ModelGame.findAndCountAll({
             where: {
-                organization_id: organization.id,
-                is_active: true
+                organization_id: organization.id
             }
         }).then(function(results) {
             res.status(200).json({

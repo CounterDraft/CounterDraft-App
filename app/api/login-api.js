@@ -17,7 +17,8 @@ function LoginApi() {
         return new Promise(function(resolve, reject) {
             Employee.findOne({
                 where: {
-                    email_address: email_address
+                    email_address: email_address,
+                    is_active: true
                 }
             }).then(function(employee) {
                 if (employee) {
@@ -43,7 +44,8 @@ function LoginApi() {
                     }
                     return Organization.findOne({
                         where: {
-                            id: employee.organization_id
+                            id: employee.organization_id,
+                             is_active: true
                         }
                     });
                 } else {
@@ -83,7 +85,8 @@ function LoginApi() {
             // search for attributes
             Employee.findOne({
                 where: {
-                    email_address: req.body.email_address
+                    email_address: req.body.email_address,
+                     is_active: true
                 }
             }).then(function(employee) {
                 var hash = getHash();
@@ -118,7 +121,8 @@ function LoginApi() {
 
                     return Organization.findOne({
                         where: {
-                            id: employee.organization_id
+                            id: employee.organization_id,
+                             is_active: true
                         }
                     });
 

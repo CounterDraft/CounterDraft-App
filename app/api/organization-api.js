@@ -27,7 +27,8 @@ function OrganizationApi() {
     this.retrieve = function(organization_id) {
         return ModelOrganization.find({
             where: {
-                id: organization_id
+                id: organization_id,
+                is_active: true
             }
         });
     }

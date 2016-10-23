@@ -28,7 +28,8 @@ function ResetApi() {
 
         ModelPatron.find({
             where: {
-                email_address: req.body.email_address
+                email_address: req.body.email_address,
+                is_active: true
             }
         }).then(function(results) {
             if (results) {
@@ -50,7 +51,8 @@ function ResetApi() {
             }
             return ModelEmployee.find({
                 where: {
-                    email_address: req.body.email_address
+                    email_address: req.body.email_address,
+                    is_active: true
                 }
             });
         }).then(function(results) {

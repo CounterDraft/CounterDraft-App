@@ -39,7 +39,8 @@ function PatronApi() {
         var self = this;
         return ModelPatron.findOne({
             where: {
-                id: patron_id
+                id: patron_id,
+                is_active: true
             }
         });
     }
@@ -57,7 +58,8 @@ function PatronApi() {
         ModelPatron.findOne({
             where: {
                 id: query.id,
-                organization_id: organization.id
+                organization_id: organization.id,
+                is_active: true
             }
         }).then(function(result) {
             if (result) {
@@ -123,7 +125,8 @@ function PatronApi() {
             ModelPatron.find({
                 where: {
                     id: searchObject.patron_id,
-                    organization_id: organization.id
+                    organization_id: organization.id,
+                    is_active: true
                 }
             }).then(function(results) {
                 if (results) {
@@ -146,6 +149,7 @@ function PatronApi() {
             }
         }
         whereSerach.organization_id = organization.id;
+        whereSerach.is_active = true;
 
         ModelPatron.findAll({
             where: whereSerach,

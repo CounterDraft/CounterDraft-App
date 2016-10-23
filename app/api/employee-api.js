@@ -76,7 +76,8 @@ function EmployeeApi() {
         var self = this;
         return ModelEmployee.findOne({
             where: {
-                id: employee_id
+                id: employee_id,
+                is_active: true
             }
         });
     }
@@ -92,7 +93,8 @@ function EmployeeApi() {
         }
         ModelEmployee.findOne({
             where: {
-                id: user.employee_id
+                id: user.employee_id,
+                is_active: true
             }
         }).then(function(result) {
             if (result) {
@@ -116,7 +118,8 @@ function EmployeeApi() {
                 }
                 return ModelEmployee.update(updateData, {
                     where: {
-                        id: employee.id
+                        id: employee.id,
+                        is_active: true
                     }
                 });
             } else {
@@ -159,12 +162,12 @@ function EmployeeApi() {
         } else if (!this.getModelPattern('password').test(reqbody.password)) {
             this.getErrorApi().sendError(1039, 422, res);
         } else {
-            //check old pass is good;
             var hash = getHash();
 
             ModelEmployee.findOne({
                 where: {
-                    id: user.employee_id
+                    id: user.employee_id,
+                    is_active: true
                 }
             }).then(function(result) {
                 if (result) {
@@ -190,7 +193,8 @@ function EmployeeApi() {
                         password: passwordWithHash
                     }, {
                         where: {
-                            id: employee.id
+                            id: employee.id,
+                            is_active: true
                         }
                     });
                 } else {
