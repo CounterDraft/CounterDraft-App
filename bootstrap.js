@@ -43,7 +43,8 @@ module.exports = {
         }
 
         global.getEmailTemplate = function() {
-            return require('email-templates').EmailTemplate;
+            var EmailTemplates = require('swig-email-templates');
+            return new EmailTemplates();
         }
 
         global.getdbConnection = function() {
@@ -119,7 +120,7 @@ module.exports = {
 
         //creaete transportor
         global.getEmailTransport = function(){
-            return require("nodemailer").createTransport(global.config.email);
+            return require('./lib/nodemailer').createTransport(global.config.email);
         }
 
         global.logger = require('./lib/logger').init();

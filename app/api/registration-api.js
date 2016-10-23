@@ -112,7 +112,7 @@ function registationApi() {
                 });
             }).then(function(employee) {
                 if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
-                    self.getApi('email').registration(employee.dataValues.email_address);
+                    getApi('email').registration(employee.dataValues.email_address);
                     return getApi('login').loginUser(req, employee.dataValues.email_address);
                 } else {
                     return new Promise(function(resolve, reject) {

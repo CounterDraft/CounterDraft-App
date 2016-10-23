@@ -10,39 +10,61 @@
 function EmailApi() {
     this.tag = 'email-api';
     var Promise = getPromise();
-    var eTemplate = getEmailTemplate();
+    var templates = getEmailTemplate();
     var ModelRegistrationUser = models.registration_user;
+    var emailTemplateDir = require('path').join(__dirname, '../../templates/email');
 
     this.resetPassword = function(user_email, token) {
+        var password_reset_template = emailTemplateDir + '/password_reset/password-reset.hbs';
         if (!user_email || !token) {
             logger.error('No user_email or token was provided to the reset api');
         }
         var emailOptions = {
             from: '"Do-Not-Reply" <do-not-reply@counterDraft.com>',
-            to: user_email,
             subject: 'Reset Password'
         }
-        // console.log(getEmailTransport());
 
-        // var sendResetPassword = getEmailTransport().templateSender(
-        //     new eTemplate('templates/email/reset-password.html'));
+        var transporter = getEmailTransport();
 
-        // console.log(sendResetPassword);
+        // Create a template based sender
+        var templateSender = transporter.templateSender({
+            render: function(context, callback) {
+                templates.render(password_reset_template, context, function(err, html, text) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(null, {
+                        html: html,
+                        text: text
+                    });
+                });
+            }
+        }, emailOptions);
 
-        // emailTransport.sendMail(emailOptions,
-        //     function(err, data) {
-        //         if (err) {
-        //             var eo = {
-        //                 email_address: user_email,
-        //                 error: 9902
-        //             }
-        //             logger.error(self.getErrorApi().getErrorMsg(9902), {
-        //                 error: eo
-        //             });
-        //         } else {
-        //             logger.info('Reset password email sent to', { email_address: user_email });
-        //         }
-        //     });
+        // Message object, add mail specific fields here
+        var message = {
+            to: user_email
+        };
+
+        // context for the template renderer
+        var context = {
+            name: {
+                last: 'Receiver',
+                first: 'Name'
+            }
+        };
+
+        console.log('Sending Mail');
+        // send using template
+        templateSender(message, context, function(error, info) {
+            if (error) {
+                console.log('Error occurred');
+                console.log(error.message);
+                return;
+            }
+            // print rfc822 message to console
+            console.log('Generated mime-message source:\n%s', info.response.toString());
+        });
     }
 
     this.registration = function(user_email) {
