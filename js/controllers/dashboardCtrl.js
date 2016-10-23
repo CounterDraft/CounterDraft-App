@@ -80,19 +80,19 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
             url: _dashboard_patron_url,
             params: formData
         }).then(function successCallback(response) {
-            console.log(response.data);
+            // console.log(response.data);
             return $http({
                 method: 'GET',
                 url: _dashboard_game_url,
                 params: formData
             });
         }, function errorCallback(response) {
-            console.error(response);
+            // console.error(response);
         }).then(function successCallback(response) {
-            console.log(response.data);
+            // console.log(response.data);
 
         }, function errorCallback(response) {
-            console.error(response);
+            // console.error(response);
         });
     }
 
