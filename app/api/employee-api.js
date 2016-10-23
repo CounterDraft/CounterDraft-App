@@ -7,6 +7,7 @@
 */
 
 var _removeUneededAttr = function(employee) {
+    var moment = getMoment();
     return {
         email_address: employee.email_address,
         first_name: employee.first_name,
@@ -16,8 +17,8 @@ var _removeUneededAttr = function(employee) {
         organization_id: employee.organization_id,
         username: employee.username,
         uuid: employee.e_uuid,
-        createdAt: getUnixTimeStamp(employee.createdAt),
-        updatedAt: getUnixTimeStamp(employee.updatedAt)
+        createdAt: moment(employee.createdAt).unix(),
+        updatedAt: moment(employee.updatedAt).unix()
     }
 }
 
@@ -206,7 +207,7 @@ function EmployeeApi() {
                 if (result) {
                     var employee = result.dataValues;
                     res.status(200).json({
-                        employee: employee,
+                        employee: _removeUneededAttr(employee),
                         success: true
                     });
                 } else {

@@ -19,7 +19,7 @@ function ResetController() {
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'put':
-                    getApi('reset').resetUsernamePassword(req, res);
+                    getApi('reset').resetPassword(req, res);
                     break;
                 case 'delete':
                     self.getErrorApi().sendError(1011, 403, res);

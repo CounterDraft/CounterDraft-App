@@ -42,6 +42,9 @@ INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161020233338-adding-address-and-dob-patron.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161023064035-add-retrieve-to-patron-employee.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
 
 

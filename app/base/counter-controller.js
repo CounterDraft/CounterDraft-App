@@ -37,7 +37,8 @@ function baseController() {
         var nonAuthRestList = [
             'confirmation',
             'registration',
-            'login'
+            'login',
+            'password'
         ];
 
         logger.debug('determine which call to invoke.');

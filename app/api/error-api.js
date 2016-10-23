@@ -57,7 +57,7 @@ var errorList = {
         msg: 'Failed to get organizations from organization_type table.'
     },
     1010: {
-        msg: 'Reset needs either a username or email address.'
+        msg: 'Reset needs a email_address.'
     },
     1011: {
         msg: 'Not supported call.'
