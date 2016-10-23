@@ -22,17 +22,7 @@ function LoginApi() {
                 }
             }).then(function(employee) {
                 if (employee) {
-                    req.session.user = {
-                        employee_id: employee.id,
-                        username: employee.username,
-                        first_name: employee.first_name,
-                        last_name: employee.last_name,
-                        email_address: employee.email_address,
-                        permissions: ['restricted:employee']
-                    }
-                    if (employee.is_admin) {
-                        req.session.user['permissions'] = ['restricted:admin,employee'];
-                    }
+                    self._refreshSession(req, employee);
                     fEmployee = {
                         employee_id: employee.id,
                         username: employee.username,
@@ -55,11 +45,7 @@ function LoginApi() {
                 }
             }).then(function(organization) {
                 if (organization && fEmployee) {
-                    req.session.organization = {
-                        id: organization.id,
-                        name: organization.name,
-                        description: organization.description
-                    }
+                    self._refreshSessionOrganization(req, organization);
                     resolve(fEmployee);
                 } else {
                     reject(self.getErrorApi().getErrorMsg(1028));
@@ -97,19 +83,7 @@ function LoginApi() {
                 }
 
                 if (employee && hash.verify(req.body.password, employee.password)) {
-                    req.session.user = {
-                        employee_id: employee.id,
-                        username: employee.username,
-                        first_name: employee.first_name,
-                        last_name: employee.last_name,
-                        email_address: employee.email_address,
-                        permissions: ['restricted:employee']
-                    }
-
-                    if (employee.is_admin) {
-                        req.session.user['permissions'] = ['restricted:admin,employee'];
-                    }
-
+                    self._refreshSession(req, employee);
                     fEmployee = {
                         employee_id: employee.id,
                         username: employee.username,
@@ -138,11 +112,7 @@ function LoginApi() {
 
             }).then(function(organization) {
                 if (organization) {
-                    req.session.organization = {
-                        id: organization.id,
-                        name: organization.name,
-                        description: organization.description
-                    }
+                    self._refreshSessionOrganization(req, organization);
                     res.json({
                         user: fEmployee,
                         success: true

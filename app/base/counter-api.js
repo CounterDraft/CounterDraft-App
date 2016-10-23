@@ -7,6 +7,30 @@ function baseApi() {
         return this.name;
     }
 
+    this._refreshSession = function(req, employee) {
+        req.session.user = {
+            employee_id: employee.id,
+            username: employee.username,
+            first_name: employee.first_name,
+            last_name: employee.last_name,
+            email_address: employee.email_address,
+            permissions: ['restricted:employee']
+        }
+        if (employee.is_admin) {
+            req.session.user['permissions'] = ['restricted:admin,employee'];
+        }
+        return true;
+    }
+
+    this._refreshSessionOrganization = function(req, organization) {
+        req.session.organization = {
+            id: organization.id,
+            name: organization.name,
+            description: organization.description
+        }
+        return true;
+    }
+
     this.getModelPattern = function(fieldName) {
         switch (fieldName) {
             case "first_name":

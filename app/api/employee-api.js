@@ -100,7 +100,6 @@ function EmployeeApi() {
         }).then(function(result) {
             if (result) {
                 var employee = result.dataValues;
-                empOut = result.dataValues;
                 var updateData = {};
                 var userData = req.body || null;
                 if (userData) {
@@ -117,6 +116,7 @@ function EmployeeApi() {
                         reject({ errNum: 1012, status: 422 });
                     });
                 }
+                empOut = mix(result.dataValues).into(updateData);
                 return ModelEmployee.update(updateData, {
                     where: {
                         id: employee.id,
@@ -129,8 +129,8 @@ function EmployeeApi() {
                 });
             }
         }).then(function(result) {
-            //TODO: refresh the session with the new information;
             if (result) {
+                self._refreshSession(req, empOut);
                 res.status(200).json({
                     employee: _removeUneededAttr(empOut),
                     success: true
