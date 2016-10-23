@@ -5,12 +5,14 @@
     Comment: 
         This is the api which is used for all reseting stuff all logic should be here.
 */
-var _sendResetEmail = function(user_email) {
-    //generate a token for reseting password;
-    //send email to email address.
+var _generateToken = function() {
+    var uuid = generateUUID().replace(/-/g, "");
+    if (uuid) {
+        return uuid;
+    }
 }
 
-var _clean = function(patron) {
+var _cleanPatron = function(patron) {
     var moment = getMoment();
     return {
         email_address: patron.email_address,
@@ -34,7 +36,7 @@ var _clean = function(patron) {
     }
 }
 
-var _removeUneededAttr = function(employee) {
+var _cleanEmployee = function(employee) {
     var moment = getMoment();
     return {
         email_address: employee.email_address,
@@ -55,11 +57,18 @@ function ResetApi() {
     var Promise = getPromise();
     var ModelEmployee = models.employee_user;
     var ModelPatron = models.patron_player;
+    var moment = getMoment();
 
     this.resetPassword = function(req, res) {
         var self = this;
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
+        var token = _generateToken();
+        var tokenHash = getHash().generate(token);
+        //TODO: allow this to be configured by orgnaization settings.
+        var eTime = moment().add('m', 45);
+        var empOut = null;
+        var patronOut = null;
 
         if (!req.body.email_address) {
             this.getErrorApi().sendError(1010, 400, res);
@@ -67,6 +76,10 @@ function ResetApi() {
         } else if (this.validEmail(req.body.email_address)) {
             this.getErrorApi().sendError(1005, 403, res);
             return;
+        }
+        var updates = {
+            retrieve_token: tokenHash,
+            retrieve_expiration: eTime.format()
         }
 
         ModelPatron.find({
@@ -76,21 +89,13 @@ function ResetApi() {
             }
         }).then(function(results) {
             if (results) {
-                var patron = results.dataValues;
-                var saveData = {
-                    first_name: patron.first_name,
-                    last_name: patron.last_name,
-                    email_address: patron.email_address
-                }
-                _sendResetEmail(patron.email_address);
-
-                res.status(200).json({
-                    user: patron,
-                    success: true
-                });
-                return new Promise(function(resolve, reject) {
-                    return resolve(true);
-                });
+                patronOut = results.dataValues;
+                return ModelPatron.update(
+                    updates, {
+                        where: {
+                            id: patronOut.id
+                        }
+                    });
             }
             return ModelEmployee.find({
                 where: {
@@ -99,16 +104,52 @@ function ResetApi() {
                 }
             });
         }).then(function(results) {
-            if (results) {
-                var employee = results.dataValues;
-                
-                _sendResetEmail(employee.email_address);
-                res.status(200).json({
-                    user: saveData,
-                    success: true
+            if (results.dataValues) {
+                empOut = results.dataValues;
+                return ModelEmployee.update(
+                    updates, {
+                        where: {
+                            id: empOut.id
+                        }
+                    });
+            } else if (results) {
+                return new Promise(function(resolve, reject) {
+                    return resolve(results);
                 });
             } else {
-                self.getErrorApi().sendError(1002, 401, res);
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1002, status: 401 });
+                });
+            }
+        }).then(function(results) {
+            if (results) {
+                if (empOut) {
+                    getApi('email').resetPassword(empOut.email_address, token);
+                    res.status(200).json({
+                        user: _cleanPatron(empOut),
+                        success: true
+                    });
+                } else if (patronOut) {
+                    getApi('email').resetPassword(patronOut.email_address, token);
+                    res.status(200).json({
+                        user: _cleanPatron(patronOut),
+                        success: true
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1002, status: 401 });
+                    });
+                }
+            } else {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1002, status: 401 });
+                });
+            }
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
             }
         });
     }

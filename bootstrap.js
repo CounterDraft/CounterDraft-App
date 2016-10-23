@@ -118,7 +118,9 @@ module.exports = {
         }
 
         //creaete transportor
-        global.emailTransport = require("nodemailer").createTransport(global.config.email);
+        global.getEmailTransport = function(){
+            return require("nodemailer").createTransport(global.config.email);
+        }
 
         global.logger = require('./lib/logger').init();
         global.models = require("./models");

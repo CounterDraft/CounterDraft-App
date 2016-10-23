@@ -177,6 +177,9 @@ var errorList = {
     },
     9903: {
         msg: 'Unknown error, failed to find user in system.'
+    },
+    9904: {
+        msg: 'Database issue: Failed to update user.'
     }
 }
 

@@ -50,6 +50,16 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: false,
             comment: "If false we have yet to confirmed the email_address."
         },
+        retrieve_token: {
+            type: DataTypes.STRING(64),
+            allowNull: true,
+            comment: "Hash token used for reseting password."
+        },
+        retrieve_expiration: {
+            type: DataTypes.DATE,
+            allowNull: true,
+            comment: "Date/time which retrieve_token will expire."
+        },
         e_uuid: {
             type: DataTypes.UUID,
             allowNull: true,

@@ -48,6 +48,16 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: DataTypes.UUIDV4,
             comment: "The UUID which is used to save images and user data in the cloud."
         },
+        retrieve_token: {
+            type: DataTypes.STRING(64),
+            allowNull: true,
+            comment: "Hash token used for reseting password."
+        },
+        retrieve_expiration: {
+            type: DataTypes.DATE,
+            allowNull: true,
+            comment: "Date/time which retrieve_token will expire."
+        },
         dob: {
             type: DataTypes.DATEONLY,
             allowNull: false,

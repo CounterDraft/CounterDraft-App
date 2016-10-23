@@ -10,101 +10,6 @@ var _generateApiKey = function() {
     }
 }
 
-var _sendRegistrationEmail = function(user_email, errorMsg, errorNumber, errorMsgEmail, errorNumberEmail) {
-    var Promise = getPromise();
-    var eTemplate = getEmailTemplate();
-    var ModelRegistrationUser = models.registration_user;
-    var currentTime = new Date();
-
-    new Promise(function(resolve, reject) {
-        require('crypto').randomBytes(48, function(err, buffer) {
-            var genToken = buffer.toString('hex');
-            if (genToken) {
-                return resolve(genToken);
-            } else {
-                return reject(err);
-            }
-        });
-    }).then(function(token) {
-        var vUntil = currentTime.setDate(currentTime.getDate() + 14);
-        return ModelRegistrationUser.create({
-            email_address: user_email,
-            token: token,
-            valid_until: vUntil
-        });
-    }).then(function(registration_user) {
-        if (!registration_user) {
-            var eo = {
-                email_address: user_email,
-                error: errorNumber
-            }
-            logger.error(errorMsg, {
-                error: eo
-            });
-            return new Promise(function(resolve, reject) {
-                return reject(eo);
-            });
-        }
-        return new Promise(function(resolve, reject) {
-            //TODO: fix this so we can use templates and look pretty;
-            // var sendRegistrationConfirmation = emailTransport.templateSender(new eTemplate('templates/email/registration-confirmation.html'), sendRegistrationConfirmationEmailOptions);
-
-            // sendRegistrationConfirmation({
-
-            //     }, {
-
-            //     },
-            //     function(err, data) {
-            //         if (err) {
-            //             var eo = {
-            //                 email_address: user_email,
-            //                 error: errorNumberEmail
-            //             }
-            //             logger.error(errorMsgEmail, {
-            //                 error: eo
-            //             });
-            //             return reject(err);
-            //         } else {
-            //             logger.info('Email confirmation sent to', { email_address: user_email });
-            //             return resolve(data);
-            //         }
-            //     });
-
-            var url_link;
-            if (global.config.environment === 'production') {
-                url_link = 'http://' + config.server.ip + '/confirmation?token=' + registration_user.dataValues.token;
-            } else {
-                url_link = 'http://' + config.server.ip + ':' + config.server.port + '/confirmation?token=' + registration_user.dataValues.token;
-            }
-
-            var sendRegistrationConfirmationEmailOptions = {
-                from: '"Do-Not-Reply" <do-not-reply@counterDraft.com>',
-                to: user_email,
-                subject: 'Email Confirmation',
-                html: '<div>Welcome to Counter Draft, a Fantasy sport experience!</div><br>' +
-                    '<div>Please click on the link to confirmation your email and account</div><br>' +
-                    '<a href="' + url_link + '">Confirmation</a>'
-            };
-
-            emailTransport.sendMail(sendRegistrationConfirmationEmailOptions, function(err, data) {
-                if (err) {
-                    var eo = {
-                        email_address: user_email,
-                        error: errorNumberEmail
-                    }
-                    logger.error(errorMsgEmail, {
-                        error: eo
-                    });
-                    return reject(err);
-                } else {
-                    logger.info('Email confirmation sent to', { email_address: user_email });
-                    return resolve(data);
-                }
-            });
-        });
-    });
-}
-
 function registationApi() {
     var self = this;
     var Promise = getPromise();
@@ -207,14 +112,7 @@ function registationApi() {
                 });
             }).then(function(employee) {
                 if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
-                    var emailErrorNumber = 9901
-                    var sendEmailErrorNumber = 9902;
-
-                    _sendRegistrationEmail(employee.dataValues.email_address,
-                        self.getErrorApi().getErrorMsg(emailErrorNumber),
-                        emailErrorNumber,
-                        self.getErrorApi().getErrorMsg(sendEmailErrorNumber),
-                        sendEmailErrorNumber);
+                    self.getApi('email').registration(employee.dataValues.email_address);
                     return getApi('login').loginUser(req, employee.dataValues.email_address);
                 } else {
                     return new Promise(function(resolve, reject) {
