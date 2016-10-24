@@ -17,7 +17,7 @@ function LoginApi() {
         return new Promise(function(resolve, reject) {
             Employee.findOne({
                 where: {
-                    email_address: email_address,
+                    email_address: {$iLike: email_address},
                     is_active: true
                 }
             }).then(function(employee) {
@@ -71,7 +71,7 @@ function LoginApi() {
             // search for attributes
             Employee.findOne({
                 where: {
-                    email_address: req.body.email_address,
+                    email_address: {$iLike: req.body.email_address},
                      is_active: true
                 }
             }).then(function(employee) {

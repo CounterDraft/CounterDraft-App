@@ -13,10 +13,12 @@ function EmailApi() {
     var templates = getEmailTemplate();
     var ModelRegistrationUser = models.registration_user;
     var emailTemplateDir = require('path').join(__dirname, '../../templates/email');
+    var moment = getMoment();
+    var transporter = getEmailTransport();
 
-    this.resetPassword = function(user_email, token) {
-        var password_reset_template = emailTemplateDir + '/password_reset/password-reset.hbs';
-        if (!user_email || !token) {
+    this.resetPassword = function(user, token) {
+        var password_reset_template = emailTemplateDir + '/password_reset/html.hbs';
+        if (!user || !token) {
             logger.error('No user_email or token was provided to the reset api');
         }
         var emailOptions = {
@@ -24,9 +26,14 @@ function EmailApi() {
             subject: 'Reset Password'
         }
 
-        var transporter = getEmailTransport();
+        var message = { to: user.email_address }
 
-        // Create a template based sender
+        var context = {
+            user: user,
+            url_link: "https://" + token,
+            expire_time: moment().format()
+        }
+
         var templateSender = transporter.templateSender({
             render: function(context, callback) {
                 templates.render(password_reset_template, context, function(err, html, text) {
@@ -41,29 +48,13 @@ function EmailApi() {
             }
         }, emailOptions);
 
-        // Message object, add mail specific fields here
-        var message = {
-            to: user_email
-        };
-
-        // context for the template renderer
-        var context = {
-            name: {
-                last: 'Receiver',
-                first: 'Name'
-            }
-        };
-
-        console.log('Sending Mail');
-        // send using template
         templateSender(message, context, function(error, info) {
             if (error) {
                 console.log('Error occurred');
                 console.log(error.message);
                 return;
             }
-            // print rfc822 message to console
-            console.log('Generated mime-message source:\n%s', info.response.toString());
+            logger.info('Reset password email sent to - ', { email_address: user.email_address, info: info.response.toString() });
         });
     }
 

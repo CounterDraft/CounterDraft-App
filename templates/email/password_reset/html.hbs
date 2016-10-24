@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<style>
+body {
+    background-color: #ababab;
+    color: white;
+}
+
+div.header {
+    background-color: #A13646;
+    padding: 15px;
+}
+
+h4 {
+    text-align: center;
+    color: white;
+}
+</style>
+
+<body>
+    <div class="header">
+        <h4 class="title">Password Reset</h4>
+    </div>
+    <div class="container">
+        <div class="col-xs-12">Dear {{user.first_name}}:</div>
+        <div class="col-xs-12">
+            <p>A password reset has been requested for your account, if this was not you please contact customer support as someone maybe trying to gain access to your account. Below is your password reset link, it will expire on {{expire_time}}.</p>
+        </div>
+        <div class="col-xs-12"><a href="{{url_link}}">{{url_link}}</a></div>
+    </div>
+</body>
+
+</html>

@@ -79,7 +79,7 @@ function registationApi() {
                 }
                 return ModelEmployee.findAndCountAll({
                     where: {
-                        email_address: employee.email_address,
+                        email_address: {$iLike: employee.email_address},
                         is_active: true
                     }
                 });
@@ -91,7 +91,7 @@ function registationApi() {
                 }
                 return ModelPatron.findAndCountAll({
                     where: {
-                        email_address: employee.email_address,
+                        email_address: {$iLike: employee.email_address},
                         is_active: true
                     }
                 });
@@ -175,7 +175,7 @@ function registationApi() {
             }
             ModelPatron.findAndCountAll({
                 where: {
-                    email_address: patron.email_address,
+                    email_address: {$iLike: patron.email_address},
                     is_active: true
                 }
             }).then(function(results) {
@@ -187,7 +187,7 @@ function registationApi() {
 
                 return ModelEmployee.findAndCountAll({
                     where: {
-                        email_address: patron.email_address,
+                        email_address: {$iLike: patron.email_address},
                         is_active: true
                     }
                 });

@@ -81,10 +81,9 @@ function ResetApi() {
             retrieve_token: tokenHash,
             retrieve_expiration: eTime.format()
         }
-
         ModelPatron.find({
             where: {
-                email_address: req.body.email_address,
+                email_address: {$iLike: req.body.email_address},
                 is_active: true
             }
         }).then(function(results) {
@@ -99,12 +98,12 @@ function ResetApi() {
             }
             return ModelEmployee.find({
                 where: {
-                    email_address: req.body.email_address,
+                    email_address: {$iLike: req.body.email_address},
                     is_active: true
                 }
             });
         }).then(function(results) {
-            if (results.dataValues) {
+            if (results && results.hasOwnProperty('dataValues')) {
                 empOut = results.dataValues;
                 return ModelEmployee.update(
                     updates, {
@@ -124,13 +123,13 @@ function ResetApi() {
         }).then(function(results) {
             if (results) {
                 if (empOut) {
-                    getApi('email').resetPassword(empOut.email_address, token);
+                    getApi('email').resetPassword(empOut, token);
                     res.status(200).json({
                         user: _cleanPatron(empOut),
                         success: true
                     });
                 } else if (patronOut) {
-                    getApi('email').resetPassword(patronOut.email_address, token);
+                    getApi('email').resetPassword(patronOut, token);
                     res.status(200).json({
                         user: _cleanPatron(patronOut),
                         success: true
