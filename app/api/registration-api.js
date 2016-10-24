@@ -79,7 +79,7 @@ function registationApi() {
                 }
                 return ModelEmployee.findAndCountAll({
                     where: {
-                        email_address: {$iLike: employee.email_address},
+                        email_address: { $iLike: employee.email_address },
                         is_active: true
                     }
                 });
@@ -91,7 +91,7 @@ function registationApi() {
                 }
                 return ModelPatron.findAndCountAll({
                     where: {
-                        email_address: {$iLike: employee.email_address},
+                        email_address: { $iLike: employee.email_address },
                         is_active: true
                     }
                 });
@@ -110,18 +110,48 @@ function registationApi() {
                     is_admin: true, //we are admin if we are createing the organization;
                     organization_id: employeeOrganization
                 });
-            }).then(function(employee) {
-                if (typeof 'undefined' != employee && employee.$options['isNewRecord']) {
-                    getApi('email').registration(employee.dataValues.email_address);
-                    return getApi('login').loginUser(req, employee.dataValues.email_address);
+            }).then(function(result) {
+                if (result) {
+                    return new Promise(function(resolve, reject) {
+                        require('crypto').randomBytes(48, function(err, buffer) {
+                            var genToken = buffer.toString('hex');
+                            if (genToken) {
+                                return resolve(genToken);
+                            } else {
+                                return reject(err);
+                            }
+                        });
+                    });
                 } else {
                     return new Promise(function(resolve, reject) {
                         return reject(self.getErrorApi().getErrorMsg(1018));
                     });
                 }
-            }).then(function(employee) {
+            }).then(function(token) {
+                var currentTime = new Date();
+                var vUntil = currentTime.setDate(currentTime.getDate() + 14);
+                return ModelRegistrationUser.create({
+                    email_address: employee.email_address,
+                    token: token,
+                    valid_until: vUntil
+                });
+            }).then(function(result) {
+                if (result) {
+                    var registrationUser = result.dataValues;
+                    getApi('email').registration(employee, registrationUser.token);
+                    return getApi('login').loginUser(req, employee.email_address);
+                } else {
+                    logger.error(self.getErrorApi().getErrorMsg(9901), {
+                        email_address: user_email,
+                        error: 9901
+                    });
+                    return new Promise(function(resolve, reject) {
+                        return reject(self.getErrorApi().getErrorMsg(1024));
+                    });
+                }
+            }).then(function(emp) {
                 res.status(200).json({
-                    user: employee,
+                    user: emp,
                     success: true
                 });
             }).catch(function(err) {
@@ -175,7 +205,7 @@ function registationApi() {
             }
             ModelPatron.findAndCountAll({
                 where: {
-                    email_address: {$iLike: patron.email_address},
+                    email_address: { $iLike: patron.email_address },
                     is_active: true
                 }
             }).then(function(results) {
@@ -187,7 +217,7 @@ function registationApi() {
 
                 return ModelEmployee.findAndCountAll({
                     where: {
-                        email_address: {$iLike: patron.email_address},
+                        email_address: { $iLike: patron.email_address },
                         is_active: true
                     }
                 });
