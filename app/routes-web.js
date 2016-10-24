@@ -120,9 +120,9 @@ module.exports = {
 
         routerWeb.get('/account', isAuthorized, function(req, res) {
             var employee = {
-                id: req.session.user.employee_id,
-            }
-            //TODO: see if a image exist;
+                    id: req.session.user.employee_id,
+                }
+                //TODO: see if a image exist;
             var client = getS3Client();
             res.render('pages/account.ejs', {
                 data: {
@@ -170,6 +170,16 @@ module.exports = {
                     });
             }
 
+        });
+        routerWeb.get('/retrieve', function(req, res) {
+            if (req.session.user) {
+                res.redirect('/dashboard');
+            } else {
+                res.locals.login = false;
+                res.render('pages/retrieve.ejs', {
+                    data: { user: 'Testing' }
+                });
+            }
         });
         routerWeb.get('/settings', isAuthorized, function(req, res) {
             res.render('pages/reports.ejs', {

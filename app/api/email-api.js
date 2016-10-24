@@ -14,6 +14,7 @@ function EmailApi() {
     var emailTemplateDir = require('path').join(__dirname, '../../templates/email');
     var moment = getMoment();
     var transporter = getEmailTransport();
+    var url_link;
 
     this.resetPassword = function(user, token) {
         var password_reset_template = emailTemplateDir + '/password_reset/password_reset.hbs';
@@ -25,12 +26,17 @@ function EmailApi() {
             subject: 'Reset Password'
         }
 
-        var message = { to: user.email_address }
+        if (global.config.environment === 'production') {
+            url_link = 'https://' + config.server.ip + '/retrieve?retrieve_token=' + token;
+        } else {
+            url_link = 'http://' + config.server.ip + ':' + config.server.port + '/retrieve?retrieve_token=' + token;
+        }
 
+        var message = { to: user.email_address }
         var context = {
             user: user,
-            url_link: "https://" + token,
-            expire_time: moment().format()
+            url_link: url_link,
+            expire_time: moment(user.retrieve_expiration).calendar()
         }
 
         var templateSender = transporter.templateSender({
@@ -47,10 +53,13 @@ function EmailApi() {
             }
         }, emailOptions);
 
-        templateSender(message, context, function(error, info) {
-            if (error) {
-                console.log('Error occurred');
-                console.log(error.message);
+        templateSender(message, context, function(err, info) {
+            if (err) {
+                var eo = {
+                        email_address: user.email_address,
+                        error: err
+                    }
+                    logger.error(self.getErrorApi().getErrorMsg(9902), {error: eo});
                 return;
             }
             logger.info('Reset password email sent to - ', { email_address: user.email_address, info: info.response.toString() });
@@ -98,36 +107,19 @@ function EmailApi() {
                 }
             }, emailOptions);
 
-            templateSender(message, context, function(error, info) {
+            templateSender(message, context, function(err, info) {
                 if (err) {
                     var eo = {
                         email_address: user.email_address,
-                        error: 9902
+                        error: err
                     }
-                    logger.error(self.getErrorApi().getErrorMsg(9902), {
-                        error: eo
-                    });
+                    logger.error(self.getErrorApi().getErrorMsg(9902), {error: eo});
                     return reject(err);
                 } else {
-                    logger.info('Email confirmation sent to', { email_address: user.email_address });
+                    logger.info('Email confirmation sent to - ', { email_address: user.email_address, info: info.response.toString() });
                     return resolve(info);
                 }
             });
-            // getEmailTransport().sendMail(sendRegistrationConfirmationEmailOptions, function(err, data) {
-            //     if (err) {
-            //         var eo = {
-            //             email_address: user_email,
-            //             error: 9902
-            //         }
-            //         logger.error(self.getErrorApi().getErrorMsg(9902), {
-            //             error: eo
-            //         });
-            //         return reject(err);
-            //     } else {
-            //         logger.info('Email confirmation sent to', { email_address: user_email });
-            //         return resolve(data);
-            //     }
-            // });
         }).catch(function(err) {
             logger.error(err.toString(), { error: err });
         });
