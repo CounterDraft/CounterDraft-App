@@ -46,6 +46,11 @@ INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161023064035-add-retrieve-to-patron-employee.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161025191631-adding-phone-to-patron.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+	
+
 
 
 #set all users to password = password
