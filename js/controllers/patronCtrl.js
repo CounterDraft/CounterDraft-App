@@ -5,7 +5,7 @@
         This should all the logic for the patron page.
 */
 
-app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data', function($scope, $http, $window, $uibModal, data) {
+app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$anchorScroll', 'data', function($scope, $http, $window, $uibModal, $anchorScroll, data) {
     var _base_templates = "templates/patron/";
     var _url_patron = "/api/v1/patron/";
     var _url_patron_search = "/api/v1/patron/search/";
@@ -153,6 +153,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
             _clearModel('patronModel');
             $scope.addressArr = [];
         }
+        $anchorScroll();
     }
 
     $scope.onBack = function(page) {
