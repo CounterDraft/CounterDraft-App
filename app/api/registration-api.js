@@ -259,7 +259,7 @@ function registationApi() {
                     email_address: patron.email_address,
                     password: passwordWithHash,
                     dob: patron.dob,
-                    phone: patron.phone,
+                    phone: patron.phone.toString(),
                     street_number: patron.address.street_number,
                     route: patron.address.route,
                     locality: patron.locality,

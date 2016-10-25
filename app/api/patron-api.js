@@ -69,6 +69,15 @@ function PatronApi() {
         });
     }
 
+    this.userChangePassword = function(req, res) {
+        var params = req.body;
+        console.log(params)
+        res.status(200).json({
+            patron: params,
+            success: true
+        });
+    }
+
     this.find = function(req, res) {
 
         var user = self.getUser(req, res);
@@ -145,7 +154,7 @@ function PatronApi() {
     }
 
     this.getTotalPatron = function(req, res) {
-       
+
         var organization = self.getOrganization(req, res);
 
         ModelPatron.findAndCountAll({

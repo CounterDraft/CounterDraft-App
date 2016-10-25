@@ -100,9 +100,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
     }
 
     this.onPatronSelected = function(patron) {
-        $scope.patronModel.first_name = patron.first_name;
-        $scope.patronModel.last_name = patron.last_name;
-        $scope.patronModel.email_address = patron.email_address;
+        $scope.patronModel = patron;
         $scope.onRoute('patron-details', true);
     }
 
@@ -185,9 +183,16 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
                 url: _url_patron_search,
                 params: formData,
             }).then(function successCallback(response) {
-                var data = null;
                 if (response && response.hasOwnProperty('data') && response.data.patrons.length > 0) {
-                    $scope.searchArr = response.data.patrons;
+                    var patrons = []
+                    angular.forEach(response.data.patrons, function(value, key) {
+                        var patron = value;
+                        if(patron.dob){
+                            patron.dob = moment.unix(patron.dob).toDate();
+                        }
+                        patrons.push(patron);
+                    });
+                    $scope.searchArr = patrons;
                     $scope.onRoute('patron-results', true);
                 } else {
                     $window.swal({
@@ -238,9 +243,10 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
         //dob to ISO 86 string;
         if (formData.hasOwnProperty('dob') && formData.dob) {
             formData.dob = moment(formData.dob).format();
+            return;
         }
         if (formData.hasOwnProperty('phone') && formData.phone && formData.phone.toString().length === 10) {
-            var p  = 1 + formData.phone.toString();
+            var p = 1 + formData.phone.toString();
             formData.phone = parseInt(p);
         }
         if (addressArr.length > 0) {
@@ -249,7 +255,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
 
         for (var x in formData) {
             // address is a none required field
-            if (!formData[x] && x !== 'phone' &&  x !== 'address') {
+            if (!formData[x] && x !== 'phone' && x !== 'address') {
                 hasData = false;
             }
         }
@@ -273,7 +279,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
                     closeOnConfirm: true,
                     html: true
                 }, function() {
-                    $scope.onRoute('patron-details', true);
+                    $scope.onRoute('patron-details');
                     $scope.$apply();
                 });
                 // _resetForm(self.addPatronForm, 'patronModel');
@@ -306,6 +312,52 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
                 html: true
             });
         }
+    }
+
+    this.onEditPassword = function(allowEdit) {
+        var self = this;
+        if (!allowEdit) {
+            return false;
+        }
+        var modalInstance = $uibModal.open({
+            animation: self.animationsEnabled,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'patron-password-modal.html',
+            controller: 'PatronPasswordCtrl',
+            controllerAs: 'mCtrl',
+            size: 'lg'
+        });
+
+        modalInstance.result.then(function(result) {
+            if (result.status) {
+                $window.swal({
+                    title: "Success",
+                    text: 'Patron passsword has been changed.',
+                    type: "success",
+                    confirmButtonColor: "#64d46f",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            } else {
+                var errorMsg = 'Unknown error failed to update password.';
+                if (result.hasOwnProperty('errorMsg')) {
+                    errorMsg = result.errorMsg;
+                }
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            }
+        }, function() {
+            console.info('Modal dismissed at: ' + new Date());
+        });
     }
 
     var _getDefaultPage = function() {

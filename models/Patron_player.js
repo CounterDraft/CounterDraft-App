@@ -30,6 +30,11 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: "Defines the organization."
         },
+        phone: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+            comment: "phone number for patron."
+        },
         is_active: {
             type: DataTypes.BOOLEAN,
             allowNull: false,

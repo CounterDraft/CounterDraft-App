@@ -34,6 +34,7 @@ function baseApi() {
             organization_id: patron.organization_id,
             username: patron.username,
             phone: patron.phone,
+            dob: moment(patron.dob).unix(),
             uuid: patron.p_uuid,
             address: [{
                 street_number: patron.street_number,
