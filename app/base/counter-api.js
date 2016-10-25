@@ -7,6 +7,48 @@ function baseApi() {
         return this.name;
     }
 
+    this._cleanEmployee = function(employee) {
+        var moment = getMoment();
+        return {
+            email_address: employee.email_address,
+            first_name: employee.first_name,
+            id: employee.id,
+            is_active: employee.is_active,
+            last_name: employee.last_name,
+            organization_id: employee.organization_id,
+            username: employee.username,
+            uuid: employee.e_uuid,
+            createdAt: moment(employee.createdAt).unix(),
+            updatedAt: moment(employee.updatedAt).unix()
+        }
+    }
+
+    this._cleanPatron = function(patron) {
+        var moment = getMoment();
+        return {
+            email_address: patron.email_address,
+            first_name: patron.first_name,
+            id: patron.id,
+            is_active: patron.is_active,
+            last_name: patron.last_name,
+            organization_id: patron.organization_id,
+            username: patron.username,
+            phone: patron.phone,
+            uuid: patron.p_uuid,
+            address: [{
+                street_number: patron.street_number,
+                route: patron.route,
+                locality: patron.locality,
+                administrative_area_level_1: patron.administrative_area_level_1,
+                administrative_area_level_2: patron.administrative_area_level_2,
+                country: patron.country,
+                postal_code: patron.postal_code,
+            }],
+            createdAt: moment(patron.createdAt).unix(),
+            updatedAt: moment(patron.updatedAt).unix()
+        }
+    }
+
     this._refreshSession = function(req, employee) {
         req.session.user = {
             employee_id: employee.id,
@@ -41,6 +83,9 @@ function baseApi() {
                 break;
             case "password":
                 return new RegExp("^.{6,}$");
+                break;
+            case "phone":
+                return new RegExp("[0-9]{11}");
                 break;
             default:
                 return new RegExp();

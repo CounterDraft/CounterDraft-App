@@ -9,6 +9,7 @@
 var TIMESPANS = new Enum(['day', 'week', 'month', 'year', 'max']);
 
 function DashboardApi() {
+    var self = this;
     this.tag = 'dashboard-api';
 
     this.getTimeSpans = function() {
@@ -16,7 +17,7 @@ function DashboardApi() {
     }
 
     this.getGameChartDate = function(req, res) {
-        var self = this;
+       
         var organization = self.getOrganization(req, res);
         var duration = null;
         var numOfOutput = 7;
@@ -89,7 +90,7 @@ function DashboardApi() {
     }
 
     this.getPatronChartData = function(req, res) {
-        var self = this;
+       
         var organization = self.getOrganization(req, res);
         var duration = null;
         var numOfOutput = 7;

@@ -1,5 +1,10 @@
 "use strict";
-
+/*  Title: Registration-api
+    Author:  Hubbert
+    Date: Oct 25 2016
+    Comment: 
+        This is the api which is used for Registration of patron & employee/users.
+*/
 var _generateApiKey = function() {
     var uuid = generateUUID().replace(/-/g, "");
     if (uuid) {
@@ -7,21 +12,6 @@ var _generateApiKey = function() {
     } else {
         //placeholder uuid;
         return '110E8400E29B11D4A716446655440000';
-    }
-}
-var _cleanPatron = function(employee) {
-    var moment = getMoment();
-    return {
-        email_address: employee.email_address,
-        first_name: employee.first_name,
-        id: employee.id,
-        is_active: employee.is_active,
-        last_name: employee.last_name,
-        organization_id: employee.organization_id,
-        username: employee.username,
-        uuid: employee.e_uuid,
-        createdAt: moment(employee.createdAt).unix(),
-        updatedAt: moment(employee.updatedAt).unix()
     }
 }
 
@@ -166,7 +156,7 @@ function registationApi() {
                 }
             }).then(function(emp) {
                 res.status(200).json({
-                    user: emp,
+                    user: self._cleanEmployee(emp),
                     success: true
                 });
             }).catch(function(err) {
@@ -176,9 +166,21 @@ function registationApi() {
     }
 
     this.createPatron = function(req, res) {
-        var self = this;
+
         var user = this.getUser(req, res);
         var patron = req.body;
+
+        if (!patron.hasOwnProperty('address')) {
+            patron.address = {
+                street_number: null,
+                route: null,
+                locality: null,
+                administrative_area_level_1: null,
+                administrative_area_level_2: null,
+                country: null,
+                postal_code: null
+            }
+        }
 
         //verify data;
         if (patron.hasOwnProperty('first_name') &&
@@ -196,8 +198,13 @@ function registationApi() {
             this.getErrorApi().sendError(1037, 422, res);
             return;
         }
+        if (patron.hasOwnProperty('phone') &&
+            !this.getModelPattern('phone').test(patron.phone)) {
+            this.getErrorApi().sendError(1046, 422, res);
+            return;
+        }
 
-
+        //required fields;
         if (!patron.first_name || patron.first_name === "") {
             this.getErrorApi().sendError(1003, 403, res);
         } else if (!patron.last_name || patron.last_name === "") {
@@ -266,7 +273,7 @@ function registationApi() {
                 if (results) {
                     var newPatron = results.dataValues;
                     res.status(200).json({
-                        user: _cleanPatron(newPatron),
+                        user: self._cleanPatron(newPatron),
                         success: true
                     });
                 } else {
@@ -281,7 +288,7 @@ function registationApi() {
     }
 
     this.confirmRegistation = function(req, res) {
-        var self = this;
+
         return new Promise(function(resolve, reject) {
             var errorNumber = 1019;
             var errorNumberNotFound = 1020;

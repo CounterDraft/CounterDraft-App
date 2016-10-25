@@ -7,6 +7,7 @@
 */
 
 function OrganizationApi() {
+    var self = this;
     this.tag = 'organization-api';
     var Promise = getPromise();
     var ModelOrganization = models.organization;

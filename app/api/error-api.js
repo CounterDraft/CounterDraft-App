@@ -161,6 +161,9 @@ var errorList = {
     1045: {
         msg: 'Invaild old_password.'
     },
+    1046: {
+        msg: 'Phone does not meet pattern.'
+    },
 
 
 
@@ -184,6 +187,7 @@ var errorList = {
 }
 
 function errorApi() {
+    var self = this;
     this.tag = 'error-api';
 
     this.errorObject = function() {

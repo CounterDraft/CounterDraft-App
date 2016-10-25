@@ -41,9 +41,9 @@
                 <div class="form-group col-xs-12 col-md-6" show-errors>
                     <div class="input-group counter-group">
                         <div class="input-group-addon">Phone</div>
-                        <input type="number" class="form-control" ng-minlength="10" ng-maxlength="10" name="phone" placeholder="" ng-model="patronModel.phone" />
+                        <input type="number" class="form-control" ng-minlength="10" ng-maxlength="11" name="phone" placeholder="" ng-model="patronModel.phone" />
                     </div>
-                    <div class="help-block" ng-show="((addPatronForm.phone.$error.minlength || addPatronForm.phone.$error.maxlength) && addPatronForm.phone.$dirty)">phone number should be 10 digits</div>
+                    <div class="help-block" ng-show="((addPatronForm.phone.$error.minlength || addPatronForm.phone.$error.maxlength) && addPatronForm.phone.$dirty)">phone number should be '1231231234' or '18001231234' formate</div>
                 </div>
             </div>
             <fieldset class="counter-widget">

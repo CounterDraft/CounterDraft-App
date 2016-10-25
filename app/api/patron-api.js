@@ -5,38 +5,14 @@
     Comment: 
         This is the api which is used for all patron search and create logic.
 */
-var _clean = function(patron) {
-    var moment = getMoment();
-    return {
-        email_address: patron.email_address,
-        first_name: patron.first_name,
-        id: patron.id,
-        is_active: patron.is_active,
-        last_name: patron.last_name,
-        organization_id: patron.organization_id,
-        username: patron.username,
-        dob: moment(patron.dob).unix(),
-        address: {
-            street_number: patron.street_number,
-            route: patron.route,
-            locality: patron.locality,
-            administrative_area_level_1: patron.administrative_area_level_1,
-            administrative_area_level_2: patron.administrative_area_level_2,
-            country: patron.country,
-            postal_code: patron.postal_code
-        },
-        uuid: patron.p_uuid
-    }
-}
-
 function PatronApi() {
+    var self = this;
     this.tag = 'patron-api';
     var Promise = getPromise();
     var ModelPatron = models.patron_player;
     var ModelEmployee = models.employee_user
 
     this.retrieve = function(patron_id) {
-        var self = this;
         return ModelPatron.findOne({
             where: {
                 id: patron_id,
@@ -46,7 +22,6 @@ function PatronApi() {
     }
 
     this.getPatron = function(req, res) {
-        var self = this;
         var query = req.query;
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
@@ -65,7 +40,7 @@ function PatronApi() {
             if (result) {
                 var patron = result.dataValues;
                 res.status(200).json({
-                    patron: _clean(patron),
+                    patron: self._cleanPatron(patron),
                     success: true
                 });
             } else {
@@ -95,7 +70,7 @@ function PatronApi() {
     }
 
     this.find = function(req, res) {
-        var self = this;
+
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
         var serachParams = [
@@ -130,7 +105,7 @@ function PatronApi() {
                 }
             }).then(function(results) {
                 if (results) {
-                    patrons.push(_clean(results.dataValues));
+                    patrons.push(self._cleanPatron(results.dataValues));
                 }
                 res.status(200).json({
                     patrons: patrons,
@@ -157,7 +132,7 @@ function PatronApi() {
         }).then(function(results) {
             if (results) {
                 for (var x in results) {
-                    patrons.push(_clean(results[x].dataValues));
+                    patrons.push(self._cleanPatron(results[x].dataValues));
                 }
             }
             res.status(200).json({
@@ -170,7 +145,7 @@ function PatronApi() {
     }
 
     this.getTotalPatron = function(req, res) {
-        var self = this;
+       
         var organization = self.getOrganization(req, res);
 
         ModelPatron.findAndCountAll({

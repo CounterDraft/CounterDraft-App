@@ -1,18 +1,19 @@
 "use strict";
 
 function LoginApi() {
+    var self = this;
     this.tag = 'login-api';
     var Promise = getPromise();
     var Employee = models.employee_user;
     var Organization = models.organization;
 
     this.loginPatron = function(req, email_address) {
-        var self = this;
+
         return new Promise(function(resolve, reject) {});
     }
 
     this.loginUser = function(req, email_address) {
-        var self = this;
+      
         var fEmployee = null;
         return new Promise(function(resolve, reject) {
             Employee.findOne({
@@ -23,15 +24,7 @@ function LoginApi() {
             }).then(function(employee) {
                 if (employee) {
                     self._refreshSession(req, employee);
-                    fEmployee = {
-                        employee_id: employee.id,
-                        username: employee.username,
-                        first_name: employee.first_name,
-                        last_name: employee.last_name,
-                        email_address: employee.email_address,
-                        is_admin: employee.is_admin,
-                        organization_id: employee.organization_id
-                    }
+                    fEmployee = employee;
                     return Organization.findOne({
                         where: {
                             id: employee.organization_id,
@@ -61,7 +54,7 @@ function LoginApi() {
     }
 
     this.login = function(req, res) {
-        var self = this;
+       
         var fEmployee = null;
         if (!req.body.email_address) {
             this.getErrorApi().sendError(1001, 403, res);

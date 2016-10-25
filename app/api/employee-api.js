@@ -6,23 +6,8 @@
         This is the api which is used for all employee calls / managment.
 */
 
-var _clean = function(employee) {
-    var moment = getMoment();
-    return {
-        email_address: employee.email_address,
-        first_name: employee.first_name,
-        id: employee.id,
-        is_active: employee.is_active,
-        last_name: employee.last_name,
-        organization_id: employee.organization_id,
-        username: employee.username,
-        uuid: employee.e_uuid,
-        createdAt: moment(employee.createdAt).unix(),
-        updatedAt: moment(employee.updatedAt).unix()
-    }
-}
-
 function EmployeeApi() {
+    var self = this;
     this.tag = 'employee-api';
     var Promise = getPromise();
     var ModelEmployee = models.employee_user;
@@ -74,7 +59,7 @@ function EmployeeApi() {
     }
 
     this.retrieve = function(employee_id) {
-        var self = this;
+      
         return ModelEmployee.findOne({
             where: {
                 id: employee_id,
@@ -84,7 +69,7 @@ function EmployeeApi() {
     }
 
     this.update = function(req, res) {
-        var self = this;
+      
         var user = self.getUser(req, res);
         var chckData = this._verifyInformation(req.body);
         var empOut = null;
@@ -132,7 +117,7 @@ function EmployeeApi() {
             if (result) {
                 self._refreshSession(req, empOut);
                 res.status(200).json({
-                    employee: _clean(empOut),
+                    employee: self._cleanEmployee(empOut),
                     success: true
                 });
             } else {
@@ -148,7 +133,7 @@ function EmployeeApi() {
     }
 
     this.changePassword = function(req, res) {
-        var self = this;
+        
         //user should be in the system.
         var user = self.getUser(req, res);
         var reqbody = req.body;
@@ -207,7 +192,7 @@ function EmployeeApi() {
                 if (result) {
                     var employee = result.dataValues;
                     res.status(200).json({
-                        employee: _clean(employee),
+                        employee: self._cleanEmployee(employee),
                         success: true
                     });
                 } else {
@@ -224,7 +209,7 @@ function EmployeeApi() {
     }
 
     this.getEmployee = function(req, res) {
-        var self = this;
+     
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
         var employee_id = req.query.id || null;
@@ -237,7 +222,7 @@ function EmployeeApi() {
                 if (result) {
                     var employee = result.dataValues;
                     res.status(200).json({
-                        employee: _clean(employee),
+                        employee: _cleanEmployee(employee),
                         organization: organization,
                         success: true
                     });

@@ -7,12 +7,13 @@
 */
 
 function GameApi() {
+    var self = this;
     this.tag = 'game-api';
     var Promise = getPromise();
     var ModelGame = models.game;
 
     this.getTotalGame = function(req, res) {
-        var self = this;
+   
         var organization = this.getOrganization(req, res);
         ModelGame.findAndCountAll({
             where: {
@@ -29,7 +30,7 @@ function GameApi() {
     }
 
     this.create = function(req, res) {
-        var self = this;
+     
         var organization = self.getOrganization(req, res);
         res.status(200).json({
             success: true

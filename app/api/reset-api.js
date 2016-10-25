@@ -12,47 +12,8 @@ var _generateToken = function() {
     }
 }
 
-var _cleanPatron = function(patron) {
-    var moment = getMoment();
-    return {
-        email_address: patron.email_address,
-        first_name: patron.first_name,
-        id: patron.id,
-        is_active: patron.is_active,
-        last_name: patron.last_name,
-        organization_id: patron.organization_id,
-        username: patron.username,
-        dob: moment(patron.dob).unix(),
-        address: {
-            street_number: patron.street_number,
-            route: patron.route,
-            locality: patron.locality,
-            administrative_area_level_1: patron.administrative_area_level_1,
-            administrative_area_level_2: patron.administrative_area_level_2,
-            country: patron.country,
-            postal_code: patron.postal_code
-        },
-        uuid: patron.p_uuid
-    }
-}
-
-var _cleanEmployee = function(employee) {
-    var moment = getMoment();
-    return {
-        email_address: employee.email_address,
-        first_name: employee.first_name,
-        id: employee.id,
-        is_active: employee.is_active,
-        last_name: employee.last_name,
-        organization_id: employee.organization_id,
-        username: employee.username,
-        uuid: employee.e_uuid,
-        createdAt: moment(employee.createdAt).unix(),
-        updatedAt: moment(employee.updatedAt).unix()
-    }
-}
-
 function ResetApi() {
+    var self = this;
     this.tag = 'reset-api';
     var Promise = getPromise();
     var ModelEmployee = models.employee_user;
@@ -60,7 +21,7 @@ function ResetApi() {
     var moment = getMoment();
 
     this.resetPassword = function(req, res) {
-        var self = this;
+      
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
         var token = _generateToken();
@@ -125,13 +86,13 @@ function ResetApi() {
                 if (empOut) {
                     getApi('email').resetPassword(empOut, token);
                     res.status(200).json({
-                        user: _cleanPatron(empOut),
+                        user: self._cleanPatron(empOut),
                         success: true
                     });
                 } else if (patronOut) {
                     getApi('email').resetPassword(patronOut, token);
                     res.status(200).json({
-                        user: _cleanPatron(patronOut),
+                        user: self._cleanPatron(patronOut),
                         success: true
                     });
                 } else {

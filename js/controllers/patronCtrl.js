@@ -239,7 +239,10 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', 'data',
         if (formData.hasOwnProperty('dob') && formData.dob) {
             formData.dob = moment(formData.dob).format();
         }
-
+        if (formData.hasOwnProperty('phone') && formData.phone && formData.phone.toString().length === 10) {
+            var p  = 1 + formData.phone.toString();
+            formData.phone = parseInt(p);
+        }
         if (addressArr.length > 0) {
             formData.address = addressArr[0];
         }

@@ -8,6 +8,7 @@
 
 
 function EmailApi() {
+    var self = this;
     this.tag = 'email-api';
     var Promise = getPromise();
     var templates = getEmailTemplate();
