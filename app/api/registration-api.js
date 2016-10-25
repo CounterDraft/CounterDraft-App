@@ -9,6 +9,21 @@ var _generateApiKey = function() {
         return '110E8400E29B11D4A716446655440000';
     }
 }
+var _cleanPatron = function(employee) {
+    var moment = getMoment();
+    return {
+        email_address: employee.email_address,
+        first_name: employee.first_name,
+        id: employee.id,
+        is_active: employee.is_active,
+        last_name: employee.last_name,
+        organization_id: employee.organization_id,
+        username: employee.username,
+        uuid: employee.e_uuid,
+        createdAt: moment(employee.createdAt).unix(),
+        updatedAt: moment(employee.updatedAt).unix()
+    }
+}
 
 function registationApi() {
     var self = this;
@@ -237,20 +252,28 @@ function registationApi() {
                     email_address: patron.email_address,
                     password: passwordWithHash,
                     dob: patron.dob,
+                    phone: patron.phone,
+                    street_number: patron.address.street_number,
+                    route: patron.address.route,
+                    locality: patron.locality,
+                    administrative_area_level_1: patron.address.administrative_area_level_1,
+                    administrative_area_level_2: patron.address.administrative_area_level_2,
+                    country: patron.address.country,
+                    postal_code: patron.address.postal_code,
                     organization_id: employee.organization_id
                 });
             }).then(function(results) {
-                var newPatron = results.dataValues;
-                res.status(200).json({
-                    user: {
-                        first_name: newPatron.first_name,
-                        last_name: newPatron.last_name,
-                        username: newPatron.username,
-                        email_address: newPatron.email_address,
-                        organization_id: newPatron.organization_id
-                    },
-                    success: true
-                });
+                if (results) {
+                    var newPatron = results.dataValues;
+                    res.status(200).json({
+                        user: _cleanPatron(newPatron),
+                        success: true
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        return reject(self.getErrorApi().getErrorMsg(1018));
+                    });
+                }
             }).catch(function(err) {
                 self.getErrorApi().setErrorWithMessage(err.toString(), 422, res);
             });

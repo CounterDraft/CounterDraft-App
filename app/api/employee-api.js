@@ -6,7 +6,7 @@
         This is the api which is used for all employee calls / managment.
 */
 
-var _removeUneededAttr = function(employee) {
+var _clean = function(employee) {
     var moment = getMoment();
     return {
         email_address: employee.email_address,
@@ -132,7 +132,7 @@ function EmployeeApi() {
             if (result) {
                 self._refreshSession(req, empOut);
                 res.status(200).json({
-                    employee: _removeUneededAttr(empOut),
+                    employee: _clean(empOut),
                     success: true
                 });
             } else {
@@ -207,7 +207,7 @@ function EmployeeApi() {
                 if (result) {
                     var employee = result.dataValues;
                     res.status(200).json({
-                        employee: _removeUneededAttr(employee),
+                        employee: _clean(employee),
                         success: true
                     });
                 } else {
@@ -237,7 +237,7 @@ function EmployeeApi() {
                 if (result) {
                     var employee = result.dataValues;
                     res.status(200).json({
-                        employee: _removeUneededAttr(employee),
+                        employee: _clean(employee),
                         organization: organization,
                         success: true
                     });
