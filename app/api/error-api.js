@@ -164,6 +164,12 @@ var errorList = {
     1046: {
         msg: 'Phone does not meet pattern.'
     },
+    1047: {
+        msg: 'Patron does not meet the min age.'
+    },
+    1048: {
+        msg: 'Failed to update patron.'
+    },
 
 
 

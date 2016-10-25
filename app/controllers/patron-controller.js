@@ -89,7 +89,7 @@ function PatronController() {
                     getApi('patron').getPatron(req, res);
                     break;
                 case 'put':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('patron').update(req, res);
                     break;
                 case 'delete':
                     self.getErrorApi().sendError(1011, 403, res);

@@ -244,11 +244,11 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
         //dob to ISO 86 string;
         if (formData.hasOwnProperty('dob') && formData.dob) {
             formData.dob = moment(formData.dob).format();
-            return;
         }
+
         if (formData.hasOwnProperty('phone') && formData.phone && formData.phone.toString().length === 10) {
             var p = 1 + formData.phone.toString();
-            formData.phone = parseInt(p);
+            formData.phone = p;
         }
         if (addressArr.length > 0) {
             formData.address = addressArr[0];
@@ -306,6 +306,58 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
             $window.swal({
                 title: "Error",
                 text: "Missing required field!",
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+        }
+    }
+
+    this.saveForm = function() {
+        var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
+        var patron = angular.copy($scope.patronModel);
+
+        if (patron) {
+            $http({
+                method: 'PUT',
+                url: _url_patron,
+                data: patron,
+            }).then(function successCallback(response) {
+                if (response && response.status === 200) {
+                    // console.log(response);
+                } else {
+                    $window.swal({
+                        title: "Error",
+                        text: userNotFoundErrorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                    $scope.showEdit = false;
+                }
+            }, function errorCallback(response) {
+                var errorMsg = userNotFoundErrorMsg;
+                if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
+                    errorMsg = response.data.error[0].msg;
+                }
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            });
+        } else {
+            $window.swal({
+                title: "Error",
+                text: userNotFoundErrorMsg,
                 type: "error",
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "OK",

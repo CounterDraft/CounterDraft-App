@@ -10,13 +10,87 @@ function PatronApi() {
     this.tag = 'patron-api';
     var Promise = getPromise();
     var ModelPatron = models.patron_player;
-    var ModelEmployee = models.employee_user
+    var ModelEmployee = models.employee_user;
+    var moment = getMoment();
 
     this.retrieve = function(patron_id) {
         return ModelPatron.findOne({
             where: {
                 id: patron_id,
                 is_active: true
+            }
+        });
+    }
+
+    this.update = function(req, res) {
+        var user = self.getUser(req, res);
+        var organizaion = self.getOrganization(req, res);
+        var patronIn = req.body;
+        var chckData = this._verifyInformation(patronIn);
+        var patronOut = null;
+        var minAge = 18;
+        if (chckData.isCorrupt) {
+            this.getErrorApi().sendError(chckData.errNum, 422, res);
+            return;
+        }
+        if (patronIn.hasOwnProperty('dob')){
+            var eightYearsAgo = momment().subtract("years", minAge);
+            var birthday = moment(patronIn.dob);
+            if (!eightYearsAgo.isAfter(birthday)){
+                self.getErrorApi().sendError(1047, 422, res);
+                return;
+            }
+        }
+
+        ModelPatron.findOne({
+            where: {
+                id: patronIn.id,
+                organization_id: organizaion.id,
+                is_active: true
+            }
+        }).then(function(result) {
+            if (result) {
+                var fPatron = result.dataValues;
+                var updateData = {};
+                var userData = patronIn || null;
+                if (userData) {
+                    for (var x in userData) {
+                        if (fPatron[x] && fPatron[x] !== userData[x]) {
+                            updateData[x] = userData[x];
+                        }
+                    }
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1012, status: 422 });
+                    });
+                }
+                patronOut = mix(fPatron).into(updateData);
+                return ModelPatron.update(updateData, {
+                    where: {
+                        id: fPatron.id,
+                        organization_id: organizaion.id,
+                        is_active: true
+                    }
+                });
+            } else {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1041, status: 422 });
+                });
+            }
+        }).then(function(result) {
+            if (result) {
+                res.status(200).json({
+                    patron: self._cleanPatron(patronOut),
+                    success: true
+                });
+            } else {
+                self.getErrorApi().setErrorWithMessage(1048, 500, res);
+            }
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
             }
         });
     }
@@ -170,6 +244,62 @@ function PatronApi() {
         }).catch(function(err) {
             self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
         });
+    }
+
+    this._verifyInformation = function(patron) {
+        var errorNumber = null;
+        if (patron.hasOwnProperty('id')) {
+            errorNumber = 1034;
+        }
+        if (patron.hasOwnProperty('first_name') &&
+            !this.getModelPattern('first_name').test(patron.first_name)) {
+            errorNumber = 1035;
+        }
+        if (patron.hasOwnProperty('last_name') &&
+            !this.getModelPattern('last_name').test(patron.first_name)) {
+            errorNumber = 1036;
+        }
+        if (patron.hasOwnProperty('username') &&
+            this.validEmail(patron.username)) {
+            errorNumber = 1037;
+        }
+        if (patron.hasOwnProperty('email_address') &&
+            this.validEmail(patron.email_address)) {
+            errorNumber = 1038;
+        }
+        if (patron.hasOwnProperty('phone') &&
+            !this.getModelPattern('phone').test(patron.phone)) {
+            errorNumber = 1046;
+        }
+        if (patron.hasOwnProperty('dob') &&
+            !moment(patron.dob, moment.ISO_8601).isValid()) {
+            errorNumber = 1046;
+        }
+        if (patron.hasOwnProperty('password')) {
+            errorNumber = 1034;
+        }
+        if (patron.hasOwnProperty('organization_id')) {
+            errorNumber = 1034;
+        }
+        if (patron.hasOwnProperty('p_uuid')) {
+            errorNumber = 1034;
+        }
+        if (patron.hasOwnProperty('createdAt')) {
+            errorNumber = 1034;
+        }
+        if (patron.hasOwnProperty('updatedAt')) {
+            errorNumber = 1034;
+        }
+
+
+        var isCorrupt = false;
+        if (errorNumber) {
+            isCorrupt = true;
+        }
+        return {
+            errNum: errorNumber,
+            isCorrupt: isCorrupt
+        };
     }
 }
 
