@@ -170,6 +170,9 @@ var errorList = {
     1048: {
         msg: 'Failed to update patron.'
     },
+    1049: {
+        msg: 'Missing patron.id from parameters.'
+    },
 
 
 

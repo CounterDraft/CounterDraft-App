@@ -24,7 +24,7 @@ app.directive('autoSaveForm', ["$timeout", function($timeout) {
                                 $formCtrl.$setPristine();
                             }
                         }
-                    }, 500);
+                    }, 1000);
                 }
             });
         }

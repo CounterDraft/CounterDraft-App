@@ -189,8 +189,11 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                     var patrons = []
                     angular.forEach(response.data.patrons, function(value, key) {
                         var patron = value;
-                        if(patron.dob){
+                        if (patron.dob) {
                             patron.dob = moment.unix(patron.dob).toDate();
+                        }
+                        if (patron.phone) {
+                            patron.phone = parseInt(patron.phone);
                         }
                         patrons.push(patron);
                     });
@@ -317,15 +320,26 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     }
 
     this.saveForm = function() {
-        console.log('this has been called');
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
         var patron = angular.copy($scope.patronModel);
 
-        if (patron) {
+        var formData = {
+            id: patron.id,
+            dob: patron.dob,
+            email_address: patron.email_address,
+            first_name: patron.first_name,
+            last_name: patron.last_name,
+            phone: patron.phone
+        }
+        if (formData.phone && formData.phone.toString().length === 10) {
+            var p = 1 + formData.phone.toString();
+            formData.phone = p;
+        }
+        if (formData) {
             $http({
                 method: 'PUT',
                 url: _url_patron,
-                data: patron,
+                data: formData,
             }).then(function successCallback(response) {
                 if (response && response.status === 200) {
                     // console.log(response);
@@ -342,19 +356,18 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                     $scope.showEdit = false;
                 }
             }, function errorCallback(response) {
-                var errorMsg = userNotFoundErrorMsg;
                 if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
                     errorMsg = response.data.error[0].msg;
+                    $window.swal({
+                        title: "Error",
+                        text: errorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
                 }
-                $window.swal({
-                    title: "Error",
-                    text: errorMsg,
-                    type: "error",
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "OK",
-                    closeOnConfirm: true,
-                    html: true
-                });
             });
         } else {
             $window.swal({
@@ -413,6 +426,25 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
         }, function() {
             console.info('Modal dismissed at: ' + new Date());
         });
+    }
+
+    this.onDelete = function() {
+        var patron = angular.copy($scope.patronModel);
+        var verbage = patron.first_name + ' ' + patron.last_name + ' will be gone forever!';
+        $window.swal({
+                title: "Are you sure to delete this patron?",
+                text: verbage,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Delete",
+                closeOnConfirm: false
+            },
+            function(isConfirm) {
+                if (isConfirm) {
+                    swal("Deleted!", "Patron has been deleted.", "success");
+                }
+            });
     }
 
     var _getDefaultPage = function() {

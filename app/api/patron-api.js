@@ -11,7 +11,7 @@ function PatronApi() {
     var Promise = getPromise();
     var ModelPatron = models.patron_player;
     var ModelEmployee = models.employee_user;
-    var moment = getMoment();
+
 
     this.retrieve = function(patron_id) {
         return ModelPatron.findOne({
@@ -23,20 +23,26 @@ function PatronApi() {
     }
 
     this.update = function(req, res) {
+        var moment = getMoment();
         var user = self.getUser(req, res);
         var organizaion = self.getOrganization(req, res);
         var patronIn = req.body;
         var chckData = this._verifyInformation(patronIn);
         var patronOut = null;
         var minAge = 18;
-        if (chckData.isCorrupt) {
-            this.getErrorApi().sendError(chckData.errNum, 422, res);
+        
+        if (!patronIn.hasOwnProperty('id')) {
+            self.getErrorApi().sendError(1049, 422, res);
             return;
         }
-        if (patronIn.hasOwnProperty('dob')){
-            var eightYearsAgo = momment().subtract("years", minAge);
+        if (chckData.isCorrupt) {
+            self.getErrorApi().sendError(chckData.errNum, 422, res);
+            return;
+        }
+        if (patronIn.hasOwnProperty('dob')) {
+            var eightYearsAgo = moment().subtract("years", minAge);
             var birthday = moment(patronIn.dob);
-            if (!eightYearsAgo.isAfter(birthday)){
+            if (!eightYearsAgo.isAfter(birthday)) {
                 self.getErrorApi().sendError(1047, 422, res);
                 return;
             }
@@ -53,9 +59,10 @@ function PatronApi() {
                 var fPatron = result.dataValues;
                 var updateData = {};
                 var userData = patronIn || null;
+
                 if (userData) {
                     for (var x in userData) {
-                        if (fPatron[x] && fPatron[x] !== userData[x]) {
+                        if (fPatron.hasOwnProperty(x) && fPatron[x] !== userData[x]) {
                             updateData[x] = userData[x];
                         }
                     }
@@ -64,6 +71,7 @@ function PatronApi() {
                         reject({ errNum: 1012, status: 422 });
                     });
                 }
+                console.log(updateData);
                 patronOut = mix(fPatron).into(updateData);
                 return ModelPatron.update(updateData, {
                     where: {
@@ -247,10 +255,8 @@ function PatronApi() {
     }
 
     this._verifyInformation = function(patron) {
+        var moment = getMoment();
         var errorNumber = null;
-        if (patron.hasOwnProperty('id')) {
-            errorNumber = 1034;
-        }
         if (patron.hasOwnProperty('first_name') &&
             !this.getModelPattern('first_name').test(patron.first_name)) {
             errorNumber = 1035;
@@ -268,6 +274,7 @@ function PatronApi() {
             errorNumber = 1038;
         }
         if (patron.hasOwnProperty('phone') &&
+            patron.phone &&
             !this.getModelPattern('phone').test(patron.phone)) {
             errorNumber = 1046;
         }

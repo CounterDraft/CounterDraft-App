@@ -89,7 +89,7 @@ function EmployeeApi() {
                 var userData = req.body || null;
                 if (userData) {
                     for (var x in userData) {
-                        if (employee[x] && employee[x] !== userData[x]) {
+                        if (employee.hasOwnProperty(x) && employee[x] !== userData[x]) {
                             updateData[x] = userData[x];
                         }
                     }

@@ -38,7 +38,7 @@
                 <div class="form-group col-xs-12 col-md-6" show-errors>
                     <div class="input-group counter-group">
                         <div class="input-group-addon">Phone</div>
-                        <input type="number" class="form-control" ng-minlength="10" ng-maxlength="11" name="phone" placeholder="" ng-model="patronModel.phone" ng-disabled="!allowEdit" />
+                        <input type="number" class="form-control" ng-minlength="10" ng-maxlength="11" name="phone" placeholder="phone" ng-model="patronModel.phone" ng-disabled="!allowEdit" />
                     </div>
                     <div class="help-block" ng-show="((addPatronDetailForm.phone.$error.minlength || addPatronDetailForm.phone.$error.maxlength) && addPatronDetailForm.phone.$dirty)">phone number should be '1231231234' or '18001231234' formate</div>
                 </div>
@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-xs-4">
-                        <button class="btn btn-block septenary" ng-show="allowEdit" name="delete" ng-disabled="!allowEdit">Delete!</button>
+                        <button class="btn btn-block septenary" ng-show="allowEdit" name="delete" ng-disabled="!allowEdit" ng-click="pCtrl.onDelete()">Delete!</button>
                     </div>
                     <div class="col-xs-8">&nbsp;</div>
                 </div>
