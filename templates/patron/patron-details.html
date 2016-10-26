@@ -6,21 +6,21 @@
     </div>
     <div class="col-xs-12">
         <span ng-if="addPatronDetailForm.$dirty && addPatronDetailForm.$valid" class="help-block">Save...</span>
-        <form ng-submit="onPatronUpdate()" class="counter-form" data-toggle="validator" role="form" name="addPatronDetailForm" ng-init="pCtrl.initDetails()" auto-save-form="pCtrl.saveForm()">
+        <form class="counter-form" data-toggle="validator" role="form" name="addPatronDetailForm" ng-init="pCtrl.initDetails()" auto-save-form="pCtrl.saveForm()">
             <div class="form-group" show-errors>
                 <input type="text" id="patron-first-name" name="firstName" class="form-control" pattern="^[_A-z]{1,}$" placeholder="Frist Name *" ng-model="patronModel.first_name" ng-disabled="!allowEdit" required>
-                <div class="help-block" ng-if="addPatronForm.firstName.$error.required">First name is required</div>
-                <div class="help-block" ng-if="addPatronForm.firstName.$error && !addPatronForm.firstName.$error.required">First name contains invalid characters</div>
+                <div class="help-block" ng-if="addPatronDetailForm.firstName.$error.required">First name is required</div>
+                <div class="help-block" ng-if="addPatronDetailForm.firstName.$error && !addPatronDetailForm.firstName.$error.required">First name contains invalid characters</div>
             </div>
             <div class="form-group" show-errors>
                 <input type="text" class="form-control" name="lastName" placeholder="Last Name *" pattern="^[_A-z]{1,}$" ng-model="patronModel.last_name" ng-disabled="!allowEdit" required>
-                <div class="help-block" ng-if="addPatronForm.lastName.$error.required">Last name is required</div>
-                <div class="help-block" ng-if="addPatronForm.lastName.$error && !addPatronForm.lastName.$error.required">Last name contains invalid characters</div>
+                <div class="help-block" ng-if="addPatronDetailForm.lastName.$error.required">Last name is required</div>
+                <div class="help-block" ng-if="addPatronDetailForm.lastName.$error && !addPatronDetailForm.lastName.$error.required">Last name contains invalid characters</div>
             </div>
             <div class="form-group" show-errors>
                 <input type="email" class="form-control" name="emailAddress" placeholder="Enter email *" ng-model="patronModel.email_address" ng-disabled="!allowEdit" required>
-                <div class="help-block" ng-if="addPatronForm.emailAddress.$error.required">Email address is required</div>
-                <div class="help-block" ng-if="addPatronForm.emailAddress.$error && !addPatronForm.emailAddress.$error.required">Email address is invalid</div>
+                <div class="help-block" ng-if="addPatronDetailForm.emailAddress.$error.required">Email address is required</div>
+                <div class="help-block" ng-if="addPatronDetailForm.emailAddress.$error && !addPatronDetailForm.emailAddress.$error.required">Email address is invalid</div>
             </div>
             <div class="input-group">
                 <a class="input-group-addon btn secondary" ng-click="pCtrl.onEditPassword(addPatronDetailForm)" ng-disabled="!allowEdit">Change Password</a>
@@ -31,16 +31,16 @@
                 <div class="form-group col-xs-12 col-md-6" show-errors>
                     <div class="input-group counter-group">
                         <div class="input-group-addon">Date of birth</div>
-                        <input type="date" class="form-control" max="{{minAge | date:'yyyy-MM-dd'}}" name="dateOfBirth" placeholder="date of birth" ng-model="patronModel.dob" ng-disabled="!allowEdit" required/>
+                        <input type="date" class="form-control" name="dateOfBirth" placeholder="date of birth" ng-model="patronModel.dob" ng-disabled="!allowEdit" required/>
                     </div>
-                    <div class="help-block" ng-if="addPatronForm.dateOfBirth.$error.required">Date of birth is required</div>
+                    <div class="help-block" ng-if="addPatronDetailForm.dateOfBirth.$error.required">Date of birth is required</div>
                 </div>
                 <div class="form-group col-xs-12 col-md-6" show-errors>
                     <div class="input-group counter-group">
                         <div class="input-group-addon">Phone</div>
                         <input type="number" class="form-control" ng-minlength="10" ng-maxlength="11" name="phone" placeholder="" ng-model="patronModel.phone" ng-disabled="!allowEdit" />
                     </div>
-                    <div class="help-block" ng-show="((addPatronForm.phone.$error.minlength || addPatronForm.phone.$error.maxlength) && addPatronForm.phone.$dirty)">phone number should be '1231231234' or '18001231234' formate</div>
+                    <div class="help-block" ng-show="((addPatronDetailForm.phone.$error.minlength || addPatronDetailForm.phone.$error.maxlength) && addPatronDetailForm.phone.$dirty)">phone number should be '1231231234' or '18001231234' formate</div>
                 </div>
             </div>
             <fieldset class="counter-widget">

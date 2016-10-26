@@ -74,6 +74,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
 
     this.initDetails = function() {
         $scope.allowEdit = false;
+        $scope.patronModel.password = 'placeholder';
     }
 
     this.removeAddress = function(index) {
@@ -316,6 +317,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     }
 
     this.saveForm = function() {
+        console.log('this has been called');
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
         var patron = angular.copy($scope.patronModel);
 
