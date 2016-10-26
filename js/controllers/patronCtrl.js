@@ -77,11 +77,39 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
         $scope.patronModel.password = 'placeholder';
     }
 
-    this.removeAddress = function(index) {
+    this.removeAddress = function(index, form) {
+        if (form === 'details') {
+            var patron = angular.copy($scope.patronModel);
+            var address = angular.copy($scope.addressArr[0]);
+            var patronAddress = { id: patron.id }
+            angular.forEach(address, function(value, key) {
+                patronAddress[key] = null;
+            });
+            $http({
+                method: 'PUT',
+                url: _url_patron,
+                data: patronAddress,
+            }).then(function successCallback(response) {},
+                function errorCallback(response) {
+                    var data = response.data || null;
+                    if (data && data.error.length > 0) {
+                        var error = data.error[0];
+                        $window.swal({
+                            title: "Error",
+                            text: error.msg,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        });
+                    }
+                });
+        }
         $scope.addressArr.splice(index, 1);
     }
 
-    this.onAddAddress = function() {
+    this.onAddAddress = function(form) {
         var self = this;
         var modalInstance = $uibModal.open({
             animation: self.animationsEnabled,
@@ -95,12 +123,60 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
 
         modalInstance.result.then(function(place) {
             $scope.addressArr.push(place);
+            if (form === 'details') {
+                var patron = angular.copy($scope.patronModel);
+                var formData = {
+                    id: patron.id,
+                    street_number: place.street_number,
+                    route: place.route,
+                    locality: patron.locality,
+                    administrative_area_level_1: place.administrative_area_level_1,
+                    administrative_area_level_2: place.administrative_area_level_2,
+                    country: place.country,
+                    postal_code: place.postal_code,
+                }
+                $http({
+                    method: 'PUT',
+                    url: _url_patron,
+                    data: formData,
+                }).then(function successCallback(response) {
+                    if (response && response.hasOwnProperty('data')) {
+                        //nothing;
+                    } else {
+                        $window.swal({
+                            title: "results",
+                            text: "No patrons found.",
+                            type: "info",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        });
+                    }
+                }, function errorCallback(response) {
+                    var data = response.data || null;
+                    if (data && data.error.length > 0) {
+                        var error = data.error[0];
+                        $window.swal({
+                            title: "Error",
+                            text: error.msg,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        });
+                    }
+                });
+            }
         }, function() {
             console.info('Modal dismissed at: ' + new Date());
         });
     }
 
     this.onPatronSelected = function(patron) {
+        if (patron.hasOwnProperty('address')) {
+            $scope.addressArr.push(patron.address);
+        }
         $scope.patronModel = patron;
         $scope.onRoute('patron-details', true);
     }

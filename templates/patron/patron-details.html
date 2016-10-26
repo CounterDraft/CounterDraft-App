@@ -46,10 +46,10 @@
             <fieldset class="counter-widget">
                 <legend>Address</legend>
                 <div class="col-xs-12">&nbsp;</div>
-                <button class="btn senary add" ng-click="pCtrl.onAddAddress()" ng-show="!(addressArr.length > 0) && allowEdit" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+                <button class="btn senary add" ng-click="pCtrl.onAddAddress('details')" ng-show="!(addressArr.length > 0) && allowEdit" type="button"><i class="glyphicon glyphicon-plus"></i></button>
                 <ul ng-repeat="address in addressArr" class="address-list col-xs-12">
                     <li class="address-list-item col-xs-12 text-size-small">
-                        <button type="button" class="btn close quinary" ng-click="pCtrl.removeAddress($index)">&times;</button>
+                        <button type="button" ng-show="allowEdit" class="btn close quinary" ng-click="pCtrl.removeAddress($index, 'details')">&times;</button>
                         <div class="col-xs-8 col-sm-9 col-md-10 address-info row">
                             <div class="col-xs-12"><span>{{address.street_number}}&nbsp;{{address.route}}</div>
                             <div class="col-xs-12"><span>City:&nbsp;</span>{{address.locality}}</div>

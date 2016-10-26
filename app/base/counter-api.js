@@ -25,7 +25,8 @@ function baseApi() {
 
     this._cleanPatron = function(patron) {
         var moment = getMoment();
-        return {
+        var hasAddress = false;
+        var patr = {
             email_address: patron.email_address,
             first_name: patron.first_name,
             id: patron.id,
@@ -36,18 +37,27 @@ function baseApi() {
             phone: patron.phone,
             dob: moment(patron.dob).unix(),
             uuid: patron.p_uuid,
-            address: [{
-                street_number: patron.street_number,
-                route: patron.route,
-                locality: patron.locality,
-                administrative_area_level_1: patron.administrative_area_level_1,
-                administrative_area_level_2: patron.administrative_area_level_2,
-                country: patron.country,
-                postal_code: patron.postal_code,
-            }],
             createdAt: moment(patron.createdAt).unix(),
             updatedAt: moment(patron.updatedAt).unix()
         }
+        var address = {
+            street_number: patron.street_number,
+            route: patron.route,
+            locality: patron.locality,
+            administrative_area_level_1: patron.administrative_area_level_1,
+            administrative_area_level_2: patron.administrative_area_level_2,
+            country: patron.country,
+            postal_code: patron.postal_code,
+        }
+        for (var x in address) {
+            if (address[x]) {
+                hasAddress = true;
+            }
+        }
+        if(hasAddress){
+            patr.address = address;
+        }
+        return patr;
     }
 
     this._refreshSession = function(req, employee) {
