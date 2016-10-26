@@ -5,6 +5,7 @@
         <h3 class="text-center">Patron Details</h3>
     </div>
     <div class="col-xs-12">
+        <span ng-if="addPatronDetailForm.$dirty && addPatronDetailForm.$valid" class="help-block">Save...</span>
         <form ng-submit="onPatronUpdate()" class="counter-form" data-toggle="validator" role="form" name="addPatronDetailForm" ng-init="pCtrl.initDetails()" auto-save-form="pCtrl.saveForm()">
             <div class="form-group" show-errors>
                 <input type="text" id="patron-first-name" name="firstName" class="form-control" pattern="^[_A-z]{1,}$" placeholder="Frist Name *" ng-model="patronModel.first_name" ng-disabled="!allowEdit" required>

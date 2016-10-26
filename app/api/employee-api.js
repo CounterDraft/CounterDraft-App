@@ -222,7 +222,7 @@ function EmployeeApi() {
                 if (result) {
                     var employee = result.dataValues;
                     res.status(200).json({
-                        employee: _cleanEmployee(employee),
+                        employee: self._cleanEmployee(employee),
                         organization: organization,
                         success: true
                     });
