@@ -173,8 +173,9 @@ var errorList = {
     1049: {
         msg: 'Missing patron.id from parameters.'
     },
-
-
+    1050: {
+        msg: 'Inncorrect permissions, only oganization adminstrator can do this.'
+    },
 
 
 

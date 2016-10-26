@@ -25,7 +25,7 @@ function PatronApi() {
     this.update = function(req, res) {
         var moment = getMoment();
         var user = self.getUser(req, res);
-        var organizaion = self.getOrganization(req, res);
+        var organization = self.getOrganization(req, res);
         var patronIn = req.body;
         var chckData = this._verifyInformation(patronIn);
         var patronOut = null;
@@ -47,13 +47,30 @@ function PatronApi() {
                 return;
             }
         }
-
-        ModelPatron.findOne({
+        ModelEmployee.findOne({
             where: {
-                id: patronIn.id,
-                organization_id: organizaion.id,
+                id: user.employee_id,
                 is_active: true
             }
+        }).then(function(result) {
+            if (result) {
+                var employee = result.dataValues;
+                if (employee.is_admin) {
+                    return ModelPatron.findOne({
+                        where: {
+                            id: patronIn.id,
+                            organization_id: organization.id,
+                            is_active: true
+                        }
+                    });
+                }
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1050, status: 401 });
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1032, status: 500 });
+            });
         }).then(function(result) {
             if (result) {
                 var fPatron = result.dataValues;
@@ -75,7 +92,7 @@ function PatronApi() {
                 return ModelPatron.update(updateData, {
                     where: {
                         id: fPatron.id,
-                        organization_id: organizaion.id,
+                        organization_id: organization.id,
                         is_active: true
                     }
                 });
@@ -147,6 +164,74 @@ function PatronApi() {
     this.updateImage = function(req, res) {
         res.status(200).json({
             success: true
+        });
+    }
+
+    this.delete = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var patron = req.body || null;
+        var pOut = null;
+        if (!patron || !patron.hasOwnProperty('id') || !patron.id) {
+            self.getErrorApi().sendError(1031, 422, res);
+            return
+        }
+        ModelEmployee.findOne({
+            where: {
+                id: user.employee_id,
+                is_active: true
+            }
+        }).then(function(result) {
+            if (result) {
+                var employee = result.dataValues;
+                if (employee.is_admin) {
+                    return ModelPatron.findOne({
+                        where: {
+                            id: patron.id,
+                            organization_id: organization.id,
+                            is_active: true
+                        }
+                    });
+                }
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1050, status: 401 });
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1032, status: 500 });
+            });
+        }).then(function(result) {
+            if (result) {
+                pOut = result.dataValues;
+                return ModelPatron.update({ is_active: false }, {
+                    where: {
+                        id: pOut.id
+                    }
+                });
+            } else {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1041, status: 401 });
+                });
+            }
+        }).then(function(result) {
+            if (result) {
+                var patron = self._cleanPatron(pOut);
+                patron.is_active = false;
+                res.status(200).json({
+                    patron: patron,
+                    success: true
+                });
+            } else {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1048, status: 500 });
+                });
+            }
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
         });
     }
 
