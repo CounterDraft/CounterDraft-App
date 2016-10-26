@@ -80,16 +80,24 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     this.removeAddress = function(index, form) {
         if (form === 'details') {
             var patron = angular.copy($scope.patronModel);
-            var address = angular.copy($scope.addressArr[0]);
-            var patronAddress = { id: patron.id }
+            var address = angular.copy($scope.addressArr[index]);
+            var patronAddress = {}
             angular.forEach(address, function(value, key) {
                 patronAddress[key] = null;
             });
+            patronAddress.id = patron.id;
             $http({
                 method: 'PUT',
                 url: _url_patron,
                 data: patronAddress,
-            }).then(function successCallback(response) {},
+            }).then(function successCallback(response) {
+                if(response.hasOwnProperty('data') && response.data.patron){
+                    var patron = response.data.patron;
+                    if(!patron.hasOwnProperty('address')){
+                        delete $scope.patronModel['address'];    
+                    }
+                }
+            },
                 function errorCallback(response) {
                     var data = response.data || null;
                     if (data && data.error.length > 0) {
@@ -129,7 +137,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                     id: patron.id,
                     street_number: place.street_number,
                     route: place.route,
-                    locality: patron.locality,
+                    locality: place.locality,
                     administrative_area_level_1: place.administrative_area_level_1,
                     administrative_area_level_2: place.administrative_area_level_2,
                     country: place.country,
@@ -174,6 +182,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     }
 
     this.onPatronSelected = function(patron) {
+        $scope.addressArr.length = 0;
         if (patron.hasOwnProperty('address')) {
             $scope.addressArr.push(patron.address);
         }

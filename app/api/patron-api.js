@@ -27,13 +27,10 @@ function PatronApi() {
         var user = self.getUser(req, res);
         var organizaion = self.getOrganization(req, res);
         var patronIn = req.body;
-        console.log(patronIn);
         var chckData = this._verifyInformation(patronIn);
         var patronOut = null;
         var minAge = 18;
 
-
-        
         if (!patronIn.hasOwnProperty('id')) {
             self.getErrorApi().sendError(1049, 422, res);
             return;
