@@ -33,10 +33,6 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
         phone: null
     };
 
-    $scope.addressAutoOptions = {
-        updateModel: true
-    };
-
     $scope.patronSearchModel = {
         patron_id: null,
         first_name: null,
@@ -249,6 +245,9 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     }
 
     $scope.onBack = function(page) {
+        if(page === 'details'){
+            _clearModel('patronModel');
+        }
         if ($scope.prevPage) {
             $scope.currentPage = $scope.prevPage;
         }

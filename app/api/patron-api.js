@@ -47,6 +47,7 @@ function PatronApi() {
                 return;
             }
         }
+
         ModelEmployee.findOne({
             where: {
                 id: user.employee_id,
@@ -75,12 +76,21 @@ function PatronApi() {
             if (result) {
                 var fPatron = result.dataValues;
                 var updateData = {};
+                var updates = {};
                 var userData = patronIn || null;
 
                 if (userData) {
                     for (var x in userData) {
                         if (fPatron.hasOwnProperty(x) && fPatron[x] !== userData[x]) {
+                            if (x === 'dob') {
+                                var new_dob = moment(fPatron[x]);
+                                var old_dob = moment(userData[x]);
+                                if (new_dob.diff(old_dob) === 0) {
+                                    continue;
+                                }
+                            }
                             updateData[x] = userData[x];
+                            updates[x] = userData[x];
                         }
                     }
                 } else {
@@ -89,13 +99,53 @@ function PatronApi() {
                     });
                 }
                 patronOut = mix(fPatron).into(updateData);
-                return ModelPatron.update(updateData, {
-                    where: {
-                        id: fPatron.id,
-                        organization_id: organization.id,
-                        is_active: true
-                    }
-                });
+        
+                //check for email is already in system.
+                if (updates.hasOwnProperty('email_address')) {
+                    return ModelPatron.findAndCountAll({
+                        where: {
+                            email_address: { $iLike: patronIn.email_address },
+                            is_active: true
+                        }
+                    }).then(function(results) {
+                        if (results.count > 0) {
+                            return new Promise(function(resolve, reject) {
+                                return reject(self.getErrorApi().getErrorMsg(1018));
+                            });
+                        }
+                        return ModelEmployee.findAndCountAll({
+                            where: {
+                                email_address: { $iLike: patronIn.email_address },
+                                is_active: true
+                            }
+                        });
+                    }).then(function(results) {
+                        if (results.count > 0) {
+                            return new Promise(function(resolve, reject) {
+                                return reject(self.getErrorApi().getErrorMsg(1018));
+                            });
+                        }
+                        return ModelPatron.update(updates, {
+                            where: {
+                                id: fPatron.id,
+                                organization_id: organization.id,
+                                is_active: true
+                            }
+                        });
+                    }).catch(function(err) {
+                        return new Promise(function(resolve, reject) {
+                            return reject(err);
+                        });
+                    });
+                } else {
+                    return ModelPatron.update(updates, {
+                        where: {
+                            id: fPatron.id,
+                            organization_id: organization.id,
+                            is_active: true
+                        }
+                    });
+                }
             } else {
                 return new Promise(function(resolve, reject) {
                     reject({ errNum: 1041, status: 422 });
