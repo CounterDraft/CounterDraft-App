@@ -17,6 +17,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     $scope.minAge = 18;
     $scope.searchArr = [];
     $scope.addressArr = [];
+    $scope.admin = false;
     this.animationsEnabled = true;
 
     //models
@@ -75,6 +76,11 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     this.initDetails = function() {
         $scope.allowEdit = false;
         $scope.patronModel.password = 'placeholder';
+        if (typeof 'undefined' != data && data.hasOwnProperty('dir')) {
+            if (data.hasOwnProperty('employee')) {
+                $scope.admin = data.employee.is_admin;
+            }
+        }
     }
 
     this.removeAddress = function(index, form) {
@@ -91,13 +97,13 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                 url: _url_patron,
                 data: patronAddress,
             }).then(function successCallback(response) {
-                if(response.hasOwnProperty('data') && response.data.patron){
-                    var patron = response.data.patron;
-                    if(!patron.hasOwnProperty('address')){
-                        delete $scope.patronModel['address'];    
+                    if (response.hasOwnProperty('data') && response.data.patron) {
+                        var patron = response.data.patron;
+                        if (!patron.hasOwnProperty('address')) {
+                            delete $scope.patronModel['address'];
+                        }
                     }
-                }
-            },
+                },
                 function errorCallback(response) {
                     var data = response.data || null;
                     if (data && data.error.length > 0) {
@@ -517,7 +523,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
         var patron = angular.copy($scope.patronModel);
         var verbage = patron.first_name + ' ' + patron.last_name + ' will be gone forever!';
         $window.swal({
-                title: "Are you sure to delete this patron?",
+                title: "Are you sure want to delete this patron?",
                 text: verbage,
                 type: "warning",
                 showCancelButton: true,
@@ -526,9 +532,49 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                 closeOnConfirm: false
             },
             function(isConfirm) {
-                if (isConfirm) {
-                    swal("Deleted!", "Patron has been deleted.", "success");
+                if (!isConfirm) {
+                    return;
                 }
+
+                $http({
+                    method: 'DELETE',
+                    url: _url_patron,
+                    params: {id: patron.id},
+                }).then(function successCallback(response) {
+                    if (response && response.hasOwnProperty('data') && response.data.patron) {
+                        var patron = response.data.patron;
+                        var msg = patron.first_name + ' ' + patron.last_name + ' has been deleted from the organization';
+                        $window.swal({
+                            title: "Success",
+                            text: msg,
+                            type: "success",
+                            confirmButtonColor: "#64d46f",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        }, function() {
+                            $scope.$broadcast('show-errors-reset');
+                            $scope.onRoute('patron');
+                            $scope.$apply();
+                        });
+                    }
+                }, function errorCallback(response) {
+                    var data = response.data || null;
+                    if (data && data.hasOwnProperty('error') && data.error.length > 0) {
+                        var error = data.error[0];
+                        swal({
+                            title: "Error",
+                            text: error.msg,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        });
+                    } else {
+                        console.error(response);
+                    }
+                });
             });
     }
 

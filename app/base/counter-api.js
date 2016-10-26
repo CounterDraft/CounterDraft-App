@@ -67,7 +67,8 @@ function baseApi() {
             first_name: employee.first_name,
             last_name: employee.last_name,
             email_address: employee.email_address,
-            permissions: ['restricted:employee']
+            permissions: ['restricted:employee'],
+            is_admin: employee.is_admin
         }
         if (employee.is_admin) {
             req.session.user['permissions'] = ['restricted:admin,employee'];

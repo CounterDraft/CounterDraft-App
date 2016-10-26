@@ -170,7 +170,7 @@ function PatronApi() {
     this.delete = function(req, res) {
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
-        var patron = req.body || null;
+        var patron = req.query || null;
         var pOut = null;
         if (!patron || !patron.hasOwnProperty('id') || !patron.id) {
             self.getErrorApi().sendError(1031, 422, res);
