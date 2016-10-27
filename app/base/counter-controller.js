@@ -16,6 +16,34 @@ function baseController() {
         }
         return user;
     }
+    this._requestToLowerCase = function(req) {
+        var columnsArr = [
+            'first_name',
+            'last_name',
+            'username',
+            'street_number',
+            'route',
+            'locality',
+            'administrative_area_level_1',
+            'administrative_area_level_2',
+            'country',
+            'postal_code'
+        ]
+        if (Object.keys(req.body).length > 0) {
+            for (var bo in req.body) {
+                if (columnsArr.indexOf(bo) > -1) {
+                    req.body[bo] = req.body[bo].toLowerCase();
+                }
+            }
+        }
+        if (Object.keys(req.query).length > 0) {
+            for (var pa in req.query) {
+                if (columnsArr.indexOf(bo) > -1) {
+                    req.query[pa] = req.query[pa].toLowerCase();
+                }
+            }
+        }
+    }
 
     this.getOrganization = function(req, res) {
         var organization = null;
@@ -58,7 +86,7 @@ function baseController() {
             if (this.ApiRouter.hasOwnProperty(restCallStr)) {
                 var user = this.getUser(req, res);
                 var organization = this.getOrganization(req, res);
-      
+
                 if (!user && nonAuthRestList.indexOf(restCallStr) == -1) {
                     if (!req.get('key')) {
                         this.getErrorApi().sendError(1026, 400, res);
@@ -80,6 +108,7 @@ function baseController() {
                 }
 
                 var route = this.ApiRouter[restCallStr];
+                this._requestToLowerCase(req);
                 route(req.method.toLowerCase(), req, res, this);
             } else {
                 this.getErrorApi().sendError(1011, 422, res);

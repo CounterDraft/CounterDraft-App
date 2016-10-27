@@ -99,7 +99,7 @@ function PatronApi() {
                     });
                 }
                 patronOut = mix(fPatron).into(updateData);
-        
+
                 //check for email is already in system.
                 if (updates.hasOwnProperty('email_address')) {
                     return ModelPatron.findAndCountAll({
