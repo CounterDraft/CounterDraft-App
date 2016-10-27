@@ -168,6 +168,7 @@ function registationApi() {
     this.createPatron = function(req, res) {
 
         var user = this.getUser(req, res);
+        var organization = self.getOrganization(req, res);
         var patron = req.body;
 
         if (!patron.hasOwnProperty('address')) {
@@ -272,6 +273,7 @@ function registationApi() {
             }).then(function(results) {
                 if (results) {
                     var newPatron = results.dataValues;
+                    getApi('email').patronRegistration(newPatron, organization);
                     res.status(200).json({
                         user: self._cleanPatron(newPatron),
                         success: true

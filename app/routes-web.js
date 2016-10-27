@@ -109,6 +109,9 @@ module.exports = {
                             dir: {
                                 image_dir: global.config['image_dir'],
                                 image_bucket_url: global.config['image_bucket_url']
+                            },
+                            employee: {
+                                is_admin: user.is_admin
                             }
                         }
                     });

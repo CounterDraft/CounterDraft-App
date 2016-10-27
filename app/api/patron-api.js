@@ -25,15 +25,12 @@ function PatronApi() {
     this.update = function(req, res) {
         var moment = getMoment();
         var user = self.getUser(req, res);
-        var organizaion = self.getOrganization(req, res);
+        var organization = self.getOrganization(req, res);
         var patronIn = req.body;
-        console.log(patronIn);
         var chckData = this._verifyInformation(patronIn);
         var patronOut = null;
         var minAge = 18;
 
-
-        
         if (!patronIn.hasOwnProperty('id')) {
             self.getErrorApi().sendError(1049, 422, res);
             return;
@@ -51,22 +48,49 @@ function PatronApi() {
             }
         }
 
-        ModelPatron.findOne({
+        ModelEmployee.findOne({
             where: {
-                id: patronIn.id,
-                organization_id: organizaion.id,
+                id: user.employee_id,
                 is_active: true
             }
         }).then(function(result) {
             if (result) {
+                var employee = result.dataValues;
+                if (employee.is_admin) {
+                    return ModelPatron.findOne({
+                        where: {
+                            id: patronIn.id,
+                            organization_id: organization.id,
+                            is_active: true
+                        }
+                    });
+                }
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1050, status: 401 });
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1032, status: 500 });
+            });
+        }).then(function(result) {
+            if (result) {
                 var fPatron = result.dataValues;
                 var updateData = {};
+                var updates = {};
                 var userData = patronIn || null;
 
                 if (userData) {
                     for (var x in userData) {
                         if (fPatron.hasOwnProperty(x) && fPatron[x] !== userData[x]) {
+                            if (x === 'dob') {
+                                var new_dob = moment(fPatron[x]);
+                                var old_dob = moment(userData[x]);
+                                if (new_dob.diff(old_dob) === 0) {
+                                    continue;
+                                }
+                            }
                             updateData[x] = userData[x];
+                            updates[x] = userData[x];
                         }
                     }
                 } else {
@@ -75,13 +99,53 @@ function PatronApi() {
                     });
                 }
                 patronOut = mix(fPatron).into(updateData);
-                return ModelPatron.update(updateData, {
-                    where: {
-                        id: fPatron.id,
-                        organization_id: organizaion.id,
-                        is_active: true
-                    }
-                });
+
+                //check for email is already in system.
+                if (updates.hasOwnProperty('email_address')) {
+                    return ModelPatron.findAndCountAll({
+                        where: {
+                            email_address: { $iLike: patronIn.email_address },
+                            is_active: true
+                        }
+                    }).then(function(results) {
+                        if (results.count > 0) {
+                            return new Promise(function(resolve, reject) {
+                                return reject(self.getErrorApi().getErrorMsg(1018));
+                            });
+                        }
+                        return ModelEmployee.findAndCountAll({
+                            where: {
+                                email_address: { $iLike: patronIn.email_address },
+                                is_active: true
+                            }
+                        });
+                    }).then(function(results) {
+                        if (results.count > 0) {
+                            return new Promise(function(resolve, reject) {
+                                return reject(self.getErrorApi().getErrorMsg(1018));
+                            });
+                        }
+                        return ModelPatron.update(updates, {
+                            where: {
+                                id: fPatron.id,
+                                organization_id: organization.id,
+                                is_active: true
+                            }
+                        });
+                    }).catch(function(err) {
+                        return new Promise(function(resolve, reject) {
+                            return reject(err);
+                        });
+                    });
+                } else {
+                    return ModelPatron.update(updates, {
+                        where: {
+                            id: fPatron.id,
+                            organization_id: organization.id,
+                            is_active: true
+                        }
+                    });
+                }
             } else {
                 return new Promise(function(resolve, reject) {
                     reject({ errNum: 1041, status: 422 });
@@ -150,6 +214,74 @@ function PatronApi() {
     this.updateImage = function(req, res) {
         res.status(200).json({
             success: true
+        });
+    }
+
+    this.delete = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var patron = req.query || null;
+        var pOut = null;
+        if (!patron || !patron.hasOwnProperty('id') || !patron.id) {
+            self.getErrorApi().sendError(1031, 422, res);
+            return
+        }
+        ModelEmployee.findOne({
+            where: {
+                id: user.employee_id,
+                is_active: true
+            }
+        }).then(function(result) {
+            if (result) {
+                var employee = result.dataValues;
+                if (employee.is_admin) {
+                    return ModelPatron.findOne({
+                        where: {
+                            id: patron.id,
+                            organization_id: organization.id,
+                            is_active: true
+                        }
+                    });
+                }
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1050, status: 401 });
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1032, status: 500 });
+            });
+        }).then(function(result) {
+            if (result) {
+                pOut = result.dataValues;
+                return ModelPatron.update({ is_active: false }, {
+                    where: {
+                        id: pOut.id
+                    }
+                });
+            } else {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1041, status: 401 });
+                });
+            }
+        }).then(function(result) {
+            if (result) {
+                var patron = self._cleanPatron(pOut);
+                patron.is_active = false;
+                res.status(200).json({
+                    patron: patron,
+                    success: true
+                });
+            } else {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1048, status: 500 });
+                });
+            }
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
         });
     }
 

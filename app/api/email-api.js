@@ -179,6 +179,65 @@ function EmailApi() {
             logger.error(err.toString(), { error: err });
         });
     }
+
+    this.patronRegistration = function(patron, organization) {
+        var password_reset_template = emailTemplateDir + '/patron_registration_confirmation/patron_registration_confirmation.hbs';
+        var url_link;
+        return new Promise(function(resolve, reject) {
+            if (!patron) {
+                return reject('No patron was provided to the email api');
+            }
+
+            if (global.config.environment === 'production') {
+                url_link = 'http://' + config.server.ip + '/login';
+            } else {
+                url_link = 'http://' + config.server.ip + ':' + config.server.port + '/login';
+            }
+
+            var message = { to: patron.email_address };
+
+            var emailOptions = {
+                from: '"Do-Not-Reply" <do-not-reply@counterDraft.com>',
+                subject: 'Patron Registration Confirmation'
+            }
+
+            var context = {
+                user: patron,
+                url: url_link,
+                organization: organization
+            }
+
+            var templateSender = transporter.templateSender({
+                render: function(context, callback) {
+                    templates.render(password_reset_template, context, function(err, html, text) {
+                        if (err) {
+                            return callback(err);
+                        }
+                        callback(null, {
+                            html: html,
+                            text: text
+                        });
+                    });
+                }
+            }, emailOptions);
+
+            templateSender(message, context, function(err, info) {
+                if (err) {
+                    var eo = {
+                        email_address: patron.email_address,
+                        error: err
+                    }
+                    logger.error(self.getErrorApi().getErrorMsg(9902), { error: eo });
+                    return reject(err);
+                } else {
+                    logger.info('Email patron registration confirmation sent to - ', { email_address: patron.email_address, info: info.response.toString() });
+                    return resolve(info);
+                }
+            });
+        }).catch(function(err) {
+            logger.error(err.toString(), { error: err });
+        });
+    }
 }
 
 module.exports = EmailApi;

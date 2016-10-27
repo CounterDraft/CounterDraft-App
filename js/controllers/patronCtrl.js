@@ -17,6 +17,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     $scope.minAge = 18;
     $scope.searchArr = [];
     $scope.addressArr = [];
+    $scope.admin = false;
     this.animationsEnabled = true;
 
     //models
@@ -30,10 +31,6 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
         organization: null,
         dob: null,
         phone: null
-    };
-
-    $scope.addressAutoOptions = {
-        updateModel: true
     };
 
     $scope.patronSearchModel = {
@@ -75,21 +72,34 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     this.initDetails = function() {
         $scope.allowEdit = false;
         $scope.patronModel.password = 'placeholder';
+        if (typeof 'undefined' != data && data.hasOwnProperty('dir')) {
+            if (data.hasOwnProperty('employee')) {
+                $scope.admin = data.employee.is_admin;
+            }
+        }
     }
 
     this.removeAddress = function(index, form) {
         if (form === 'details') {
             var patron = angular.copy($scope.patronModel);
-            var address = angular.copy($scope.addressArr[0]);
-            var patronAddress = { id: patron.id }
+            var address = angular.copy($scope.addressArr[index]);
+            var patronAddress = {}
             angular.forEach(address, function(value, key) {
                 patronAddress[key] = null;
             });
+            patronAddress.id = patron.id;
             $http({
                 method: 'PUT',
                 url: _url_patron,
                 data: patronAddress,
-            }).then(function successCallback(response) {},
+            }).then(function successCallback(response) {
+                    if (response.hasOwnProperty('data') && response.data.patron) {
+                        var patron = response.data.patron;
+                        if (!patron.hasOwnProperty('address')) {
+                            delete $scope.patronModel['address'];
+                        }
+                    }
+                },
                 function errorCallback(response) {
                     var data = response.data || null;
                     if (data && data.error.length > 0) {
@@ -129,7 +139,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                     id: patron.id,
                     street_number: place.street_number,
                     route: place.route,
-                    locality: patron.locality,
+                    locality: place.locality,
                     administrative_area_level_1: place.administrative_area_level_1,
                     administrative_area_level_2: place.administrative_area_level_2,
                     country: place.country,
@@ -174,6 +184,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     }
 
     this.onPatronSelected = function(patron) {
+        $scope.addressArr.length = 0;
         if (patron.hasOwnProperty('address')) {
             $scope.addressArr.push(patron.address);
         }
@@ -234,6 +245,9 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     }
 
     $scope.onBack = function(page) {
+        if(page === 'details'){
+            _clearModel('patronModel');
+        }
         if ($scope.prevPage) {
             $scope.currentPage = $scope.prevPage;
         }
@@ -360,7 +374,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                     closeOnConfirm: true,
                     html: true
                 }, function() {
-                    $scope.onRoute('patron-details');
+                    $scope.onRoute('patron-details', true);
                     $scope.$apply();
                 });
                 // _resetForm(self.addPatronForm, 'patronModel');
@@ -508,7 +522,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
         var patron = angular.copy($scope.patronModel);
         var verbage = patron.first_name + ' ' + patron.last_name + ' will be gone forever!';
         $window.swal({
-                title: "Are you sure to delete this patron?",
+                title: "Are you sure want to delete this patron?",
                 text: verbage,
                 type: "warning",
                 showCancelButton: true,
@@ -517,9 +531,49 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                 closeOnConfirm: false
             },
             function(isConfirm) {
-                if (isConfirm) {
-                    swal("Deleted!", "Patron has been deleted.", "success");
+                if (!isConfirm) {
+                    return;
                 }
+
+                $http({
+                    method: 'DELETE',
+                    url: _url_patron,
+                    params: {id: patron.id},
+                }).then(function successCallback(response) {
+                    if (response && response.hasOwnProperty('data') && response.data.patron) {
+                        var patron = response.data.patron;
+                        var msg = patron.first_name + ' ' + patron.last_name + ' has been deleted from the organization';
+                        $window.swal({
+                            title: "Success",
+                            text: msg,
+                            type: "success",
+                            confirmButtonColor: "#64d46f",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        }, function() {
+                            $scope.$broadcast('show-errors-reset');
+                            $scope.onRoute('patron');
+                            $scope.$apply();
+                        });
+                    }
+                }, function errorCallback(response) {
+                    var data = response.data || null;
+                    if (data && data.hasOwnProperty('error') && data.error.length > 0) {
+                        var error = data.error[0];
+                        swal({
+                            title: "Error",
+                            text: error.msg,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        });
+                    } else {
+                        console.error(response);
+                    }
+                });
             });
     }
 
