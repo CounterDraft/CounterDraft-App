@@ -21,6 +21,9 @@ function baseController() {
             'first_name',
             'last_name',
             'username',
+            'email_address',
+            'organization_name',
+            'organization_description',
             'street_number',
             'route',
             'locality',
@@ -31,14 +34,14 @@ function baseController() {
         ]
         if (Object.keys(req.body).length > 0) {
             for (var bo in req.body) {
-                if (columnsArr.indexOf(bo) > -1) {
+                if (columnsArr.indexOf(bo) > -1 && req.body[bo]) {
                     req.body[bo] = req.body[bo].toLowerCase();
                 }
             }
         }
         if (Object.keys(req.query).length > 0) {
             for (var pa in req.query) {
-                if (columnsArr.indexOf(bo) > -1) {
+                if (columnsArr.indexOf(bo) > -1 && req.query[pa]) {
                     req.query[pa] = req.query[pa].toLowerCase();
                 }
             }
