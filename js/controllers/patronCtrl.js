@@ -374,7 +374,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                     closeOnConfirm: true,
                     html: true
                 }, function() {
-                    $scope.onRoute('patron-details');
+                    $scope.onRoute('patron-details', true);
                     $scope.$apply();
                 });
                 // _resetForm(self.addPatronForm, 'patronModel');
