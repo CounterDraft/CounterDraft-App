@@ -180,7 +180,7 @@ module.exports = {
             } else {
                 res.locals.login = false;
                 res.render('pages/retrieve.ejs', {
-                    data: { user: 'Testing' }
+                    data: {}
                 });
             }
         });
