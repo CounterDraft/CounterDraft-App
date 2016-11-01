@@ -178,10 +178,36 @@ module.exports = {
             if (req.session.user) {
                 res.redirect('/dashboard');
             } else {
+                var errorApi = getApi('error');
+                var errorObj = errorApi.getError(errorApi.getErrorMsg(1051));
                 res.locals.login = false;
-                res.render('pages/retrieve.ejs', {
-                    data: {}
-                });
+                var params = req.query;
+                var retrieve_token = req.query.retrieve_token || null;
+                var email_address = req.query.email_address || null;
+                getApi('reset').checkPasswordResetToken(retrieve_token, email_address)
+                    .then(function(result) {
+                        var modelType = result.$modelOptions.name.singular;
+                        var data = {};
+                        if (modelType === 'patron_player') {
+                            data.patron = errorApi._cleanPatron(result.dataValues);
+                        } else if (modelType === 'employee_user') {
+                            data.employee = errorApi._cleanEmployee(result.dataValues);
+                        } else {
+                            logger.error("Bad token reqest", { error: err });
+                            res.render('pages/retrieve.ejs', {
+                                data: { error: errorObj }
+                            });
+                            return;
+                        }
+                        res.render('pages/retrieve.ejs', {
+                            data: data
+                        });
+                    }).catch(function(err) {
+                        logger.error("Bad token reqest", { error: err });
+                        res.render('pages/retrieve.ejs', {
+                            data: { error: errorObj }
+                        });
+                    });
             }
         });
         routerWeb.get('/settings', isAuthorized, function(req, res) {

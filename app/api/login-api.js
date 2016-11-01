@@ -13,7 +13,6 @@ function LoginApi() {
     }
 
     this.loginUser = function(req, email_address) {
-      
         var fEmployee = null;
         return new Promise(function(resolve, reject) {
             Employee.findOne({

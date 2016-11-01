@@ -176,7 +176,9 @@ var errorList = {
     1050: {
         msg: 'Inncorrect permissions, only oganization adminstrator can do this.'
     },
-
+    1051: {
+        msg: 'Token is incorrect or has already expired.'
+    },
 
 
 
@@ -193,6 +195,9 @@ var errorList = {
     },
     9904: {
         msg: 'Database issue: Failed to update user.'
+    },
+    9905: {
+        msg: 'Failed to find retrieve password token for user Or token is already expired.'
     }
 }
 

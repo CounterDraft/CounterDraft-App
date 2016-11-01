@@ -28,9 +28,55 @@ function ResetApi() {
         //verify key;
         //call api to change password;
         //log patron or emp in to the system.
-        
+
         res.status(200).json({
             success: true
+        });
+    }
+
+    this.checkPasswordResetToken = function(token, email_address) {
+        var self = this;
+        var hash = getHash();
+
+        return new Promise(function(resolv, rejec) {
+            if (!token || !email_address) {
+                rejec(1051);
+                return;
+            }
+            ModelEmployee.findOne({
+                where: {
+                    email_address: { $iLike: email_address },
+                    is_active: true
+                }
+            }).then(function(result) {
+                if (result) {
+                    return new Promise(function(resolve, reject) {
+                        resolve(result);
+                    });
+                } else {
+                    return ModelPatron.findOne({
+                        where: {
+                            email_address: { $iLike: email_address },
+                            is_active: true
+                        }
+                    });
+                }
+            }).then(function(result) {
+                if (result) {
+                    var user = result.dataValues;
+                    console.log(moment(user.retrieve_expiration).format());
+                    console.log(moment().format());
+                    if (hash.verify(token, user.retrieve_token) && moment().isBefore(moment(user.retrieve_expiration))) {
+                        resolv(result);
+                    } else {
+                        rejec(1051);
+                    }
+                } else {
+                    rejec(9905);
+                }
+            }).catch(function(err) {
+                rejec(err);
+            });
         });
     }
 

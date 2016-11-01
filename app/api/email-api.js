@@ -81,9 +81,9 @@ function EmailApi() {
                 subject: 'Reset Password'
             }
             if (global.config.environment === 'production') {
-                url_link = 'https://' + config.server.ip + '/retrieve?retrieve_token=' + token;
+                url_link = 'https://' + config.server.ip + '/retrieve?retrieve_token=' + token + '&email_address=' + user.email_address;
             } else {
-                url_link = 'http://' + config.server.ip + ':' + config.server.port + '/retrieve?retrieve_token=' + token;
+                url_link = 'http://' + config.server.ip + ':' + config.server.port + '/retrieve?retrieve_token=' + token + '&email_address=' + user.email_address;
             }
             var message = { to: user.email_address }
             var context = {

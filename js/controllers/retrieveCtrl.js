@@ -16,6 +16,8 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
         password_confirm: null,
         retrieve_token: null
     }
+    $scope.patron = null;
+    $scope.employee = null;
 
     var _init = function() {
         //default page;
@@ -24,13 +26,30 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
     }
 
     this.initPasswordRecovery = function() {
-        if (typeof 'undefined' != data) {}
+        var errorMsg = null;
+
+        if (typeof 'undefined' != data) {
+            if(data.hasOwnProperty('error') && data.error.hasOwnProperty('msg')){
+                errorMsg = data.error.msg;
+            }else if(data.hasOwnProperty('patron')){
+                $scope.patron = data.patron;
+                console.log($scope.patron);
+            }else if (data.hasOwnProperty('employee')){
+                $scope.employee = data.employee;
+                console.log($scope.employee);
+            }else{
+                errorMsg = "Unknown server error, system could be down!";
+            }
+        }
+
         if ($location.search().retrieve_token) {
             $scope.recoverModel.retrieve_token = $location.search().retrieve_token;
-        } else {
+        }
+
+        if(errorMsg){
             $window.swal({
                 title: "Error",
-                text: 'No token was provided please check your email to ensure you have the correct link.',
+                text: errorMsg,
                 type: "error",
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "OK",
