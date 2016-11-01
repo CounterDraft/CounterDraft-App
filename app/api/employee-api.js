@@ -59,7 +59,7 @@ function EmployeeApi() {
     }
 
     this.retrieve = function(employee_id) {
-      
+
         return ModelEmployee.findOne({
             where: {
                 id: employee_id,
@@ -69,7 +69,7 @@ function EmployeeApi() {
     }
 
     this.update = function(req, res) {
-      
+
         var user = self.getUser(req, res);
         var chckData = this._verifyInformation(req.body);
         var empOut = null;
@@ -132,8 +132,14 @@ function EmployeeApi() {
         });
     }
 
+    this.recover = function(req, res) {
+        res.status(200).json({
+            success: true
+        });
+    }
+
     this.changePassword = function(req, res) {
-        
+
         //user should be in the system.
         var user = self.getUser(req, res);
         var reqbody = req.body;
@@ -209,7 +215,7 @@ function EmployeeApi() {
     }
 
     this.getEmployee = function(req, res) {
-     
+
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
         var employee_id = req.query.id || null;
