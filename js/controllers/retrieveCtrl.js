@@ -19,14 +19,23 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
     var _init = function() {
         //default page;
         $scope.currentPage = _getDefaultPage();
+        $('body:not(.retrieve-background)').addClass('retrieve-background');
     }
 
     this.initPasswordRecovery = function() {
-        if (typeof 'undefined' != data) {
-        }
-        if($location.search().retrieve_token){
-            // $scope.recoverModel.retrieve_token = 
-            console.log($location.search());
+        if (typeof 'undefined' != data) {}
+        if ($location.search().retrieve_token) {
+            $scope.recoverModel.retrieve_token = $location.search().retrieve_token;
+        } else {
+            $window.swal({
+                title: "Error",
+                text: 'No token was provided please check your email to ensure you have the correct link.',
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
         }
     }
 

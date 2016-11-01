@@ -12,6 +12,10 @@ app = angular.module('CounterDraft-app', [
         'ui.bootstrap.showErrors',
         'ngPlacesAutocomplete'
     ])
-    .config(['showErrorsConfigProvider', function(showErrorsConfigProvider) {
+    .config(['showErrorsConfigProvider', '$locationProvider', function(showErrorsConfigProvider, $locationProvider) {
         showErrorsConfigProvider.showSuccess(true);
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+        });
     }]);

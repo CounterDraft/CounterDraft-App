@@ -11,13 +11,11 @@
 @import "general/forms";
 
 /*libs*/
-
 @import "libs/bootstrap";
 @import "libs/off-canvas";
 @import "libs/sweetalert";
 
 /*pages*/
-
 @import "pages/login";
 @import "pages/dashboard";
 @import "pages/account";
@@ -25,13 +23,16 @@
 @import "pages/password";
 @import "pages/reports";
 @import "pages/patron";
+@import "pages/retrieve";
+
 body {
     background-color: @clientColorLightestGray;
-}
-
-//only for login page;
-body.login-background {
-    .addImage("login-fantasy-football-small.jpg", center, cover);
+    &.login-background {
+        .addImage("login-fantasy-football-small.jpg", center, cover);
+    }
+    &.retrieve-background {
+        .addImage("home-fantasy-football-small.jpg", center, cover);
+    }
 }
 
 div#counterdraft-main {
@@ -258,7 +259,8 @@ ul.address-list {
             width: 30px;
             height: 30px;
             font-size: 30px;
-            &:hover, &:focus{
+            &:hover,
+            &:focus {
                 opacity: 1;
             }
         }
