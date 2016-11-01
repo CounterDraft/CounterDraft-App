@@ -21,6 +21,14 @@ function ResetApi() {
     var moment = getMoment();
 
     this.changePassword = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var resetModel = req.body;
+
+        //verify key;
+        //call api to change password;
+        //log patron or emp in to the system.
+        
         res.status(200).json({
             success: true
         });

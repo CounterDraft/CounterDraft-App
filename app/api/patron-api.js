@@ -199,6 +199,82 @@ function PatronApi() {
         });
     }
 
+    this.changePassword = function(req, res) {
+
+        //user should be in the system.
+        var user = self.getUser(req, res);
+        var reqbody = req.body;
+        if (!reqbody.new_password || reqbody.new_password === "") {
+            this.getErrorApi().sendError(1043, 403, res);
+        } else if (!reqbody.old_password || reqbody.old_password === "") {
+            this.getErrorApi().sendError(1042, 403, res);
+        } else if (!reqbody.password_confirm || reqbody.password_confirm === "") {
+            this.getErrorApi().sendError(1007, 403, res);
+        } else if (reqbody.password_confirm != reqbody.new_password) {
+            this.getErrorApi().sendError(1014, 403, res);
+        } else if (!this.getModelPattern('password').test(reqbody.password)) {
+            this.getErrorApi().sendError(1039, 422, res);
+        } else {
+            var hash = getHash();
+
+            ModelEmployee.findOne({
+                where: {
+                    id: user.employee_id,
+                    is_active: true
+                }
+            }).then(function(result) {
+                if (result) {
+                    var employee = result.dataValues;
+                    //this code may not be needed.
+                    if (employee && employee.password && !hash.isHashed(employee.password)) {
+                        employee.password = hash.generate(employee.password);
+                    }
+
+                    if (employee && employee.password && !hash.verify(reqbody.old_password, employee.password)) {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1045, status: 422 });
+                        });
+                    }
+
+                    var passwordWithHash = hash.generate(reqbody.new_password);
+                    if (!passwordWithHash) {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1013, status: 422 });
+                        });
+                    }
+                    return ModelEmployee.update({
+                        password: passwordWithHash
+                    }, {
+                        where: {
+                            id: employee.id,
+                            is_active: true
+                        }
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1032, status: 500 });
+                    });
+                }
+            }).then(function(result) {
+                if (result) {
+                    var employee = result.dataValues;
+                    res.status(200).json({
+                        employee: self._cleanEmployee(employee),
+                        success: true
+                    });
+                } else {
+                    self.getErrorApi().sendError(1033, 500, res);
+                }
+            }).catch(function(err) {
+                if (err.errNum) {
+                    self.getErrorApi().sendError(err.errNum, err.status, res);
+                } else {
+                    self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+                }
+            });
+        }
+    }
+
     this.getImage = function(req, res) {
         res.status(200).json({
             success: true
