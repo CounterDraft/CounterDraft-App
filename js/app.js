@@ -14,8 +14,8 @@ app = angular.module('CounterDraft-app', [
     ])
     .config(['showErrorsConfigProvider', '$locationProvider', function(showErrorsConfigProvider, $locationProvider) {
         showErrorsConfigProvider.showSuccess(true);
-        // $locationProvider.html5Mode({
-        //     enabled: true,
-        //     requireBase: false
-        // });
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+        });
     }]);

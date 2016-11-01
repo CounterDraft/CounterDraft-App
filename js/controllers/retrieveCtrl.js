@@ -29,15 +29,15 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
         var errorMsg = null;
 
         if (typeof 'undefined' != data) {
-            if(data.hasOwnProperty('error') && data.error.hasOwnProperty('msg')){
+            if (data.hasOwnProperty('error') && data.error.hasOwnProperty('msg')) {
                 errorMsg = data.error.msg;
-            }else if(data.hasOwnProperty('patron')){
+            } else if (data.hasOwnProperty('patron')) {
                 $scope.patron = data.patron;
                 console.log($scope.patron);
-            }else if (data.hasOwnProperty('employee')){
+            } else if (data.hasOwnProperty('employee')) {
                 $scope.employee = data.employee;
                 console.log($scope.employee);
-            }else{
+            } else {
                 errorMsg = "Unknown server error, system could be down!";
             }
         }
@@ -46,7 +46,7 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
             $scope.recoverModel.retrieve_token = $location.search().retrieve_token;
         }
 
-        if(errorMsg){
+        if (errorMsg) {
             $window.swal({
                 title: "Error",
                 text: errorMsg,
@@ -81,6 +81,11 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
             if (!formData[x]) {
                 hasData = false;
             }
+        }
+
+        if (!(formData.password_confirm === formData.password)) {
+            errorMsg = "Password doesn't match";
+            hasData = false;
         }
 
         if (hasData) {
