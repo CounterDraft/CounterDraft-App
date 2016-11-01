@@ -64,8 +64,6 @@ function ResetApi() {
             }).then(function(result) {
                 if (result) {
                     var user = result.dataValues;
-                    console.log(moment(user.retrieve_expiration).format());
-                    console.log(moment().format());
                     if (hash.verify(token, user.retrieve_token) && moment().isBefore(moment(user.retrieve_expiration))) {
                         resolv(result);
                     } else {
