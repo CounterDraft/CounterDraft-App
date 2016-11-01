@@ -69,7 +69,8 @@ function baseController() {
             'confirmation',
             'registration',
             'login',
-            'password'
+            'password',
+            'resetChangePassword'
         ];
 
         logger.debug('determine which call to invoke.');

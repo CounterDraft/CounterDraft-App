@@ -20,8 +20,14 @@ function ResetApi() {
     var ModelPatron = models.patron_player;
     var moment = getMoment();
 
+    this.changePassword = function(req, res) {
+        res.status(200).json({
+            success: true
+        });
+    }
+
     this.resetPassword = function(req, res) {
-      
+
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
         var token = _generateToken();
@@ -44,7 +50,7 @@ function ResetApi() {
         }
         ModelPatron.find({
             where: {
-                email_address: {$iLike: req.body.email_address},
+                email_address: { $iLike: req.body.email_address },
                 is_active: true
             }
         }).then(function(results) {
@@ -59,7 +65,7 @@ function ResetApi() {
             }
             return ModelEmployee.find({
                 where: {
-                    email_address: {$iLike: req.body.email_address},
+                    email_address: { $iLike: req.body.email_address },
                     is_active: true
                 }
             });

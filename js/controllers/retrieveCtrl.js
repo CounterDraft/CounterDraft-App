@@ -2,11 +2,12 @@
     Author:  Hubbert
     Date: Oct 31 2016
     Comment: 
-        This should all the logic for the retrieve page.
+        This should be all the logic for the retrieve page.
 */
 
 app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data', function($scope, $http, $location, $window, data) {
     var _base_templates = "templates/retrieve/";
+    var _url_change_password = "/api/v1/reset/resetChangePassword";
     $scope.prevPage = null;
     $scope.currentPage = null;
 
@@ -51,8 +52,39 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
         $scope.currentPage = $scope.prevPage;
     }
 
-    this.onSubmit = function() {
-        //nothing;
+    $scope.onSubmit = function() {
+        var self = this;
+        var formData = angular.copy($scope.recoverModel);
+        var hasData = true;
+        var errorMsg = 'Form is missing data.';
+
+        for (var x in formData) {
+            if (!formData[x]) {
+                hasData = false;
+            }
+        }
+
+        if (hasData) {
+            $http({
+                method: 'PUT',
+                url: _url_change_password,
+                data: formData,
+            }).then(function successCallback(response) {
+                console.log(response);
+            }, function errorCallback(response) {
+                console.error(response);
+            });
+        } else {
+            $window.swal({
+                title: "Error",
+                text: errorMsg,
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+        }
     }
 
     _init();
