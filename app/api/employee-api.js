@@ -133,9 +133,67 @@ function EmployeeApi() {
     }
 
     this.recover = function(req, res) {
-        res.status(200).json({
-            success: true
-        });
+        var self = this;
+        var moment = getMoment();
+        var recoverModel = req.body;
+        var hash = getHash();
+        var employee = null;
+        if (!recoverModel.new_password || recoverModel.new_password === "") {
+            this.getErrorApi().sendError(1043, 403, res);
+        } else if (!recoverModel.password_confirm || recoverModel.password_confirm === "") {
+            this.getErrorApi().sendError(1007, 403, res);
+        } else if (recoverModel.password_confirm !== recoverModel.new_password) {
+            this.getErrorApi().sendError(1014, 403, res);
+        } else if (!this.getModelPattern('password').test(recoverModel.new_password)) {
+            this.getErrorApi().sendError(1039, 422, res);
+        } else if (!recoverModel.retrieve_token || recoverModel.retrieve_token === "") {
+            this.getErrorApi().sendError(1052, 422, res);
+        } else {
+            getApi('reset').checkPasswordResetToken(recoverModel.retrieve_token, recoverModel.email_address)
+                .then(function(result) {
+                    var modelType = result.$modelOptions.name.singular;
+                    var userModal = null;
+                    if (modelType === 'patron_player') {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1054, status: 422 });
+                        });
+                    } else if (modelType === 'employee_user') {
+                        userModal = ModelEmployee;
+
+                    } else {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1024, status: 500 });
+                        });
+                    }
+                    employee = result.dataValues;
+                    var updates = {
+                        password: hash.generate(recoverModel.new_password),
+                        retrieve_expiration: moment().format()
+                    }
+                    return userModal.update(updates, {
+                        where: {
+                            id: employee.id
+                        }
+                    });
+                }).then(function(result) {
+                    if (result) {
+                        res.status(200).json({
+                            employee: self._cleanEmployee(employee),
+                            success: true
+                        });
+                    } else {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1033, status: 500 });
+                        });
+                    }
+                }).catch(function(err) {
+                    if (err.errNum) {
+                        self.getErrorApi().sendError(err.errNum, err.status, res);
+                    } else {
+                        self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+                    }
+                });
+        }
     }
 
     this.changePassword = function(req, res) {

@@ -179,6 +179,15 @@ var errorList = {
     1051: {
         msg: 'Token is incorrect or has already expired.'
     },
+    1052: {
+        msg: 'Token is not present in the call.'
+    },
+    1053: {
+        msg: 'Cannot update a employee from a patron rest call.'
+    },
+    1054: {
+        msg: 'Cannot update a employee from a employee rest call.'
+    },
 
 
 

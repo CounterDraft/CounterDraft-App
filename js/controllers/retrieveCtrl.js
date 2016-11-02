@@ -14,7 +14,7 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
     $scope.currentPage = null;
 
     $scope.recoverModel = {
-        password: null,
+        new_password: null,
         password_confirm: null,
         retrieve_token: null,
         email_address: null
@@ -105,7 +105,7 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
             }
         }
 
-        if (!(formData.password_confirm === formData.password)) {
+        if (!(formData.password_confirm === formData.new_password)) {
             errorMsg = "Password doesn't match";
             hasData = false;
         }
@@ -116,9 +116,42 @@ app.controller('RetrieveCtrl', ['$scope', '$http', '$location', '$window', 'data
                 url: put_url,
                 data: formData,
             }).then(function successCallback(response) {
-                console.log(response);
+                var msg = "Password has been changed. Please login with your new password.";
+                var data = response.data;
+
+                $window.swal({
+                    title: "Success",
+                    text: msg,
+                    type: "success",
+                    confirmButtonColor: "#64d46f",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                }, function() {
+                    $scope.recoverModel = null;
+                    self.recoverPasswordForm.$setPristine();
+                    self.recoverPasswordForm.$setUntouched();
+                    $scope.$apply();
+                    $scope.$broadcast('show-errors-reset');
+                    $window.location.href = '/login';
+                });
+
             }, function errorCallback(response) {
-                console.error(response);
+                errorMsg = 'Unknown error has occurred'
+                if (typeof 'undefined' != response &&
+                    response.hasOwnProperty('data') &&
+                    response.data.error.length > 0) {
+                    errorMsg = response.data.error[0].msg;
+                }
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
             });
         } else {
             $window.swal({

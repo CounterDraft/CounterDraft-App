@@ -22,6 +22,69 @@ function PatronApi() {
         });
     }
 
+    this.recover = function(req, res) {
+        var self = this;
+        var moment = getMoment();
+        var recoverModel = req.body;
+        var hash = getHash();
+        var patron = null;
+        if (!recoverModel.new_password || recoverModel.new_password === "") {
+            this.getErrorApi().sendError(1043, 403, res);
+        } else if (!recoverModel.password_confirm || recoverModel.password_confirm === "") {
+            this.getErrorApi().sendError(1007, 403, res);
+        } else if (recoverModel.password_confirm !== recoverModel.new_password) {
+            this.getErrorApi().sendError(1014, 403, res);
+        } else if (!this.getModelPattern('password').test(recoverModel.new_password)) {
+            this.getErrorApi().sendError(1039, 422, res);
+        } else if (!recoverModel.retrieve_token || recoverModel.retrieve_token === "") {
+            this.getErrorApi().sendError(1052, 422, res);
+        } else {
+            getApi('reset').checkPasswordResetToken(recoverModel.retrieve_token, recoverModel.email_address)
+                .then(function(result) {
+                    var modelType = result.$modelOptions.name.singular;
+                    var userModal = null;
+                    if (modelType === 'patron_player') {
+                        userModal = ModelPatron;
+                    } else if (modelType === 'employee_user') {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1053, status: 422 });
+                        });
+                    } else {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1024, status: 500 });
+                        });
+                    }
+                    patron = result.dataValues;
+                    var updates = {
+                        password: hash.generate(recoverModel.new_password),
+                        retrieve_expiration: moment().format()
+                    }
+                    return userModal.update(updates, {
+                        where: {
+                            id: patron.id
+                        }
+                    });
+                }).then(function(result) {
+                    if (result) {
+                        res.status(200).json({
+                            patron: self._cleanPatron(patron),
+                            success: true
+                        });
+                    } else {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1048, status: 500 });
+                        });
+                    }
+                }).catch(function(err) {
+                    if (err.errNum) {
+                        self.getErrorApi().sendError(err.errNum, err.status, res);
+                    } else {
+                        self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+                    }
+                });
+        }
+    }
+
     this.update = function(req, res) {
         var moment = getMoment();
         var user = self.getUser(req, res);
