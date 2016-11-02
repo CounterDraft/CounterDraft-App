@@ -28,6 +28,7 @@
     "express-authorization": "^1.0.0",
     "express-ejs-layouts": "^1.1.0",
     "express-session": "^1.14.0",
+    "force-ssl-heroku": "^1.0.2",
     "grunt": "^0.4.5",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",

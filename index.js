@@ -14,6 +14,7 @@ var expressLayouts = require('express-ejs-layouts');
 var grunt = require("grunt");
 var Umzug = require('umzug');
 var Promise = getPromise();
+var forceSsl = require('force-ssl-heroku');
 
 
 //Server settings;
@@ -21,6 +22,8 @@ app.use(express.static(__dirname));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(forceSsl);
+
 
 app.use(bodyParser.json());
 app.use(cookieParser());
