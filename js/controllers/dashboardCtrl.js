@@ -119,19 +119,7 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
     var _updateLineGraph = function(patronCountObj, gameCountObj, duration) {
         var newData = [];
         angular.forEach(patronCountObj, function(value, key) {
-            var date = value.date_ts;
-            // var date = null;
-            // switch (duration) {
-            //     case 'day':
-            //         date = moment(value.date_ts).format('HH:mm');
-            //         break;
-            //     case 'week':
-            //         date = value.date_ts;
-            //         break;
-            //     default:
-            //         date = value.date_ts;
-            //         break;
-            // }
+            var date = moment(value.date_ts).format('YYYY-MM-DD HH:mm');
             newData.push({ time: date, patrons: value.count, games: gameCountObj[key].count });
         });
         $scope.chartData = newData;

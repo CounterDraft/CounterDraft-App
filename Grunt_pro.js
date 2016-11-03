@@ -57,7 +57,8 @@ module.exports = function(grunt) {
                     'build/js/controllers/confirmationCtrl.js',
                     'build/js/controllers/profileCtrl.js',
                     'build/js/controllers/modalCtrls.js',
-                    'build/js/controllers/retrieveCtrls.js',
+                    'build/js/controllers/retrieveCtrl.js',
+                    'build/js/controllers/organizationCtrl.js',
 
                     //libs
                     'build/js/libs/ui-bootstrap-custom-tpls-2.2.0.js',
