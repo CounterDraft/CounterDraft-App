@@ -86,7 +86,7 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
         var formData = {
             duration: duration
         }
-        
+
         var patronData = null;
         var gameData = null;
 
@@ -103,7 +103,7 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
             });
         }).then(function successCallback(response) {
             gameData = response.data;
-            _updateLineGraph(patronData.counts, gameData.counts);
+            _updateLineGraph(patronData.counts, gameData.counts, duration);
 
         }, function errorCallback(response) {
             console.error(response);
@@ -116,31 +116,24 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
         }
     }
 
-    var _updateLineGraph = function(patronCountObj, gameCountObj) {
+    var _updateLineGraph = function(patronCountObj, gameCountObj, duration) {
         var newData = [];
-        var patronData = [];
-        var gameData = [];
-        var yData = [];
-
-        var duration = angular.copy($scope.timeSelect);
-
         angular.forEach(patronCountObj, function(value, key) {
-            var date = moment(value.date_ts).format('MM-DD-YYYY');
-            var count = value.count;
-            yData.push(date);
-            patronData.push(count);
+            var date = value.date_ts;
+            // var date = null;
+            // switch (duration) {
+            //     case 'day':
+            //         date = moment(value.date_ts).format('HH:mm');
+            //         break;
+            //     case 'week':
+            //         date = value.date_ts;
+            //         break;
+            //     default:
+            //         date = value.date_ts;
+            //         break;
+            // }
+            newData.push({ time: date, patrons: value.count, games: gameCountObj[key].count });
         });
-
-        angular.forEach(gameCountObj, function(value, key) {
-            var date = moment(value.date_ts).format('MM-DD-YYYY');
-            var count = value.count;
-            gameData.push(count);
-        });
-
-        angular.forEach(yData, function(value, key) {
-            newData.push({ y: yData[key], patrons: patronData[key], games: gameData[key] });
-        });
-
         $scope.chartData = newData;
     }
 

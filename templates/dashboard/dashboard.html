@@ -15,7 +15,7 @@
     </div>
     <div class="col-xs-12" id="chat-container">
         <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-12 line-chart" line-chart line-data="chartData" line-xkey='y' line-ykeys='["patrons", "games"]' line-labels='["Patrons", "Games"]' line-colors='["#31C0BE", "#c7254e"]'>
+        <div class="col-xs-12 line-chart" line-chart line-data="chartData" line-xkey='time' line-ykeys='["patrons", "games"]' line-labels='["Patrons", "Games"]' line-colors='["#31C0BE", "#c7254e"]'>
         </div>
         <div class="col-xs-12">&nbsp;</div>
     </div>
@@ -30,7 +30,7 @@
             <div class="col-xs-7 label-font text-right">Current Active Games:</div>
             <div class="col-xs-5 text-left">{{active_games | number : fractionSize}}</div>
         </div>
-        <div class="box">
+        <div class="box hidden">
             <div class="col-xs-7 label-font text-right">Current Daily Active Users:</div>
             <div class="col-xs-5 text-left">{{daily_active_users | number : fractionSize}}</div>
         </div>
