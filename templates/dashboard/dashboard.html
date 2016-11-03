@@ -8,22 +8,14 @@
         <div class="form-group col-xs-6 counter-group">
             <div class="input-group">
                 <div class="input-group-addon">Time</div>
-                <select class="form-control" id="time-select" ng-model="timeSelect" ng-change="dCtrl.onTimeChange()" ng-options="x for x in timeSpan"></select>
+                <select class="form-control" id="time-select" ng-model="timeSelect" ng-change="dCtrl.onTimeChange(timeSelect)" ng-options="x for x in timeSpan"></select>
             </div>
             <i class="glyphicon glyphicon-triangle-bottom"></i>
         </div>
     </div>
     <div class="col-xs-12" id="chat-container">
         <div class="col-xs-12">&nbsp;</div>
-        <div class="col-xs-12 line-chart" line-chart line-data='[
-            { y: "2010", a: 100, b: 90 },
-            { y: "2011", a: 75,  b: 65 },
-            { y: "2012", a: 50,  b: 40 },
-            { y: "2013", a: 75,  b: 65 },
-            { y: "2014", a: 50,  b: 40 },
-            { y: "2015", a: 75,  b: 65 },
-            { y: "2016", a: 99, b: 99 }
-        ]' line-xkey='y' line-ykeys='["a", "b"]' line-labels='["Patrons", "Daily Active Users"]' line-colors='["#31C0BE", "#c7254e"]'>
+        <div class="col-xs-12 line-chart" line-chart line-data="chartData" line-xkey='y' line-ykeys='["patrons", "games"]' line-labels='["Patrons", "Games"]' line-colors='["#31C0BE", "#c7254e"]'>
         </div>
         <div class="col-xs-12">&nbsp;</div>
     </div>

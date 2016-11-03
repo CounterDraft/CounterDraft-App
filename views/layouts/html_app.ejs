@@ -2,7 +2,11 @@
 <html lang="en">
 	<head>
 	    <title>CounterDraft | <%= title %></title>
-	    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	    <meta charset="utf-8"> 
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	    <meta name="msapplication-TileColor" content="#da532c">
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+		<meta name="theme-color" content="#ffffff">
 		<link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png">
 		<link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png">
 		<link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png">
@@ -17,12 +21,7 @@
 		<link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96">
 		<link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16">
 		<link rel="manifest" href="/images/favicons/manifest.json">
-		<link rel="mask-icon" href="/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
-		<meta name="msapplication-TileColor" content="#da532c">
-		<meta name="msapplication-TileImage" content="/mstile-144x144.png">
-		<meta name="theme-color" content="#ffffff">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<meta name="globalsign-domain-verification" content="O_r_tVtoj3TwF4eTTbDhD77sjIPTz0_NGJD8-ngTso" />
+		<link rel="mask-icon" href="/images/favicons/safari-pinned-tab.svg" color="#5bbad5">		
 	    <% include ../partials/css.ejs %>
 	</head>
 	<body ng-app="CounterDraft-app" <% if (environment  !== 'production') { %> ngStrictDi <% } %>>
