@@ -166,7 +166,8 @@ function DashboardApi() {
                 organization_id: organization_id,
                 createdAt: {
                     $lte: new Date(list[0])
-                }
+                },
+                is_active: true
             }
         }).then(function(result) {
             list[0] = {
@@ -178,7 +179,8 @@ function DashboardApi() {
                     organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[1])
-                    }
+                    },
+                    is_active: true
                 }
             });
         }).then(function(result) {
@@ -191,7 +193,8 @@ function DashboardApi() {
                     organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[2])
-                    }
+                    },
+                    is_active: true
                 }
             });
         }).then(function(result) {
@@ -204,7 +207,8 @@ function DashboardApi() {
                     organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[3])
-                    }
+                    },
+                    is_active: true
                 }
             });
         }).then(function(result) {
@@ -214,9 +218,11 @@ function DashboardApi() {
             }
             return Model.findAndCountAll({
                 where: {
+                    organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[4])
-                    }
+                    },
+                    is_active: true
                 }
             });
         }).then(function(result) {
@@ -229,7 +235,8 @@ function DashboardApi() {
                     organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[5])
-                    }
+                    },
+                    is_active: true
                 }
             });
         }).then(function(result) {
@@ -242,7 +249,8 @@ function DashboardApi() {
                     organization_id: organization_id,
                     createdAt: {
                         $lte: new Date(list[6])
-                    }
+                    },
+                    is_active: true
                 }
             });
         }).then(function(result) {
