@@ -65,6 +65,7 @@ function baseApi() {
         return {
             id: organization.id,
             name: organization.name,
+            type: organization.type,
             description: organization.description,
             has_multi_admin: organization.has_multi_admin,
             type: organization.type,

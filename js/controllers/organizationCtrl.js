@@ -5,14 +5,14 @@
         This should all the front end logic for the my organization settings page.
 */
 
-app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http','$anchorScroll', '$window', 'data', function($scope, $uibModal, $http, $anchorScroll, $window, data) {
+app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScroll', '$window', 'data', function($scope, $uibModal, $http, $anchorScroll, $window, data) {
     var _base_templates = "templates/organization/";
     var _url_organization = "/api/v1/organization";
 
     $scope.previousPage = null;
     $scope.currentPage = null;
 
-    $scope.organization = null;
+    $scope.organizationModel = null;
     $scope.showEdit = true;
 
     $scope.organization_types = [];
@@ -22,11 +22,6 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http','$anchorScrol
     var _init = function() {
         //default page;
         $scope.currentPage = _getDefaultPage();
-    }
-
-    this.initOrganization = function() {
-        $('[data-toggle="toggle"]').bootstrapToggle();
-
         if (typeof 'undefined' != data && data.organization_types) {
             $scope.organization_types = data.organization_types;
         }
@@ -38,8 +33,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http','$anchorScrol
                 url: _url_organization,
                 param: formData,
             }).then(function successCallback(response) {
-                if (response.data && data.hasOwnProperty('organization')) {
-                    $scope.organization = data.organization;
+                if (response.data && response.data.hasOwnProperty('organization')) {
+                    $scope.organizationModel = response.data.organization;
                 }
             }, function errorCallback(response) {
                 var message = 'An unexpected error has occuried!';
@@ -61,7 +56,15 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http','$anchorScrol
             });
         }
     }
-    $scope.onBack = function(){
+
+    this.initAddEmpoyee = function(){
+        $('[data-toggle="toggle"]').bootstrapToggle();
+    }
+
+    this.initOrganization = function() {
+        $('[data-toggle="toggle"]').bootstrapToggle();
+    }
+    $scope.onBack = function() {
         _preRoute();
         $scope.currentPage = $scope.previousPage;
         _postRoute();
@@ -76,15 +79,20 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http','$anchorScrol
         _postRoute();
     }
 
+    this.saveForm = function(){
+        var organization = angular.copy($scope.organizationModel);
+        console.log(organization);
+    }
+
     this.onAddEmployee = function() {
         $scope.onRoute('add-employee');
     }
 
-    var _preRoute = function(){
+    var _preRoute = function() {
 
     }
 
-    var _postRoute = function(){
+    var _postRoute = function() {
         $anchorScroll();
     }
 

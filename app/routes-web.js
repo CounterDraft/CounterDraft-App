@@ -146,12 +146,18 @@ module.exports = {
             if (!session.organization) {
                 res.redirect('/logout');
             }
-            res.render('pages/organization.ejs', {
-                data: {
-                    organization: session.organization
-                }
+            var Organization_types = models.organization_type;
+            Organization_types.all().then(function(organization_types) {
+                res.render('pages/organization.ejs', {
+                    data: {
+                        organization_types: organization_types,
+                        organization: session.organization,
+                        ts: Date.now()
+                    }
+                });
             });
         });
+
         routerWeb.get('/reports', isAuthorized, function(req, res) {
             res.render('pages/reports.ejs', {
                 data: {
@@ -159,6 +165,7 @@ module.exports = {
                 }
             });
         });
+        
         routerWeb.get('/confirmation', function(req, res) {
             if (req.session.user) {
                 res.redirect('/dashboard');
