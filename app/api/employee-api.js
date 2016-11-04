@@ -201,6 +201,7 @@ function EmployeeApi() {
         //user should be in the system.
         var user = self.getUser(req, res);
         var reqbody = req.body;
+        var employeeOut = null;
         if (!reqbody.new_password || reqbody.new_password === "") {
             this.getErrorApi().sendError(1043, 403, res);
         } else if (!reqbody.old_password || reqbody.old_password === "") {
@@ -222,6 +223,8 @@ function EmployeeApi() {
             }).then(function(result) {
                 if (result) {
                     var employee = result.dataValues;
+                    employeeOut = result.dataValues;
+
                     //this code may not be needed.
                     if (employee && employee.password && !hash.isHashed(employee.password)) {
                         employee.password = hash.generate(employee.password);
@@ -254,9 +257,8 @@ function EmployeeApi() {
                 }
             }).then(function(result) {
                 if (result) {
-                    var employee = result.dataValues;
                     res.status(200).json({
-                        employee: self._cleanEmployee(employee),
+                        employee: self._cleanEmployee(employeeOut),
                         success: true
                     });
                 } else {

@@ -35,6 +35,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             }).then(function successCallback(response) {
                 if (response.data && response.data.hasOwnProperty('organization')) {
                     $scope.organizationModel = response.data.organization;
+                    console.log(response.data.organization);
                 }
             }, function errorCallback(response) {
                 var message = 'An unexpected error has occuried!';
