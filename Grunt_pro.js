@@ -62,6 +62,7 @@ module.exports = function(grunt) {
 
                     //libs
                     'build/js/libs/ui-bootstrap-custom-tpls-2.2.0.js',
+                    'node_modules/bootstrap-toggle/js/bootstrap-toggle.js',
                     'node_modules/sweetalert/dist/sweetalert.min.js',
                     'node_modules/jquery/dist/jquery.js',
                     'node_modules/raphael/raphael.js',

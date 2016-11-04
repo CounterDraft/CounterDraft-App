@@ -54,10 +54,24 @@ function baseApi() {
                 hasAddress = true;
             }
         }
-        if(hasAddress){
+        if (hasAddress) {
             patr.address = address;
         }
         return patr;
+    }
+
+    this._cleanOrganization = function(organization) {
+        var moment = getMoment();
+        return {
+            id: organization.id,
+            name: organization.name,
+            description: organization.description,
+            has_multi_admin: organization.has_multi_admin,
+            type: organization.type,
+            uuid: organization.o_uuid,
+            createdAt: moment(organization.createdAt).unix(),
+            updatedAt: moment(organization.updatedAt).unix()
+        }
     }
 
     this._refreshSession = function(req, employee) {

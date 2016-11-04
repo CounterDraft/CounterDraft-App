@@ -1,37 +1,42 @@
-<section class="alpha">
+<section class="alpha" ng-init="oCtrl.initOrganization()">
     <div class="title-header">
-        <button class="btn senary add" ng-click="onRoute('patron-add')"><i class="glyphicon glyphicon-plus"></i></button>
         <h3 class="text-left-xs text-left-sm text-center">{{organization.name}}</h3>
     </div>
-    <form name="patronSearchForm" data-toggle="validator" class="counter-form" role="form" ng-submit="onPatronSearch()" ng-init="pCtrl.initSearch()">
-        <fieldset class="col-xs-12 counter-widget">
-            <legend>Patron Search</legend>
-            <div class="col-xs-12">&nbsp;</div>
-            <div class="col-xs-12">
-                <div class="form-group" show-errors>
-                    <input type="text" placeholder="patron id" ng-model="patronSearchModel.patron_id" name="patron_id" class="form-control" ng-disabled="patronSearchModel.first_name || patronSearchModel.last_name || patronSearchModel.email_address"/>
-                    <div class="help-block with-errors"></div>
+    <div class="col-xs-12">
+        <button type="button" class="btn senary" ng-click="oCtrl.onEdit()" ng-show="showEdit"><i class="glyphicon glyphicon-pencil"></i></button>
+    </div>
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12">
+        <span ng-if="employeeEditForm.$dirty && employeeEditForm.$valid" class="help-block">Save...</span>
+        <form class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" ng-init="pCtrl.initAccount()" auto-save-form="pCtrl.saveForm()">
+            <div class="row">
+                <div class="form-group col-sm-6 col-xs-12" show-errors>
+                    <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="registrationModel.organization_name" ng-disabled="registrationModel.organization_hash" name="organizationName" pattern="^[a-zA-Z0-9_ ]*$">
+                    <div class="help-block" ng-if="registrationForm.organizationName.$error">Organization name contains invalid characters</div>
                 </div>
-                <div class="form-group">&nbsp;Or</div>
-                <div class="form-group" show-errors>
-                    <input type="text" placeholder="first name" ng-model="patronSearchModel.first_name" name="first_name" class="form-control" ng-disabled="patronSearchModel.patron_id"/>
-                    <div class="help-block with-errors"></div>
+                <div class="form-group col-sm-6 col-xs-12">
+                    <select class="form-control" ng-model="registrationModel.organization_type" ng-options="organization_type.id as organization_type.name for organization_type in organization_types" ng-disabled="registrationModel.organization_hash">
+                        <option value="" selected>Type *</option>
+                    </select>
                 </div>
-                <div class="form-group" show-errors>
-                    <input type="text" placeholder="last name" name="last_name" ng-model="patronSearchModel.last_name" class="form-control" ng-disabled="patronSearchModel.patron_id"/>
-                    <div class="help-block with-errors"></div>
-                </div>
-                <div class="form-group" show-errors>
-                    <input type="email" placeholder="email" name="email_address" ng-model="patronSearchModel.email_address" class="form-control" ng-disabled="patronSearchModel.patron_id"/>
-                    <div class="help-block" ng-if="patronSearchForm.email_address.$error">Email address is invalid</div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-xs-6 pull-right">
-                        <button class="btn primary btn-block" ng-disabled="patronSearchForm.$invalid || patronSearchFormValue()">Search</button>
+            </div>
+            <div class="form-group" show-errors>
+                <textarea class="form-control" placeholder="Describe the organization" ng-model="registrationModel.organization_description" ng-disabled="registrationModel.organization_hash" name="organizationDescription"></textarea>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">&nbsp;</div>
+                <div class="col-xs-8">
+                    <label class="col-xs-6">Send registration email?</label>
+                    <div class="col-xs-6 text-right"><input type="checkbox" data-toggle="toggle"></div>
+                    <label class="col-xs-6">Password reset expiration time</label>
+                    <div class="input-group counter-group col-xs-6">
+                        <div class="input-group-addon">Time</div>
+                        <input type="number" class="form-control" />
                     </div>
                 </div>
             </div>
-        </fieldset>
-    </form>
+            <div class="col-xs-12">&nbsp;</div>
+        </form>
+    </div>
     <div class="col-xs-12">&nbsp;</div>
 </section>

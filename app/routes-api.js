@@ -14,8 +14,8 @@ module.exports = {
             'reset',
             'application',
             'game',
-            'user'
-        ];
+            'user',
+            'organization']
 
         // Register account
         app.all(version + '/:type(registration)/:id(*)', function(req, res) {
@@ -57,6 +57,11 @@ module.exports = {
         // Application servers.
         app.all(version +'/:type(application)/:id(*)', function(req, res){
             getController('application').rest(req, res);
+        });
+
+        // Organization
+        app.all(version + '/:type(organization)/:id(*)', function(req, res) {
+            getController('organization').rest(req, res);
         });
 
         // Error router.

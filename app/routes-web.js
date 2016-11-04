@@ -142,9 +142,13 @@ module.exports = {
         });
 
         routerWeb.get('/organization', isAuthorizedAdmin, function(req, res) {
+            var session = req.session;
+            if (!session.organization) {
+                res.redirect('/logout');
+            }
             res.render('pages/organization.ejs', {
                 data: {
-                    user: 'counterDraft_user'
+                    organization: session.organization
                 }
             });
         });
