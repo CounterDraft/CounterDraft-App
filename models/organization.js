@@ -37,6 +37,24 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING(16),
             allowNull: false,
             comment: "Secret api key for a organziation, we check this on every rest request."
+        },
+        employee_registration_email: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true,
+            comment: "If set we send a email when a employee registers to confirm there email_address."
+        },
+        patron_registration_email: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true,
+            comment: "If set we send a email when a patron registers to there email_address."
+        },
+        password_expire_time: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 45,
+            comment: "If set we send a email when a patron registers to there email_address."
         }
     }, {
         freezeTableName: true,

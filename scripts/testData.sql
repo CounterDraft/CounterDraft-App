@@ -49,6 +49,13 @@ INSERT INTO public.sequelize_meta(
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161025191631-adding-phone-to-patron.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161104181626-settings-organization.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+
+
+	
 	
 
 
