@@ -1,6 +1,6 @@
 <section class="alpha" ng-init="oCtrl.initOrganization()">
     <div class="title-header">
-        <h3 class="text-left-xs text-left-sm text-center">{{organization.name}}</h3>
+        <h3 class="text-center">{{organization.name}}</h3>
     </div>
     <div class="col-xs-12">
         <button type="button" class="btn senary" ng-click="oCtrl.onEdit()" ng-show="showEdit"><i class="glyphicon glyphicon-pencil"></i></button>
@@ -24,19 +24,40 @@
                 <textarea class="form-control" placeholder="Describe the organization" ng-model="registrationModel.organization_description" ng-disabled="registrationModel.organization_hash" name="organizationDescription"></textarea>
             </div>
             <div class="row">
-                <div class="col-xs-4">&nbsp;</div>
-                <div class="col-xs-8">
-                    <label class="col-xs-6">Send registration email?</label>
-                    <div class="col-xs-6 text-right"><input type="checkbox" data-toggle="toggle"></div>
-                    <label class="col-xs-6">Password reset expiration time</label>
-                    <div class="input-group counter-group col-xs-6">
+                <div class="col-xs-12">
+                    <label class="title col-xs-8">Password reset expiration time</label>
+                    <div class="col-xs-4 input-group counter-group">
                         <div class="input-group-addon">Time</div>
                         <input type="number" class="form-control" />
+                    </div>
+                    <div class="col-xs-12">&nbsp;</div>
+                    <label class="title col-xs-8">Send employee registration email?</label>
+                    <div class="col-xs-4 text-right checkbox-container">
+                        <input type="checkbox" data-toggle="toggle">
+                    </div>
+                    <div class="col-xs-12">&nbsp;</div>
+                    <label class="title col-xs-8">Send patron registration email?</label>
+                    <div class="col-xs-4 text-right checkbox-container">
+                        <input type="checkbox" data-toggle="toggle">
+                    </div>
+                    <div class="col-xs-12">&nbsp;</div>
+                    <label class="title col-xs-8">Allow multiple administrators?</label>
+                    <div class="col-xs-4 text-right checkbox-container">
+                        <input type="checkbox" data-toggle="toggle">
                     </div>
                 </div>
             </div>
             <div class="col-xs-12">&nbsp;</div>
         </form>
+    </div>
+    <div class="col-xs-12">
+        <fieldset class="counter-widget employee-widget">
+            <legend>Employees</legend>
+            <div class="col-xs-12">&nbsp;</div>
+            <button class="btn senary add" ng-click="oCtrl.onAddEmployee()" ng-show="showEdit" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+            <div class="col-xs-12">&nbsp;</div>
+        </fieldset>
+        <small class="pull-right">(click to edit employee)</small>
     </div>
     <div class="col-xs-12">&nbsp;</div>
 </section>

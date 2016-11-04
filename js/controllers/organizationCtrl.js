@@ -5,7 +5,7 @@
         This should all the front end logic for the my organization settings page.
 */
 
-app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$window', 'data', function($scope, $uibModal, $http, $window, data) {
+app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http','$anchorScroll', '$window', 'data', function($scope, $uibModal, $http, $anchorScroll, $window, data) {
     var _base_templates = "templates/organization/";
     var _url_organization = "/api/v1/organization";
 
@@ -38,7 +38,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$window', '
                 url: _url_organization,
                 param: formData,
             }).then(function successCallback(response) {
-                if(response.data && data.hasOwnProperty('organization')){
+                if (response.data && data.hasOwnProperty('organization')) {
                     $scope.organization = data.organization;
                 }
             }, function errorCallback(response) {
@@ -60,6 +60,32 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$window', '
                 });
             });
         }
+    }
+    $scope.onBack = function(){
+        _preRoute();
+        $scope.currentPage = $scope.previousPage;
+        _postRoute();
+    }
+
+    $scope.onRoute = function(page) {
+        _preRoute();
+        if (page) {
+            $scope.previousPage = $scope.currentPage;
+            $scope.currentPage = _base_templates + page + '.html';
+        }
+        _postRoute();
+    }
+
+    this.onAddEmployee = function() {
+        $scope.onRoute('add-employee');
+    }
+
+    var _preRoute = function(){
+
+    }
+
+    var _postRoute = function(){
+        $anchorScroll();
     }
 
     var _getDefaultPage = function() {
