@@ -59,12 +59,13 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     }
 
     this.initAddEmpoyee = function(){
-        $('[data-toggle="toggle"]').bootstrapToggle();
+        //nothing
     }
 
     this.initOrganization = function() {
-        $('[data-toggle="toggle"]').bootstrapToggle();
+        //nothing
     }
+    
     $scope.onBack = function() {
         _preRoute();
         $scope.currentPage = $scope.previousPage;

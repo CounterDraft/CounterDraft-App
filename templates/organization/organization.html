@@ -28,22 +28,22 @@
                     <label class="title col-xs-8">Password reset expiration time</label>
                     <div class="col-xs-4 input-group counter-group">
                         <div class="input-group-addon">Time</div>
-                        <input type="number" class="form-control" />
+                        <input type="number" ng-model="organizationModel.password_expire_time" name="password_expire_time" class="form-control text-right" />
                     </div>
                     <div class="col-xs-12">&nbsp;</div>
                     <label class="title col-xs-8">Send employee registration email?</label>
                     <div class="col-xs-4 text-right checkbox-container">
-                        <input type="checkbox" data-toggle="toggle" data-style="ios" data-on="Yes" data-off="No">
+                        <toggle ng-model="organizationModel.employee_registration_email" name="employee_registration_email" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
                     </div>
                     <div class="col-xs-12">&nbsp;</div>
                     <label class="title col-xs-8">Send patron registration email?</label>
                     <div class="col-xs-4 text-right checkbox-container">
-                        <input type="checkbox" data-toggle="toggle" data-style="ios" data-on="Yes" data-off="No">
+                        <toggle ng-model="organizationModel.patron_registration_email" name="patron_registration_email" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
                     </div>
                     <div class="col-xs-12">&nbsp;</div>
                     <label class="title col-xs-8">Allow multiple administrators?</label>
                     <div class="col-xs-4 text-right checkbox-container">
-                        <input type="checkbox" data-toggle="toggle" data-style="ios" data-on="Yes" data-off="No">
+                        <toggle ng-model="organizationModel.has_multi_admin" name="has_multi_admin" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
                     </div>
                 </div>
             </div>

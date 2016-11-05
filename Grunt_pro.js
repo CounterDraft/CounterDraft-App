@@ -43,6 +43,7 @@ module.exports = function(grunt) {
                     'node_modules/angular/angular.js',
                     'node_modules/ng-places-autocomplete/ngPlacesAutocomplete.min.js',
                     'node_modules/angular-morris/build/module/angular-morris/angular-morris.min.js',
+                    'node_modules/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.js',
                     'node_modules/angular-animate/angular-animate.min.js',
                     'build/js/libs/showErrors.js',
                     'build/js/app.js',
