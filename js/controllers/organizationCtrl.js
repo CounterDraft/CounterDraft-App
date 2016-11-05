@@ -17,6 +17,11 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     $scope.organization_types = [];
 
+    $scope.employeeInviteModel = {
+        email_address: null,
+        is_admin: false
+    };
+
     this.animationsEnabled = true;
 
     var _init = function() {
@@ -65,7 +70,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     this.initOrganization = function() {
         //nothing
     }
-    
+
     $scope.onBack = function() {
         _preRoute();
         $scope.currentPage = $scope.previousPage;
@@ -79,6 +84,11 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             $scope.currentPage = _base_templates + page + '.html';
         }
         _postRoute();
+    }
+
+    $scope.onEmployeeInvite = function(){
+        var formData = angular.copy($scope.employeeInviteModel);
+        console.log(formData);
     }
 
     this.saveForm = function(){
