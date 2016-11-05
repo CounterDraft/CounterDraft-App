@@ -38,6 +38,7 @@ module.exports = function(grunt) {
             libsJS: {
                 src: [
                     //NOTE- If we add more libs there need to be added to the build here;
+                    'node_modules/jquery/dist/jquery.js',
                     'node_modules/moment/moment.js',
                     'node_modules/angular/angular.js',
                     'node_modules/ng-places-autocomplete/ngPlacesAutocomplete.min.js',
@@ -64,7 +65,6 @@ module.exports = function(grunt) {
                     'build/js/libs/ui-bootstrap-custom-tpls-2.2.0.js',
                     'node_modules/bootstrap-toggle/js/bootstrap-toggle.js',
                     'node_modules/sweetalert/dist/sweetalert.min.js',
-                    'node_modules/jquery/dist/jquery.js',
                     'node_modules/raphael/raphael.js',
                     'node_modules/morris.js/morris.js',
                     'node_modules/offcanvas-bootstrap/dist/js/bootstrap.offcanvas.min.js',
