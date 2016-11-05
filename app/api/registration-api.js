@@ -71,8 +71,8 @@ function registationApi() {
                 this.getErrorApi().sendError(1013, 422, res);
                 return;
             }
-
-            ModelOrganization.create({
+            
+            getApi('organization').create({
                 name: employee.organization_name,
                 description: employee.organization_description,
                 has_multi_admin: true,

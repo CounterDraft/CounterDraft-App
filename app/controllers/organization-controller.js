@@ -5,7 +5,7 @@ function OrganizationController() {
         default: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('organization').post_create(req, res);
                     break;
                 case 'get':
                     getApi('organization').get_organization(req, res);

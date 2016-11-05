@@ -33,6 +33,20 @@ function OrganizationApi() {
             }
         });
     }
+
+    this.create = function(organization) {
+        var self = this;
+        return ModelOrganization.create(organization);
+    }
+
+    this.post_create = function(req, res) {
+        var self = this;
+        res.status(200).json({
+            organization: null,
+            success: true
+        });
+    }
+
     this.get_organization = function(req, res) {
         var query = req.query;
         var user = self.getUser(req, res);
