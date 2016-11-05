@@ -31,7 +31,6 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         if (typeof 'undefined' != data && data.organization_types) {
             $scope.organization_types = data.organization_types;
         }
-        console.log(data);
         //not sure if a non-admin can see this page but just in case.
         if (typeof 'undefined' != data && data.employee && data.employee.is_admin) {
             $scope.showEdit = true;
@@ -68,7 +67,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         }
     }
 
-    this.initAddEmpoyee = function(){
+    this.initAddEmpoyee = function() {
         //nothing
     }
 
@@ -76,7 +75,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         //nothing
     }
 
-    this.onEdit = function(){
+    this.onEdit = function() {
         $scope.editLocked = !$scope.editLocked;
     }
 
@@ -95,14 +94,59 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         _postRoute();
     }
 
-    $scope.onEmployeeInvite = function(){
+    $scope.onEmployeeInvite = function() {
         var formData = angular.copy($scope.employeeInviteModel);
-        console.log(formData);
-    }
 
-    this.saveForm = function(){
+    }
+    this.saveForm = function() {
+        var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
         var organization = angular.copy($scope.organizationModel);
-        console.log(organization);
+        var formData = {
+            name: organization.name,
+            type: organization.type,
+            description: organization.description,
+            patron_registration_email: organization.patron_registration_email,
+            employee_registration_email: organization.employee_registration_email,
+            multi_admin: organization.multi_admin,
+            password_expire_time: organization.password_expire_time
+        }
+
+        if (formData) {
+            $http({
+                method: 'PUT',
+                url: _url_organization,
+                data: formData,
+            }).then(function successCallback(response) {
+                if (response && response.status === 200) {
+                    // console.log(response);
+                } else {
+                    $window.swal({
+                        title: "Error",
+                        text: userNotFoundErrorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                }
+            }, function errorCallback(response) {
+                if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
+                    errorMsg = response.data.error[0].msg;
+                    $window.swal({
+                        title: "Error",
+                        text: errorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                }
+            });
+        } else {
+            console.error(userNotFoundErrorMsg);
+        }
     }
 
     this.onAddEmployee = function() {

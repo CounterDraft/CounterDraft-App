@@ -72,6 +72,102 @@ function OrganizationApi() {
         });
     }
 
+    this.put_update = function(req, res) {
+        var self = this;
+        var user = self.getUser(req, res);
+        var sessOrganization = self.getOrganization(req, res);
+        var putData = req.body;
+        var organizationJson = null;
+        var chckData = this._verifyInformation(putData);
+
+        if (chckData.isCorrupt) {
+            this.getErrorApi().sendError(chckData.errNum, 422, res);
+            return;
+        }
+
+        ModelOrganization.findOne({
+            where: {
+                id: sessOrganization.id,
+                is_active: true
+            }
+        }).then(function(result) {
+            if (result) {
+                var organization = result.dataValues;
+                var updates = {};
+                var tmpUpdates = {};
+                for (var attr in putData) {
+                    if (organization.hasOwnProperty(attr) && organization[attr] != putData[attr]) {
+                        updates[attr] = putData[attr];
+                        tmpUpdates[attr] = putData[attr];
+                    }
+                }
+                organizationJson = mix(result.dataValues).into(tmpUpdates);
+                return ModelOrganization.update(updates, {
+                    where: {
+                        id: organization.id,
+                        is_active: true
+                    }
+                });
+            } else {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1030, status: 500 });
+                });
+            }
+        }).then(function(didUpdate) {
+            if (didUpdate && organizationJson) {
+                self._refreshSessionOrganization(req, organizationJson);
+                res.status(200).json({
+                    organization: self._cleanOrganization(organizationJson),
+                    success: true
+                });
+            } else {
+                self.getErrorApi().setErrorWithMessage(1055, 500, res);
+            }
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
+        });
+    }
+
+    this._verifyInformation = function(organization) {
+        var errorNumber = null;
+        var isCorrupt = false;
+
+        if (organization.hasOwnProperty('id') || organization.hasOwnProperty('createdAt') ||
+            organization.hasOwnProperty('updatedAt') || organization.hasOwnProperty('is_active') ||
+            organization.hasOwnProperty('o_uuid') || organization.hasOwnProperty('api_key')) {
+            errorNumber = 1034;
+        }
+        if (errorNumber) {
+            isCorrupt = true;
+        }
+        return {
+            errNum: errorNumber,
+            isCorrupt: isCorrupt
+        }
+    }
+
+    this.invitation = function(req, res){
+        res.status(200).json({
+            success: true
+        });
+    }
+
+    this.getAllInvitation = function(req, res){
+        res.status(200).json({
+            success: true
+        });
+    }
+
+    this.cancelInvitation = function(req, res){
+        res.status(200).json({
+            success: true
+        });
+    }
+
     this.getImage = function(req, res) {
         res.status(200).json({
             success: true

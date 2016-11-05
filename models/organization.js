@@ -11,11 +11,6 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.TEXT,
             comment: "Description of the organization"
         },
-        has_multi_admin: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: false
-        },
         type: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -37,6 +32,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING(16),
             allowNull: false,
             comment: "Secret api key for a organziation, we check this on every rest request."
+        },
+        multi_admin: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true,
+            comment: "If true the organization has more then one administrator."
         },
         employee_registration_email: {
             type: DataTypes.BOOLEAN,

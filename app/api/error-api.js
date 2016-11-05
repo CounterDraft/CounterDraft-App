@@ -188,6 +188,9 @@ var errorList = {
     1054: {
         msg: 'Cannot update a employee from a employee rest call.'
     },
+    1055: {
+        msg: 'Failed to update organization.'
+    },
 
 
 

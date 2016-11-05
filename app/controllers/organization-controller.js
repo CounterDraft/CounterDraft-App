@@ -2,6 +2,28 @@ function OrganizationController() {
     this.tag = 'organizationController';
 
     this.ApiRouter = {
+
+        employee: function(verb, req, res, self) {
+            switch (verb) {
+                case 'post':
+                    getApi('organization').invitation(req, res);
+                    break;
+                case 'get':
+                    getApi('organization').getAllInvitation(req, res);
+                    break;
+                case 'put':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'delete':
+                    getApi('organization').cancelInvitation(req, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+
+        },
+
         default: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
@@ -11,7 +33,7 @@ function OrganizationController() {
                     getApi('organization').get_organization(req, res);
                     break;
                 case 'put':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('organization').put_update(req, res);
                     break;
                 case 'delete':
                     self.getErrorApi().sendError(1011, 403, res);

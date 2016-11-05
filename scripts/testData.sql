@@ -62,11 +62,11 @@ INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161104181626-settings-organization.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
-
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161105223424-correcting-field-organization.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 	
 	
-
-
 
 #set all users to password = password
 UPDATE public.employee_user

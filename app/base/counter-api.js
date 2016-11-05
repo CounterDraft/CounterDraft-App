@@ -67,7 +67,7 @@ function baseApi() {
             name: organization.name,
             type: organization.type,
             description: organization.description,
-            has_multi_admin: organization.has_multi_admin,
+            multi_admin: organization.multi_admin,
             employee_registration_email: organization.employee_registration_email,
             patron_registration_email: organization.patron_registration_email,
             password_expire_time: organization.password_expire_time,
