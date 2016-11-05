@@ -13,7 +13,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     $scope.currentPage = null;
 
     $scope.organizationModel = null;
-    $scope.showEdit = true;
+    $scope.showEdit = false;
+    $scope.editLocked = true;
 
     $scope.organization_types = [];
 
@@ -30,6 +31,11 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         if (typeof 'undefined' != data && data.organization_types) {
             $scope.organization_types = data.organization_types;
         }
+        console.log(data);
+        //not sure if a non-admin can see this page but just in case.
+        if (typeof 'undefined' != data && data.employee && data.employee.is_admin) {
+            $scope.showEdit = true;
+        }
 
         if (typeof 'undefined' != data && data.organization) {
             var formData = null;
@@ -40,7 +46,6 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             }).then(function successCallback(response) {
                 if (response.data && response.data.hasOwnProperty('organization')) {
                     $scope.organizationModel = response.data.organization;
-                    console.log(response.data.organization);
                 }
             }, function errorCallback(response) {
                 var message = 'An unexpected error has occuried!';
@@ -69,6 +74,10 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     this.initOrganization = function() {
         //nothing
+    }
+
+    this.onEdit = function(){
+        $scope.editLocked = !$scope.editLocked;
     }
 
     $scope.onBack = function() {

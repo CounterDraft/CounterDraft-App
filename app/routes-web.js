@@ -5,6 +5,7 @@ module.exports = {
     setup: function(app) {
         var routerWeb = require('express').Router();
         var Promise = getPromise();
+        var moment = getMoment();
         var organizationModal = models.organization;
         var employeeModal = models.employee_user;
 
@@ -57,7 +58,8 @@ module.exports = {
                 res.render("pages/dashboard.ejs", {
                     data: {
                         user: user_data,
-                        timeSpans: time_spans
+                        timeSpans: time_spans,
+                        ts: moment().unix()
                     }
                 });
             } else {
@@ -74,7 +76,7 @@ module.exports = {
                     res.render('pages/login.ejs', {
                         data: {
                             organization_types: organization_types,
-                            ts: Date.now()
+                            ts: moment().unix()
                         }
                     });
                 });
@@ -83,7 +85,8 @@ module.exports = {
         routerWeb.get('/game', isAuthorized, function(req, res) {
             res.render('pages/game.ejs', {
                 data: {
-                    user: 'counterDraft_user'
+                    user: 'counterDraft_user',
+                    ts: moment().unix()
                 }
             });
         });
@@ -112,7 +115,8 @@ module.exports = {
                             },
                             employee: {
                                 is_admin: user.is_admin
-                            }
+                            },
+                            ts: moment().unix()
                         }
                     });
                 }).catch(function(err) {
@@ -136,14 +140,15 @@ module.exports = {
                     },
                     extra: {
                         does_file_exist: false
-                    }
+                    },
+                    ts: moment().unix()
                 }
             });
         });
 
         routerWeb.get('/organization', isAuthorizedAdmin, function(req, res) {
             var session = req.session;
-            if (!session.organization) {
+            if (!session.organization || !session.user) {
                 res.redirect('/logout');
             }
             var Organization_types = models.organization_type;
@@ -152,7 +157,11 @@ module.exports = {
                     data: {
                         organization_types: organization_types,
                         organization: session.organization,
-                        ts: Date.now()
+                        employee: {
+                            id: session.user.id,
+                            is_admin: session.user.is_admin
+                        },
+                        ts: moment().unix()
                     }
                 });
             });
@@ -161,11 +170,12 @@ module.exports = {
         routerWeb.get('/reports', isAuthorized, function(req, res) {
             res.render('pages/reports.ejs', {
                 data: {
-                    user: 'counterDraft_user'
+                    user: 'counterDraft_user',
+                    ts: moment().unix()
                 }
             });
         });
-        
+
         routerWeb.get('/confirmation', function(req, res) {
             if (req.session.user) {
                 res.redirect('/dashboard');
@@ -175,7 +185,10 @@ module.exports = {
                 getApi('registration').confirmRegistation(req, res)
                     .then(function(data) {
                         res.render('pages/confirmation.ejs', {
-                            data: { email_address: data.email_address }
+                            data: {
+                                email_address: data.email_address,
+                                ts: moment().unix()
+                            }
                         });
                     }).catch(function(error) {
                         res.render('pages/confirmation.ejs', {
@@ -206,7 +219,10 @@ module.exports = {
                         } else {
                             logger.error("Bad token reqest", { error: err });
                             res.render('pages/retrieve.ejs', {
-                                data: { error: errorObj }
+                                data: {
+                                    error: errorObj,
+                                    ts: moment().unix()
+                                }
                             });
                             return;
                         }
@@ -216,7 +232,10 @@ module.exports = {
                     }).catch(function(err) {
                         logger.error("Bad token reqest", { error: err });
                         res.render('pages/retrieve.ejs', {
-                            data: { error: errorObj }
+                            data: {
+                                error: errorObj,
+                                ts: moment().unix()
+                            }
                         });
                     });
             }
@@ -224,7 +243,8 @@ module.exports = {
         routerWeb.get('/settings', isAuthorized, function(req, res) {
             res.render('pages/reports.ejs', {
                 data: {
-                    user: 'counterDraft_user'
+                    user: 'counterDraft_user',
+                    ts: moment().unix()
                 }
             });
         });
@@ -241,7 +261,8 @@ module.exports = {
             } else if (req.session.user) {
                 res.render('pages/badURL.ejs', {
                     data: {
-                        user: req.session.user
+                        user: req.session.user,
+                        ts: moment().unix()
                     }
                 });
             } else {

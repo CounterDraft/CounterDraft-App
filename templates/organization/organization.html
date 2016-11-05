@@ -7,43 +7,51 @@
     </div>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12">
+                <span>Organization ID - {{organizationModel.id}}</span>
+            </div>
+        </div>
+        <div class="col-xs-12">&nbsp;</div>
         <span ng-if="employeeEditForm.$dirty && employeeEditForm.$valid" class="help-block">Save...</span>
-        <form class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" ng-init="pCtrl.initAccount()" auto-save-form="oCtrl.saveForm()">
+        <form class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" auto-save-form="oCtrl.saveForm()">
             <div class="row">
                 <div class="form-group col-sm-6 col-xs-12" show-errors>
-                    <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="organizationModel.name" name="organizationName" pattern="^[a-zA-Z0-9_ ]*$">
-                    <div class="help-block" ng-if="registrationForm.organizationName.$error">Organization name contains invalid characters</div>
+                    <input type="text" class="form-control" ng-disabled="editLocked" placeholder="Enter organization name *" ng-model="organizationModel.name" name="organizationName" pattern="^[a-zA-Z0-9_ ]*$">
+                    <div class="help-block" ng-if="employeeEditForm.organizationName.$error">Organization name contains invalid characters</div>
                 </div>
                 <div class="form-group col-sm-6 col-xs-12">
-                    <select class="form-control" ng-model="registrationModel.organization_type" ng-options="organization_type.id as organization_type.name for organization_type in organization_types">
-                        <option value="" selected>Type *</option>
+                    <select class="form-control" ng-disabled="editLocked" ng-model="organizationModel.type" ng-options="organization_type.id as organization_type.name for organization_type in organization_types">
                     </select>
                 </div>
             </div>
             <div class="form-group" show-errors>
-                <textarea class="form-control" placeholder="Describe the organization" ng-model="organizationModel.description" name="organizationDescription"></textarea>
+                <textarea class="form-control" ng-disabled="editLocked" placeholder="Describe the organization" ng-model="organizationModel.description" name="organizationDescription"></textarea>
             </div>
             <div class="row">
                 <div class="col-xs-12">
                     <label class="title col-xs-8">Password reset expiration time</label>
-                    <div class="col-xs-4 input-group counter-group">
+                    <div class="col-xs-4 input-group counter-group" ng-clock>
                         <div class="input-group-addon">Time</div>
-                        <input type="number" ng-model="organizationModel.password_expire_time" name="password_expire_time" class="form-control text-right" />
+                        <input type="number" ng-disabled="editLocked" ng-model="organizationModel.password_expire_time" name="password_expire_time" class="form-control text-right" />
                     </div>
                     <div class="col-xs-12">&nbsp;</div>
                     <label class="title col-xs-8">Send employee registration email?</label>
-                    <div class="col-xs-4 text-right checkbox-container">
-                        <toggle ng-model="organizationModel.employee_registration_email" name="employee_registration_email" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                    <div class="col-xs-4 text-right checkbox-container" ng-clock>
+                        <toggle ng-show="!editLocked" disabled ng-model="organizationModel.employee_registration_email" name="employee_registration_email" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                        <span ng-show="editLocked" class="nonEdit">{{ organizationModel.employee_registration_email | yesNo }}</span>
                     </div>
                     <div class="col-xs-12">&nbsp;</div>
                     <label class="title col-xs-8">Send patron registration email?</label>
-                    <div class="col-xs-4 text-right checkbox-container">
-                        <toggle ng-model="organizationModel.patron_registration_email" name="patron_registration_email" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                    <div class="col-xs-4 text-right checkbox-container" ng-clock>
+                        <toggle ng-show="!editLocked" ng-model="organizationModel.patron_registration_email" name="patron_registration_email" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                        <span ng-show="editLocked" class="nonEdit">{{ organizationModel.patron_registration_email | yesNo }}</span>
                     </div>
                     <div class="col-xs-12">&nbsp;</div>
                     <label class="title col-xs-8">Allow multiple administrators?</label>
-                    <div class="col-xs-4 text-right checkbox-container">
-                        <toggle ng-model="organizationModel.has_multi_admin" name="has_multi_admin" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                    <div class="col-xs-4 text-right checkbox-container" ng-clock>
+                        <toggle ng-show="!editLocked" ng-model="organizationModel.has_multi_admin" name="has_multi_admin" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                        <span ng-show="editLocked" class="nonEdit">{{ organizationModel.has_multi_admin | yesNo }}</span>
                     </div>
                 </div>
             </div>
@@ -54,7 +62,7 @@
         <fieldset class="counter-widget employee-widget">
             <legend>Employees</legend>
             <div class="col-xs-12">&nbsp;</div>
-            <button class="btn senary add" ng-click="oCtrl.onAddEmployee()" ng-show="showEdit" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+            <button class="btn senary add" ng-click="oCtrl.onAddEmployee()" ng-show="!editLocked" type="button"><i class="glyphicon glyphicon-plus"></i></button>
             <div class="col-xs-12">&nbsp;</div>
         </fieldset>
         <small class="pull-right">(click to edit employee)</small>
