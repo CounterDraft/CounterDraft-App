@@ -11,6 +11,7 @@ function OrganizationApi() {
     this.tag = 'organization-api';
     var Promise = getPromise();
     var ModelOrganization = models.organization;
+    var ModelEmployeeInvite = models.employee_invite;
 
     this.getOrganizationTypes = function(req, res) {
         var Organization_types = models.organization_type;
@@ -151,6 +152,11 @@ function OrganizationApi() {
     }
 
     this.invitation = function(req, res){
+        // Generate a uuid and hash it.
+        // verify email isnt in system or at least not active in system.
+        // Create employee_invite record.
+        // Send the invitation email.
+        // Send employee_invite record to front end as response.
         res.status(200).json({
             success: true
         });
