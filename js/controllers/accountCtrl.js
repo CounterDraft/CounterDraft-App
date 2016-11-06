@@ -5,7 +5,7 @@
         This should all the logic for the login page.
 */
 
-app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($scope, $http, $window, data) {
+app.controller('AccountCtrl', ['$scope', '$http', '$window', '$location', 'data', function($scope, $http, $window, $location, data) {
     var _url_login = "/api/v1/account/login";
     var _url_registration = "/api/v1/account/registration";
     var _base_templates = "templates/login/";
@@ -36,6 +36,11 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', 'data', function($s
     $scope.organization_types = [];
 
     var _init = function() {
+        if ($location.search().hasOwnProperty('invitation_token')) {
+            $scope.onRoute('registration');
+            $scope.registrationModel.organization_hash = $location.search().invitation_token;
+            return;
+        }
         //default page;
         $scope.currentPage = _getDefaultPage();
     }
