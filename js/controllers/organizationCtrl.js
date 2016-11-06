@@ -8,6 +8,7 @@
 app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScroll', '$window', 'data', function($scope, $uibModal, $http, $anchorScroll, $window, data) {
     var _base_templates = "templates/organization/";
     var _url_organization = "/api/v1/organization";
+    var _url_organization_invite = "/api/v1/organization/employee";
 
     $scope.previousPage = null;
     $scope.currentPage = null;
@@ -96,9 +97,52 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     $scope.onEmployeeInvite = function() {
         var formData = angular.copy($scope.employeeInviteModel);
+        var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
 
+        if (formData) {
+            $http({
+                method: 'POST',
+                url: _url_organization_invite,
+                data: formData,
+            }).then(function successCallback(response) {
+                if (response && response.status === 200) {
+                    console.log(response);
+                } else {
+                    $window.swal({
+                        title: "Error",
+                        text: userNotFoundErrorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                }
+            }, function errorCallback(response) {
+                if (response && response.hasOwnProperty('data') &&
+                    response.data.hasOwnProperty('error') &&
+                    response.data.error.length > 0) {
+                    errorMsg = response.data.error[0].msg;
+                    $window.swal({
+                        title: "Error",
+                        text: errorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                }
+            });
+        } else {
+            console.error(userNotFoundErrorMsg);
+        }
     }
+
     this.saveForm = function() {
+        if ($scope.editLocked) {
+            return;
+        }
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
         var organization = angular.copy($scope.organizationModel);
         var formData = {

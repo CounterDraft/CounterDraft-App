@@ -410,6 +410,9 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     }
 
     this.saveForm = function() {
+        if(!$scope.allowEdit){
+            return;
+        }
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
         var patron = angular.copy($scope.patronModel);
 
