@@ -191,6 +191,9 @@ var errorList = {
     1055: {
         msg: 'Failed to update organization.'
     },
+    1056: {
+        msg: 'Failed to update or create in record in database.'
+    },
 
 
 

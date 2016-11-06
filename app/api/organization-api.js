@@ -201,7 +201,7 @@ function OrganizationApi() {
         }).then(function(results) {
             if (results.count > 0) {
                 return new Promise(function(resolve, reject) {
-                    return reject(self.getErrorApi().getErrorMsg(1018));
+                    reject({ errNum: 1018, status: 422 });
                 });
             }
 
@@ -214,7 +214,7 @@ function OrganizationApi() {
         }).then(function(results) {
             if (results.count > 0) {
                 return new Promise(function(resolve, reject) {
-                    return reject(self.getErrorApi().getErrorMsg(1018));
+                    reject({ errNum: 1018, status: 422 });
                 });
             }
             //we check this just in case the organization has been deleted.
@@ -236,7 +236,7 @@ function OrganizationApi() {
                 });
             } else {
                 return new Promise(function(resolve, reject) {
-                    return reject(self.getErrorApi().getErrorMsg(1018));
+                    reject({ errNum: 1029, status: 422 });
                 });
             }
         }).then(function(result) {
@@ -258,7 +258,7 @@ function OrganizationApi() {
                     expire: defaultExpire.toDate(),
                     is_admin: postData.is_admin
                 });
-                
+
                 return ModelEmployeeInvite.update(updates, {
                     where: {
                         id: db_employeeInvite.id
@@ -286,13 +286,11 @@ function OrganizationApi() {
             } else if (result) {
                 getApi('email').inviteUser(postData.email_address, db_organization, code);
                 res.status(200).json({
-                    employeeInvite: db_employeeInvite,
+                    employeeInvite: self._cleanEmployeeInvite(db_employeeInvite),
                     success: true
                 });
             } else {
-                return new Promise(function(resolve, reject) {
-                    return reject(self.getErrorApi().getErrorMsg(1018));
-                });
+                self.getErrorApi().sendError(1056, 500, res);
             }
         }).catch(function(err) {
             if (err.errNum) {

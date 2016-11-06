@@ -16,6 +16,14 @@ function registationApi() {
     var ModelPatron = models.patron_player;
     var moment = getMoment();
 
+    this.registerUserWithCode = function(employee, req, res) {
+        console.log(employee);
+        res.status(200).json({
+            user: null,
+            success: true
+        });
+    }
+
     this.registerUser = function(req, res) {
         var employee = req.body;
 
@@ -58,11 +66,11 @@ function registationApi() {
             var passwordWithHash = getHash().generate(employee.password);
             var employeeOrganization = 999;
 
-            if (!passwordWithHash) {
-                this.getErrorApi().sendError(1013, 422, res);
+            if (employee.hasOwnProperty('organization_hash') && employee.organization_hash != null) {
+                self.registerUserWithCode(employee, req, res);
                 return;
             }
-            
+
             getApi('organization').create({
                 name: employee.organization_name,
                 description: employee.organization_description,

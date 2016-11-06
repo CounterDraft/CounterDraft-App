@@ -22,6 +22,20 @@ function baseApi() {
             updatedAt: moment(employee.updatedAt).unix()
         }
     }
+
+    this._cleanEmployeeInvite = function(model){
+        var moment = getMoment();
+         return {
+            email_address: model.email_address,
+            first_name: moment(model.expire).unix(),
+            invite_by: model.invite_by,
+            is_admin: model.is_admin,
+            organization_id: model.organization_id,
+            createdAt: moment(model.createdAt).unix(),
+            updatedAt: moment(model.updatedAt).unix()
+        }
+    }
+    
     this._generateApiKey = function() {
         var uuid = generateUUID().replace(/-/g, "");
         if (uuid) {
