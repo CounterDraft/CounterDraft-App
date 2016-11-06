@@ -94,8 +94,28 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         }
         _postRoute();
     }
+    var _clearModel = function(modalName) {
+        if (!$scope[modalName]) {
+            return;
+        }
+        angular.forEach($scope[modalName], function(value, key) {
+            if (key.match(/is_admin/g)) {
+                $scope[modalName][key] = false;
+                return;
+            }
+            $scope[modalName][key] = null;
+        });
+    }
+
+    var _resetForm = function(form, modelName) {
+        _clearModel(modelName);
+        form.$setPristine();
+        form.$setUntouched();
+        $scope.$broadcast('show-errors-reset');
+    }
 
     $scope.onEmployeeInvite = function() {
+        var self = this;
         var formData = angular.copy($scope.employeeInviteModel);
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
 
@@ -106,7 +126,21 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 data: formData,
             }).then(function successCallback(response) {
                 if (response && response.status === 200) {
-                    console.log(response);
+                    var employeeInvite = response.data.employeeInvite;
+                    var msg = "Employee @ email address " + employeeInvite.email_address + " has been invited!";
+                    
+                    $window.swal({
+                        title: "Success",
+                        text: msg,
+                        type: "success",
+                        confirmButtonColor: "#64d46f",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    }, function() {
+                        _resetForm(self.employeeInviteForm, 'employeeInviteModel');
+                        $scope.$apply();
+                    });
                 } else {
                     $window.swal({
                         title: "Error",

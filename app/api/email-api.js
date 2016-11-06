@@ -16,27 +16,27 @@ function EmailApi() {
     var moment = getMoment();
     var transporter = getEmailTransport();
 
-    this.inviteUser = function(email_address, token) {
+    this.inviteUser = function(email_address, organization, invitation_token) {
         var invite_user_template = emailTemplateDir + '/organization-invite/organization-invite.hbs';
         var url_link;
         return new Promise(function(resolve, reject) {
-            if (!user || !token) {
-                return reject('No user_email or token was provided to the reset api');
+            if (!email_address || !invitation_token || !organization) {
+                return reject('No email_address or invitation_token or organization was provided to the email api');
             }
             var emailOptions = {
                 from: '"Do-Not-Reply" <do-not-reply@counterDraft.com>',
-                subject: 'Reset Password'
+                subject: 'Invitation to CounterDraft'
             }
             if (global.config.environment === 'production') {
-                url_link = 'https://' + config.server.ip + '/retrieve?retrieve_token=' + token;
+                url_link = 'https://' + config.server.ip + '/login?invitation_token=' + invitation_token;
             } else {
-                url_link = 'http://' + config.server.ip + ':' + config.server.port + '/retrieve?retrieve_token=' + token;
+                url_link = 'http://' + config.server.ip + ':' + config.server.port + '/login?invitation_token=' + invitation_token;
             }
-            var message = { to: user.email_address }
+            var message = { to: email_address }
             var context = {
-                user: user,
                 url_link: url_link,
-                expire_time: moment(user.retrieve_expiration).calendar()
+                organization: organization,
+                invitation_token: invitation_token
             }
             var templateSender = transporter.templateSender({
                 render: function(context, callback) {
@@ -55,13 +55,13 @@ function EmailApi() {
             templateSender(message, context, function(err, info) {
                 if (err) {
                     var eo = {
-                        email_address: user.email_address,
+                        email_address: email_address,
                         error: err
                     }
                     logger.error(self.getErrorApi().getErrorMsg(9902), { error: eo });
                     return reject(err);
                 }
-                logger.info('Reset password email sent to - ', { email_address: user.email_address, info: info.response.toString() });
+                logger.info('Reset password email sent to - ', { email_address: email_address, info: info.response.toString() });
                 return resolve(info);
             });
         }).catch(function(err) {

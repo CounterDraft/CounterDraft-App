@@ -1,10 +1,15 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
     var EmployeeInvite = sequelize.define('employee_invite', {
+        email_address: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            comment: "Email_address which invite was sent too."
+        },
         code: {
             type: DataTypes.STRING(64),
             allowNull: false,
-            comment: "hashed UUID for employee/user signup"
+            comment: "Hashed UUID for employee/user signup"
         },
         invite_by: {
             type: DataTypes.INTEGER,
@@ -14,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
         organization_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            comment: "defines the organization, which the new employee we be connected too."
+            comment: "Defines the organization, which the new employee we be connected too."
         },
         expire: {
             type: DataTypes.DATE,
@@ -25,7 +30,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,
-            comment: "defines if a employee is a admin or not. true = admin, false = not admin."
+            comment: "Defines if a employee is a admin or not. true = admin, false = not admin."
         },
         is_active: {
             type: DataTypes.BOOLEAN,

@@ -157,7 +157,7 @@ function OrganizationApi() {
         var isCorrupt = false;
 
         if (invite.hasOwnProperty('email_address') &&
-            this.validEmail(employee.email_address)) {
+            this.validEmail(invite.email_address)) {
             errorNumber = 1038;
         }
         if (!invite.hasOwnProperty('is_admin')) {
@@ -179,7 +179,9 @@ function OrganizationApi() {
         var sessOrganization = self.getOrganization(req, res);
         var postData = req.body;
         var chckData = this._verifyInformationInvite(postData);
-        var defaultExpire = moment();
+        var defaultExpire = moment().add(30, 'days');
+        var db_organization = null;
+        var db_employeeInvite = null;
 
         if (chckData.isCorrupt) {
             this.getErrorApi().sendError(chckData.errNum, 422, res);
@@ -225,15 +227,12 @@ function OrganizationApi() {
             });
         }).then(function(result) {
             if (result) {
-                var organization = result.dataValues;
-                return ModelEmployeeInvite.create({
-                    code: codeWithHash,
-                    invite_by: user.id,
-                    organization_id: organization.id,
-                    email_address: postData.email_address
-                    expire: defaultExpire,
-                    is_admin: postData.is_admin,
-                    is_active: true
+                db_organization = result.dataValues;
+                return ModelEmployeeInvite.findOne({
+                    where: {
+                        email_address: { $iLike: postData.email_address },
+                        is_active: true
+                    }
                 });
             } else {
                 return new Promise(function(resolve, reject) {
@@ -242,10 +241,52 @@ function OrganizationApi() {
             }
         }).then(function(result) {
             if (result) {
+                var updates = {
+                    code: codeWithHash,
+                    invite_by: user.employee_id,
+                    organization_id: db_organization.id,
+                    email_address: postData.email_address,
+                    expire: defaultExpire.toDate(),
+                    is_admin: postData.is_admin
+                }
+
+                db_employeeInvite = mix(result.dataValues).into({
+                    code: codeWithHash,
+                    invite_by: user.employee_id,
+                    organization_id: db_organization.id,
+                    email_address: postData.email_address,
+                    expire: defaultExpire.toDate(),
+                    is_admin: postData.is_admin
+                });
+                
+                return ModelEmployeeInvite.update(updates, {
+                    where: {
+                        id: db_employeeInvite.id
+                    }
+                });
+            } else {
+                return ModelEmployeeInvite.create({
+                    code: codeWithHash,
+                    invite_by: user.employee_id,
+                    organization_id: db_organization.id,
+                    email_address: postData.email_address,
+                    expire: defaultExpire.toDate(),
+                    is_admin: postData.is_admin,
+                    is_active: true
+                });
+            }
+        }).then(function(result) {
+            if (result.hasOwnProperty('dataValues')) {
                 var employeeInvite = result.dataValues;
-                getApi('email').inviteUser(employeeInvite.email_address, code);
+                getApi('email').inviteUser(employeeInvite.email_address, db_organization, code);
                 res.status(200).json({
-                    employeeInvite: employeeInvite
+                    employeeInvite: employeeInvite,
+                    success: true
+                });
+            } else if (result) {
+                getApi('email').inviteUser(postData.email_address, db_organization, code);
+                res.status(200).json({
+                    employeeInvite: db_employeeInvite,
                     success: true
                 });
             } else {
