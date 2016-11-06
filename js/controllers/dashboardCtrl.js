@@ -22,8 +22,8 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
 
     //quick data;
     $scope.total_patrons = 0;
-    $scope.daily_active_users = 0;
     $scope.active_games = 0;
+    $scope.total_revenue = 0;
 
 
     //models
