@@ -25,15 +25,6 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
     $scope.daily_active_users = 0;
     $scope.active_games = 0;
 
-    // line-data='[
-    //         { y: "2010", a: 100, b: 90 },
-    //         { y: "2011", a: 75,  b: 65 },
-    //         { y: "2012", a: 50,  b: 40 },
-    //         { y: "2013", a: 75,  b: 65 },
-    //         { y: "2014", a: 50,  b: 40 },
-    //         { y: "2015", a: 75,  b: 65 },
-    //         { y: "2016", a: 99, b: 99 }
-    //     ]'
 
     //models
     $scope.user_model = { username: 'anonymous' };
@@ -50,8 +41,8 @@ app.controller('DashCtrl', ['$scope', '$http', '$window', 'data', function($scop
             }
             if (data.timeSpans) {
                 $scope.timeSpan = data.timeSpans;
-                $scope.timeSelect = $scope.timeSpan[$scope.timeSpan.length - 1];
-                this.onTimeChange($scope.timeSpan[$scope.timeSpan.length - 1]);
+                $scope.timeSelect = $scope.timeSpan[$scope.timeSpan.length - 3];
+                this.onTimeChange($scope.timeSpan[$scope.timeSpan.length - 3]);
             }
         }
 
