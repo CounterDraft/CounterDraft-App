@@ -16,7 +16,7 @@ function EmailApi() {
     var moment = getMoment();
     var transporter = getEmailTransport();
 
-    this.inviteUser = function(user, token) {
+    this.inviteUser = function(email_address, token) {
         var invite_user_template = emailTemplateDir + '/organization-invite/organization-invite.hbs';
         var url_link;
         return new Promise(function(resolve, reject) {

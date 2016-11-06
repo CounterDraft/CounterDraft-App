@@ -5,15 +5,6 @@
     Comment: 
         This is the api which is used for Registration of patron & employee/users.
 */
-var _generateApiKey = function() {
-    var uuid = generateUUID().replace(/-/g, "");
-    if (uuid) {
-        return uuid;
-    } else {
-        //placeholder uuid;
-        return '110E8400E29B11D4A716446655440000';
-    }
-}
 
 function registationApi() {
     var self = this;
@@ -77,7 +68,7 @@ function registationApi() {
                 description: employee.organization_description,
                 has_multi_admin: true,
                 type: employee.organization_type,
-                api_key: _generateApiKey()
+                api_key: self._generateApiKey()
             }).then(function(organization) {
                 if (organization.dataValues.id) {
                     employeeOrganization = organization.dataValues.id;

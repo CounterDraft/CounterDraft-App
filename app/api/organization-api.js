@@ -12,6 +12,8 @@ function OrganizationApi() {
     var Promise = getPromise();
     var ModelOrganization = models.organization;
     var ModelEmployeeInvite = models.employee_invite;
+    var ModelEmployee = models.employee_user;
+    var ModelPatron = models.patron_player;
 
     this.getOrganizationTypes = function(req, res) {
         var Organization_types = models.organization_type;
@@ -79,7 +81,7 @@ function OrganizationApi() {
         var sessOrganization = self.getOrganization(req, res);
         var putData = req.body;
         var organizationJson = null;
-        var chckData = this._verifyInformation(putData);
+        var chckData = this._verifyInformationOrganization(putData);
 
         if (chckData.isCorrupt) {
             this.getErrorApi().sendError(chckData.errNum, 422, res);
@@ -133,7 +135,7 @@ function OrganizationApi() {
         });
     }
 
-    this._verifyInformation = function(organization) {
+    this._verifyInformationOrganization = function(organization) {
         var errorNumber = null;
         var isCorrupt = false;
 
@@ -150,25 +152,123 @@ function OrganizationApi() {
             isCorrupt: isCorrupt
         }
     }
+    this._verifyInformationInvite = function(invite) {
+        var errorNumber = null;
+        var isCorrupt = false;
 
-    this.invitation = function(req, res){
-        // Generate a uuid and hash it.
-        // verify email isnt in system or at least not active in system.
-        // Create employee_invite record.
-        // Send the invitation email.
-        // Send employee_invite record to front end as response.
+        if (invite.hasOwnProperty('email_address') &&
+            this.validEmail(employee.email_address)) {
+            errorNumber = 1038;
+        }
+        if (!invite.hasOwnProperty('is_admin')) {
+            errorNumber = 1012;
+        }
+
+        if (errorNumber) {
+            isCorrupt = true;
+        }
+        return {
+            errNum: errorNumber,
+            isCorrupt: isCorrupt
+        }
+    }
+
+    this.invitation = function(req, res) {
+        var moment = getMoment();
+        var user = self.getUser(req, res);
+        var sessOrganization = self.getOrganization(req, res);
+        var postData = req.body;
+        var chckData = this._verifyInformationInvite(postData);
+        var defaultExpire = moment();
+
+        if (chckData.isCorrupt) {
+            this.getErrorApi().sendError(chckData.errNum, 422, res);
+            return;
+        }
+
+        var hash = getHash();
+
+        var code = self._generateApiKey();
+        var codeWithHash = hash.generate(code);
+
+        ModelPatron.findAndCountAll({
+            where: {
+                email_address: { $iLike: postData.email_address },
+                is_active: true
+            }
+        }).then(function(results) {
+            if (results.count > 0) {
+                return new Promise(function(resolve, reject) {
+                    return reject(self.getErrorApi().getErrorMsg(1018));
+                });
+            }
+
+            return ModelEmployee.findAndCountAll({
+                where: {
+                    email_address: { $iLike: postData.email_address },
+                    is_active: true
+                }
+            });
+        }).then(function(results) {
+            if (results.count > 0) {
+                return new Promise(function(resolve, reject) {
+                    return reject(self.getErrorApi().getErrorMsg(1018));
+                });
+            }
+            //we check this just in case the organization has been deleted.
+            return ModelOrganization.findOne({
+                where: {
+                    id: sessOrganization.id,
+                    is_active: true
+                }
+
+            });
+        }).then(function(result) {
+            if (result) {
+                var organization = result.dataValues;
+                return ModelEmployeeInvite.create({
+                    code: codeWithHash,
+                    invite_by: user.id,
+                    organization_id: organization.id,
+                    email_address: postData.email_address
+                    expire: defaultExpire,
+                    is_admin: postData.is_admin,
+                    is_active: true
+                });
+            } else {
+                return new Promise(function(resolve, reject) {
+                    return reject(self.getErrorApi().getErrorMsg(1018));
+                });
+            }
+        }).then(function(result) {
+            if (result) {
+                var employeeInvite = result.dataValues;
+                getApi('email').inviteUser(employeeInvite.email_address, code);
+                res.status(200).json({
+                    employeeInvite: employeeInvite
+                    success: true
+                });
+            } else {
+                return new Promise(function(resolve, reject) {
+                    return reject(self.getErrorApi().getErrorMsg(1018));
+                });
+            }
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
+        });
+    }
+
+    this.getAllInvitation = function(req, res) {
         res.status(200).json({
             success: true
         });
     }
 
-    this.getAllInvitation = function(req, res){
-        res.status(200).json({
-            success: true
-        });
-    }
-
-    this.cancelInvitation = function(req, res){
+    this.cancelInvitation = function(req, res) {
         res.status(200).json({
             success: true
         });

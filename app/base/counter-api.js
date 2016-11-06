@@ -22,6 +22,15 @@ function baseApi() {
             updatedAt: moment(employee.updatedAt).unix()
         }
     }
+    this._generateApiKey = function() {
+        var uuid = generateUUID().replace(/-/g, "");
+        if (uuid) {
+            return uuid;
+        } else {
+            //placeholder uuid;
+            return '110E8400E29B11D4A716446655440000';
+        }
+    }
 
     this._cleanPatron = function(patron) {
         var moment = getMoment();
