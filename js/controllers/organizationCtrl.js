@@ -5,7 +5,7 @@
         This should all the front end logic for the my organization settings page.
 */
 
-app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScroll', '$window', 'data', function($scope, $uibModal, $http, $anchorScroll, $window, data) {
+app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScroll', '$window','$location', 'data', function($scope, $uibModal, $http, $anchorScroll, $window, $location, data) {
     var _base_templates = "templates/organization/";
     var _url_organization = "/api/v1/organization";
     var _url_organization_invite = "/api/v1/organization/employee";
@@ -229,6 +229,9 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     this.onAddEmployee = function() {
         $scope.onRoute('add-employee');
+    }
+    this.onAddPatron = function(){
+        window.location = '/patron?page=patron-add';
     }
 
     var _preRoute = function() {
