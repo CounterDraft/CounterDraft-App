@@ -194,6 +194,13 @@ var errorList = {
     1056: {
         msg: 'Failed to update or create in record in database.'
     },
+    1057: {
+        msg: 'Failed to create user invite code is invalid'
+    },
+    1058: {
+        msg: 'Invitation not found in system.'
+    },
+
 
 
 

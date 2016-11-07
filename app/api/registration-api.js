@@ -14,13 +14,131 @@ function registationApi() {
     var ModelEmployee = models.employee_user;
     var ModelOrganization = models.organization;
     var ModelPatron = models.patron_player;
+    var ModelEmployeeInvite = models.employee_invite;
     var moment = getMoment();
 
     this.registerUserWithCode = function(employee, req, res) {
-        console.log(employee);
-        res.status(200).json({
-            user: null,
-            success: true
+        var hash = getHash();
+        var db_employeeInvite = null;
+        var passwordWithHash = getHash().generate(employee.password);
+        var confimation_email_valid_until = 15; //days
+
+        ModelEmployee.findAndCountAll({
+            where: {
+                email_address: { $iLike: employee.email_address },
+                is_active: true
+            }
+        }).then(function(results) {
+            if (results.count > 0) {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1018, status: 422 });
+                });
+            }
+            return ModelPatron.findAndCountAll({
+                where: {
+                    email_address: { $iLike: employee.email_address },
+                    is_active: true
+                }
+            });
+        }).then(function(result) {
+            if (result && result.count > 0) {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1018, status: 422 });
+                });
+            }
+            return ModelEmployeeInvite.findOne({
+                where: {
+                    email_address: { $iLike: employee.email_address },
+                    is_active: true
+                }
+            });
+        }).then(function(result) {
+            if (result) {
+                db_employeeInvite = result.dataValues;
+                var expireTime = moment(db_employeeInvite.expire);
+                if (!hash.verify(employee.organization_hash, db_employeeInvite.code) || moment().isAfter(expireTime)) {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1057, status: 422 });
+                    });
+                }
+                var updates = {
+                    is_active: false,
+                    expire: moment().toDate()
+                }
+                return ModelEmployeeInvite.update(updates, {
+                    where: {
+                        id: db_employeeInvite.id
+                    }
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1058, status: 422 });
+            });
+        }).then(function(result) {
+            if (result) {
+                return ModelEmployee.create({
+                    first_name: employee.first_name,
+                    last_name: employee.last_name,
+                    username: employee.email_address,
+                    email_address: employee.email_address,
+                    password: passwordWithHash,
+                    is_admin: db_employeeInvite.is_admin,
+                    organization_id: db_employeeInvite.organization_id
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1056, status: 500 });
+            });
+
+        }).then(function(result) {
+            if (result) {
+                return new Promise(function(resolve, reject) {
+                    require('crypto').randomBytes(48, function(err, buffer) {
+                        var genToken = buffer.toString('hex');
+                        if (genToken) {
+                            return resolve(genToken);
+                        } else {
+                            return reject(err);
+                        }
+                    });
+                });
+            } else {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1018, status: 422 });
+                });
+            }
+        }).then(function(token) {
+            var vUntil = moment().add(confimation_email_valid_until, 'days');
+            return ModelRegistrationUser.create({
+                email_address: employee.email_address,
+                token: token,
+                valid_until: vUntil
+            });
+        }).then(function(result) {
+            if (result) {
+                var registrationUser = result.dataValues;
+                getApi('email').registration(employee, registrationUser.token);
+                return getApi('login').loginUser(req, employee.email_address);
+            } else {
+                logger.error(self.getErrorApi().getErrorMsg(9901), {
+                    email_address: user_email,
+                    error: 9901
+                });
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1024, status: 422 });
+                });
+            }
+        }).then(function(emp) {
+            res.status(200).json({
+                user: self._cleanEmployee(emp),
+                success: true
+            });
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
         });
     }
 
@@ -62,14 +180,16 @@ function registationApi() {
         } else if (!employee.organization_hash && employee.organization_type && (!employee.organization_name || employee.organization_name === "")) {
             this.getErrorApi().sendError(1017, 403, res);
         } else {
-            //code for organization hash should go here.
-            var passwordWithHash = getHash().generate(employee.password);
-            var employeeOrganization = 999;
 
             if (employee.hasOwnProperty('organization_hash') && employee.organization_hash != null) {
                 self.registerUserWithCode(employee, req, res);
                 return;
             }
+
+            var passwordWithHash = getHash().generate(employee.password);
+            var employeeOrganization = 999;
+
+
 
             getApi('organization').create({
                 name: employee.organization_name,
