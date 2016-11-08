@@ -71,34 +71,13 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 });
             });
         }
-
-        var errorMsgEmp = "Server is currently not available."
-        $http({
-            method: 'GET',
-            url: _url_organization_employee
-        }).then(function successCallback(response) {
-            if (response && response.status === 200) {
-                console.log(response);
-                $scope.employees = response.data.employees;
-            } else {
-                console.error(errorMsgEmp);
-            }
-        }, function errorCallback(response) {
-            if (response && response.hasOwnProperty('data') &&
-                response.data.hasOwnProperty('error') &&
-                response.data.error.length > 0) {
-                errorMsgEmp = response.data.error[0].msg;
-            }
-            console.error(errorMsgEmp);
-        });
-
+        
         var errorMsgPatron = "Server is currently not available."
         $http({
             method: 'GET',
             url: _url_organization_patron
         }).then(function successCallback(response) {
             if (response && response.status === 200) {
-                console.log(response);
                 $scope.patrons = response.data.patrons;
             } else {
                 console.error(errorMsgPatron);
@@ -110,6 +89,25 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 errorMsgPatron = response.data.error[0].msg;
             }
             console.error(errorMsgPatron);
+        });
+
+        var errorMsgEmp = "Server is currently not available."
+        $http({
+            method: 'GET',
+            url: _url_organization_employee
+        }).then(function successCallback(response) {
+            if (response && response.status === 200) {
+                $scope.employees = response.data.employees;
+            } else {
+                console.error(errorMsgEmp);
+            }
+        }, function errorCallback(response) {
+            if (response && response.hasOwnProperty('data') &&
+                response.data.hasOwnProperty('error') &&
+                response.data.error.length > 0) {
+                errorMsgEmp = response.data.error[0].msg;
+            }
+            console.error(errorMsgEmp);
         });
     }
 
@@ -123,6 +121,14 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     this.onEdit = function() {
         $scope.editLocked = !$scope.editLocked;
+    }
+
+    this.onEditPatron = function(patron){
+        window.location = '/patron?id=' + patron.id;
+    }
+
+    this.onEditEmployee = function(employee){
+        console.log(employee);
     }
 
     $scope.onBack = function() {

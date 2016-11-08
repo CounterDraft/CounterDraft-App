@@ -5,7 +5,7 @@
         This should all the logic for the patron page.
 */
 
-app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$anchorScroll', 'data', function($scope, $http, $window, $uibModal, $anchorScroll, data) {
+app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$anchorScroll', '$location','data', function($scope, $http, $window, $uibModal, $anchorScroll, $location, data) {
     var _base_templates = "templates/patron/";
     var _url_patron = "/api/v1/patron/";
     var _url_patron_search = "/api/v1/patron/search/";
@@ -41,6 +41,31 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     };
 
     var _init = function() {
+        if ($location.search().hasOwnProperty('id')) {
+            var patron_id = $location.search().id;
+    
+            $http({
+                method: 'GET',
+                url: _url_patron_search,
+                params: {patron_id: patron_id},
+            }).then(function successCallback(response) {
+                if (response && response.hasOwnProperty('data') && response.data.patrons.length > 0) {
+                    $scope.patronModel = response.data.patrons[0];
+                } 
+            }, function errorCallback(response) {
+                var data = response.data || null;
+                if (data && data.error.length > 0) {
+                    var error = data.error[0];
+                    console.error(error.msg);
+                } else {
+                    console.error(response);
+                }
+            });
+
+            $scope.onRoute('patron-details',true);
+            $scope.prevPage = 'patron.html';
+            return;
+        }
         //default page;
         $scope.currentPage = _getDefaultPage();
     }
