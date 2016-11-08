@@ -80,9 +80,13 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                     console.error(response);
                 }
             });
-
             return;
+        }else if ($location.search().hasOwnProperty('page')){
+           $scope.onRoute($location.search().page);
+           $scope.prevPage = _getDefaultPage();
+           return; 
         }
+        
         //default page;
         $scope.currentPage = _getDefaultPage();
     }

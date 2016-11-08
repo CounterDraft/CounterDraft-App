@@ -32,7 +32,7 @@ function OrganizationController() {
                     getApi('organization').retrieve_employees(req, res);
                     break;
                 case 'put':
-                    self.getErrorApi().sendError(1011, 403, res);;
+                    getApi('employee').update_admin(req, res);
                     break;
                 case 'delete':
                     self.getErrorApi().sendError(1011, 403, res);

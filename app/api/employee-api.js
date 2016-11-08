@@ -68,6 +68,16 @@ function EmployeeApi() {
         });
     }
 
+    this.update_admin = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var putData = req.body;
+        res.status(200).json({
+            employee: self._cleanEmployee(putData),
+            success: true
+        });
+    }
+
     this.update = function(req, res) {
 
         var user = self.getUser(req, res);

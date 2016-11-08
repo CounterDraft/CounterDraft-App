@@ -7,36 +7,42 @@ article.counter-organization {
     .checkbox-container {
         padding-right: 0;
         min-height: 35px;
-        .nonEdit{
+        .nonEdit {
             padding-right: 20px;
         }
     }
     section.alpha {
-        .employee-list, .patron-list{
+        .employee-list,
+        .patron-list {
             max-height: 400px;
             overflow-y: auto;
         }
-        .employee-list-item, .patron-list-item{
+        .employee-list-item,
+        .patron-list-item {
             background-color: @list-item-color;
             color: black;
-            &:hover{
+            &:hover {
                 cursor: pointer;
                 color: white;
                 background-color: darken(@list-item-color, 10%)
             }
         }
-
-        fieldset.employee-widget{
-            legend{
+        fieldset.employee-widget {
+            legend {
                 background-color: @color-my-account;
                 border: 1px solid @color-my-account;
             }
+            i.glyphicon-plus {
+                color: @color-my-account;
+            }
         }
-
-        fieldset.patron-widget{
-             legend{
+        fieldset.patron-widget {
+            legend {
                 background-color: darken(@color-patron, 10%);
                 border: 1px solid darken(@color-patron, 10%);
+            }
+            i.glyphicon-plus {
+                color: @color-patron;
             }
         }
     }

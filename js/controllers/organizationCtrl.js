@@ -18,6 +18,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     $scope.organizationModel = null;
     $scope.showEdit = false;
     $scope.editLocked = true;
+    $scope.lockEmployeeForm = true;
 
     $scope.organization_types = [];
 
@@ -27,7 +28,17 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     $scope.employeeInviteModel = {
         email_address: null,
         is_admin: false
-    };
+    }
+
+    $scope.employeeModel = {
+        id: null,
+        first_name: null,
+        last_name: null,
+        email_address: null,
+        organization_id: null,
+        password: 'placeholder',
+        uuid: null
+    }
 
     this.animationsEnabled = true;
 
@@ -119,8 +130,15 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         //nothing
     }
 
+    this.initEmployeePage = function() {
+        //nothing
+    }
+
     this.onEdit = function() {
         $scope.editLocked = !$scope.editLocked;
+    }
+    this.onEnableEditEmployee = function(){
+        $scope.lockEmployeeForm = !$scope.lockEmployeeForm;
     }
 
     this.onEditPatron = function(patron) {
@@ -131,10 +149,18 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         }
     }
 
+    this.onResetPassword = function(){
+        if($scope.lockEmployeeForm){
+            return;
+        }
+        console.log('send email to employee user' + $scope.employeeModel.id);
+    }
+
     this.onEditEmployee = function(employee) {
         if (!$scope.editLocked) {
-            //do your thang!
-            console.log(employee);
+            $scope.employeeModel = employee;
+            $scope.employeeModel.password = 'placeholder';
+            $scope.onRoute('edit-employee', true);
         } else {
             _showCannotEditAlert();
         }
@@ -245,6 +271,57 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             console.error(userNotFoundErrorMsg);
         }
     }
+    this.saveEmployee = function() {
+        var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
+        var formData = angular.copy($scope.employeeModel);
+
+        if ($scope.employeeModel) {
+            $http({
+                method: 'PUT',
+                url: _url_organization_employee,
+                data: formData
+            }).then(function successCallback(response) {
+                if (response && response.status === 200) {
+                    console.log(response);
+                } else {
+                    $window.swal({
+                        title: "Error",
+                        text: userNotFoundErrorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                    $scope.showEdit = false;
+                }
+            }, function errorCallback(response) {
+                var errorMsg = userNotFoundErrorMsg;
+                if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
+                    errorMsg = response.data.error[0].msg;
+                }
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            });
+        } else {
+            $window.swal({
+                title: "Error",
+                text: userNotFoundErrorMsg,
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+        }
+    }
 
     this.saveForm = function() {
         if ($scope.editLocked) {
@@ -313,6 +390,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     var _postRoute = function() {
         $anchorScroll();
+        $scope.editLocked = true;
     }
 
     var _getDefaultPage = function() {

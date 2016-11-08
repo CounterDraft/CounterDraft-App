@@ -1,5 +1,8 @@
-<section class="alpha" ng-clock>
-    <div class="title-header"><h3 class="text-left-xs text-left-sm text-center">&nbsp;</h3></div>
+<section class="beta" ng-init="oCtrl.initEmployeePage()" ng-clock>
+    <div class="col-xs-12">
+        <button type="button" class="btn close quinary" ng-click="onBack()">&times;</button>
+        <h3 class="text-center">Edit Employee</h3>
+    </div>
     <ul class="employee-list col-xs-12">
         <li class="employee-list-item col-xs-12 text-size-small">
             <div class="col-xs-4 col-sm-3 col-md-2 patron-img">
@@ -15,41 +18,32 @@
     </ul>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
-        <button type="button" class="btn senary" ng-click="pCtrl.onEdit()" ng-show="showEdit"><i class="glyphicon glyphicon-pencil"></i></button>
+        <button type="button" class="btn senary" ng-click="oCtrl.onEnableEditEmployee()"><i class="glyphicon glyphicon-pencil"></i></button>
     </div>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12">
         <span ng-if="employeeEditForm.$dirty && employeeEditForm.$valid" class="help-block">Save...</span>
-        <form class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" ng-init="pCtrl.initAccount()" auto-save-form="pCtrl.saveForm()">
+        <form class="counter-form" data-toggle="validator" role="form" name="employeeEditForm" auto-save-form="oCtrl.saveEmployee()">
             <div class="form-group" show-errors>
-                <input type="text" id="registation-first-name" class="form-control" placeholder="Frist Name *" ng-model="employeeModel.first_name" name="firstName" pattern="^[_A-z]{1,}$" ng-disabled="!editForm" required>
+                <input type="text" id="registation-first-name" class="form-control" placeholder="Frist Name *" ng-model="employeeModel.first_name" name="firstName" pattern="^[_A-z]{1,}$" ng-disabled="lockEmployeeForm" required>
                 <div class="help-block" ng-if="employeeEditForm.firstName.$error.required">First name is required</div>
                 <div class="help-block" ng-if="employeeEditForm.firstName.$error && !employeeEditForm.firstName.$error.required">First name contains invalid characters</div>
             </div>
             <div class="form-group" show-errors>
-                <input type="text" class="form-control" placeholder="Last Name *" name="lastName" pattern="^[_A-z]{1,}$" ng-model="employeeModel.last_name" ng-disabled="!editForm" required>
+                <input type="text" class="form-control" placeholder="Last Name *" name="lastName" pattern="^[_A-z]{1,}$" ng-model="employeeModel.last_name" ng-disabled="lockEmployeeForm" required>
                 <div class="help-block" ng-if="employeeEditForm.lastName.$error.required">Last name is required</div>
                 <div class="help-block" ng-if="employeeEditForm.lastName.$error && !employeeEditForm.lastName.$error.required">Last name contains invalid characters</div>
             </div>
             <div class="form-group" show-errors>
-                <input type="email" class="form-control" name="emailAddress" placeholder="Email *" ng-model="employeeModel.email_address" ng-disabled="!editForm" required>
+                <input type="email" class="form-control" name="emailAddress" placeholder="Email *" ng-model="employeeModel.email_address" ng-disabled="lockEmployeeForm" required>
                 <div class="help-block" ng-if="employeeEditForm.emailAddress.$error.required">Email address is required</div>
                 <div class="help-block" ng-if="employeeEditForm.emailAddress.$error && !employeeEditForm.emailAddress.$error.required">Email address is invalid</div>
             </div>
             <div class="input-group">
-                <a class="input-group-addon btn secondary" ng-click="pCtrl.onEditPassword(editForm)" ng-disabled="!editForm">Change Password</a>
+                <a class="input-group-addon btn secondary" ng-click="oCtrl.onResetPassword()" ng-disabled="lockEmployeeForm">Reset Password</a>
                 <input type="password" class="form-control" name="password" placeholder="password *" ng-model="employeeModel.password" disabled />
             </div>
             <div class="col-xs-12">&nbsp;</div>
-            <div class="row">
-                <h3 class="col-xs-12">Organization</h3>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="organizationModel.name" ng-disabled="true" name="organizationName">
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter organization name *" ng-model="organizationModel.description" ng-disabled="true" name="organizationDescription">
-            </div>
         </form>
     </div>
 </section>

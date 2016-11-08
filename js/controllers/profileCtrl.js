@@ -58,6 +58,9 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
 
     this.saveForm = function() {
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
+        if (!$scope.editForm) {
+            return;
+        }
 
         if ($scope.employeeModel) {
             $http({
@@ -219,7 +222,7 @@ app.controller('ProfileCtrl', ['$scope', '$uibModal', '$http', '$window', 'data'
                 });
             } else {
                 var errorMsg = 'Unknown error failed to update password.';
-                if(result.hasOwnProperty('errorMsg')){
+                if (result.hasOwnProperty('errorMsg')) {
                     errorMsg = result.errorMsg;
                 }
                 $window.swal({
