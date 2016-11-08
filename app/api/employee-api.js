@@ -306,6 +306,12 @@ function EmployeeApi() {
         });
     }
 
+    this.delete = function(req, res) {
+        res.status(200).json({
+            success: true
+        });
+    }
+
     this.postImage = function(req, res) {
         res.status(200).json({
             success: true

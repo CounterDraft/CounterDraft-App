@@ -3,7 +3,47 @@ function OrganizationController() {
 
     this.ApiRouter = {
 
+        patron: function(verb, req, res, self) {
+            switch (verb) {
+                case 'post':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'get':
+                    getApi('organization').retrieve_patrons(req, res);
+                    break;
+                case 'put':
+                    self.getErrorApi().sendError(1011, 403, res);;
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
+
         employee: function(verb, req, res, self) {
+            switch (verb) {
+                case 'post':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'get':
+                    getApi('organization').retrieve_employees(req, res);
+                    break;
+                case 'put':
+                    self.getErrorApi().sendError(1011, 403, res);;
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
+
+        invite: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
                     getApi('organization').invitation(req, res);
@@ -21,7 +61,6 @@ function OrganizationController() {
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
             }
-
         },
 
         default: function(verb, req, res, self) {

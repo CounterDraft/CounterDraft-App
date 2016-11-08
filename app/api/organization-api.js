@@ -37,6 +37,62 @@ function OrganizationApi() {
         });
     }
 
+    this.retrieve_employees = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var limit = 50;
+        ModelEmployee.findAll({
+            where: {
+                is_active: true,
+                organization_id: organization.id
+            },
+            limit: limit
+        }).then(function(results) {
+            if (results) {
+                var employees = [];
+                for (var x in results) {
+                    employees.push(self._cleanEmployee(results[x].dataValues));
+                }
+                res.status(200).json({
+                    employees: employees,
+                    success: true
+                });
+                return;
+            }
+            self.getErrorApi().sendError(1059, 422, res);
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+        });
+    },
+
+    this.retrieve_patrons = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var limit = 50;
+        ModelPatron.findAll({
+            where: {
+                is_active: true,
+                organization_id: organization.id
+            },
+            limit: limit
+        }).then(function(results) {
+            if (results) {
+                var patrons = [];
+                for (var x in results) {
+                    patrons.push(self._cleanPatron(results[x].dataValues));
+                }
+                res.status(200).json({
+                    patrons: patrons,
+                    success: true
+                });
+                return;
+            }
+            self.getErrorApi().sendError(1060, 422, res);
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+        });
+    }
+
     this.create = function(organization) {
         var self = this;
         return ModelOrganization.create(organization);

@@ -200,6 +200,12 @@ var errorList = {
     1058: {
         msg: 'Invitation not found in system.'
     },
+    1059: {
+        msg: 'Failed to retrieve employees from organization.'
+    },
+    1060: {
+        msg: 'Failed to retrieve patrons from organization.'
+    },
 
 
 

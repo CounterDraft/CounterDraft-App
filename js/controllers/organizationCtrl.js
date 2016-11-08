@@ -5,10 +5,12 @@
         This should all the front end logic for the my organization settings page.
 */
 
-app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScroll', '$window','$location', 'data', function($scope, $uibModal, $http, $anchorScroll, $window, $location, data) {
+app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScroll', '$window', '$location', 'data', function($scope, $uibModal, $http, $anchorScroll, $window, $location, data) {
     var _base_templates = "templates/organization/";
     var _url_organization = "/api/v1/organization";
-    var _url_organization_invite = "/api/v1/organization/employee";
+    var _url_organization_invite = "/api/v1/organization/invite";
+    var _url_organization_employee = "/api/v1/organization/employee";
+    var _url_organization_patron = "/api/v1/organization/patron";
 
     $scope.previousPage = null;
     $scope.currentPage = null;
@@ -18,6 +20,9 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     $scope.editLocked = true;
 
     $scope.organization_types = [];
+
+    $scope.patrons = [];
+    $scope.employees = [];
 
     $scope.employeeInviteModel = {
         email_address: null,
@@ -66,6 +71,46 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 });
             });
         }
+
+        var errorMsgEmp = "Server is currently not available."
+        $http({
+            method: 'GET',
+            url: _url_organization_employee
+        }).then(function successCallback(response) {
+            if (response && response.status === 200) {
+                console.log(response);
+                $scope.employees = response.data.employees;
+            } else {
+                console.error(errorMsgEmp);
+            }
+        }, function errorCallback(response) {
+            if (response && response.hasOwnProperty('data') &&
+                response.data.hasOwnProperty('error') &&
+                response.data.error.length > 0) {
+                errorMsgEmp = response.data.error[0].msg;
+            }
+            console.error(errorMsgEmp);
+        });
+
+        var errorMsgPatron = "Server is currently not available."
+        $http({
+            method: 'GET',
+            url: _url_organization_patron
+        }).then(function successCallback(response) {
+            if (response && response.status === 200) {
+                console.log(response);
+                $scope.patrons = response.data.patrons;
+            } else {
+                console.error(errorMsgPatron);
+            }
+        }, function errorCallback(response) {
+            if (response && response.hasOwnProperty('data') &&
+                response.data.hasOwnProperty('error') &&
+                response.data.error.length > 0) {
+                errorMsgPatron = response.data.error[0].msg;
+            }
+            console.error(errorMsgPatron);
+        });
     }
 
     this.initAddEmpoyee = function() {
@@ -128,7 +173,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 if (response && response.status === 200) {
                     var employeeInvite = response.data.employeeInvite;
                     var msg = "Employee @ email address " + employeeInvite.email_address + " has been invited!";
-                    
+
                     $window.swal({
                         title: "Success",
                         text: msg,
@@ -230,7 +275,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     this.onAddEmployee = function() {
         $scope.onRoute('add-employee');
     }
-    this.onAddPatron = function(){
+    this.onAddPatron = function() {
         window.location = '/patron?page=patron-add';
     }
 
