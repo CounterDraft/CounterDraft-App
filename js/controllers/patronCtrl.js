@@ -5,7 +5,7 @@
         This should all the logic for the patron page.
 */
 
-app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$anchorScroll', '$location','data', function($scope, $http, $window, $uibModal, $anchorScroll, $location, data) {
+app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$anchorScroll', '$location', 'data', function($scope, $http, $window, $uibModal, $anchorScroll, $location, data) {
     var _base_templates = "templates/patron/";
     var _url_patron = "/api/v1/patron/";
     var _url_patron_search = "/api/v1/patron/search/";
@@ -43,15 +43,34 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     var _init = function() {
         if ($location.search().hasOwnProperty('id')) {
             var patron_id = $location.search().id;
-    
+
             $http({
                 method: 'GET',
                 url: _url_patron_search,
-                params: {patron_id: patron_id},
+                params: { patron_id: patron_id },
             }).then(function successCallback(response) {
                 if (response && response.hasOwnProperty('data') && response.data.patrons.length > 0) {
-                    $scope.patronModel = response.data.patrons[0];
-                } 
+                    var patrons = []
+                    angular.forEach(response.data.patrons, function(value, key) {
+                        var patron = value;
+                        if (patron.dob) {
+                            patron.dob = moment.unix(patron.dob).toDate();
+                        }
+                        if (patron.phone) {
+                            patron.phone = parseInt(patron.phone);
+                        }
+                        patrons.push(patron);
+                    });
+
+                    var patron = patrons[0];
+                    $scope.addressArr.length = 0;
+                    if (patron.hasOwnProperty('address')) {
+                        $scope.addressArr.push(patron.address);
+                    }
+                    $scope.patronModel = patron;
+                    $scope.onRoute('patron-details', true);
+                    $scope.prevPage = _getDefaultPage();
+                }
             }, function errorCallback(response) {
                 var data = response.data || null;
                 if (data && data.error.length > 0) {
@@ -62,8 +81,6 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                 }
             });
 
-            $scope.onRoute('patron-details',true);
-            $scope.prevPage = 'patron.html';
             return;
         }
         //default page;
@@ -270,7 +287,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     }
 
     $scope.onBack = function(page) {
-        if(page === 'details'){
+        if (page === 'details') {
             _clearModel('patronModel');
         }
         if ($scope.prevPage) {
@@ -435,7 +452,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
     }
 
     this.saveForm = function() {
-        if(!$scope.allowEdit){
+        if (!$scope.allowEdit) {
             return;
         }
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
@@ -566,7 +583,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
                 $http({
                     method: 'DELETE',
                     url: _url_patron,
-                    params: {id: patron.id},
+                    params: { id: patron.id },
                 }).then(function successCallback(response) {
                     if (response && response.hasOwnProperty('data') && response.data.patron) {
                         var patron = response.data.patron;
