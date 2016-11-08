@@ -71,7 +71,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 });
             });
         }
-        
+
         var errorMsgPatron = "Server is currently not available."
         $http({
             method: 'GET',
@@ -123,12 +123,34 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         $scope.editLocked = !$scope.editLocked;
     }
 
-    this.onEditPatron = function(patron){
-        window.location = '/patron?id=' + patron.id;
+    this.onEditPatron = function(patron) {
+        if (!$scope.editLocked) {
+            window.location = '/patron?id=' + patron.id;
+        } else {
+            _showCannotEditAlert();
+        }
     }
 
-    this.onEditEmployee = function(employee){
-        console.log(employee);
+    this.onEditEmployee = function(employee) {
+        if (!$scope.editLocked) {
+            //do your thang!
+            console.log(employee);
+        } else {
+            _showCannotEditAlert();
+        }
+    }
+
+    var _showCannotEditAlert = function() {
+        var message = "Click the edit button at the top to edit!";
+        $window.swal({
+            title: "oops!",
+            text: message,
+            type: "info",
+            confirmButtonColor: "#64d46f",
+            confirmButtonText: "OK",
+            closeOnConfirm: true,
+            html: true
+        });
     }
 
     $scope.onBack = function() {

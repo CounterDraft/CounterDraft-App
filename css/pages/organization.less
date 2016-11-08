@@ -1,5 +1,6 @@
 @import "../general/tools";
 article.counter-organization {
+    @list-item-color: #778899;
     label.title {
         padding-left: 0;
     }
@@ -14,6 +15,29 @@ article.counter-organization {
         .employee-list, .patron-list{
             max-height: 400px;
             overflow-y: auto;
+        }
+        .employee-list-item, .patron-list-item{
+            background-color: @list-item-color;
+            color: black;
+            &:hover{
+                cursor: pointer;
+                color: white;
+                background-color: darken(@list-item-color, 10%)
+            }
+        }
+
+        fieldset.employee-widget{
+            legend{
+                background-color: @color-my-account;
+                border: 1px solid @color-my-account;
+            }
+        }
+
+        fieldset.patron-widget{
+             legend{
+                background-color: darken(@color-patron, 10%);
+                border: 1px solid darken(@color-patron, 10%);
+            }
         }
     }
     section.beta {}
