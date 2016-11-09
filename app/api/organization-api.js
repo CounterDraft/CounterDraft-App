@@ -15,6 +15,44 @@ function OrganizationApi() {
     var ModelEmployee = models.employee_user;
     var ModelPatron = models.patron_player;
 
+    this.getSettings = function(id) {
+        return new Promise(function(resolve, reject) {
+            ModelOrganization.findOne({
+                where: {
+                    id: id,
+                    is_active: true
+                }
+            }).then(function(result) {
+                if (result) {
+                    var o = result.dataValues;
+                    var settings = {
+                        uuid: o.o_uuid,
+                        api_key: o.api_key,
+                        employee_registration_email: o.employee_registration_email,
+                        patron_registration_email: o.patron_registration_email,
+                        password_expire_time: o.password_expire_time,
+                        multi_admin: o.multi_admin
+                    }
+                    return resolve(settings);
+                } else {
+                    return reject('Organization not found!');
+                }
+            }).catch(function(err) {
+                return reject(err);
+            });
+        });
+    }
+
+    this.getAdministrators = function(id) {
+        return ModelEmployee.findAll({
+            where: {
+                organization_id: id,
+                is_active: true,
+                is_admin: true
+            }
+        });
+    }
+
     this.getOrganizationTypes = function(req, res) {
         var Organization_types = models.organization_type;
         Organization_types.all().then(function(organization_types) {
@@ -38,60 +76,60 @@ function OrganizationApi() {
     }
 
     this.retrieve_employees = function(req, res) {
-        var user = self.getUser(req, res);
-        var organization = self.getOrganization(req, res);
-        var limit = 50;
-        ModelEmployee.findAll({
-            where: {
-                is_active: true,
-                organization_id: organization.id
-            },
-            limit: limit
-        }).then(function(results) {
-            if (results) {
-                var employees = [];
-                for (var x in results) {
-                    employees.push(self._cleanEmployee(results[x].dataValues));
+            var user = self.getUser(req, res);
+            var organization = self.getOrganization(req, res);
+            var limit = 50;
+            ModelEmployee.findAll({
+                where: {
+                    is_active: true,
+                    organization_id: organization.id
+                },
+                limit: limit
+            }).then(function(results) {
+                if (results) {
+                    var employees = [];
+                    for (var x in results) {
+                        employees.push(self._cleanEmployee(results[x].dataValues));
+                    }
+                    res.status(200).json({
+                        employees: employees,
+                        success: true
+                    });
+                    return;
                 }
-                res.status(200).json({
-                    employees: employees,
-                    success: true
-                });
-                return;
-            }
-            self.getErrorApi().sendError(1059, 422, res);
-        }).catch(function(err) {
-            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
-        });
-    },
+                self.getErrorApi().sendError(1059, 422, res);
+            }).catch(function(err) {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            });
+        },
 
-    this.retrieve_patrons = function(req, res) {
-        var user = self.getUser(req, res);
-        var organization = self.getOrganization(req, res);
-        var limit = 50;
-        ModelPatron.findAll({
-            where: {
-                is_active: true,
-                organization_id: organization.id
-            },
-            limit: limit
-        }).then(function(results) {
-            if (results) {
-                var patrons = [];
-                for (var x in results) {
-                    patrons.push(self._cleanPatron(results[x].dataValues));
+        this.retrieve_patrons = function(req, res) {
+            var user = self.getUser(req, res);
+            var organization = self.getOrganization(req, res);
+            var limit = 50;
+            ModelPatron.findAll({
+                where: {
+                    is_active: true,
+                    organization_id: organization.id
+                },
+                limit: limit
+            }).then(function(results) {
+                if (results) {
+                    var patrons = [];
+                    for (var x in results) {
+                        patrons.push(self._cleanPatron(results[x].dataValues));
+                    }
+                    res.status(200).json({
+                        patrons: patrons,
+                        success: true
+                    });
+                    return;
                 }
-                res.status(200).json({
-                    patrons: patrons,
-                    success: true
-                });
-                return;
-            }
-            self.getErrorApi().sendError(1060, 422, res);
-        }).catch(function(err) {
-            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
-        });
-    }
+                self.getErrorApi().sendError(1060, 422, res);
+            }).catch(function(err) {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            });
+        }
 
     this.create = function(organization) {
         var self = this;

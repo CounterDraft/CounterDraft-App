@@ -11,10 +11,11 @@ function EmployeeApi() {
     this.tag = 'employee-api';
     var Promise = getPromise();
     var ModelEmployee = models.employee_user;
+    var ModelPatron = models.patron_player;
 
-    this._verifyInformation = function(employee) {
+    this._verifyInformation = function(employee, options) {
         var errorNumber = null;
-        if (employee.hasOwnProperty('id')) {
+        if (employee.hasOwnProperty('id') && !options.hasOwnProperty('type')) {
             errorNumber = 1034;
         }
         if (employee.hasOwnProperty('first_name') &&
@@ -59,7 +60,6 @@ function EmployeeApi() {
     }
 
     this.retrieve = function(employee_id) {
-
         return ModelEmployee.findOne({
             where: {
                 id: employee_id,
@@ -72,10 +72,162 @@ function EmployeeApi() {
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
         var putData = req.body;
-        res.status(200).json({
-            employee: self._cleanEmployee(putData),
-            success: true
-        });
+        var employeeJson = null;
+        var adminCount = null;
+        var settings = null;
+        var organizationApi = getApi('organization');
+
+        var chckData = this._verifyInformation(putData, { type: 'admin' });
+        if (chckData.isCorrupt) {
+            this.getErrorApi().sendError(chckData.errNum, 422, res);
+            return;
+        }
+        if (!putData.hasOwnProperty('id')) {
+            this.getErrorApi().sendError(1012, 422, res);
+            return;
+        }
+        organizationApi.getSettings(organization.id)
+            .then(function(result) {
+                if (result) {
+                    settings = result;
+                    if (settings.multi_admin) {
+                        return organizationApi.getAdministrators(organization.id);
+                    }
+                }
+                return ModelEmployee.findOne({
+                    where: {
+                        id: user.employee_id,
+                        is_active: true
+                    }
+                });
+            }).then(function(result) {
+                if (result.hasOwnProperty('dataValues')) {
+                    return new Promise(function(resolve, reject) {
+                        resolve(result);
+                    });
+                } else if (result) {
+                    var adminCount = result.length;
+                    return ModelEmployee.findOne({
+                        where: {
+                            id: user.employee_id,
+                            is_active: true
+                        }
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1024, status: 500 });
+                    });
+                }
+            }).then(function(result) {
+                if (result) {
+                    var employee = result.dataValues;
+                    if (!employee.is_admin) {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1050, status: 401 });
+                        });
+                    }
+                    if (putData.hasOwnProperty('is_admin') && settings.multi_admin && adminCount === 1) {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1061, status: 403 });
+                        });
+                    }
+                    if (putData.hasOwnProperty('is_admin') && !settings.multi_admin) {
+                        return new Promise(function(resolve, reject) {
+                            reject({ errNum: 1062, status: 403 });
+                        });
+                    }
+                    return ModelEmployee.findOne({
+                        where: {
+                            id: putData.id,
+                            is_active: true
+                        }
+                    });
+                } else {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1024, status: 500 });
+                    });
+                }
+            }).then(function(result) {
+                if (result) {
+                    var employee = result.dataValues;
+                    var updateData = {};
+                    var userData = req.body || null;
+                    if (putData) {
+                        delete putData.id;
+                        for (var x in putData) {
+                            if (employee.hasOwnProperty(x) && employee[x] !== putData[x]) {
+                                updateData[x] = putData[x];
+                            }
+                        }
+                        if (updateData.hasOwnProperty('email_address')) {
+                            return ModelPatron.findOne({
+                                where: {
+                                    email_address: { $iLike: updateData.email_address },
+                                    is_active: true
+                                }
+                            }).then(function(result) {
+                                if (result && result.count > 0) {
+                                    return new Promise(function(resolve, reject) {
+                                        return reject(self.getErrorApi().getErrorMsg(1018));
+                                    });
+                                }
+                                return ModelEmployee.findAndCountAll({
+                                    where: {
+                                        email_address: { $iLike: updateData.email_address },
+                                        is_active: true
+                                    }
+                                });
+                            }).then(function(result) {
+                                if (result && result.count > 0) {
+                                    return new Promise(function(resolve, reject) {
+                                        return reject(self.getErrorApi().getErrorMsg(1018));
+                                    });
+                                }
+                                updateData['is_email_confirmed'] = false;
+                                employeeJson = mix(employee).into(updateData);
+                                return ModelEmployee.update(updateData, {
+                                    where: {
+                                        id: employee.id,
+                                        is_active: true
+                                    }
+                                });
+                            })
+                        } else {
+                            employeeJson = mix(employee).into(updateData);
+                            return ModelEmployee.update(updateData, {
+                                where: {
+                                    id: employee.id,
+                                    is_active: true
+                                }
+                            });
+                        }
+                    }
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1023, status: 422 });
+                    });
+                }
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1029, status: 500 });
+                });
+            }).then(function(result) {
+                if (result) {
+                    if (user.employee_id === employeeJson.id) {
+                        self._refreshSession(req, employeeJson);
+                    }
+                    res.status(200).json({
+                        employee: self._cleanEmployee(employeeJson),
+                        success: true
+                    });
+                    return;
+                }
+                self.getErrorApi().sendError(1033, 500, res);
+            }).catch(function(err) {
+                if (err.errNum) {
+                    self.getErrorApi().sendError(err.errNum, err.status, res);
+                } else {
+                    self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+                }
+            });
     }
 
     this.update = function(req, res) {

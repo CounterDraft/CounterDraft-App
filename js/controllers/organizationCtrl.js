@@ -273,7 +273,17 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     }
     this.saveEmployee = function() {
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
-        var formData = angular.copy($scope.employeeModel);
+        var formData = {
+            id: $scope.employeeModel.id,
+            email_address: $scope.employeeModel.email_address,
+            first_name: $scope.employeeModel.first_name,
+            last_name: $scope.employeeModel.last_name,
+            username: $scope.employeeModel.username,
+            is_admin: $scope.employeeModel.is_admin
+        }
+        if($scope.lockEmployeeForm){
+            return;
+        }
 
         if ($scope.employeeModel) {
             $http({

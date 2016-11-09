@@ -206,6 +206,12 @@ var errorList = {
     1060: {
         msg: 'Failed to retrieve patrons from organization.'
     },
+    1061: {
+        msg: 'Failed to update, the organization must have at least one adminstrator account.'
+    },
+    1062: {
+        msg: 'Failed to update, the organization only supports one adminstrator, please check settings before trying to update your adminstrator.'
+    },
 
 
 

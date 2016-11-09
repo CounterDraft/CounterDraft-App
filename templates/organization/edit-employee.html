@@ -44,6 +44,14 @@
                 <input type="password" class="form-control" name="password" placeholder="password *" ng-model="employeeModel.password" disabled />
             </div>
             <div class="col-xs-12">&nbsp;</div>
+            <div class="form-group">
+                <label class="title col-xs-8">Administrators?</label>
+                <div class="col-xs-4 text-right checkbox-container">
+                    <toggle ng-show="!lockEmployeeForm" ng-model="employeeModel.is_admin" name="admin" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                    <span ng-show="lockEmployeeForm" class="nonEdit">{{ employeeModel.is_admin | yesNo }}</span>
+                </div>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
         </form>
     </div>
 </section>

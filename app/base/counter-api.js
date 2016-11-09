@@ -13,7 +13,7 @@ function baseApi() {
             email_address: employee.email_address,
             first_name: employee.first_name,
             id: employee.id,
-            is_active: employee.is_active,
+            is_admin: employee.is_admin,
             last_name: employee.last_name,
             organization_id: employee.organization_id,
             username: employee.username,
