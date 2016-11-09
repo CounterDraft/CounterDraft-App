@@ -33,24 +33,24 @@
                     <label class="title col-xs-8">Password reset expiration time</label>
                     <div class="col-xs-4 input-group counter-group">
                         <div class="input-group-addon">Time</div>
-                        <input type="number" ng-disabled="editLocked" ng-model="organizationModel.password_expire_time" name="password_expire_time" class="form-control text-right" />
+                        <input type="number" ng-disabled="editLocked" ng-change="oCtrl.onSettingChange('password_expire_time', '{{organizationModel.password_expire_time}}')" ng-model="organizationModel.password_expire_time" name="password_expire_time" class="form-control text-right" />
                     </div>
                     <div class="col-xs-12">&nbsp;</div>
                     <label class="title col-xs-8">Send employee registration email?</label>
                     <div class="col-xs-4 text-right checkbox-container">
-                        <toggle ng-show="!editLocked" disabled ng-model="organizationModel.employee_registration_email" name="employee_registration_email" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                        <toggle ng-show="!editLocked" disabled ng-model="organizationModel.employee_registration_email" name="employee_registration_email" ng-change="oCtrl.onSettingChange('employee_registration_email', '{{organizationModel.employee_registration_email}}')" data-style="ios" data-on="Yes" data-off="No"></toggle>
                         <span ng-show="editLocked" class="nonEdit">{{ organizationModel.employee_registration_email | yesNo }}</span>
                     </div>
                     <div class="col-xs-12">&nbsp;</div>
                     <label class="title col-xs-8">Send patron registration email?</label>
                     <div class="col-xs-4 text-right checkbox-container">
-                        <toggle ng-show="!editLocked" ng-model="organizationModel.patron_registration_email" name="patron_registration_email" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                        <toggle ng-show="!editLocked" ng-model="organizationModel.patron_registration_email" name="patron_registration_email" ng-change="oCtrl.onSettingChange('patron_registration_email', '{{organizationModel.patron_registration_email}}')" data-style="ios" data-on="Yes" data-off="No"></toggle>
                         <span ng-show="editLocked" class="nonEdit">{{ organizationModel.patron_registration_email | yesNo }}</span>
                     </div>
                     <div class="col-xs-12">&nbsp;</div>
                     <label class="title col-xs-8">Allow multiple administrators?</label>
                     <div class="col-xs-4 text-right checkbox-container">
-                        <toggle ng-show="!editLocked" ng-model="organizationModel.multi_admin" name="multi_admin" ng-change="changed()" data-style="ios" data-on="Yes" data-off="No"></toggle>
+                        <toggle ng-show="!editLocked" ng-model="organizationModel.multi_admin" name="multi_admin" ng-change="oCtrl.onSettingChange('multi_admin', '{{organizationModel.multi_admin}}')" data-style="ios" data-on="Yes" data-off="No"></toggle>
                         <span ng-show="editLocked" class="nonEdit">{{ organizationModel.multi_admin | yesNo }}</span>
                     </div>
                 </div>

@@ -22,6 +22,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     $scope.organization_types = [];
 
+    $scope.settingChange = {};
+
     $scope.patrons = [];
     $scope.employees = [];
 
@@ -137,7 +139,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     this.onEdit = function() {
         $scope.editLocked = !$scope.editLocked;
     }
-    this.onEnableEditEmployee = function(){
+    this.onEnableEditEmployee = function() {
         $scope.lockEmployeeForm = !$scope.lockEmployeeForm;
     }
 
@@ -149,8 +151,12 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         }
     }
 
-    this.onResetPassword = function(){
-        if($scope.lockEmployeeForm){
+    this.onSettingChange = function(name, value) {
+        $scope.settingChange[name] = value;
+    }
+
+    this.onResetPassword = function() {
+        if ($scope.lockEmployeeForm) {
             return;
         }
         console.log('send email to employee user' + $scope.employeeModel.id);
@@ -281,7 +287,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             username: $scope.employeeModel.username,
             is_admin: $scope.employeeModel.is_admin
         }
-        if($scope.lockEmployeeForm){
+        if ($scope.lockEmployeeForm) {
             return;
         }
 
@@ -334,9 +340,6 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     }
 
     this.saveForm = function() {
-        if ($scope.editLocked) {
-            return;
-        }
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
         var organization = angular.copy($scope.organizationModel);
         var formData = {
@@ -348,43 +351,74 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             multi_admin: organization.multi_admin,
             password_expire_time: organization.password_expire_time
         }
-
-        if (formData) {
-            $http({
-                method: 'PUT',
-                url: _url_organization,
-                data: formData,
-            }).then(function successCallback(response) {
-                if (response && response.status === 200) {
-                    // console.log(response);
-                } else {
-                    $window.swal({
-                        title: "Error",
-                        text: userNotFoundErrorMsg,
-                        type: "error",
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "OK",
-                        closeOnConfirm: true,
-                        html: true
-                    });
-                }
-            }, function errorCallback(response) {
-                if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
-                    errorMsg = response.data.error[0].msg;
-                    $window.swal({
-                        title: "Error",
-                        text: errorMsg,
-                        type: "error",
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "OK",
-                        closeOnConfirm: true,
-                        html: true
-                    });
-                }
-            });
-        } else {
-            console.error(userNotFoundErrorMsg);
+        var submit = function() {
+            if (formData) {
+                $http({
+                    method: 'PUT',
+                    url: _url_organization,
+                    data: formData,
+                }).then(function successCallback(response) {
+                    if (response && response.status === 200) {
+                        // console.log(response);
+                    } else {
+                        $window.swal({
+                            title: "Error",
+                            text: userNotFoundErrorMsg,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        });
+                    }
+                }, function errorCallback(response) {
+                    if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
+                        errorMsg = response.data.error[0].msg;
+                        $window.swal({
+                            title: "Error",
+                            text: errorMsg,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        });
+                    }
+                });
+            } else {
+                console.error(userNotFoundErrorMsg);
+            }
+            $scope.settingChange = {};
         }
+
+        if ($scope.editLocked) {
+            return;
+        }
+
+        if ($scope.settingChange.hasOwnProperty('multi_admin') && $scope.settingChange.multi_admin === 'true') {
+            $window.swal({
+                    title: "Are you sure?",
+                    text: "Changing the multiple administrators setting to 'No' will remove administrator rights to all other accounts!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#64d46f",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: true
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        submit();
+                    } else {
+                        angular.forEach($scope.settingChange, function(value, key) {
+                            $scope.organizationModel[key] = Boolean(value);
+                        });
+                        $scope.settingChange = {};
+                        $scope.$apply()
+                    }
+                });
+            return;
+        }
+        submit();
     }
 
     this.onAddEmployee = function() {
