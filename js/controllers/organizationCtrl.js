@@ -298,7 +298,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 data: formData
             }).then(function successCallback(response) {
                 if (response && response.status === 200) {
-                    console.log(response);
+                    // console.log(response);
                 } else {
                     $window.swal({
                         title: "Error",
