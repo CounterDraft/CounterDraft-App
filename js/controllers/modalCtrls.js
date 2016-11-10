@@ -186,11 +186,10 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
     }
 
     this.isEmailCorrect = function(form) {
-        if (form.$dirty && form.emailAddress != $scope.employeeModel.email_address) {
+        if (form.$dirty && $scope.resetPasswordModel.email_address != $scope.employeeModel.email_address) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     this.cancel = function() {
