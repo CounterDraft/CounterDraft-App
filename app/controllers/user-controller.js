@@ -22,26 +22,6 @@ function UserController() {
             }
         },
 
-        reset: function(verb, req, res, self) {
-            switch (verb) {
-                case 'post':
-                    self.getErrorApi().sendError(1011, 403, res);
-                    break;
-                case 'get':
-                    self.getErrorApi().sendError(1011, 403, res);
-                    break;
-                case 'put':
-                    getApi('employee').adminPasswordReset(req, res);
-                    break;
-                case 'delete':
-                    self.getErrorApi().sendError(1011, 403, res);
-                    break;
-                default:
-                    self.getErrorApi().sendError(1011, 403, res);
-                    break;
-            }
-        },
-
         patron_password: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':

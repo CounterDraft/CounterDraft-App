@@ -176,7 +176,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         }
     }
 }]).controller('PasswordResetModalCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
-    var _url_user_reset = "/api/v1/user/reset";
+    var _url_reset_employee_password = "/api/v1/reset/employee";
     $scope.resetPasswordModel = {
         email_address: null
     }
@@ -190,12 +190,17 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         return false;
     }
 
+    $scope.isEmailConfirmed = function(email_address){
+        console.log(email_address);
+        return true;
+    }
+
     this.onSubmit = function() {
         var self = this;
         var formData = angular.copy($scope.resetPasswordModel);
         var hasData = true;
+        var errorMsg = null;
 
-        var errorMsg = 'Unknown error failed to update password.';
 
         for (var x in formData) {
             if (!formData[x]) {
@@ -204,18 +209,18 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         }
 
         if (hasData) {
-            errorMsg = "Password and password confirm do not match.";
+            errorMsg = "Unknown failed to send password reset.";
             $http({
                 method: 'PUT',
-                url: _url_user_reset,
+                url: _url_reset_employee_password,
                 data: formData,
             }).then(function successCallback(response) {
                 if (response && response.status === 200) {
-                    $scope.passwordModel = null;
-                    $scope.patronPasswordForm.$setPristine();
-                    $scope.patronPasswordForm.$setUntouched();
+                    $scope.resetPasswordModel = null;
+                    $scope.resetPasswordForm.$setPristine();
+                    $scope.resetPasswordForm.$setUntouched();
                     $scope.$broadcast('show-errors-reset');
-                    $uibModalInstance.close({ status: true });
+                    $uibModalInstance.close({ status: true, response: response });
                 } else {
                     $uibModalInstance.close({ status: false, errorMsg: errorMsg });
                 }

@@ -10,6 +10,25 @@ function ResetController() {
     this.tag = 'resetController';
 
     this.ApiRouter = {
+        employee: function(verb, req, res, self) {
+            switch (verb) {
+                case 'post':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'get':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'put':
+                    getApi('reset').admin_resetPassword(req, res);
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
         password: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':

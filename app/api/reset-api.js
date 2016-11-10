@@ -63,6 +63,20 @@ function ResetApi() {
             });
         });
     }
+    
+    this.admin_resetPassword = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var putData = req.body;
+        //verify the date coming in;
+        //reset password to random password;
+        //send email with the new password;
+        //respone with employee informaiton;
+        res.status(200).json({
+            employee: self._cleanEmployee(putData),
+            success: true
+        });
+    }
 
     this.resetPassword = function(req, res) {
 
