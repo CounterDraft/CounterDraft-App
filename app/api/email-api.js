@@ -16,6 +16,53 @@ function EmailApi() {
     var moment = getMoment();
     var transporter = getEmailTransport();
 
+    this.sendEmployeeNewPassword = function(employee, password) {
+        var admin_password_reset_template = emailTemplateDir + '/admin_password_reset/admin_password_reset.hbs';
+        return new Promise(function(resolve, reject) {
+            if (!employee || !password) {
+                return reject('No employee or password was provided to the reset api');
+            }
+            var emailOptions = {
+                from: '"Do-Not-Reply" <do-not-reply@counterDraft.com>',
+                subject: 'New Password'
+            }
+
+            var message = { to: employee.email_address }
+            var context = {
+                employee: employee,
+                password: password
+            }
+            var templateSender = transporter.templateSender({
+                render: function(context, callback) {
+                    templates.render(admin_password_reset_template, context, function(err, html, text) {
+                        if (err) {
+                            return callback(err);
+                        }
+                        callback(null, {
+                            html: html,
+                            text: text
+                        });
+                    });
+                }
+            }, emailOptions);
+
+            templateSender(message, context, function(err, info) {
+                if (err) {
+                    var eo = {
+                        email_address: employee.email_address,
+                        error: err
+                    }
+                    logger.error(self.getErrorApi().getErrorMsg(9902), { error: eo });
+                    return reject(err);
+                }
+                logger.info('New password email sent to - ', { email_address: employee.email_address, info: info.response.toString() });
+                return resolve(info);
+            });
+        }).catch(function(err) {
+            logger.error(err.toString(), { error: err });
+        });
+    }
+
     this.inviteUser = function(email_address, organization, invitation_token) {
         var invite_user_template = emailTemplateDir + '/organization-invite/organization-invite.hbs';
         var url_link;

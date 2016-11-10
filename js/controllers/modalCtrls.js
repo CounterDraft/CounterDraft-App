@@ -200,6 +200,8 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
     this.onSubmit = function() {
         var self = this;
         var formData = angular.copy($scope.resetPasswordModel);
+        formData.id = $scope.employeeModel.id;
+        
         var hasData = true;
         var errorMsg = null;
 

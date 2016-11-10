@@ -173,7 +173,30 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
         modalInstance.result
             .then(function(result) {
-                console.log(result);
+                if (result.status) {
+                    var msg = "New password email has been sent.";
+                    $window.swal({
+                        title: "Success",
+                        text: msg,
+                        type: "success",
+                        confirmButtonColor: "#64d46f",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    }, function() {
+                        $scope.$apply();
+                    });
+                } else {
+                    $window.swal({
+                        title: "Error",
+                        text: result.errorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                }
             }, function() {
                 console.info('Modal dismissed at: ' + new Date());
             });
@@ -230,7 +253,9 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     }
 
     var _resetForm = function(form, modelName) {
-        _clearModel(modelName);
+        if (modelName) {
+            _clearModel(modelName);
+        }
         form.$setPristine();
         form.$setUntouched();
         $scope.$broadcast('show-errors-reset');

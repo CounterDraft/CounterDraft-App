@@ -63,18 +63,113 @@ function ResetApi() {
             });
         });
     }
-    
+    this._verifyInformation = function(data) {
+        var errorNumber = null;
+        if (data.hasOwnProperty('first_name') &&
+            !this.getModelPattern('first_name').test(data.first_name)) {
+            errorNumber = 1035;
+        }
+        if (data.hasOwnProperty('last_name') &&
+            !this.getModelPattern('last_name').test(data.first_name)) {
+            errorNumber = 1036;
+        }
+        if (data.hasOwnProperty('username') &&
+            this.validEmail(data.username)) {
+            errorNumber = 1037;
+        }
+        if (data.hasOwnProperty('email_address') &&
+            this.validEmail(data.email_address)) {
+            errorNumber = 1038;
+        }
+        var isCorrupt = false;
+        if (errorNumber) {
+            isCorrupt = true;
+        }
+        return {
+            errNum: errorNumber,
+            isCorrupt: isCorrupt
+        }
+    }
+
     this.admin_resetPassword = function(req, res) {
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
         var putData = req.body;
-        //verify the date coming in;
-        //reset password to random password;
-        //send email with the new password;
-        //respone with employee informaiton;
-        res.status(200).json({
-            employee: self._cleanEmployee(putData),
-            success: true
+        var chckData = this._verifyInformation(putData);
+        var newPassword = 'password';
+        var newPasswordWithHash = 'password';
+        var passGen = getPasswordGenerator();
+        var employeeJson = null;
+
+        if (passGen) {
+            newPassword = passGen.generate({
+                length: 15,
+                uppercase: false
+            });
+        }
+        newPasswordWithHash = getHash().generate(newPassword);
+        if (chckData.isCorrupt) {
+            this.getErrorApi().sendError(chckData.errNum, 422, res);
+            return;
+        }
+        if (!putData.hasOwnProperty('email_address') || !putData.email_address || putData.email_address === '') {
+            this.getErrorApi().sendError(1010, 422, res);
+            return;
+        }
+        if (!putData.hasOwnProperty('id') || !putData.id) {
+            this.getErrorApi().sendError(1031, 422, res);
+            return;
+        }
+
+        ModelEmployee.findOne({
+            where: {
+                id: user.id
+            }
+        }).then(function(result) {
+            if (result) {
+                var employee = result.dataValues;
+                if (!employee.is_admin) {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1050, status: 401 });
+                    });
+                }
+            }
+            return ModelEmployee.findOne({
+                where: {
+                    id: putData.id
+                }
+            });
+        }).then(function(result) {
+            if (result) {
+                employeeJson = result.dataValues;
+                var updates = {
+                    password: newPasswordWithHash
+                }
+                return ModelEmployee.update(updates, {
+                    where: {
+                        id: employeeJson.id
+                    }
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1029, status: 500 });
+            });
+        }).then(function(result) {
+            if (result) {
+                getApi('email').sendEmployeeNewPassword(employeeJson, newPassword);
+                res.status(200).json({
+                    employee: self._cleanEmployee(employeeJson),
+                    success: true
+                });
+                return;
+            }
+            self.getErrorApi().sendError(1033, 500, res);
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
         });
     }
 

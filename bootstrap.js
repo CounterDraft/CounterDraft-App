@@ -100,6 +100,10 @@ module.exports = {
         global.getHash = function() {
             return require('password-hash');
         }
+        
+        global.getPasswordGenerator = function(){
+            return require('generate-password');
+        }
 
         global.getValidator = function() {
             var validator = require('validator');
