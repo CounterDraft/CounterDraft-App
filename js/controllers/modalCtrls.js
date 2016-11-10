@@ -185,14 +185,17 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         //nothing;
     }
 
+    this.isEmailCorrect = function(form) {
+        if (form.$dirty && form.emailAddress != $scope.employeeModel.email_address) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     this.cancel = function() {
         $uibModalInstance.dismiss('cancel');
         return false;
-    }
-
-    $scope.isEmailConfirmed = function(email_address){
-        console.log(email_address);
-        return true;
     }
 
     this.onSubmit = function() {
@@ -201,11 +204,13 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         var hasData = true;
         var errorMsg = null;
 
-
         for (var x in formData) {
             if (!formData[x]) {
                 hasData = false;
             }
+        }
+        if ($scope.employeeModel.email_address != formData.email_address) {
+            return;
         }
 
         if (hasData) {

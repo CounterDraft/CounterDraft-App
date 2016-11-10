@@ -4,14 +4,14 @@
     input[type="date"] {
         -webkit-appearance: none;
     }
-    input[type="date"]::-webkit-inner-spin-button{
+    input[type="date"]::-webkit-inner-spin-button {
         display: none;
     }
     input[type="date"]::-webkit-calendar-picker-indicator {
         color: @color-secondary-3;
         font-size: 20px;
     }
-    input[type="number"]::-webkit-inner-spin-button{
+    input[type="number"]::-webkit-inner-spin-button {
         display: none;
     }
     i.glyphicon-triangle-bottom {
@@ -24,8 +24,14 @@
 }
 
 form.counter-form {
-    .help-block {
+    .help-block,
+    .msg-block {
         padding-left: 6px;
+    }
+    .msg-block {
+        color: #a94442;
+        margin-top: 5px;
+        margin-bottom: 10px
     }
     .form-group .help-block {
         display: none;
@@ -61,7 +67,7 @@ form.counter-form {
     width: 45px;
     height: 35px;
     right: 20px;
-    i.glyphicon-plus{
+    i.glyphicon-plus {
         top: 0px;
     }
 }
