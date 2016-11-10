@@ -58,18 +58,18 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
                     $scope.changePasswordForm.$setPristine();
                     $scope.changePasswordForm.$setUntouched();
                     $scope.$broadcast('show-errors-reset');
-                    $uibModalInstance.close({status:true});
+                    $uibModalInstance.close({ status: true });
                 } else {
-                    $uibModalInstance.close({status:false, errorMsg: errorMsg});
+                    $uibModalInstance.close({ status: false, errorMsg: errorMsg });
                 }
             }, function errorCallback(response) {
                 if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
                     errorMsg = response.data.error[0].msg;
                 }
-                $uibModalInstance.close({status:false, errorMsg: errorMsg});
+                $uibModalInstance.close({ status: false, errorMsg: errorMsg });
             });
         } else {
-            $uibModalInstance.close({status:false, errorMsg: errorMsg});
+            $uibModalInstance.close({ status: false, errorMsg: errorMsg });
         }
     }
 }]).controller('AddAddressCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
@@ -161,18 +161,72 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
                     $scope.patronPasswordForm.$setPristine();
                     $scope.patronPasswordForm.$setUntouched();
                     $scope.$broadcast('show-errors-reset');
-                    $uibModalInstance.close({status:true});
+                    $uibModalInstance.close({ status: true });
                 } else {
-                    $uibModalInstance.close({status:false, errorMsg: errorMsg});
+                    $uibModalInstance.close({ status: false, errorMsg: errorMsg });
                 }
             }, function errorCallback(response) {
                 if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
                     errorMsg = response.data.error[0].msg;
                 }
-                $uibModalInstance.close({status:false, errorMsg: errorMsg});
+                $uibModalInstance.close({ status: false, errorMsg: errorMsg });
             });
         } else {
-            $uibModalInstance.close({status:false, errorMsg: errorMsg});
+            $uibModalInstance.close({ status: false, errorMsg: errorMsg });
+        }
+    }
+}]).controller('PasswordResetModalCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
+    var _url_user_reset = "/api/v1/user/reset";
+    $scope.resetPasswordModel = {
+        email_address: null
+    }
+
+    this.initEmployeeResetPasswordModal = function() {
+        //nothing;
+    }
+
+    this.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+        return false;
+    }
+
+    this.onSubmit = function() {
+        var self = this;
+        var formData = angular.copy($scope.resetPasswordModel);
+        var hasData = true;
+
+        var errorMsg = 'Unknown error failed to update password.';
+
+        for (var x in formData) {
+            if (!formData[x]) {
+                hasData = false;
+            }
+        }
+
+        if (hasData) {
+            errorMsg = "Password and password confirm do not match.";
+            $http({
+                method: 'PUT',
+                url: _url_user_reset,
+                data: formData,
+            }).then(function successCallback(response) {
+                if (response && response.status === 200) {
+                    $scope.passwordModel = null;
+                    $scope.patronPasswordForm.$setPristine();
+                    $scope.patronPasswordForm.$setUntouched();
+                    $scope.$broadcast('show-errors-reset');
+                    $uibModalInstance.close({ status: true });
+                } else {
+                    $uibModalInstance.close({ status: false, errorMsg: errorMsg });
+                }
+            }, function errorCallback(response) {
+                if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
+                    errorMsg = response.data.error[0].msg;
+                }
+                $uibModalInstance.close({ status: false, errorMsg: errorMsg });
+            });
+        } else {
+            $uibModalInstance.close({ status: false, errorMsg: errorMsg });
         }
     }
 }]);

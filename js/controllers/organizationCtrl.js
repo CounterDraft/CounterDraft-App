@@ -155,11 +155,28 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         $scope.settingChange[name] = value;
     }
 
-    this.onResetPassword = function() {
+    this.onResetPassword = function(form) {
+        var self = this;
         if ($scope.lockEmployeeForm) {
             return;
         }
-        console.log('send email to employee user' + $scope.employeeModel.id);
+        var modalInstance = $uibModal.open({
+            animation: self.animationsEnabled,
+            ariaLabelledBy: 'modal-title',
+            scope: $scope,
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'employee-password-reset-modal.html',
+            controller: 'PasswordResetModalCtrl',
+            controllerAs: 'mCtrl',
+            size: 'lg'
+        });
+
+        modalInstance.result
+            .then(function(result) {
+                console.log(result);
+            }, function() {
+                console.info('Modal dismissed at: ' + new Date());
+            });
     }
 
     this.onEditEmployee = function(employee) {
@@ -433,8 +450,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     }
 
     var _postRoute = function() {
+        $scope.lockEmployeeForm = true;
         $anchorScroll();
-        $scope.editLocked = true;
     }
 
     var _getDefaultPage = function() {
