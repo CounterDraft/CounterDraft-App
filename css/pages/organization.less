@@ -1,6 +1,7 @@
 @import "../general/tools";
 article.counter-organization {
     @list-item-color: #778899;
+    @las-vegas-gold-color: #C5B358;
     label.title {
         padding-left: 0;
     }
@@ -17,10 +18,19 @@ article.counter-organization {
             max-height: 400px;
             overflow-y: auto;
         }
+        i.glyphicon-star {
+            color: @las-vegas-gold-color;
+        }
         .employee-list-item,
         .patron-list-item {
             background-color: @list-item-color;
             color: black;
+            i.admin-icon {
+                position: absolute;
+                right: 10px;
+                top: 35%;
+                font-size: 20px;
+            }
             &:hover {
                 cursor: pointer;
                 color: white;

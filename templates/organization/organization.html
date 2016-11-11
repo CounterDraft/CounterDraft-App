@@ -64,6 +64,7 @@
             <button class="btn senary add" ng-click="oCtrl.onAddEmployee()" ng-show="!editLocked" type="button"><i class="glyphicon glyphicon-plus"></i></button>
             <ul class="employee-list col-xs-12">
                 <li class="employee-list-item col-xs-12 text-size-small" ng-repeat="employee in employees" ng-click="oCtrl.onEditEmployee(employee)">
+                    <i ng-if="employee.is_admin" class="glyphicon glyphicon-star admin-icon"></i>
                     <div class="col-xs-8 col-sm-9 col-md-10 employee-info row">
                         <div class="col-xs-12"><span>{{employee.first_name}}&nbsp;{{employee.last_name}}</div>
                         <div class="col-xs-12"><span>ID:&nbsp;</span>{{employee.id}}</div>
@@ -73,7 +74,8 @@
                 </li>
             </ul>
         </fieldset>
-        <small ng-show="!editLocked" class="pull-left">(click to edit employee)</small>
+        <div class="col-xs-6"><small ng-show="!editLocked" class="pull-left">(click to edit employee)</small></div>
+        <div class="col-xs-6 text-right"><small><i class="glyphicon glyphicon-star"></i>&nbsp;Organization Administrator</small></div>
     </div>
     <div class="col-xs-12">&nbsp;</div>
     <div class="col-xs-12" ng-cloak>
@@ -91,7 +93,7 @@
                 </li>
             </ul>
         </fieldset>
-        <small ng-show="!editLocked" class="pull-left">(click to edit patron)</small>
+        <div class="col-xs-12"><small ng-show="!editLocked">(click to edit patron)</small></div>
     </div>
     <div class="col-xs-12">&nbsp;</div>
 </section>
