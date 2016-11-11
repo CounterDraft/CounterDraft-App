@@ -402,6 +402,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 }).then(function successCallback(response) {
                     if (response && response.status === 200) {
                         // console.log(response);
+                        $window.swal.close();
                     } else {
                         $window.swal({
                             title: "Error",
@@ -445,7 +446,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                     showCancelButton: true,
                     confirmButtonColor: "#64d46f",
                     confirmButtonText: "Ok",
-                    closeOnConfirm: true
+                    closeOnConfirm: false
                 },
                 function(isConfirm) {
                     if (isConfirm) {

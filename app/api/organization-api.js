@@ -182,11 +182,29 @@ function OrganizationApi() {
             return;
         }
 
-        ModelOrganization.findOne({
+        ModelEmployee.findOne({
             where: {
-                id: sessOrganization.id,
+                id: user.employee_id,
                 is_active: true
             }
+        }).then(function(result) {
+            if (result) {
+                var employee = result.dataValues;
+                if (employee.is_admin) {
+                    return ModelOrganization.findOne({
+                        where: {
+                            id: sessOrganization.id,
+                            is_active: true
+                        }
+                    });
+                }
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1050, status: 401 });
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1032, status: 500 });
+            });
         }).then(function(result) {
             if (result) {
                 var organization = result.dataValues;
@@ -197,6 +215,17 @@ function OrganizationApi() {
                         updates[attr] = putData[attr];
                         tmpUpdates[attr] = putData[attr];
                     }
+                }
+                if (updates.hasOwnProperty('multi_admin') && !updates.multi_admin) {
+                    ModelEmployee.update({ is_admin: false }, {
+                        where: {
+                            organization_id: organization.id,
+                            id: {
+                                $ne: user.employee_id
+                            },
+                            is_active: true
+                        }
+                    });
                 }
                 organizationJson = mix(result.dataValues).into(tmpUpdates);
                 return ModelOrganization.update(updates, {
