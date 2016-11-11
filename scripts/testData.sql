@@ -13,6 +13,14 @@ INSERT INTO organization_type(name, description, "createdAt", "updatedAt")
     VALUES ('Hotel', 'A hotel that has limited gaming.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
+INSERT INTO address_types(name, description, "createdAt", "updatedAt")
+    VALUES ('Primray', 'The main headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO address_types(name, description, "createdAt", "updatedAt")
+    VALUES ('Secondary', 'A non headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
 #add un-need migrations to your database;
 INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")

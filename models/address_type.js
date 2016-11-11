@@ -1,15 +1,15 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-    var edit_type = sequelize.define('edit_type', {
+    var AddressType = sequelize.define('address_type', {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            comment: "Summary of the edit."
+            comment: "String name for the address type"
         },
         description: {
             type: DataTypes.TEXT,
             allowNull: false,
-            comment: "Full description of the edit."
+            comment: "Full description of the address."
         }
     }, {
         classMethods: {
@@ -18,5 +18,5 @@ module.exports = function(sequelize, DataTypes) {
             }
         }
     });
-    return edit_type;
+    return AddressType;
 };
