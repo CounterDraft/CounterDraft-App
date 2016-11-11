@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
             comment: "The UUID which is used to save images and user data in the cloud."
         },
         api_key: {
-            type: DataTypes.STRING(16),
+            type: DataTypes.STRING,
             allowNull: false,
             comment: "Secret api key for a organziation, we check this on every rest request."
         },
