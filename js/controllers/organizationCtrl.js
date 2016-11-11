@@ -14,6 +14,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     $scope.previousPage = null;
     $scope.currentPage = null;
+    $scope.user = null;
 
     $scope.organizationModel = null;
     $scope.showEdit = false;
@@ -51,8 +52,11 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             $scope.organization_types = data.organization_types;
         }
         //not sure if a non-admin can see this page but just in case.
-        if (typeof 'undefined' != data && data.employee && data.employee.is_admin) {
-            $scope.showEdit = true;
+        if (typeof 'undefined' != data && data.employee) {
+            $scope.user = data.employee;
+            if(data.employee.is_admin){
+                 $scope.showEdit = true;
+            }
         }
 
         if (typeof 'undefined' != data && data.organization) {
@@ -393,7 +397,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             multi_admin: organization.multi_admin,
             password_expire_time: organization.password_expire_time
         }
-        var submit = function() {
+        var submit = function(clearAdmin) {
             if (formData) {
                 $http({
                     method: 'PUT',
@@ -403,6 +407,13 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                     if (response && response.status === 200) {
                         // console.log(response);
                         $window.swal.close();
+                        if(clearAdmin){
+                            angular.forEach($scope.employees, function(employee, key){
+                               if($scope.user.id !== employee.id){
+                                employee.is_admin = false;
+                               }
+                            });
+                        }
                     } else {
                         $window.swal({
                             title: "Error",
@@ -450,7 +461,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 },
                 function(isConfirm) {
                     if (isConfirm) {
-                        submit();
+                        submit(true);
                     } else {
                         angular.forEach($scope.settingChange, function(value, key) {
                             $scope.organizationModel[key] = Boolean(value);
@@ -461,7 +472,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 });
             return;
         }
-        submit();
+        submit(false);
     }
 
     this.onAddEmployee = function() {

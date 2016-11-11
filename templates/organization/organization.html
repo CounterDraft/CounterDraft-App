@@ -63,7 +63,7 @@
             <legend>Employees</legend>
             <button class="btn senary add" ng-click="oCtrl.onAddEmployee()" ng-show="!editLocked" type="button"><i class="glyphicon glyphicon-plus"></i></button>
             <ul class="employee-list col-xs-12">
-                <li class="employee-list-item col-xs-12 text-size-small" ng-repeat="employee in employees" ng-click="oCtrl.onEditEmployee(employee)">
+                <li class="employee-list-item col-xs-12 text-size-small" ng-repeat="employee in employees | orderBy : ['-is_admin','id']" ng-click="oCtrl.onEditEmployee(employee)">
                     <i ng-if="employee.is_admin" class="glyphicon glyphicon-star admin-icon"></i>
                     <div class="col-xs-8 col-sm-9 col-md-10 employee-info row">
                         <div class="col-xs-12"><span>{{employee.first_name}}&nbsp;{{employee.last_name}}</div>
@@ -83,7 +83,7 @@
             <legend>Patrons</legend>
             <button class="btn senary add" ng-click="oCtrl.onAddPatron()" ng-show="!editLocked" type="button"><i class="glyphicon glyphicon-plus"></i></button>
             <ul class="patron-list col-xs-12">
-                <li class="patron-list-item col-xs-12 text-size-small" ng-repeat="patron in patrons" ng-click="oCtrl.onEditPatron(patron)">
+                <li class="patron-list-item col-xs-12 text-size-small" ng-repeat="patron in patrons | orderBy :['id']" ng-click="oCtrl.onEditPatron(patron)">
                     <div class="col-xs-8 col-sm-9 col-md-10 patron-info row">
                         <div class="col-xs-12"><span>{{patron.last_name}},&nbsp;{{patron.first_name}}</div>
                         <div class="col-xs-12"><span>ID:&nbsp;</span>{{patron.id}}</div>

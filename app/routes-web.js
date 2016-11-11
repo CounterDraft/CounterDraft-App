@@ -158,8 +158,12 @@ module.exports = {
                         organization_types: organization_types,
                         organization: session.organization,
                         employee: {
-                            id: session.user.id,
-                            is_admin: session.user.is_admin
+                            id: session.user.employee_id,
+                            is_admin: session.user.is_admin,
+                            username: session.user.username,
+                            first_name: session.user.first_name,
+                            last_name: session.user.last_name,
+                            email_address: session.user.email_address
                         },
                         ts: moment().unix()
                     }
