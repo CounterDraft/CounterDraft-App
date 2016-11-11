@@ -393,7 +393,6 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             type: organization.type,
             description: organization.description,
             patron_registration_email: organization.patron_registration_email,
-            employee_registration_email: organization.employee_registration_email,
             multi_admin: organization.multi_admin,
             password_expire_time: organization.password_expire_time
         }

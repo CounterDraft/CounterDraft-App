@@ -179,10 +179,10 @@ function ResetApi() {
         var organization = self.getOrganization(req, res);
         var token = _generateToken();
         var tokenHash = getHash().generate(token);
-        //TODO: allow this to be configured by orgnaization settings.
         var eTime = moment().add('m', 45);
         var empOut = null;
         var patronOut = null;
+        var settings = null;
 
         if (!req.body.email_address) {
             this.getErrorApi().sendError(1010, 400, res);
@@ -203,12 +203,22 @@ function ResetApi() {
         }).then(function(results) {
             if (results) {
                 patronOut = results.dataValues;
-                return ModelPatron.update(
-                    updates, {
-                        where: {
-                            id: patronOut.id
-                        }
-                    });
+
+                return getApi('organization').getSettings(patronOut.organization_id).then(function(masterSettings) {
+                    if (masterSettings) {
+                        settings = masterSettings;
+                    }
+
+                    eTime = moment().add('m', settings.password_expire_time);
+                    updates.retrieve_expiration = eTime.format();
+                    patronOut = mix(patronOut).into(updates);
+                    return ModelPatron.update(
+                        updates, {
+                            where: {
+                                id: patronOut.id
+                            }
+                        });
+                });
             }
             return ModelEmployee.find({
                 where: {
@@ -219,12 +229,22 @@ function ResetApi() {
         }).then(function(results) {
             if (results && results.hasOwnProperty('dataValues')) {
                 empOut = results.dataValues;
-                return ModelEmployee.update(
-                    updates, {
-                        where: {
-                            id: empOut.id
-                        }
-                    });
+            
+                return getApi('organization').getSettings(empOut.organization_id).then(function(masterSettings) {
+                    if (masterSettings) {
+                        settings = masterSettings;
+                    }
+     
+                    eTime = moment().add('m', settings.password_expire_time);
+                    updates.retrieve_expiration = eTime.format();
+                    empOut = mix(empOut).into(updates);
+                    return ModelEmployee.update(
+                        updates, {
+                            where: {
+                                id: empOut.id
+                            }
+                        });
+                });
             } else if (results) {
                 return new Promise(function(resolve, reject) {
                     return resolve(results);

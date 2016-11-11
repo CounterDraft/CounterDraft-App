@@ -39,12 +39,6 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: true,
             comment: "If true the organization has more then one administrator."
         },
-        employee_registration_email: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: true,
-            comment: "If set we send a email when a employee registers to confirm there email_address."
-        },
         patron_registration_email: {
             type: DataTypes.BOOLEAN,
             allowNull: false,

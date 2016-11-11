@@ -28,7 +28,6 @@ function OrganizationApi() {
                     var settings = {
                         uuid: o.o_uuid,
                         api_key: o.api_key,
-                        employee_registration_email: o.employee_registration_email,
                         patron_registration_email: o.patron_registration_email,
                         password_expire_time: o.password_expire_time,
                         multi_admin: o.multi_admin
