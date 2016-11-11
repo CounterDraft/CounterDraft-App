@@ -289,6 +289,7 @@ function registationApi() {
         var user = this.getUser(req, res);
         var organization = self.getOrganization(req, res);
         var patron = req.body;
+        var settings = null;
 
         if (!patron.hasOwnProperty('address')) {
             patron.address = {
@@ -318,10 +319,19 @@ function registationApi() {
             this.getErrorApi().sendError(1037, 422, res);
             return;
         }
-        if (patron.hasOwnProperty('phone') &&
+
+        if (patron.hasOwnProperty('phone') && patron.phone &&
             !this.getModelPattern('phone').test(patron.phone)) {
             this.getErrorApi().sendError(1046, 422, res);
             return;
+        }
+        if (patron.hasOwnProperty('phone') && patron.phone) {
+            if (!this.getModelPattern('phone').test(patron.phone)) {
+                this.getErrorApi().sendError(1046, 422, res);
+                return;
+            }else{
+                patron.phone = patron.phone.toString();
+            }
         }
 
         //required fields;
@@ -345,11 +355,18 @@ function registationApi() {
                 this.getErrorApi().sendError(1013, 422, res);
                 return;
             }
-            ModelPatron.findAndCountAll({
-                where: {
-                    email_address: { $iLike: patron.email_address },
-                    is_active: true
+
+            getApi('organization').getSettings(organization.id).
+            then(function(masterSettings) {
+                if (masterSettings) {
+                    settings = masterSettings;
                 }
+                return ModelPatron.findAndCountAll({
+                    where: {
+                        email_address: { $iLike: patron.email_address },
+                        is_active: true
+                    }
+                });
             }).then(function(results) {
                 if (results.count > 0) {
                     return new Promise(function(resolve, reject) {
@@ -379,7 +396,7 @@ function registationApi() {
                     email_address: patron.email_address,
                     password: passwordWithHash,
                     dob: patron.dob,
-                    phone: patron.phone.toString(),
+                    phone: patron.phone,
                     street_number: patron.address.street_number,
                     route: patron.address.route,
                     locality: patron.locality,
@@ -392,7 +409,9 @@ function registationApi() {
             }).then(function(results) {
                 if (results) {
                     var newPatron = results.dataValues;
-                    getApi('email').patronRegistration(newPatron, organization);
+                    if (settings && settings.patron_registration_email) {
+                        getApi('email').patronRegistration(newPatron, organization);
+                    }
                     res.status(200).json({
                         user: self._cleanPatron(newPatron),
                         success: true
