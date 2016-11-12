@@ -6,7 +6,7 @@
 */
 
 app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', function($scope, $http, $location, $window, data) {
-    var _base_templates = "templates/admin/";
+    var _base_templates = "/templates/admin/";
     var _url_admin_login = "/api/v1/account/admin";
 
     $scope.prevPage = null;
