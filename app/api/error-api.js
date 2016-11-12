@@ -232,6 +232,9 @@ var errorList = {
     },
     9905: {
         msg: 'Failed to find retrieve password token for user Or token is already expired.'
+    },
+    9906: {
+        msg: 'Unknown error, failed to login in admin.'
     }
 }
 

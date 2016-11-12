@@ -22,6 +22,26 @@ function AccountController() {
             }
         },
 
+        admin: function(verb, req, res, self){
+            switch (verb) {
+                case 'post':
+                    getApi('login').loginAdmin(req, res);
+                    break;
+                case 'get':
+                    getApi('login').getAdminLogin(req, res);
+                    break;
+                case 'put':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
+
         confirmation: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':

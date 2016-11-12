@@ -19,6 +19,10 @@ INSERT INTO address_types(name, description, "createdAt", "updatedAt")
 INSERT INTO address_types(name, description, "createdAt", "updatedAt")
     VALUES ('Secondary', 'A non headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+#Adding user to admin account;
+INSERT INTO admin_user (first_name, last_name, username, password, is_active, "createdAt", "updatedAt")
+	VALUES ('admin', 'counter', 'admin@counterdraft.com', 'sha1$864f5f30$1$fe38b7457a4c2e466f635a3382a207570298d0e2', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 
 #add un-need migrations to your database;

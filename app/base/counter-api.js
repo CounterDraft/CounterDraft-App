@@ -7,6 +7,18 @@ function baseApi() {
         return this.name;
     }
 
+    this._cleanAdmin = function(admin) {
+        var moment = getMoment();
+        return {
+            first_name: admin.first_name,
+            last_name: admin.last_name,
+            id: admin.id,
+            username: admin.username,
+            createdAt: moment(admin.createdAt).unix(),
+            updatedAt: moment(admin.updatedAt).unix()
+        }
+    }
+
     this._cleanEmployee = function(employee) {
         var moment = getMoment();
         return {
@@ -23,9 +35,9 @@ function baseApi() {
         }
     }
 
-    this._cleanEmployeeInvite = function(model){
+    this._cleanEmployeeInvite = function(model) {
         var moment = getMoment();
-         return {
+        return {
             email_address: model.email_address,
             first_name: moment(model.expire).unix(),
             invite_by: model.invite_by,
@@ -35,7 +47,7 @@ function baseApi() {
             updatedAt: moment(model.updatedAt).unix()
         }
     }
-    
+
     this._generateApiKey = function() {
         var uuid = generateUUID().replace(/-/g, "");
         if (uuid) {
@@ -113,6 +125,23 @@ function baseApi() {
         if (employee.is_admin) {
             req.session.user['permissions'] = ['restricted:admin,employee'];
         }
+        return true;
+    }
+
+    this._refreshAdminSession = function(req, employee) {
+        
+        var pArr = ['restricted:superadmin'];
+        if (req.session.hasOwnProperty('user')) {
+            var permissions = req.session.user.permissions[0];
+            permissions = permissions + ',superadmin';
+            pArr[0] = permissions;
+        }else{
+            req.session.user = {
+               permissions: pArr 
+            }
+            return true;
+        }
+        req.session.user.permissions = pArr;
         return true;
     }
 

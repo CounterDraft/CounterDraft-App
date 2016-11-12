@@ -70,6 +70,7 @@ function baseController() {
             'registration',
             'login',
             'recover',
+            'admin',
             'password'
         ];
 

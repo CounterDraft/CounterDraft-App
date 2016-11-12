@@ -6,10 +6,38 @@ function LoginApi() {
     var Promise = getPromise();
     var Employee = models.employee_user;
     var Organization = models.organization;
+    var AdminModel = models.admin_user;
 
     this.loginPatron = function(req, email_address) {
 
         return new Promise(function(resolve, reject) {});
+    }
+
+    this.loginAdmin = function(req, res) {
+        var loginModel = req.body;
+        AdminModel.findOne({
+            where: {
+                username: { $iLike: loginModel.username },
+                is_active: true
+            }
+        }).then(function(result) {
+            if (result) {
+                var admin = result.dataValues;
+                self._refreshAdminSession(req, admin);
+                res.status(200).json({
+                    admin: self._cleanAdmin(admin),
+                    success: true
+                });
+                return;
+            }
+            self.getErrorApi().sendError(9906, 401, res);
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
+        });
     }
 
     this.loginUser = function(req, email_address) {
@@ -17,7 +45,7 @@ function LoginApi() {
         return new Promise(function(resolve, reject) {
             Employee.findOne({
                 where: {
-                    email_address: {$iLike: email_address},
+                    email_address: { $iLike: email_address },
                     is_active: true
                 }
             }).then(function(employee) {
@@ -27,7 +55,7 @@ function LoginApi() {
                     return Organization.findOne({
                         where: {
                             id: employee.organization_id,
-                             is_active: true
+                            is_active: true
                         }
                     });
                 } else {
@@ -53,7 +81,7 @@ function LoginApi() {
     }
 
     this.login = function(req, res) {
-       
+
         var fEmployee = null;
         if (!req.body.email_address) {
             this.getErrorApi().sendError(1001, 403, res);
@@ -63,8 +91,8 @@ function LoginApi() {
             // search for attributes
             Employee.findOne({
                 where: {
-                    email_address: {$iLike: req.body.email_address},
-                     is_active: true
+                    email_address: { $iLike: req.body.email_address },
+                    is_active: true
                 }
             }).then(function(employee) {
                 var hash = getHash();
@@ -88,7 +116,7 @@ function LoginApi() {
                     return Organization.findOne({
                         where: {
                             id: employee.organization_id,
-                             is_active: true
+                            is_active: true
                         }
                     });
 
