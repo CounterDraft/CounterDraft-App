@@ -17,8 +17,9 @@ module.exports = {
                     var arr = req.route['path'].split('/');
                     _path = arr[1];
                 }
-
-                if (!req.session.user) {
+                if (_path === 'admin') {
+                    res.redirect('/admin');
+                } else if (!req.session.user) {
                     res.redirect('/login');
                 } else {
                     res.render('pages/unauthorized.ejs', {
@@ -32,18 +33,23 @@ module.exports = {
         }
 
         // setup permission
-        var isAuthorizedSuperAdmin = authorization.ensureRequest.
-        isPermitted('restricted:superadmin');
-
-        var isAuthorizedAdmin = authorization.ensureRequest.
-        isPermitted('restricted:admin');
-
-        var isAuthorized = authorization.ensureRequest.
-        isPermitted('restricted:employee');
+        var isAuthorizedSuperAdmin = authorization.ensureRequest.isPermitted('restricted:superadmin');
+        var isAuthorizedAdmin = authorization.ensureRequest.isPermitted('restricted:admin');
+        var isAuthorized = authorization.ensureRequest.isPermitted('restricted:employee');
 
         routerWeb.get("/", isAuthorized, function(req, res) {
             res.redirect("/dashboard");
         });
+
+        //admin routes
+        routerWeb.get("/admin", function(req, res) {
+            res.render("pages/admin/admin_login.ejs", { title: 'Admin Login', layout: 'layouts/html_admin.ejs' });
+        });
+
+        routerWeb.get("/admin/dashboard", isAuthorizedSuperAdmin, function(req, res) {
+            res.render("pages/admin/admin.ejs", { title: 'Admin Dashboard', layout: 'layouts/html_admin.ejs' });
+        });
+        // -- end
 
         routerWeb.get("/dashboard", isAuthorized, function(req, res) {
             if (req.session && req.session.user) {
