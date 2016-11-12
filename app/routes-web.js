@@ -43,7 +43,11 @@ module.exports = {
 
         //admin routes
         routerWeb.get("/admin", function(req, res) {
-            res.render("pages/admin/admin_login.ejs", { title: 'Admin Login', layout: 'layouts/html_admin.ejs' });
+            res.render("pages/admin/admin_login.ejs", {
+                title: 'Admin Login',
+                layout: 'layouts/html_admin.ejs',
+                data: {}
+            });
         });
 
         routerWeb.get("/admin/dashboard", isAuthorizedSuperAdmin, function(req, res) {
