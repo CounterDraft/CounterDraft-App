@@ -172,8 +172,8 @@ function OrganizationApi() {
         }).then(function(result) {
             var address = [];
             if (result) {
-                for (var address in result) {
-                    address.push(result[address]);
+                for (var x in result) {
+                    address.push(result[x]);
                 }
             }
             organizationJson.address = address;
@@ -181,6 +181,107 @@ function OrganizationApi() {
                 organization: self._cleanOrganization(organizationJson),
                 success: true
             });
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
+        });
+    }
+    this.remove_address = function(req, res) {
+        var user = self.getUser(req, res);
+        var sessOrganization = self.getOrganization(req, res);
+        var address = req.query || null;
+
+        if (!address.hasOwnProperty('id')) {
+            self.getErrorApi().sendError(1031, 422, res);
+            return;
+        }
+        ModelEmployee.findOne({
+            where: {
+                id: user.employee_id,
+                is_active: true
+            }
+        }).then(function(result) {
+            if (result) {
+                var employee = result.dataValues;
+                if (!employee.is_admin) {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1050, status: 401 });
+                    });
+                }
+                return ModelOrganizationAddress.update({ is_active: false }, {
+                    where: {
+                        id: address.id,
+                        organization_id: employee.organization_id,
+                        is_active: true
+                    }
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1064, status: 500 });
+            });
+        }).then(function(result) {
+            if (result) {
+                res.status(200).json({
+                    success: true
+                });
+                return;
+            }
+            self.getErrorApi().sendError(1063, 500, res);
+        }).catch(function(err) {
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
+        });
+    }
+
+    this.add_address = function(req, res) {
+        var user = self.getUser(req, res);
+        var sessOrganization = self.getOrganization(req, res);
+        var postData = req.body;
+        ModelEmployee.findOne({
+            where: {
+                id: user.employee_id,
+                is_active: true
+            }
+        }).then(function(result) {
+            if (result) {
+                var employee = result.dataValues;
+                if (!employee.is_admin) {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1050, status: 401 });
+                    });
+                }
+                return ModelOrganizationAddress.create({
+                    organization_id: employee.organization_id,
+                    name: postData.name,
+                    type: postData.type,
+                    street_number: postData.street_number,
+                    route: postData.route,
+                    locality: postData.locality,
+                    administrative_area_level_1: postData.administrative_area_level_1,
+                    administrative_area_level_2: postData.administrative_area_level_2,
+                    country: postData.country,
+                    postal_code: postData.postal_code
+                });
+            }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1029, status: 500 });
+            });
+        }).then(function(result) {
+            if (result) {
+                var address = result.dataValues;
+                res.status(200).json({
+                    address: address,
+                    success: true
+                });
+                return;
+            }
+            self.getErrorApi().sendError(1063, 500, res);
         }).catch(function(err) {
             if (err.errNum) {
                 self.getErrorApi().sendError(err.errNum, err.status, res);

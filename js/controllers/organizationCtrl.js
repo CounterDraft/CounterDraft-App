@@ -11,6 +11,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     var _url_organization_invite = "/api/v1/organization/invite";
     var _url_organization_employee = "/api/v1/organization/employee";
     var _url_organization_patron = "/api/v1/organization/patron";
+    var _url_organization_address = "/api/v1/organization/address";
 
     $scope.previousPage = null;
     $scope.currentPage = null;
@@ -152,16 +153,90 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     var _saveAddress = function(newArr, oldArr, scope) {
         if (newArr.length != oldArr.length) {
             if (newArr.length > oldArr.length) {
-                console.log('add ');
-                console.log(newArr[newArr.length - 1]);
+                var newAddress = newArr[newArr.length - 1];
+                var errorMsg = "Failed to add address";
+                newAddress.name = "testing";
+                newAddress.type = 1;
+                console.log(newAddress);
+
+                $http({
+                    method: 'POST',
+                    url: _url_organization_address,
+                    data: newAddress,
+                }).then(function successCallback(response) {
+                    if (response && response.status === 200) {
+                        console.log(response);
+                    } else {
+                        $window.swal({
+                            title: "Error",
+                            text: errorMsg,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true,
+                            html: true
+                        });
+                    }
+                }, function errorCallback(response) {
+                    if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') &&
+                        response.data.error.length > 0) {
+                        errorMsg = response.data.error[0].msg;
+                    }
+                    $window.swal({
+                        title: "Error",
+                        text: errorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                });
             }
         }
     }
 
     this.removeAddress = function(index) {
-        console.log('remove ');
-        console.log($scope.addressArr[index]);
-        $scope.addressArr.splice(index, 1);
+        var self = this;
+        var address = $scope.addressArr[index];
+        var errorMsg = "Failed to remove address";
+        if($scope.editLocked){
+            return;
+        }
+
+        $http({
+            method: 'DELETE',
+            url: _url_organization_address,
+            params: address,
+        }).then(function successCallback(response) {
+            if (response && response.status === 200) {
+                $scope.addressArr.splice(index, 1);
+            } else {
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            }
+        }, function errorCallback(response) {
+            if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') &&
+                response.data.error.length > 0) {
+                errorMsg = response.data.error[0].msg;
+            }
+            $window.swal({
+                title: "Error",
+                text: errorMsg,
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+        });
     }
 
     this.onAddAddress = function(form) {

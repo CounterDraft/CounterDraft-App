@@ -212,6 +212,12 @@ var errorList = {
     1062: {
         msg: 'Failed to update, the organization only supports one adminstrator, please check settings before trying to update your adminstrator.'
     },
+    1063: {
+        msg: 'Failed to add address to organization.'
+    },
+    1064: {
+        msg: 'Failed to remove addres from organization.'
+    },
 
 
 
