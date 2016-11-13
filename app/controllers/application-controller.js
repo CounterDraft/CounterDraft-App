@@ -21,6 +21,25 @@ function AccountController() {
                     break;
             }
         },
+        address:  function(verb, req, res, self) {
+            switch (verb) {
+                case 'get':
+                    getApi('organization').getAddressTypes(req, res);
+                    break;
+                case 'post':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'put':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
         reset: function(verb, req, res, self) {
             switch (verb) {
                 case 'get':

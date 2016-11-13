@@ -218,6 +218,9 @@ var errorList = {
     1064: {
         msg: 'Failed to remove addres from organization.'
     },
+    1065: {
+        msg: 'Failed to get addresses from address_type table.'
+    },
 
 
 

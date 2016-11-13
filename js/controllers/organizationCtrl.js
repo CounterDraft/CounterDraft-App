@@ -12,6 +12,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     var _url_organization_employee = "/api/v1/organization/employee";
     var _url_organization_patron = "/api/v1/organization/patron";
     var _url_organization_address = "/api/v1/organization/address";
+    var _url_application = "/api/v1/application";
 
     $scope.previousPage = null;
     $scope.currentPage = null;
@@ -25,6 +26,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     $scope.addressArr = [];
 
     $scope.organization_types = [];
+    $scope.address_types = [];
 
     $scope.settingChange = {};
 
@@ -49,11 +51,16 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     this.animationsEnabled = true;
 
     var _init = function() {
-        //default page;
-        $scope.currentPage = _getDefaultPage();
-        if (typeof 'undefined' != data && data.organization_types) {
-            $scope.organization_types = data.organization_types;
-        }
+
+        // if (typeof 'undefined' != data && data.organization_types) {
+        //     if (data.organization_types) {
+        //         $scope.organization_types = data.organization_types;
+        //     }
+        //     if (data.address_types) {
+        //         $scope.address_types = data.address_types;
+        //     }
+        // }
+
         //not sure if a non-admin can see this page but just in case.
         if (typeof 'undefined' != data && data.employee) {
             $scope.user = data.employee;
@@ -61,6 +68,43 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 $scope.showEdit = true;
             }
         }
+        $http({
+            method: 'GET',
+            url: _url_application + '/address',
+        }).then(function successCallback(response) {
+            console.log(response);
+            if (response.data && response.data.hasOwnProperty('organization')) {
+
+            }
+        }, function errorCallback(response) {
+            var message = 'An unexpected error has occuried!';
+
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.error.length > 0) {
+                message = response.data.error[0].msg;
+            }
+            console.error(message);
+        });
+
+        $http({
+            method: 'GET',
+            url: _url_application + '/organization',
+        }).then(function successCallback(response) {
+            console.log(response);
+            if (response.data && response.data.hasOwnProperty('organization')) {
+
+            }
+        }, function errorCallback(response) {
+            var message = 'An unexpected error has occuried!';
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.error.length > 0) {
+                message = response.data.error[0].msg;
+            }
+            console.error(message);
+        });
+
 
         if (typeof 'undefined' != data && data.organization) {
             var formData = null;
@@ -132,6 +176,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             }
             console.error(errorMsgEmp);
         });
+        //default page;
+        $scope.currentPage = _getDefaultPage();
     }
 
     this.initAddEmpoyee = function() {
@@ -200,7 +246,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         var self = this;
         var address = $scope.addressArr[index];
         var errorMsg = "Failed to remove address";
-        if($scope.editLocked){
+        if ($scope.editLocked) {
             return;
         }
 

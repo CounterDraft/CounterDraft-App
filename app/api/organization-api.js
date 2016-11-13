@@ -15,6 +15,8 @@ function OrganizationApi() {
     var ModelEmployee = models.employee_user;
     var ModelPatron = models.patron_player;
     var ModelOrganizationAddress = models.organization_address;
+    var Organization_types = models.organization_type;
+    var Address_type = models.address_type;
 
     this.getSettings = function(id) {
         return new Promise(function(resolve, reject) {
@@ -54,7 +56,7 @@ function OrganizationApi() {
     }
 
     this.getOrganizationTypes = function(req, res) {
-        var Organization_types = models.organization_type;
+
         Organization_types.all().then(function(organization_types) {
             if (organization_types) {
                 res.status(200).json({
@@ -66,6 +68,21 @@ function OrganizationApi() {
             }
         });
     }
+
+    this.getAddressTypes = function(req, res) {
+    
+        Address_type.all().then(function(address_type) {
+            if (address_type) {
+                res.status(200).json({
+                    address_type: address_type,
+                    success: true
+                });
+            } else {
+                this.getErrorApi().sendError(1065, 500, res);
+            }
+        });
+    }
+
     this.retrieve = function(organization_id) {
         return ModelOrganization.find({
             where: {
