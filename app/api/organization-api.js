@@ -14,6 +14,7 @@ function OrganizationApi() {
     var ModelEmployeeInvite = models.employee_invite;
     var ModelEmployee = models.employee_user;
     var ModelPatron = models.patron_player;
+    var ModelOrganizationAddress = models.organization_address;
 
     this.getSettings = function(id) {
         return new Promise(function(resolve, reject) {
@@ -147,6 +148,7 @@ function OrganizationApi() {
         var query = req.query;
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
+        var organizationJson = null;
 
         ModelOrganization.findOne({
             where: {
@@ -155,16 +157,36 @@ function OrganizationApi() {
             }
         }).then(function(result) {
             if (result) {
-                var organization = result.dataValues;
-                res.status(200).json({
-                    organization: self._cleanOrganization(organization),
-                    success: true
+                organizationJson = result.dataValues;
+
+                return ModelOrganizationAddress.findAll({
+                    where: {
+                        organization_id: organizationJson.id,
+                        is_active: true
+                    }
                 });
-            } else {
-                self.getErrorApi().sendError(1030, 422, res);
             }
+            return new Promise(function(resolve, reject) {
+                reject({ errNum: 1030, status: 422 });
+            });
+        }).then(function(result) {
+            var address = [];
+            if (result) {
+                for (var address in result) {
+                    address.push(result[address]);
+                }
+            }
+            organizationJson.address = address;
+            res.status(200).json({
+                organization: self._cleanOrganization(organizationJson),
+                success: true
+            });
         }).catch(function(err) {
-            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            if (err.errNum) {
+                self.getErrorApi().sendError(err.errNum, err.status, res);
+            } else {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            }
         });
     }
 

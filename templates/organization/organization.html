@@ -53,6 +53,28 @@
         </form>
     </div>
     <div class="col-xs-12" ng-cloak>
+        <fieldset class="counter-widget">
+            <legend>Addresses</legend>
+            <button class="btn senary add" ng-click="oCtrl.onAddAddress()" ng-show="!editLocked" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+            <ul class="address-list col-xs-12">
+                <li class="address-list-item col-xs-12 text-size-small" ng-repeat="address in addressArr">
+                    <button type="button" class="btn close quinary" ng-click="oCtrl.removeAddress($index)">&times;</button>
+                    <div class="col-xs-8 col-sm-9 col-md-10 address-info row">
+                        <div class="col-xs-12"><span>{{address.name}}</span></div>
+                        <div class="col-xs-12"><span>{{address.street_number}}&nbsp;{{address.route}}</span></div>
+                        <div class="col-xs-12"><span>City:&nbsp;</span>{{address.locality}}</div>
+                        <div class="col-xs-12"><span>State:&nbsp;</span>{{address.administrative_area_level_1}}</div>
+                        <div class="col-xs-12"><span>Country:&nbsp;</span>{{address.country}}</div>
+                        <div class="col-xs-12"><span>Postal&nbsp;Code:&nbsp;</span>{{address.postal_code}}</div>
+                        <div class="col-xs-12"><span>Type:&nbsp;</span>{{address.type}}</div>
+                        <div class="col-xs-12">&nbsp;</div>
+                    </div>
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+    <div class="col-xs-12">&nbsp;</div>
+    <div class="col-xs-12" ng-cloak>
         <fieldset class="counter-widget employee-widget">
             <legend>Employees</legend>
             <button class="btn senary add" ng-click="oCtrl.onAddEmployee()" ng-show="!editLocked" type="button"><i class="glyphicon glyphicon-plus"></i></button>

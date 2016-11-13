@@ -21,6 +21,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     $scope.editLocked = true;
     $scope.lockEmployeeForm = true;
 
+    $scope.addressArr = [];
+
     $scope.organization_types = [];
 
     $scope.settingChange = {};
@@ -54,8 +56,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         //not sure if a non-admin can see this page but just in case.
         if (typeof 'undefined' != data && data.employee) {
             $scope.user = data.employee;
-            if(data.employee.is_admin){
-                 $scope.showEdit = true;
+            if (data.employee.is_admin) {
+                $scope.showEdit = true;
             }
         }
 
@@ -68,6 +70,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             }).then(function successCallback(response) {
                 if (response.data && response.data.hasOwnProperty('organization')) {
                     $scope.organizationModel = response.data.organization;
+                    $scope.addressArr = response.data.organization.address;
+                    $scope.$watchCollection('addressArr', _saveAddress);
                 }
             }, function errorCallback(response) {
                 var message = 'An unexpected error has occuried!';
@@ -86,6 +90,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                     closeOnConfirm: true,
                     html: true
                 });
+                $scope.$watchCollection('addressArr', _saveAddress);
             });
         }
 
@@ -138,6 +143,43 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     this.initEmployeePage = function() {
         //nothing
+    }
+
+    this.getOrganizationAddress = function() {
+        //nothing   
+    }
+
+    var _saveAddress = function(newArr, oldArr, scope) {
+        if (newArr.length != oldArr.length) {
+            if (newArr.length > oldArr.length) {
+                console.log('add ');
+                console.log(newArr[newArr.length - 1]);
+            }
+        }
+    }
+
+    this.removeAddress = function(index) {
+        console.log('remove ');
+        console.log($scope.addressArr[index]);
+        $scope.addressArr.splice(index, 1);
+    }
+
+    this.onAddAddress = function(form) {
+        var self = this;
+        var modalInstance = $uibModal.open({
+            animation: self.animationsEnabled,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'add-address-modal.html',
+            controller: 'AddAddressCtrl',
+            controllerAs: 'mCtrl',
+            size: 'lg'
+        });
+        modalInstance.result.then(function(place) {
+            $scope.addressArr.push(place);
+        }, function() {
+            console.info('Modal dismissed at: ' + new Date());
+        });
     }
 
     this.onEdit = function() {
@@ -406,11 +448,11 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                     if (response && response.status === 200) {
                         // console.log(response);
                         $window.swal.close();
-                        if(clearAdmin){
-                            angular.forEach($scope.employees, function(employee, key){
-                               if($scope.user.id !== employee.id){
-                                employee.is_admin = false;
-                               }
+                        if (clearAdmin) {
+                            angular.forEach($scope.employees, function(employee, key) {
+                                if ($scope.user.id !== employee.id) {
+                                    employee.is_admin = false;
+                                }
                             });
                         }
                     } else {

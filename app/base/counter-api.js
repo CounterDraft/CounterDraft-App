@@ -107,6 +107,7 @@ function baseApi() {
             password_expire_time: organization.password_expire_time,
             type: organization.type,
             uuid: organization.o_uuid,
+            address: organization.address,
             createdAt: moment(organization.createdAt).unix(),
             updatedAt: moment(organization.updatedAt).unix()
         }
