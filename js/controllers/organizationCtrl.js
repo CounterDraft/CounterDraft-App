@@ -51,16 +51,6 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     this.animationsEnabled = true;
 
     var _init = function() {
-
-        // if (typeof 'undefined' != data && data.organization_types) {
-        //     if (data.organization_types) {
-        //         $scope.organization_types = data.organization_types;
-        //     }
-        //     if (data.address_types) {
-        //         $scope.address_types = data.address_types;
-        //     }
-        // }
-
         //not sure if a non-admin can see this page but just in case.
         if (typeof 'undefined' != data && data.employee) {
             $scope.user = data.employee;
@@ -68,13 +58,13 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 $scope.showEdit = true;
             }
         }
+
         $http({
             method: 'GET',
             url: _url_application + '/address',
         }).then(function successCallback(response) {
-            console.log(response);
-            if (response.data && response.data.hasOwnProperty('organization')) {
-
+            if (response.data && response.data.hasOwnProperty('address_types')) {
+                $scope.address_types = response.data.address_types;
             }
         }, function errorCallback(response) {
             var message = 'An unexpected error has occuried!';
@@ -91,9 +81,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             method: 'GET',
             url: _url_application + '/organization',
         }).then(function successCallback(response) {
-            console.log(response);
-            if (response.data && response.data.hasOwnProperty('organization')) {
-
+            if (response.data && response.data.hasOwnProperty('organization_types')) {
+                $scope.organization_types = response.data.organization_types;
             }
         }, function errorCallback(response) {
             var message = 'An unexpected error has occuried!';

@@ -74,7 +74,7 @@ function OrganizationApi() {
         Address_type.all().then(function(address_type) {
             if (address_type) {
                 res.status(200).json({
-                    address_type: address_type,
+                    address_types: address_type,
                     success: true
                 });
             } else {
