@@ -12,6 +12,10 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
     $scope.prevPage = null;
     $scope.currentPage = null;
 
+    $scope.dashboardModal = {
+        uptime: moment(),
+    }
+
     $scope.loginModel = {
         username: null,
         password: null,
@@ -29,6 +33,9 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
     this.initAdminDashboard = function() {
         //default page;
         $scope.currentPage = _getDefaultPage();
+        if (typeof 'undefined' != data) {
+           $scope.dashboardModal.uptime = moment(data.upTime);
+        }
     }
     $scope.onLogin = function() {
         var self = this;

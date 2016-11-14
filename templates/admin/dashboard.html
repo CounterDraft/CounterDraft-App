@@ -1,4 +1,22 @@
 <section class="alpha">
     <h3 class="text-center">Admin Page</h3>
+    <fieldset class="counter-widget">
+        <legend>Quick Data</legend>
+        <div class="col-xs-12"><span>up since - </span>{{dashboardModal.uptime.calendar()}}</div>
+        <div class="col-xs-12"><span>Enviroment variables:</span></div>
+        <ul><li ng-repeat="">{{title}} {{date}}</li></ul>
+        <div class="col-xs-12">&nbsp;</div>
+    </fieldset>
+    <h3 class="text-left">System Settings</h3>
+    <fieldset class="counter-widget">
+        <legend>Organization Types</legend>
+        <button class="btn senary add" ng-click="alCtrl.onAddOrganizationType()" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+        <div class="col-xs-12">&nbsp;</div>
+    </fieldset>
+    <div class="col-xs-12">&nbsp;</div>
+    <fieldset class="counter-widget">
+        <legend>Address Types</legend>
+        <button class="btn senary add" ng-click="alCtrl.onAddAddressType()" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+        <div class="col-xs-12">&nbsp;</div>
+    </fieldset>
 </section>
-
