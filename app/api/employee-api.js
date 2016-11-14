@@ -252,27 +252,52 @@ function EmployeeApi() {
             if (result) {
                 var employee = result.dataValues;
                 var userData = req.body || null;
-                if (userData) {
-                    for (var x in userData) {
-                        if (employee.hasOwnProperty(x) && employee[x] !== userData[x]) {
-                            updateData[x] = userData[x];
-                        }
+                if (!userData) {
+                    return new Promise(function(resolve, reject) {
+                        reject({ errNum: 1023, status: 422 });
+                    });
+                }
+                for (var x in userData) {
+                    if (employee.hasOwnProperty(x) && employee[x] !== userData[x]) {
+                        updateData[x] = userData[x];
                     }
-                    if (updateData.hasOwnProperty('email_address')) {
-                        updateData['is_email_confirmed'] = false;
+                }
+                if (updateData.hasOwnProperty('email_address')) {
+                    updateData['is_email_confirmed'] = false;
+                    return ModelPatron.findAndCountAll({
+                        where: {
+                            email_address: { $iLike: updateData.email_address },
+                            is_active: true
+                        }
+                    }).then(function(result) {
+                        if (result && result.count > 0) {
+                            return new Promise(function(resolve, reject) {
+                                return reject(self.getErrorApi().getErrorMsg(1018));
+                            });
+                        }
                         return ModelEmployee.findAndCountAll({
                             where: {
                                 email_address: { $iLike: updateData.email_address },
                                 is_active: true
                             }
                         });
-                    }
-                } else {
-                    return new Promise(function(resolve, reject) {
-                        reject({ errNum: 1012, status: 422 });
+                    }).then(function(result) {
+                        if (result && result.count > 0) {
+                            return new Promise(function(resolve, reject) {
+                                return reject(self.getErrorApi().getErrorMsg(1018));
+                            });
+                        }
+                        empOut = mix(employee).into(updateData);
+                        return ModelEmployee.update(updateData, {
+                            where: {
+                                id: employee.id,
+                                is_active: true
+                            }
+                        });
                     });
                 }
-                empOut = mix(result.dataValues).into(updateData);
+
+                empOut = mix(employee).into(updateData);
                 return ModelEmployee.update(updateData, {
                     where: {
                         id: employee.id,
@@ -282,40 +307,6 @@ function EmployeeApi() {
             } else {
                 return new Promise(function(resolve, reject) {
                     reject({ errNum: 1032, status: 500 });
-                });
-            }
-        }).then(function(result) {
-            if (result.hasOwnProperty('count') && result.count > 0) {
-                return new Promise(function(resolve, reject) {
-                    reject({ errNum: 1018, status: 422 });
-                });
-            } else if (result) {
-                return new Promise(function(resolve, reject) {
-                    resolve(result);
-                });
-            } else {
-                return ModelPatron.findAndCountAll({
-                    where: {
-                        email_address: { $iLike: updateData.email_address },
-                        is_active: true
-                    }
-                });
-            }
-        }).then(function(result) {
-            if (result.hasOwnProperty('count') && result.count > 0) {
-                return new Promise(function(resolve, reject) {
-                    reject({ errNum: 1018, status: 422 });
-                });
-            } else if (result) {
-                return new Promise(function(resolve, reject) {
-                    resolve(result);
-                });
-            } else {
-                return ModelEmployee.update(updateData, {
-                    where: {
-                        id: empOut.id,
-                        is_active: true
-                    }
                 });
             }
         }).then(function(result) {
