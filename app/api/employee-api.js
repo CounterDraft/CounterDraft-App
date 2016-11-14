@@ -160,7 +160,9 @@ function EmployeeApi() {
                             }
                         }
                         if (updateData.hasOwnProperty('email_address')) {
-                            return ModelPatron.findOne({
+                            updateData['is_email_confirmed'] = false;
+
+                            return ModelPatron.findAndCountAll({
                                 where: {
                                     email_address: { $iLike: updateData.email_address },
                                     is_active: true
@@ -183,7 +185,6 @@ function EmployeeApi() {
                                         return reject(self.getErrorApi().getErrorMsg(1018));
                                     });
                                 }
-                                updateData['is_email_confirmed'] = false;
                                 employeeJson = mix(employee).into(updateData);
                                 return ModelEmployee.update(updateData, {
                                     where: {
@@ -191,7 +192,7 @@ function EmployeeApi() {
                                         is_active: true
                                     }
                                 });
-                            })
+                            });
                         } else {
                             employeeJson = mix(employee).into(updateData);
                             return ModelEmployee.update(updateData, {
@@ -235,10 +236,13 @@ function EmployeeApi() {
         var user = self.getUser(req, res);
         var chckData = this._verifyInformation(req.body);
         var empOut = null;
+        var updateData = {};
+
         if (chckData.isCorrupt) {
             this.getErrorApi().sendError(chckData.errNum, 422, res);
             return;
         }
+
         ModelEmployee.findOne({
             where: {
                 id: user.employee_id,
@@ -247,7 +251,6 @@ function EmployeeApi() {
         }).then(function(result) {
             if (result) {
                 var employee = result.dataValues;
-                var updateData = {};
                 var userData = req.body || null;
                 if (userData) {
                     for (var x in userData) {
@@ -257,6 +260,12 @@ function EmployeeApi() {
                     }
                     if (updateData.hasOwnProperty('email_address')) {
                         updateData['is_email_confirmed'] = false;
+                        return ModelEmployee.findAndCountAll({
+                            where: {
+                                email_address: { $iLike: updateData.email_address },
+                                is_active: true
+                            }
+                        });
                     }
                 } else {
                     return new Promise(function(resolve, reject) {
@@ -276,15 +285,49 @@ function EmployeeApi() {
                 });
             }
         }).then(function(result) {
+            if (result.hasOwnProperty('count') && result.count > 0) {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1018, status: 422 });
+                });
+            } else if (result) {
+                return new Promise(function(resolve, reject) {
+                    resolve(result);
+                });
+            } else {
+                return ModelPatron.findAndCountAll({
+                    where: {
+                        email_address: { $iLike: updateData.email_address },
+                        is_active: true
+                    }
+                });
+            }
+        }).then(function(result) {
+            if (result.hasOwnProperty('count') && result.count > 0) {
+                return new Promise(function(resolve, reject) {
+                    reject({ errNum: 1018, status: 422 });
+                });
+            } else if (result) {
+                return new Promise(function(resolve, reject) {
+                    resolve(result);
+                });
+            } else {
+                return ModelEmployee.update(updateData, {
+                    where: {
+                        id: empOut.id,
+                        is_active: true
+                    }
+                });
+            }
+        }).then(function(result) {
             if (result) {
                 self._refreshSession(req, empOut);
                 res.status(200).json({
                     employee: self._cleanEmployee(empOut),
                     success: true
                 });
-            } else {
-                self.getErrorApi().setErrorWithMessage(1033, 422, res);
+                return;
             }
+            self.getErrorApi().setErrorWithMessage(1033, 422, res);
         }).catch(function(err) {
             if (err.errNum) {
                 self.getErrorApi().sendError(err.errNum, err.status, res);

@@ -65,7 +65,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         }).then(function successCallback(response) {
             if (response.data && response.data.hasOwnProperty('address_types')) {
                 $scope.address_types = response.data.address_types;
-                console.log($scope.address_types);
+                // console.log($scope.address_types);
             }
         }, function errorCallback(response) {
             var message = 'An unexpected error has occuried!';
