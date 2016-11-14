@@ -167,6 +167,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
 
     this.onAddAddress = function(form) {
         var self = this;
+        $scope.noExtra = true;
         var modalInstance = $uibModal.open({
             animation: self.animationsEnabled,
             ariaLabelledBy: 'modal-title',
@@ -174,7 +175,8 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
             templateUrl: 'add-address-modal.html',
             controller: 'AddAddressCtrl',
             controllerAs: 'mCtrl',
-            size: 'lg'
+            size: 'lg',
+            scope: $scope
         });
 
         modalInstance.result.then(function(place) {

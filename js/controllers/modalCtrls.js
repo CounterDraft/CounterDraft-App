@@ -73,7 +73,11 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         }
     }
 }]).controller('AddAddressCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
-
+    $scope.addressModel = {
+        type: null,
+        name: null
+    }
+    $scope.autoAddress = null;
     this.initAddAddressModal = function() {
         //nothing to add?
     }
@@ -85,6 +89,11 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
 
     this.onAddress = function(error, place) {
         var simplePlace = {};
+        if (!$scope.noExtra && $scope.addAddressForm.$invalid) {
+            $scope.$emit('show-errors-check-validity');
+            $scope.autoAddress = null;
+            return;
+        }
         if (error) {
             $window.swal({
                 title: "Error",
@@ -104,6 +113,12 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
             }
         });
         simplePlace.id = place.id;
+
+        if (!$scope.noExtra) {
+            simplePlace.type = $scope.addressModel.type;
+            simplePlace.name = $scope.addressModel.name;
+        }
+        
         $uibModalInstance.close(simplePlace);
         return false;
     }
@@ -201,7 +216,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         var self = this;
         var formData = angular.copy($scope.resetPasswordModel);
         formData.id = $scope.employeeModel.id;
-        
+
         var hasData = true;
         var errorMsg = null;
 

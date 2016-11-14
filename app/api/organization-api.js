@@ -59,8 +59,16 @@ function OrganizationApi() {
 
         Organization_types.all().then(function(organization_types) {
             if (organization_types) {
+                var org_types = [];
+                for(var x in organization_types){
+                    var ot = {};
+                    ot.id = organization_types[x].id;
+                    ot.description = organization_types[x].description;
+                    ot.name = organization_types[x].name;
+                    org_types.push(ot);
+                }
                 res.status(200).json({
-                    organization_types: organization_types,
+                    organization_types: org_types,
                     success: true
                 });
             } else {
@@ -71,10 +79,18 @@ function OrganizationApi() {
 
     this.getAddressTypes = function(req, res) {
     
-        Address_type.all().then(function(address_type) {
-            if (address_type) {
+        Address_type.all().then(function(address_types) {
+            if (address_types) {
+                var addre_types = [];
+                for(var x in address_types){
+                    var at = {};
+                    at.id = address_types[x].id;
+                    at.description = address_types[x].description;
+                    at.name = address_types[x].name;
+                    addre_types.push(at);
+                }
                 res.status(200).json({
-                    address_types: address_type,
+                    address_types: addre_types,
                     success: true
                 });
             } else {

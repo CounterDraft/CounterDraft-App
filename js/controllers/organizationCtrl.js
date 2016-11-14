@@ -190,16 +190,14 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             if (newArr.length > oldArr.length) {
                 var newAddress = newArr[newArr.length - 1];
                 var errorMsg = "Failed to add address";
-                newAddress.name = "testing";
-                newAddress.type = 1;
-                console.log(newAddress);
 
                 $http({
                     method: 'POST',
                     url: _url_organization_address,
                     data: newAddress,
                 }).then(function successCallback(response) {
-                    if (response && response.status === 200) {
+                    if (response && response.status === 200 && response.data) {
+                        newAddress.id  = response.data.address.id;
                         console.log(response);
                     } else {
                         $window.swal({
@@ -276,6 +274,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
 
     this.onAddAddress = function(form) {
         var self = this;
+        $scope.noExtra = false;
         var modalInstance = $uibModal.open({
             animation: self.animationsEnabled,
             ariaLabelledBy: 'modal-title',
@@ -283,7 +282,8 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
             templateUrl: 'add-address-modal.html',
             controller: 'AddAddressCtrl',
             controllerAs: 'mCtrl',
-            size: 'lg'
+            size: 'lg',
+            scope: $scope
         });
         modalInstance.result.then(function(place) {
             $scope.addressArr.push(place);
