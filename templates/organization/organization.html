@@ -66,7 +66,7 @@
                         <div class="col-xs-12"><span>State:&nbsp;</span>{{address.administrative_area_level_1}}</div>
                         <div class="col-xs-12"><span>Country:&nbsp;</span>{{address.country}}</div>
                         <div class="col-xs-12"><span>Postal&nbsp;Code:&nbsp;</span>{{address.postal_code}}</div>
-                        <div class="col-xs-12"><span>Type:&nbsp;</span>{{address.type}}</div>
+                        <div class="col-xs-12"><span>Type:</span>&nbsp;{{ (address_types | filter:{id:address.type})[0].name }}</div>   
                         <div class="col-xs-12">&nbsp;</div>
                     </div>
                 </li>

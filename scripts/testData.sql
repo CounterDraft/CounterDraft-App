@@ -14,7 +14,7 @@ INSERT INTO organization_type(name, description, "createdAt", "updatedAt")
 
 
 INSERT INTO address_types(name, description, "createdAt", "updatedAt")
-    VALUES ('Primray', 'The main headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    VALUES ('Primary', 'The main headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO address_types(name, description, "createdAt", "updatedAt")
     VALUES ('Secondary', 'A non headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
