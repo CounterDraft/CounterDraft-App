@@ -5,7 +5,7 @@
         This should all the logic for the login page.
 */
 
-app.controller('AccountCtrl', ['$scope', '$http', '$window', '$location',' $anchorScroll', 'data', function($scope, $http, $window, $location,  $anchorScroll, data) {
+app.controller('AccountCtrl', ['$scope', '$http', '$window', '$location', '$anchorScroll', 'data', function($scope, $http, $window, $location,  $anchorScroll, data) {
     var _url_login = "/api/v1/account/login";
     var _url_registration = "/api/v1/account/registration";
     var _base_templates = "templates/login/";
