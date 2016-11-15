@@ -59,12 +59,13 @@ module.exports = {
         });
 
         routerWeb.get("/admin/dashboard", isAuthorizedSuperAdmin, function(req, res) {
-            var upTime = moment().subtract(process.uptime(), 'seconds');
+            var uptime = moment().subtract(process.uptime(), 'seconds');
             res.render("pages/admin/admin.ejs", {
                 title: 'Admin Dashboard',
                 layout: 'layouts/html_admin.ejs',
                 data: {
-                    upTime: upTime
+                    uptime: uptime,
+                    settings: global.config
                 }
             });
         });

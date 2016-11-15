@@ -8,12 +8,18 @@
 app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', function($scope, $http, $location, $window, data) {
     var _base_templates = "/templates/admin/";
     var _url_admin_login = "/api/v1/account/admin";
+    var _url_application = "/api/v1/application";
+
+    $scope.canEdit = false;
 
     $scope.prevPage = null;
     $scope.currentPage = null;
+    $scope.address_types = [];
+    $scope.organization_types = [];
 
     $scope.dashboardModal = {
         uptime: moment(),
+        settings: []
     }
 
     $scope.loginModel = {
@@ -34,9 +40,68 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
         //default page;
         $scope.currentPage = _getDefaultPage();
         if (typeof 'undefined' != data) {
-           $scope.dashboardModal.uptime = moment(data.upTime);
+            $scope.dashboardModal.uptime = moment(data.uptime);
+            if (data.settings) {
+                for (var setting in data.settings) {
+                    var set = {
+                        label: setting,
+                        value: data.settings[setting]
+                    }
+                    $scope.dashboardModal.settings.push(set);
+                }
+            }
         }
+
+        $http({
+            method: 'GET',
+            url: _url_application + '/address',
+        }).then(function successCallback(response) {
+            if (response.data && response.data.hasOwnProperty('address_types')) {
+                $scope.address_types = response.data.address_types;
+                // console.log($scope.address_types);
+            }
+        }, function errorCallback(response) {
+            var message = 'An unexpected error has occuried!';
+
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.error.length > 0) {
+                message = response.data.error[0].msg;
+            }
+            console.error(message);
+        });
+
+        $http({
+            method: 'GET',
+            url: _url_application + '/organization',
+        }).then(function successCallback(response) {
+            if (response.data && response.data.hasOwnProperty('organization_types')) {
+                $scope.organization_types = response.data.organization_types;
+                // console.log($scope.organization_types);
+            }
+        }, function errorCallback(response) {
+            var message = 'An unexpected error has occuried!';
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.error.length > 0) {
+                message = response.data.error[0].msg;
+            }
+            console.error(message);
+        });
     }
+    this.onAddOrganizationType = function(){
+        console.log('onAddOrganizationType');
+    }
+    this.onAddAddressType = function(){
+        console.log('onAddAddressType');
+    }
+    this.removeOrganizationType = function(index){
+        console.log('removeOrganizationType');
+    }
+    this.removeAddressType = function(index){
+        console.log('removeAddressType');
+    }
+
     $scope.onLogin = function() {
         var self = this;
         var formData = angular.copy($scope.loginModel);

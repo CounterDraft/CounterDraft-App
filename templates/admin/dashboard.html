@@ -2,21 +2,56 @@
     <h3 class="text-center">Admin Page</h3>
     <fieldset class="counter-widget">
         <legend>Quick Data</legend>
-        <div class="col-xs-12"><span>up since - </span>{{dashboardModal.uptime.calendar()}}</div>
-        <div class="col-xs-12"><span>Enviroment variables:</span></div>
-        <ul><li ng-repeat="">{{title}} {{date}}</li></ul>
+        <div class="col-xs-12">
+            <label>up since - </label>{{dashboardModal.uptime.calendar()}}</div>
+        <div class="col-xs-12">
+            <label>Enviroment variables:</label>
+        </div>
+        <ul class="col-xs-12 settings-list">
+            <li ng-repeat="setting in dashboardModal.settings" class="col-xs-12">
+                <label>{{setting.label}}</label>&nbsp;:&nbsp;{{setting.value}}</li>
+        </ul>
         <div class="col-xs-12">&nbsp;</div>
     </fieldset>
     <h3 class="text-left">System Settings</h3>
+    <div class="row">
+        <div class="col-xs-12">
+            <button type="button" class="btn senary" ng-click="canEdit = !canEdit"><i class="glyphicon glyphicon-pencil"></i></button>
+        </div>
+    </div>
+    <div class="col-xs-12">&nbsp;</div>
     <fieldset class="counter-widget">
         <legend>Organization Types</legend>
-        <button class="btn senary add" ng-click="alCtrl.onAddOrganizationType()" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+        <button class="btn senary add" ng-click="alCtrl.onAddOrganizationType()" type="button" ng-show="canEdit"><i class="glyphicon glyphicon-plus"></i></button>
+        <ul class="col-xs-12 organization-type-list">
+            <li ng-repeat="type in organization_types" class="row">
+            <button type="button" class="btn close quinary" ng-click="alCtrl.removeOrganizationType($index)" ng-show="canEdit">&times;</button>
+            <div class="form-group">
+                <div class="col-xs-3 col-sm-2"><input class="form-control" type="text" value="{{ type.id }}" disabled/></div>
+                <div class="col-xs-4 col-sm-2"><input class="form-control" type="text" value="{{type.name}}" disabled/></div>
+                <div class="col-xs-5 col-sm-8 description-container"><textarea class="form-control" disabled>{{type.description}}</textarea></div>
+            </div>
+            </li>
+        </ul>
         <div class="col-xs-12">&nbsp;</div>
     </fieldset>
+    <div class="col-xs-6 pull-right text-right"><small ng-show="canEdit">(organization type can only be delete if not used in the database!)</small></div>
     <div class="col-xs-12">&nbsp;</div>
     <fieldset class="counter-widget">
         <legend>Address Types</legend>
-        <button class="btn senary add" ng-click="alCtrl.onAddAddressType()" type="button"><i class="glyphicon glyphicon-plus"></i></button>
+        <button class="btn senary add" ng-click="alCtrl.onAddAddressType()" type="button" ng-show="canEdit"><i class="glyphicon glyphicon-plus"></i></button>
+        <ul class="col-xs-12 address-type-list">
+            <li ng-repeat="type in address_types" class="row">
+            <button type="button" class="btn close quinary" ng-click="alCtrl.removeAddressType($index)" ng-show="canEdit">&times;</button>
+            <div class="form-group">
+                <div class="col-xs-3 col-sm-2"><input class="form-control" type="text" value="{{ type.id }}" disabled/></div>
+                <div class="col-xs-4 col-sm-2"><input class="form-control" type="text" value="{{type.name}}" disabled/></div>
+                <div class="col-xs-5 col-sm-8 description-container"><textarea class="form-control" disabled>{{type.description}}</textarea></div>
+            </div>
+            </li>
+        </ul>
         <div class="col-xs-12">&nbsp;</div>
     </fieldset>
+    <div class="col-xs-6 pull-right text-right"><small ng-show="canEdit">(address type can only be delete if not used in the database!)</small></div>
+    <div class="col-xs-12">&nbsp;</div>
 </section>
