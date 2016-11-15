@@ -5,7 +5,7 @@
         This should all the logic for the login page.
 */
 
-app.controller('AccountCtrl', ['$scope', '$http', '$window', '$location', 'data', function($scope, $http, $window, $location, data) {
+app.controller('AccountCtrl', ['$scope', '$http', '$window', '$location',' $anchorScroll', 'data', function($scope, $http, $window, $location,  $anchorScroll, data) {
     var _url_login = "/api/v1/account/login";
     var _url_registration = "/api/v1/account/registration";
     var _base_templates = "templates/login/";
@@ -48,12 +48,14 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', '$location', 'data'
     this.initLogin = function() {
         $('body:not(.login-background)').addClass('login-background');
         $scope.showResetPassword = false;
+        $anchorScroll();
     }
 
     this.initRegistration = function() {
         if (typeof 'undefined' != data && data.organization_types) {
             $scope.organization_types = data.organization_types;
         }
+        $anchorScroll();
     }
 
     var _getDefaultPage = function() {
