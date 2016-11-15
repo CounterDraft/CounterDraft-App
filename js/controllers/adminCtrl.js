@@ -89,17 +89,29 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
             console.error(message);
         });
     }
+
     this.onAddOrganizationType = function(){
         console.log('onAddOrganizationType');
     }
+
     this.onAddAddressType = function(){
         console.log('onAddAddressType');
     }
+
     this.removeOrganizationType = function(index){
         console.log('removeOrganizationType');
     }
+
     this.removeAddressType = function(index){
         console.log('removeAddressType');
+    }
+
+    this.onCreateAdmin = function(){
+        console.log('onCreateAdmin');
+    }
+
+    this.onChangePassword = function(){
+        console.log('onChangePassword');
     }
 
     $scope.onLogin = function() {
