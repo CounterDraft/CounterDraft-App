@@ -46,7 +46,7 @@ module.exports = {
             if (req.session.user) {
                 var permissions = req.session.user.permissions[0];
                 var pArr = permissions.split(",");
-                if (pArr.indexOf("superadmin") > -1) {
+                if (pArr.indexOf("superadmin") > -1 || pArr.indexOf("restricted:superadmin") > -1 ) {
                     res.redirect('/admin/dashboard');
                     return;
                 }
