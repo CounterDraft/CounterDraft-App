@@ -8,7 +8,7 @@ function AccountController() {
                     getApi('organization').getOrganizationTypes(req, res);
                     break;
                 case 'post':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('organization').addOrganizationType(req, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);
@@ -27,7 +27,7 @@ function AccountController() {
                     getApi('organization').getAddressTypes(req, res);
                     break;
                 case 'post':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('organization').addAddressType(req, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);

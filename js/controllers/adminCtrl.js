@@ -12,7 +12,7 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
 
     $scope.canEdit = false;
     $scope.addressAddShow = false;
-    $scope.organizationAddShow = false; 
+    $scope.organizationAddShow = false;
 
     $scope.prevPage = null;
     $scope.currentPage = null;
@@ -53,7 +53,7 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
         //default page;
         $scope.currentPage = _getDefaultPage();
         $scope.addressAddShow = false;
-        $scope.organizationAddShow = false; 
+        $scope.organizationAddShow = false;
         if (typeof 'undefined' != data) {
             $scope.dashboardModal.uptime = moment(data.uptime);
             if (data.settings) {
@@ -105,46 +105,92 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
         });
     }
 
-    this.onAddOrganizationType = function(){
+    this.onAddOrganizationType = function() {
         $scope.organizationAddShow = true;
     }
 
-    this.onAddAddressType = function(){
+    this.onAddAddressType = function() {
         $scope.addressAddShow = true;
     }
 
-    this.removeOrganizationType = function(index){
+    this.removeOrganizationType = function(index) {
         console.log('removeOrganizationType');
     }
 
-    this.removeAddressType = function(index){
+    this.removeAddressType = function(index) {
         console.log('removeAddressType');
     }
 
-    this.onCreateAdmin = function(){
+    this.onCreateAdmin = function() {
         console.log('onCreateAdmin');
     }
 
-    this.onChangePassword = function(){
+    this.onChangePassword = function() {
         console.log('onChangePassword');
     }
 
-    $scope.onSubmitAddressType = function(){
+    $scope.onSubmitAddressType = function() {
+        if(!$scope.addressAddShow){
+            return;
+        }
         var formData = angular.copy($scope.addressTypeModel);
-        console.log(formData);
+        formData.admin = true;
+
+        $http({
+            method: 'POST',
+            url: _url_application + '/address',
+            data: formData
+        }).then(function successCallback(response) {
+            console.log(response);
+            // if (response.data && response.data.hasOwnProperty('organization_types')) {
+            //     $scope.organization_types = response.data.organization_types;
+            //     console.log($scope.organization_types);
+            // }
+        }, function errorCallback(response) {
+            var message = 'An unexpected error has occuried!';
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.error.length > 0) {
+                message = response.data.error[0].msg;
+            }
+            console.error(message);
+        });
     }
 
-    $scope.onSubmitOrganizationType = function(){
+    $scope.onSubmitOrganizationType = function() {
+        if(!$scope.organizationAddShow){
+            return;
+        }
         var formData = angular.copy($scope.organizationTypeModel);
-        console.log(formData);
+        formData.admin = true;
+
+        $http({
+            method: 'POST',
+            url: _url_application + '/organization',
+            data: formData
+        }).then(function successCallback(response) {
+            console.log(response);
+            // if (response.data && response.data.hasOwnProperty('organization_types')) {
+            //     $scope.organization_types = response.data.organization_types;
+            //     console.log($scope.organization_types);
+            // }
+        }, function errorCallback(response) {
+            var message = 'An unexpected error has occuried!';
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.error.length > 0) {
+                message = response.data.error[0].msg;
+            }
+            console.error(message);
+        });
     }
 
-    $scope.onStopEdit = function(){
+    $scope.onStopEdit = function() {
         $scope.canEdit = !$scope.canEdit;
-        $scope.addressAddShow = false; 
+        $scope.addressAddShow = false;
         $scope.organizationAddShow = false;
-        _resetForm(this.addOrganizationTypeForm,'addressTypeModel');
-        _resetForm(this.addAddressTypeForm,'organizationTypeModel');
+        _resetForm(this.addOrganizationTypeForm, 'addressTypeModel');
+        _resetForm(this.addAddressTypeForm, 'organizationTypeModel');
     }
 
     $scope.onLogin = function() {

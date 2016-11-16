@@ -45,6 +45,28 @@ function OrganizationApi() {
         });
     }
 
+    this.addOrganizationType = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+
+        var postData = req.body;
+
+        if(!postData.admin){
+            self.getErrorApi().sendError(1050, 401, res);
+            return;
+        }
+
+        console.log(postData);
+
+        console.log(user);
+        console.log(organization);
+
+        res.status(200).json({
+            organization_type: null,
+            success: true
+        });
+    }
+
     this.getAdministrators = function(id) {
         return ModelEmployee.findAll({
             where: {
@@ -60,7 +82,7 @@ function OrganizationApi() {
         Organization_types.all().then(function(organization_types) {
             if (organization_types) {
                 var org_types = [];
-                for(var x in organization_types){
+                for (var x in organization_types) {
                     var ot = {};
                     ot.id = organization_types[x].id;
                     ot.description = organization_types[x].description;
@@ -78,11 +100,11 @@ function OrganizationApi() {
     }
 
     this.getAddressTypes = function(req, res) {
-    
+
         Address_type.all().then(function(address_types) {
             if (address_types) {
                 var addre_types = [];
-                for(var x in address_types){
+                for (var x in address_types) {
                     var at = {};
                     at.id = address_types[x].id;
                     at.description = address_types[x].description;
