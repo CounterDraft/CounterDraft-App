@@ -11,6 +11,8 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
     var _url_application = "/api/v1/application";
 
     $scope.canEdit = false;
+    $scope.addressAddShow = false;
+    $scope.organizationAddShow = false; 
 
     $scope.prevPage = null;
     $scope.currentPage = null;
@@ -21,6 +23,17 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
         uptime: moment(),
         settings: []
     }
+
+    $scope.addressTypeModel = {
+        type: null,
+        description: null
+    }
+
+    $scope.organizationTypeModel = {
+        type: null,
+        description: null
+    }
+
 
     $scope.loginModel = {
         username: null,
@@ -39,6 +52,8 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
     this.initAdminDashboard = function() {
         //default page;
         $scope.currentPage = _getDefaultPage();
+        $scope.addressAddShow = false;
+        $scope.organizationAddShow = false; 
         if (typeof 'undefined' != data) {
             $scope.dashboardModal.uptime = moment(data.uptime);
             if (data.settings) {
@@ -91,11 +106,11 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
     }
 
     this.onAddOrganizationType = function(){
-        console.log('onAddOrganizationType');
+        $scope.organizationAddShow = true;
     }
 
     this.onAddAddressType = function(){
-        console.log('onAddAddressType');
+        $scope.addressAddShow = true;
     }
 
     this.removeOrganizationType = function(index){
@@ -112,6 +127,22 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
 
     this.onChangePassword = function(){
         console.log('onChangePassword');
+    }
+
+    $scope.onSubmitAddressType = function(){
+        var formData = angular.copy($scope.addressTypeModel);
+        console.log(formData);
+    }
+
+    $scope.onSubmitOrganizationType = function(){
+        var formData = angular.copy($scope.organizationTypeModel);
+        console.log(formData);
+    }
+
+    $scope.onStopEdit = function(){
+        $scope.canEdit = !$scope.canEdit;
+        $scope.addressAddShow = false; 
+        $scope.organizationAddShow = false; 
     }
 
     $scope.onLogin = function() {

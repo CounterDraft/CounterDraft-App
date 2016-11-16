@@ -18,7 +18,7 @@
     <h3 class="text-left">System Settings</h3>
     <div class="row">
         <div class="col-xs-12">
-            <button type="button" class="btn senary" ng-click="canEdit = !canEdit"><i class="glyphicon glyphicon-pencil"></i></button>
+            <button type="button" class="btn senary" ng-click="onStopEdit()"><i class="glyphicon glyphicon-pencil"></i></button>
         </div>
     </div>
     <div class="col-xs-12">&nbsp;</div>
@@ -41,6 +41,20 @@
                 </div>
             </li>
         </ul>
+        <form ng-submit="onSubmitOrganizationType()" class="counter-form address-add-row" data-toggle="validator" role="form" name="addOrganizationTypeForm" ng-show="organizationAddShow">
+            <div class="form-group col-xs-4 col-sm-2" show-errors>
+                <input class="form-control" type="text" placeholder="name *" type="text" name="typeName" ng-model="organizationTypeModel.name" pattern="^[_A-z]{1,}$" required>
+                <small class="help-block" ng-if="addOrganizationTypeForm.typeName.$error.required">required!</small>
+                <small class="help-block" ng-if="addOrganizationTypeForm.typeName.$error && !addOrganizationTypeForm.name.$error.required">bad pattern!</small>
+            </div>
+            <div class="form-group col-xs-5 col-sm-8" show-errors>
+                <textarea class="form-control" type="text" placeholder="description *" name="description" ng-model="organizationTypeModel.description" required/>
+                <small class="help-block" ng-if="addOrganizationTypeForm.description.$error.required">required!</small>
+            </div>
+            <div class="col-xs-3 col-sm-2">
+                <button class="btn btn-block tertiary" ng-disabled="addOrganizationTypeForm.$invalid">Save</button>
+            </div>
+        </form>
         <div class="col-xs-12">&nbsp;</div>
     </fieldset>
     <div class="col-xs-6 pull-right text-right"><small ng-show="canEdit">(organization type can only be delete if not used in the database!)</small></div>
@@ -64,6 +78,20 @@
                 </div>
             </li>
         </ul>
+        <form ng-submit="onSubmitAddressType()" class="counter-form address-add-row" data-toggle="validator" role="form" name="addAddressTypeForm" ng-show="addressAddShow">
+            <div class="form-group col-xs-4 col-sm-2" show-errors>
+                <input class="form-control" type="text" placeholder="name *" type="text" name="typeName" ng-model="addressTypeModel.name" pattern="^[_A-z]{1,}$" required>
+                <small class="help-block" ng-if="addAddressTypeForm.typeName.$error.required">required!</small>
+                <small class="help-block" ng-if="addAddressTypeForm.typeName.$error && !addAddressTypeForm.name.$error.required">bad pattern!</small>
+            </div>
+            <div class="form-group col-xs-5 col-sm-8" show-errors>
+                <textarea class="form-control" type="text" placeholder="description *" name="description" ng-model="addressTypeModel.description" required/>
+                <small class="help-block" ng-if="addAddressTypeForm.description.$error.required">required!</small>
+            </div>
+            <div class="col-xs-3 col-sm-2">
+                <button class="btn btn-block tertiary" ng-disabled="addAddressTypeForm.$invalid">Save</button>
+            </div>
+        </form>
         <div class="col-xs-12">&nbsp;</div>
     </fieldset>
     <div class="col-xs-6 pull-right text-right"><small ng-show="canEdit">(address type can only be delete if not used in the database!)</small></div>
