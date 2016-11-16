@@ -14,7 +14,7 @@ function AccountController() {
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'delete':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('organization').removeOrganizationType(req, res);
                     break;
                 default:
                     self.getErrorApi().sendError(1011, 403, res);
@@ -33,7 +33,7 @@ function AccountController() {
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'delete':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('organization').removeAddressType(req, res);
                     break;
                 default:
                     self.getErrorApi().sendError(1011, 403, res);

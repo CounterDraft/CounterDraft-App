@@ -114,11 +114,81 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
     }
 
     this.removeOrganizationType = function(index) {
-        console.log('removeOrganizationType');
+        var errorMsg = "Failed to remove type";
+        var organization_type = angular.copy($scope.organization_types[index]);
+        organization_type.admin = true;
+        $http({
+            method: 'DELETE',
+            url: _url_application + '/organization',
+            params: organization_type
+        }).then(function successCallback(response) {
+            if (response && response.status === 200) {
+                $scope.organization_types.splice(index, 1);
+            } else {
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            }
+        }, function errorCallback(response) {
+            if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') &&
+                response.data.error.length > 0) {
+                errorMsg = response.data.error[0].msg;
+            }
+            $window.swal({
+                title: "Error",
+                text: errorMsg,
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+        });
     }
 
     this.removeAddressType = function(index) {
-        console.log('removeAddressType');
+        var errorMsg = "Failed to remove type";
+        var address_type = angular.copy($scope.address_types[index]);
+        address_type.admin = true;
+        $http({
+            method: 'DELETE',
+            url: _url_application + '/address',
+            params: address_type
+        }).then(function successCallback(response) {
+            if (response && response.status === 200) {
+                $scope.address_types.splice(index, 1);
+            } else {
+                $window.swal({
+                    title: "Error",
+                    text: errorMsg,
+                    type: "error",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true,
+                    html: true
+                });
+            }
+        }, function errorCallback(response) {
+            if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') &&
+                response.data.error.length > 0) {
+                errorMsg = response.data.error[0].msg;
+            }
+            $window.swal({
+                title: "Error",
+                text: errorMsg,
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
+        });
     }
 
     this.onCreateAdmin = function() {
@@ -130,7 +200,7 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
     }
 
     $scope.onSubmitAddressType = function() {
-        if(!$scope.addressAddShow){
+        if (!$scope.addressAddShow) {
             return;
         }
         var formData = angular.copy($scope.addressTypeModel);
@@ -141,11 +211,10 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
             url: _url_application + '/address',
             data: formData
         }).then(function successCallback(response) {
-            console.log(response);
-            // if (response.data && response.data.hasOwnProperty('organization_types')) {
-            //     $scope.organization_types = response.data.organization_types;
-            //     console.log($scope.organization_types);
-            // }
+            if (response.data && response.data.hasOwnProperty('address_type')) {
+                var address_type = response.data.address_type;
+                $scope.address_types.push(address_type);
+            }
         }, function errorCallback(response) {
             var message = 'An unexpected error has occuried!';
             if (typeof 'undefined' != response &&
@@ -158,7 +227,7 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
     }
 
     $scope.onSubmitOrganizationType = function() {
-        if(!$scope.organizationAddShow){
+        if (!$scope.organizationAddShow) {
             return;
         }
         var formData = angular.copy($scope.organizationTypeModel);
@@ -169,11 +238,10 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
             url: _url_application + '/organization',
             data: formData
         }).then(function successCallback(response) {
-            console.log(response);
-            // if (response.data && response.data.hasOwnProperty('organization_types')) {
-            //     $scope.organization_types = response.data.organization_types;
-            //     console.log($scope.organization_types);
-            // }
+            if (response.data && response.data.hasOwnProperty('organization_type')) {
+                var organization_type = response.data.organization_type;
+                $scope.organization_types.push(organization_type);
+            }
         }, function errorCallback(response) {
             var message = 'An unexpected error has occuried!';
             if (typeof 'undefined' != response &&

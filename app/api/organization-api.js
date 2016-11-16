@@ -48,22 +48,125 @@ function OrganizationApi() {
     this.addOrganizationType = function(req, res) {
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
-
         var postData = req.body;
 
-        if(!postData.admin){
+        if (!postData.admin) {
             self.getErrorApi().sendError(1050, 401, res);
+            return;
+        } else if (!postData.hasOwnProperty('name') && !postData.name) {
+            self.getErrorApi().sendError(1012, 422, res);
+            return;
+        } else if (!postData.hasOwnProperty('description') && !postData.description) {
+            self.getErrorApi().sendError(1012, 422, res);
+            return;
+        }
+        Organization_types.create({
+            name: postData.name,
+            description: postData.description
+        }).then(function(result) {
+            if (result) {
+                var organization_type = result.dataValues;
+                res.status(200).json({
+                    organization_type: organization_type,
+                    success: true
+                });
+                return;
+            }
+            self.getErrorApi().sendError(1050, 401, res);
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+        });
+    }
+    this.addAddressType = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var postData = req.body;
+
+        if (!postData.admin) {
+            self.getErrorApi().sendError(1050, 401, res);
+            return;
+        } else if (!postData.hasOwnProperty('name') && !postData.name) {
+            self.getErrorApi().sendError(1012, 422, res);
+            return;
+        } else if (!postData.hasOwnProperty('description') && !postData.description) {
+            self.getErrorApi().sendError(1012, 422, res);
+            return;
+        }
+        Address_type.create({
+            name: postData.name,
+            description: postData.description
+        }).then(function(result) {
+            if (result) {
+                var address_type = result.dataValues;
+                res.status(200).json({
+                    address_type: address_type,
+                    success: true
+                });
+                return;
+            }
+            self.getErrorApi().sendError(1050, 401, res);
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+        });
+    }
+
+    this.removeOrganizationType = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var deleteData = req.query;
+
+        if (!deleteData.admin) {
+            self.getErrorApi().sendError(1050, 401, res);
+            return;
+        } else if (!deleteData.hasOwnProperty('id') && !postData.id) {
+            self.getErrorApi().sendError(1012, 422, res);
             return;
         }
 
-        console.log(postData);
+        Organization_types.destroy({
+            where: {
+                id: deleteData.id
+            }
+        }).then(function(result) {
+            if (result) {
+                res.status(200).json({
+                    success: true
+                });
+            }else{
+                self.getErrorApi().sendError(9907, 401, res);
+            }
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+        });
+    }
 
-        console.log(user);
-        console.log(organization);
+    this.removeAddressType = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var deleteData = req.query;
 
-        res.status(200).json({
-            organization_type: null,
-            success: true
+        if (!deleteData.admin) {
+            self.getErrorApi().sendError(1050, 401, res);
+            return;
+        } else if (!deleteData.hasOwnProperty('id') && !postData.id) {
+            self.getErrorApi().sendError(1012, 422, res);
+            return;
+        }
+
+        Address_type.destroy({
+            where: {
+                id: deleteData.id
+            }
+        }).then(function(result) {
+            if (result) {
+                res.status(200).json({
+                    success: true
+                });
+            }else{
+                self.getErrorApi().sendError(9907, 401, res);
+            }
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
         });
     }
 

@@ -244,6 +244,9 @@ var errorList = {
     },
     9906: {
         msg: 'Unknown error, failed to login in admin.'
+    },
+    9907: {
+        msg: 'Unknown error, failed to delete data.'
     }
 }
 

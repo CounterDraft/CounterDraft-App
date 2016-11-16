@@ -45,7 +45,7 @@
             <div class="form-group col-xs-4 col-sm-2" show-errors>
                 <input class="form-control" type="text" placeholder="name *" type="text" name="typeName" ng-model="organizationTypeModel.name" pattern="^[_A-z]{1,}$" required>
                 <small class="help-block" ng-if="addOrganizationTypeForm.typeName.$error.required">required!</small>
-                <small class="help-block" ng-if="addOrganizationTypeForm.typeName.$error && !addOrganizationTypeForm.name.$error.required">bad pattern!</small>
+                <small class="help-block" ng-if="addOrganizationTypeForm.typeName.$error && !addOrganizationTypeForm.typeName.$error.required">bad pattern!</small>
             </div>
             <div class="form-group col-xs-5 col-sm-8" show-errors>
                 <textarea class="form-control" type="text" placeholder="description *" name="description" ng-model="organizationTypeModel.description" required/>
@@ -82,7 +82,7 @@
             <div class="form-group col-xs-4 col-sm-2" show-errors>
                 <input class="form-control" type="text" placeholder="name *" type="text" name="typeName" ng-model="addressTypeModel.name" pattern="^[_A-z]{1,}$" required>
                 <small class="help-block" ng-if="addAddressTypeForm.typeName.$error.required">required!</small>
-                <small class="help-block" ng-if="addAddressTypeForm.typeName.$error && !addAddressTypeForm.name.$error.required">bad pattern!</small>
+                <small class="help-block" ng-if="addAddressTypeForm.typeName.$error && !addAddressTypeForm.typeName.$error.required">bad pattern!</small>
             </div>
             <div class="form-group col-xs-5 col-sm-8" show-errors>
                 <textarea class="form-control" type="text" placeholder="description *" name="description" ng-model="addressTypeModel.description" required/>

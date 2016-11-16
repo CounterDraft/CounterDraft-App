@@ -30,7 +30,8 @@ function baseController() {
             'administrative_area_level_1',
             'administrative_area_level_2',
             'country',
-            'postal_code'
+            'postal_code',
+            'name'
         ]
         if (Object.keys(req.body).length > 0) {
             for (var bo in req.body) {
