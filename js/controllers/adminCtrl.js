@@ -142,7 +142,9 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
     $scope.onStopEdit = function(){
         $scope.canEdit = !$scope.canEdit;
         $scope.addressAddShow = false; 
-        $scope.organizationAddShow = false; 
+        $scope.organizationAddShow = false;
+        _resetForm(this.addOrganizationTypeForm,'addressTypeModel');
+        _resetForm(this.addAddressTypeForm,'organizationTypeModel');
     }
 
     $scope.onLogin = function() {
@@ -190,6 +192,22 @@ app.controller('AdminCtrl', ['$scope', '$http', '$location', '$window', 'data', 
                 html: true
             });
         }
+    }
+
+    var _resetForm = function(form, modelName) {
+        _clearModel(modelName);
+        form.$setPristine();
+        form.$setUntouched();
+        $scope.$broadcast('show-errors-reset');
+    }
+
+    var _clearModel = function(modalName) {
+        if (!$scope[modalName]) {
+            return;
+        }
+        angular.forEach($scope[modalName], function(value, key) {
+            $scope[modalName][key] = null;
+        });
     }
 
     _init();
