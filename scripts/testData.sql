@@ -86,6 +86,11 @@ INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161111180332-organization-apikey.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161120225524-add-phone-to-organization.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+
+
 	
 
 #set all users to password = password

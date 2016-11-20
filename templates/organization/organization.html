@@ -24,9 +24,16 @@
                     <select class="form-control" ng-disabled="editLocked" ng-model="organizationModel.type" ng-options="organization_type.id as organization_type.name for organization_type in organization_types">
                     </select>
                 </div>
-            </div>
-            <div class="form-group" show-errors>
-                <textarea class="form-control" ng-disabled="editLocked" placeholder="Describe the organization" ng-model="organizationModel.description" name="organizationDescription"></textarea>
+                <div class="form-group col-xs-12" show-errors>
+                    <textarea class="form-control" ng-disabled="editLocked" placeholder="Describe the organization" ng-model="organizationModel.description" name="organizationDescription"></textarea>
+                </div>
+                <div class="form-group col-xs-12 col-md-6 pull-right" show-errors>
+                    <div class="input-group counter-group">
+                        <div class="input-group-addon">Phone</div>
+                        <input type="number" class="form-control" ng-minlength="10" ng-maxlength="11" name="phone" ng-disabled="editLocked" ng-model="organizationModel.phone" />
+                    </div>
+                    <div class="help-block" ng-show="((employeeEditForm.phone.$error.minlength || employeeEditForm.phone.$error.maxlength) && employeeEditForm.phone.$dirty)">phone number should be '1231231234' or '18001231234' formate</div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
@@ -66,7 +73,7 @@
                         <div class="col-xs-12"><span>State:&nbsp;</span>{{address.administrative_area_level_1}}</div>
                         <div class="col-xs-12"><span>Country:&nbsp;</span>{{address.country}}</div>
                         <div class="col-xs-12"><span>Postal&nbsp;Code:&nbsp;</span>{{address.postal_code}}</div>
-                        <div class="col-xs-12"><span>Type:</span>&nbsp;{{ (address_types | filter:{id:address.type})[0].name }}</div>   
+                        <div class="col-xs-12"><span>Type:</span>&nbsp;{{ (address_types | filter:{id:address.type})[0].name }}</div>
                         <div class="col-xs-12">&nbsp;</div>
                     </div>
                 </li>

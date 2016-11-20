@@ -28,6 +28,11 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: DataTypes.UUIDV4,
             comment: "The UUID which is used to save images and user data in the cloud."
         },
+        phone: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+            comment: "main phone number for the organization."
+        },
         api_key: {
             type: DataTypes.STRING,
             allowNull: false,

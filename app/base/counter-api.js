@@ -105,6 +105,7 @@ function baseApi() {
             multi_admin: organization.multi_admin,
             patron_registration_email: organization.patron_registration_email,
             password_expire_time: organization.password_expire_time,
+            phone: organization.phone,
             type: organization.type,
             uuid: organization.o_uuid,
             address: organization.address,

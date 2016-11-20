@@ -104,7 +104,11 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                 param: formData,
             }).then(function successCallback(response) {
                 if (response.data && response.data.hasOwnProperty('organization')) {
-                    $scope.organizationModel = response.data.organization;
+                    var organization = angular.copy(response.data.organization);
+                    if (organization.phone) {
+                        organization.phone = parseInt(organization.phone);
+                    }
+                    $scope.organizationModel = organization;
                     $scope.addressArr = response.data.organization.address;
                     $scope.$watchCollection('addressArr', _saveAddress);
                 }
@@ -156,7 +160,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
         }).then(function successCallback(response) {
             if (response && response.status === 200) {
                 $scope.employees = response.data.employees;
-                
+
             } else {
                 console.error(errorMsgEmp);
             }
@@ -200,7 +204,7 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
                     data: newAddress,
                 }).then(function successCallback(response) {
                     if (response && response.status === 200 && response.data) {
-                        newAddress.id  = response.data.address.id;
+                        newAddress.id = response.data.address.id;
                         console.log(response);
                     } else {
                         $window.swal({
@@ -543,13 +547,18 @@ app.controller('OrganizationCtrl', ['$scope', '$uibModal', '$http', '$anchorScro
     this.saveForm = function() {
         var userNotFoundErrorMsg = "An unexpected error has occuried. Please contact CounterDraft support..";
         var organization = angular.copy($scope.organizationModel);
+        if (organization.hasOwnProperty('phone') && organization.phone && organization.phone.toString().length === 10) {
+            var p = 1 + organization.phone.toString();
+            organization.phone = p;
+        }
         var formData = {
             name: organization.name,
             type: organization.type,
             description: organization.description,
             patron_registration_email: organization.patron_registration_email,
             multi_admin: organization.multi_admin,
-            password_expire_time: organization.password_expire_time
+            password_expire_time: organization.password_expire_time,
+            phone: organization.phone
         }
         var submit = function(clearAdmin) {
             if (formData) {

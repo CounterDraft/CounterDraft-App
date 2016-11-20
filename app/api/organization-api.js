@@ -547,6 +547,11 @@ function OrganizationApi() {
             organization.hasOwnProperty('o_uuid') || organization.hasOwnProperty('api_key')) {
             errorNumber = 1034;
         }
+        if (organization.hasOwnProperty('phone') &&
+            organization.phone &&
+            !this.getModelPattern('phone').test(organization.phone)) {
+            errorNumber = 1046;
+        }
         if (errorNumber) {
             isCorrupt = true;
         }

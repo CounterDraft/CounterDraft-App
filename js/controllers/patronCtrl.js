@@ -392,6 +392,7 @@ app.controller('PatronCtrl', ['$scope', '$http', '$window', '$uibModal', '$ancho
             var p = 1 + formData.phone.toString();
             formData.phone = p;
         }
+        
         if (addressArr.length > 0) {
             formData.address = addressArr[0];
         }
