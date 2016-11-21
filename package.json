@@ -44,6 +44,7 @@
     "less": "^2.7.1",
     "libmime": "^2.1.0",
     "mailcomposer": "^3.12.0",
+    "memwatch-next": "^0.3.0",
     "method-override": "^2.3.5",
     "mix-into": "*",
     "moment": "^2.15.1",

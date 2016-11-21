@@ -15,6 +15,7 @@ var grunt = require("grunt");
 var Umzug = require('umzug');
 var Promise = getPromise();
 var forceSsl = require('force-ssl-heroku');
+var memwatch = require('memwatch-next');
 
 
 //Server settings;
@@ -37,6 +38,11 @@ app.use(expressLayouts);
 
 routesWeb.setup(app);
 routesApi.setup(app);
+
+//adding memory watcher;
+memwatch.on('leak', function(info) {
+    logger.warn('warning', info, {info: info});
+});
 
 var _addWatcher = function() {
     return new Promise(function(resolve, reject) {
