@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
         organization_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            comment: "Defines the id of the patron."
+            comment: "Defines the organization of the patron."
         }
     }, {
         freezeTableName: true,

@@ -90,6 +90,10 @@ INSERT INTO public.sequelize_meta(
 	name, "createdAt", "updatedAt")
 	VALUES ('20161120225524-add-phone-to-organization.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
 
+INSERT INTO public.sequelize_meta(
+	name, "createdAt", "updatedAt")
+	VALUES ('20161121224843-game_creation-migration.js',CURRENT_TIMESTAMP ,CURRENT_TIMESTAMP );
+
 
 	
 

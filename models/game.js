@@ -13,6 +13,11 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: "Defines the type of game this is."
         },
+        league: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            comment: "Defines the league the game is mlb, nba, nhl, etc..."
+        },
         start: {
             type: DataTypes.DATE,
             allowNull: false,
@@ -46,6 +51,7 @@ module.exports = function(sequelize, DataTypes) {
                 Game.belongsTo(models.game_type, { foreignKey: 'type', target: 'id' });
                 Game.belongsTo(models.payout, { foreignKey: 'transaction' });
                 Game.belongsTo(models.organization, { foreignKey: 'organization_id', target: 'id' });
+                Game.belongsTo(models.league_types, { foreignKey: 'league', target: 'id' });
             }
         }
     });

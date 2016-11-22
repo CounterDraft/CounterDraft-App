@@ -1,29 +1,33 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-    var GameType = sequelize.define("game_type", {
+    var LeagueTypes = sequelize.define("league_types", {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            comment: "Name of the game type"
+            comment: "Name of the game league."
         },
         description: {
             type: DataTypes.TEXT,
             allowNull: false,
-            comment: "Description of game type"
+            comment: "Description of the league."
         },
         is_active: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: true,
-            comment: "Is this game type active or not."
+            comment: "Is this league type active or not."
+        },
+        website: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            comment: "The website for the league."
         }
     }, {
-        freezeTableName: true,
         classMethods: { associate: function(models) {
             //none;
         }}
     });
 
-    return GameType;
+    return LeagueTypes;
 };
