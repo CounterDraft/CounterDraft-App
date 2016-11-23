@@ -14,10 +14,10 @@ INSERT INTO organization_type(name, description, "createdAt", "updatedAt")
 
 
 INSERT INTO address_types(name, description, "createdAt", "updatedAt")
-    VALUES ('Primary', 'The main headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    VALUES ('primary', 'The main headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO address_types(name, description, "createdAt", "updatedAt")
-    VALUES ('Secondary', 'A non headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    VALUES ('secondary', 'A non headquarters for a organization', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 #set all users to password = password
 UPDATE public.employee_user
