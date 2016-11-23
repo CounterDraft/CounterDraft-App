@@ -41,7 +41,7 @@ routesApi.setup(app);
 
 //adding memory watcher;
 memwatch.on('leak', function(info) {
-    logger.warn('warning', info, {info: info});
+    logger.warn('warning', info, { info: info });
 });
 
 var _addWatcher = function() {
@@ -69,7 +69,10 @@ var _launchApp = function() {
                     modelName: 'sequelize_meta',
                     columnType: new models.Sequelize.STRING(100)
                 },
-                migrations: { params: [models.sequelize.getQueryInterface(), models.Sequelize] }
+                migrations: {
+                    params: [models.sequelize.getQueryInterface(), models.Sequelize],
+                    path: 'seeders'
+                }
             });
 
             umzug.executed().then(function(migrations) {
