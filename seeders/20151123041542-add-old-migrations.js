@@ -2,6 +2,7 @@
 
 module.exports = {
     up: function(queryInterface, Sequelize) {
+      //ALL MIGRATIONS SHOULD BE ADD HERE FOR FRESH ENVIOMENT SETUPS;
         return queryInterface.bulkInsert('sequelize_meta', [{
             name: '20160926231604-adding-isActive-migration.js',
             createdAt: new Date(),
