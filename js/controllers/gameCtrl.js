@@ -10,7 +10,16 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', 'data', function($scop
     $scope.currentPage = null;
 
     //models
-    $scope.gameModel = {};
+    $scope.gameModel = {}
+
+    $scope.gameSearchModel = {
+        id: null,
+        league: null,
+        start: null,
+        end: null
+    }
+
+    $scope.currentDate = moment().toDate();
     
     var _init = function() {
         //default page;
@@ -19,6 +28,7 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', 'data', function($scop
 
     this.initSearch = function(){
       //nothing
+      console.log($scope.gameSearchModel);
     }
 
     var _getDefaultPage = function() {

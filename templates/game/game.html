@@ -3,17 +3,38 @@
         <button class="btn senary add" ng-click="onRoute('add-game')"><i class="glyphicon glyphicon-plus"></i></button>
         <h3 class="text-left-xs text-left-sm text-center">Game Management</h3>
     </div>
-    <form name="patronSearchForm" data-toggle="validator" class="counter-form" role="form" ng-submit="onGameSearch()" ng-init="gCtrl.initSearch()">
+    <form name="gameSearchForm" data-toggle="validator" class="counter-form" role="form" ng-submit="onGameSearch()" ng-init="gCtrl.initSearch()">
         <fieldset class="col-xs-12 counter-widget">
             <legend>Game Search</legend>
             <div class="col-xs-12">&nbsp;</div>
             <div class="col-xs-12">
                 <div class="form-group" show-errors>
-                    <input type="text" placeholder="Game ID" ng-model="gameSearchModel.id" name="gameid" class="form-control"/>
+                    <input type="text" placeholder="Game ID" ng-model="gameSearchModel.id" name="gameid" class="form-control" ng-disabled="gameSearchModel.league || gameSearchModel.start || gameSearchModel.end"/>
+                </div>
+                <div class="form-group">&nbsp;Or</div>
+                <div class="form-group">
+                    <select class="form-control" ng-disabled="gameSearchModel.id" ng-model="gameSearchModel.league" ng-options="league_type.id as league_type.name for league_type in league_types">
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="form-group col-xs-12 col-md-6" show-errors>
+                        <div class="input-group counter-group">
+                            <div class="input-group-addon">Start</div>
+                            <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="start" placeholder="" ng-model="gameSearchModel.start" ng-disabled="gameSearchModel.id"/>
+                        </div>
+                        <div class="help-block" ng-if="gameSearchForm.start.$error">Does not meet min date.</div>
+                    </div>
+                    <div class="form-group col-xs-12 col-md-6" show-errors>
+                        <div class="input-group counter-group">
+                            <div class="input-group-addon">End</div>
+                            <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="end" placeholder="date of birth" ng-model="gameSearchModel.end" ng-disabled="gameSearchModel.id"/>
+                        </div>
+                        <div class="help-block" ng-if="gameSearchForm.end.$error">Does not meet min date.</div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-xs-6 pull-right">
-                        <button class="btn primary btn-block" ng-disabled="patronSearchForm.$invalid || patronSearchFormValue()">Search</button>
+                        <button class="btn primary btn-block" ng-disabled="gameSearchForm.$invalid || gameSearchFormValue()">Search</button>
                     </div>
                 </div>
             </div>
@@ -21,4 +42,3 @@
     </form>
     <div class="col-xs-12">&nbsp;</div>
 </section>
-
