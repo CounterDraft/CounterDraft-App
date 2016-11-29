@@ -221,6 +221,9 @@ var errorList = {
     1065: {
         msg: 'Failed to get addresses from address_type table.'
     },
+    1066: {
+        msg: 'Failed to get league from league_type table.'
+    },
 
 
 

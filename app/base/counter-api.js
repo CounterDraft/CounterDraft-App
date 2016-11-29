@@ -18,6 +18,12 @@ function baseApi() {
             updatedAt: moment(admin.updatedAt).unix()
         }
     }
+    this._cleanGame = function() {
+        var moment = getMoment();
+        return {
+            
+        }
+    }
 
     this._cleanEmployee = function(employee) {
         var moment = getMoment();
@@ -131,15 +137,15 @@ function baseApi() {
     }
 
     this._refreshAdminSession = function(req, employee) {
-        
+
         var pArr = ['restricted:superadmin'];
         if (req.session.hasOwnProperty('user')) {
             var permissions = req.session.user.permissions[0];
             permissions = permissions + ',superadmin';
             pArr[0] = permissions;
-        }else{
+        } else {
             req.session.user = {
-               permissions: pArr 
+                permissions: pArr
             }
             return true;
         }

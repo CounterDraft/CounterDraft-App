@@ -11,9 +11,9 @@ function GameApi() {
     this.tag = 'game-api';
     var Promise = getPromise();
     var ModelGame = models.game;
+    var ModelLeagueTypes = models.league_types;
 
     this.getTotalGame = function(req, res) {
-   
         var organization = this.getOrganization(req, res);
         ModelGame.findAndCountAll({
             where: {
@@ -29,8 +29,39 @@ function GameApi() {
         });
     }
 
+    this.getLeagueTypes = function(req, res) {
+        ModelLeagueTypes.all().then(function(league_types) {
+            if (league_types) {
+                var leg_types = [];
+                for (var x in league_types) {
+                    if(!league_types[x].is_active){
+                        continue;
+                    }
+                    var lt = {};
+                    lt.id = league_types[x].id;
+                    lt.description = league_types[x].description;
+                    lt.name = league_types[x].name;
+                    leg_types.push(lt);
+                }
+                res.status(200).json({
+                    league_types: leg_types,
+                    success: true
+                });
+            } else {
+                this.getErrorApi().sendError(1066, 500, res);
+            }
+        });
+    }
+
+    this.find = function(req, res) {
+        var organization = self.getOrganization(req, res);
+        res.status(200).json({
+            games: [],
+            success: true
+        });
+    }
+
     this.create = function(req, res) {
-     
         var organization = self.getOrganization(req, res);
         res.status(200).json({
             success: true

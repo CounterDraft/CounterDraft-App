@@ -21,7 +21,28 @@ function AccountController() {
                     break;
             }
         },
-        address:  function(verb, req, res, self) {
+        
+        league: function(verb, req, res, self) {
+            switch (verb) {
+                case 'get':
+                    getApi('game').getLeagueTypes(req, res);
+                    break;
+                case 'post':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'put':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
+
+        address: function(verb, req, res, self) {
             switch (verb) {
                 case 'get':
                     getApi('organization').getAddressTypes(req, res);
@@ -59,17 +80,17 @@ function AccountController() {
                     break;
             }
         },
-        default: function(verb, req, res,self) {
+        default: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'get':
                     self.getErrorApi().sendError(1011, 403, res);
-                    break;  
+                    break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);
-                    break;   
+                    break;
                 case 'delete':
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
