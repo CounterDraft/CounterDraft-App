@@ -1,0 +1,21 @@
+<section class="beta" ng-init="gCtrl.initResults()">
+    <div class="col-xs-12">
+        <button type="button" class="btn close quinary results-close" ng-click="onRoute('game')">&times;</button>
+        <h3 class="col-xs-12">&nbsp;</h3>
+    </div>
+    <fieldset class="col-xs-12 counter-widget">
+        <legend>Game Results</legend>
+        <ul ng-repeat="game in searchArr" class="game-list col-xs-12">
+            <li class="game-list-item col-xs-12 text-size-small" ng-click="gCtrl.onGameSelected(game)">
+                <div class="col-xs-4 col-sm-3 col-md-2">
+                    <img ng-src="{{gCtrl.getProfileImageUrl(game.uuid)}}" alt="Patron_Image"/>
+                </div>
+                <div class="col-xs-8 col-sm-9 col-md-10 game-info row">
+                    <div class="col-xs-12"><span>id:</span>&nbsp;{{game.id}}</div>
+                </div>
+            </li>
+        </ul>
+        <div class="col-xs-12"></div>
+    </fieldset>
+    <div class="col-xs-12">&nbsp;</div>
+</section>

@@ -20,15 +20,19 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', 'data', function($scop
     }
 
     $scope.currentDate = moment().toDate();
-    
+
     var _init = function() {
         //default page;
         $scope.currentPage = _getDefaultPage();
     }
 
-    this.initSearch = function(){
-      //nothing
-      console.log($scope.gameSearchModel);
+    this.initSearch = function() {
+        //nothing
+    }
+
+    this.initResults = function() {
+        //nothing 
+        console.log('here we are');
     }
 
     var _getDefaultPage = function() {
@@ -53,6 +57,10 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', 'data', function($scop
         angular.forEach($scope.gameModel, function(value, key) {
             $scope.gameModel[key] = '';
         });
+    }
+
+    $scope.onGameSearch = function() {
+        console.log('we are going to submit!');
     }
 
     _init();
