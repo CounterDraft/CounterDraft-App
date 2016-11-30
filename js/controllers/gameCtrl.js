@@ -14,6 +14,7 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', 'data
 
     $scope.searchArr = [];
     $scope.league_types = [];
+    $scope.game_types = [];
     //models
     $scope.gameModel = {}
 
@@ -35,6 +36,25 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', 'data
             if (response.data && response.data.hasOwnProperty('league_types')) {
                 $scope.league_types = response.data.league_types;
                 // console.log($scope.league_types);
+            }
+        }, function errorCallback(response) {
+            var message = 'An unexpected error has occuried!';
+
+            if (typeof 'undefined' != response &&
+                response.hasOwnProperty('data') &&
+                response.data.error.length > 0) {
+                message = response.data.error[0].msg;
+            }
+            console.error(message);
+        });
+
+        $http({
+            method: 'GET',
+            url: _url_application + '/game_type',
+        }).then(function successCallback(response) {
+            if (response.data && response.data.hasOwnProperty('game_types')) {
+                $scope.game_types = response.data.game_types;
+                // console.log($scope.game_types);
             }
         }, function errorCallback(response) {
             var message = 'An unexpected error has occuried!';
@@ -106,6 +126,18 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', 'data
             }
         }
         return is_good;
+    }
+    $scope.onGameCreate = function(step) {
+        switch (step) {
+            case 1:
+                console.log('we are on step one');
+                break;
+            case 2:
+                console.log('we are on step two');
+                break;
+            default:
+                break;
+        }
     }
 
     $scope.onGameSearch = function() {

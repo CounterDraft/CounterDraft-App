@@ -27,4 +27,9 @@ UPDATE public.patron_player
 	SET password='sha1$864f5f30$1$fe38b7457a4c2e466f635a3382a207570298d0e2';
 
 
+#random game data;
+INSERT INTO public.game(game_id, type, league, start, "end", transaction, organization_id, is_active, "createdAt", "updatedAt")
+	VALUES (uuid_generate_v4(),4, 1, '2016-11-13', '2016-11-28', null, 1, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
 	

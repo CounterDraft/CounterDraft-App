@@ -21,6 +21,26 @@ function AccountController() {
                     break;
             }
         },
+
+        game_type:  function(verb, req, res, self) {
+            switch (verb) {
+                case 'get':
+                    getApi('game').getGameTypes(req, res);
+                    break;
+                case 'post':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'put':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
         
         league: function(verb, req, res, self) {
             switch (verb) {

@@ -224,6 +224,9 @@ var errorList = {
     1066: {
         msg: 'Failed to get league from league_type table.'
     },
+    1067: {
+        msg: 'Failed to get game types from game_type table.'
+    },
 
 
 

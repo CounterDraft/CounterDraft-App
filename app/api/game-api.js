@@ -12,6 +12,7 @@ function GameApi() {
     var Promise = getPromise();
     var ModelGame = models.game;
     var ModelLeagueTypes = models.league_types;
+    var ModelGameType = models.game_type;
 
     this.getTotalGame = function(req, res) {
         var organization = this.getOrganization(req, res);
@@ -26,6 +27,27 @@ function GameApi() {
             });
         }).catch(function(err) {
             self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+        });
+    }
+
+    this.getGameTypes = function(req, res) {
+        ModelGameType.all().then(function(game_types) {
+            if (game_types) {
+                var g_types = [];
+                for (var x in game_types) {
+                    var gt = {};
+                    gt.id = game_types[x].id;
+                    gt.description = game_types[x].description;
+                    gt.name = game_types[x].name;
+                    g_types.push(gt);
+                }
+                res.status(200).json({
+                    game_types: g_types,
+                    success: true
+                });
+            } else {
+                this.getErrorApi().sendError(1067, 500, res);
+            }
         });
     }
 
