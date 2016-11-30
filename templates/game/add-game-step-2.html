@@ -1,0 +1,16 @@
+<section class="beta">
+    <div class="col-xs-12">
+        <button type="button" class="btn senary add" ng-click="onRoute('add-game-step-1', false)"><i class="glyphicon glyphicon-circle-arrow-left"></i></button>
+        <h3 class="text-left-xs text-left-sm text-center">Create Game</h3>
+    </div>
+    <div class="col-xs-12">
+    	<h3 class="">&nbsp;</h3>
+        <form ng-submit="onGameCreate(2)" class="counter-form" data-toggle="validator" role="form" name="gameCeateStepOne" ng-init="gCtrl.initGameCeate()">
+            <div class="form-group">
+                <div class="col-xs-3">&nbsp;</div>
+                <button class="btn col-xs-6 primary" ng-disabled="gameCeateStepOne.$invalid">Create Game</button>
+                <div class="col-xs-3">&nbsp;</div>
+            </div>
+        </form>
+    </div>
+</section>

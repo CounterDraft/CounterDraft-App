@@ -106,16 +106,7 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', 'data
 
     $scope.onClose = function() {
         $scope.currentPage = _getDefaultPage();
-        angular.forEach($scope.patronModel, function(value, key) {
-            $scope.patronModel[key] = '';
-        });
-    }
-
-    $scope.onClose = function() {
-        $scope.currentPage = _getDefaultPage();
-        angular.forEach($scope.gameModel, function(value, key) {
-            $scope.gameModel[key] = '';
-        });
+        _clearModel('gameModel');
     }
 
     $scope.gameSearchFormValue = function() {
@@ -127,10 +118,11 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', 'data
         }
         return is_good;
     }
+
     $scope.onGameCreate = function(step) {
         switch (step) {
             case 1:
-                console.log('we are on step one');
+                $scope.onRoute('add-game-step-2', false);
                 break;
             case 2:
                 console.log('we are on step two');
