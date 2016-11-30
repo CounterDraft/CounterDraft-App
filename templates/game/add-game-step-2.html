@@ -4,11 +4,81 @@
         <h3 class="text-left-xs text-left-sm text-center">Create Game</h3>
     </div>
     <div class="col-xs-12">
-    	<h3 class="">&nbsp;</h3>
-        <form ng-submit="onGameCreate(2)" class="counter-form" data-toggle="validator" role="form" name="gameCeateStepOne" ng-init="gCtrl.initGameCeate()">
+        <h3 class="">&nbsp;</h3>
+        <form ng-submit="onGameCreate(2)" class="counter-form" data-toggle="validator" role="form" name="gameCeateStepTwo" ng-init="gCtrl.initGameCeate()">
+            <div class="row">
+                <div class="form-group col-xs-12 counter-group" show-errors>
+                    <div class="input-group">
+                        <div class="input-group-addon">Salary Cap</div>
+                        <input type="number" class="form-control" ng-model="gameModel.salaryCap" name="salaryCap" required />
+                    </div>
+                    <div class="help-block" ng-if="gameCeateStepTwo.salaryCap.$error.required">Salary Cap a is required field.</div>
+                </div>
+                <div class="form-group col-xs-12 counter-group" show-errors>
+                    <div class="input-group">
+                        <div class="input-group-addon">Entry Fee</div>
+                        <input type="number" class="form-control" ng-model="gameModel.entryFee" name="entryFee" required/>
+                    </div>
+                    <div class="help-block" ng-if="gameCeateStepTwo.entryFee.$error.required">Entry fee is required field.</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-12 col-md-6" show-errors>
+                            <div class="input-group counter-group">
+                                <div class="input-group-addon">Start</div>
+                                <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="start" ng-model="gameModel.start" required/>
+                            </div>
+                            <div class="help-block" ng-if="gameCeateStepTwo.start.$error.required">End date is required</div>
+                            <div class="help-block" ng-if="gameCeateStepTwo.start.$error && !gameCeateStepTwo.start.$error.required">Does not meet min date.</div>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6" show-errors>
+                            <div class="input-group counter-group">
+                                <div class="input-group-addon">End</div>
+                                <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="end" ng-model="gameModel.end" required/>
+                            </div>
+                            <div class="help-block" ng-if="gameCeateStepTwo.end.$error.required">Start date is required</div>
+                            <div class="help-block" ng-if="gameCeateStepTwo.end.$error && !gameCeateStepTwo.end.$error.required">Does not meet min date.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-12 col-md-6" show-errors>
+                            <div class="input-group counter-group">
+                                <div class="input-group-addon">Max Players</div>
+                                <input type="number" class="form-control" name="maxPlayers" ng-model="gameModel.maxPlayers" required/>
+                            </div>
+                            <div class="help-block" ng-if="gameCeateStepTwo.maxPlayers.$error.required">Max player amount is required</div>
+                            <div class="help-block" ng-if="gameCeateStepTwo.maxPlayers.$error && !gameCeateStepTwo.maxPlayers.$error.required">Bad input</div>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6" show-errors>
+                            <div class="input-group counter-group">
+                                <div class="input-group-addon">Min Players</div>
+                                <input type="number" class="form-control" name="minPlayers" ng-model="gameModel.minPlayers" required/>
+                            </div>
+                            <div class="help-block" ng-if="gameCeateStepTwo.minPlayers.$error.required">Min player amount is required</div>
+                            <div class="help-block" ng-if="gameCeateStepTwo.minPlayers.$error && !gameCeateStepTwo.minPlayers.$error.required">Bad input</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-xs-12 counter-group" show-errors>
+                    <div class="input-group">
+                        <div class="input-group-addon">Holding %</div>
+                        <input type="number" class="form-control" ng-model="gameModel.holding" name="holding" required/>
+                    </div>
+                    <div class="help-block" ng-if="gameCeateStepTwo.holding.$error.required">A holding percentage is required</div>
+                </div>
+                <div class="form-group col-xs-12 counter-group" show-errors>
+                    <div class="input-group">
+                        <div class="input-group-addon"># of Winners</div>
+                        <input type="number" class="form-control" ng-model="gameModel.winners" name="winners" required/>
+                    </div>
+                    <div class="help-block" ng-if="gameCeateStepTwo.winners.$error.required">Number of winners is required</div>
+                </div>
+            </div>
             <div class="form-group">
                 <div class="col-xs-3">&nbsp;</div>
-                <button class="btn col-xs-6 primary" ng-disabled="gameCeateStepOne.$invalid">Create Game</button>
+                <button class="btn col-xs-6 secondary" ng-disabled="gameCeateStepTwo.$invalid">Continue</button>
                 <div class="col-xs-3">&nbsp;</div>
             </div>
         </form>

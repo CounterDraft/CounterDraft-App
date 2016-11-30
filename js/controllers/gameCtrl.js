@@ -15,8 +15,18 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', 'data
     $scope.searchArr = [];
     $scope.league_types = [];
     $scope.game_types = [];
+
     //models
-    $scope.gameModel = {}
+    $scope.gameModel = {
+        salaryCap: null,
+        entryFee: null,
+        start: null,
+        end: null,
+        maxPlayers: null,
+        minPlayers: null,
+        holding: null,
+        winners: null
+    }
 
     $scope.gameSearchModel = {
         id: null,
@@ -125,7 +135,8 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', 'data
                 $scope.onRoute('add-game-step-2', false);
                 break;
             case 2:
-                console.log('we are on step two');
+                console.log('Create a summary game model with the following information.');
+                console.log($scope.gameModel);
                 break;
             default:
                 break;
