@@ -5,7 +5,7 @@
         This should all the logic for the game page.
 */
 
-app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', 'data', function($scope, $http, $window, $anchorScroll, data) {
+app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll','$uibModal', 'data', function($scope, $http, $window, $anchorScroll, $uibModal, data) {
     var _base_templates = "templates/game/";
     var _url_game_search = "/api/v1/game/search/";
     var _url_application = "/api/v1/application";
@@ -130,13 +130,26 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', 'data
     }
 
     $scope.onGameCreate = function(step) {
+        var self = this;
         switch (step) {
             case 1:
                 $scope.onRoute('add-game-step-2', false);
                 break;
             case 2:
-                console.log('Create a summary game model with the following information.');
-                console.log($scope.gameModel);
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: 'game-summary-modal.html',
+                    controller: 'GameSummaryCtrl',
+                    controllerAs: 'mCtrl',
+                    size: 'lg',
+                    scope: $scope
+                });
+
+                modalInstance.result.then(function() {}, function() {
+                    console.info('Modal dismissed at: ' + new Date());
+                });
                 break;
             default:
                 break;
