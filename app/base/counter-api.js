@@ -18,11 +18,21 @@ function baseApi() {
             updatedAt: moment(admin.updatedAt).unix()
         }
     }
-    
+
     this._cleanGame = function(game) {
         var moment = getMoment();
-        console.log(game);
-        return game;
+        return {
+            id: game.game_id,
+            type: game.type,
+            league: game.league,
+            start: moment(game.start).unix(),
+            end: moment(game.end).unix(),
+            transaction: null,
+            organization_id: 1,
+            is_active: true,
+            createdAt: moment(game.createdAt).unix(),
+            updatedAt: moment(game.updatedAt).unix()
+        }
     }
 
     this._cleanEmployee = function(employee) {

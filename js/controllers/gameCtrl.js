@@ -174,14 +174,25 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll','$uibM
                 url: _url_game_search,
                 params: formData,
             }).then(function successCallback(response) {
-                if (response && response.hasOwnProperty('data') && response.data.games.length >= 0) {
+                if (response && response.hasOwnProperty('data') && response.data.games.length > 0) {
                     var games = []
                     angular.forEach(response.data.games, function(value, key) {
                         var game = value;
-                        patrons.push(game);
+                        if (game.createAt) {
+                            game.createAt = moment.unix(game.createAt).toDate();
+                        }
+                        if (game.start) {
+                            game.start = moment.unix(game.start).toDate();
+                        }
+                        if (game.end) {
+                            game.end = moment.unix(game.end).toDate();
+                        }
+                        if (game.updatedAt) {
+                            game.updatedAt = moment.unix(game.updatedAt).toDate();
+                        }
+                        games.push(game);
                     });
                     $scope.searchArr = games;
-                    console.log($scope.searchArr);
                     $scope.onRoute('game-results', true);
                 } else {
                     $window.swal({

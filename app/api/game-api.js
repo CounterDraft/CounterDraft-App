@@ -53,17 +53,17 @@ function GameApi() {
                 organization_id: organization.id,
                 is_active: true
             }
-        }).then(function(result){
-            if(result){
+        }).then(function(result) {
+            if (result) {
                 var game = result.dataValues;
                 res.status(200).json({
                     game: self._cleanGame(game),
                     success: true
                 });
-            }else{
+            } else {
                 self.getErrorApi().sendError(1068, 422, res);
             }
-        }).catch(function(err){
+        }).catch(function(err) {
             self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
         });
     }
@@ -112,12 +112,86 @@ function GameApi() {
             }
         });
     }
-
     this.find = function(req, res) {
+        var moment = getMoment();
+        var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
-        res.status(200).json({
-            games: [],
-            success: true
+        var serachParams = [
+            'id',
+            'league',
+            'start',
+            'end'
+        ]
+        var searchObject = {
+            start: {
+                $gt: moment(0).toDate() //January 1, 1970
+            },
+            end:{
+                $lt: moment().toDate(), //Now
+            }
+        }
+        var games = [];
+        var whereSerach = {};
+        var searchLimt = 50;
+
+        if (Object.keys(req.query).length === 0) {
+            res.status(200).json({
+                games: games,
+                success: true
+            });
+        }
+
+        for (var x in req.query) {
+            if (serachParams.indexOf(x) > -1 && req.query[x] != '' && req.query[x] != null) {
+                if (x === 'start') {
+                    searchObject[x].$gt = moment(req.query[x]).toDate();
+                } else if (x === 'end') {
+                    searchObject[x].$lt = moment(req.query[x]).toDate();
+                } else {
+                    searchObject[x] = req.query[x];
+                }
+            }
+        }
+    
+        // if we have game id we dont search the other stuff;
+        if (searchObject.hasOwnProperty('id')) {
+            ModelGame.findOne({
+                where: {
+                    game_id: searchObject.id,
+                    organization_id: organization.id,
+                }
+            }).then(function(result) {
+                if (result) {
+                    games.push(self._cleanGame(result.dataValues));
+                }
+                console.log(games);
+                res.status(200).json({
+                    games: games,
+                    success: true
+                });
+            }).catch(function(err) {
+                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+            });
+            return;
+        }
+
+        searchObject.organization_id = organization.id;
+
+        ModelGame.findAll({
+            where: searchObject,
+            limit: searchLimt
+        }).then(function(results) {
+            if (results) {
+                for (var x in results) {
+                    games.push(self._cleanGame(results[x].dataValues));
+                }
+            }
+            res.status(200).json({
+                games: games,
+                success: true
+            });
+        }).catch(function(err) {
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
         });
     }
 

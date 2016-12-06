@@ -21,14 +21,14 @@
                     <div class="form-group col-xs-12 col-md-6" show-errors>
                         <div class="input-group counter-group">
                             <div class="input-group-addon">Start</div>
-                            <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="start" placeholder="" ng-model="gameSearchModel.start" ng-disabled="gameSearchModel.id"/>
+                            <input type="date" class="form-control" max="{{ currentDate | date:'yyyy-MM-dd'}}" name="start" placeholder="" ng-model="gameSearchModel.start" ng-disabled="gameSearchModel.id"/>
                         </div>
                         <div class="help-block" ng-if="gameSearchForm.start.$error">Does not meet min date.</div>
                     </div>
                     <div class="form-group col-xs-12 col-md-6" show-errors>
                         <div class="input-group counter-group">
                             <div class="input-group-addon">End</div>
-                            <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="end" placeholder="date of birth" ng-model="gameSearchModel.end" ng-disabled="gameSearchModel.id"/>
+                            <input type="date" class="form-control" max="{{ currentDate | date:'yyyy-MM-dd'}}" name="end" placeholder="date of birth" ng-model="gameSearchModel.end" ng-disabled="gameSearchModel.id"/>
                         </div>
                         <div class="help-block" ng-if="gameSearchForm.end.$error">Does not meet min date.</div>
                     </div>
