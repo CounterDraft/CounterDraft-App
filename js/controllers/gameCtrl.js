@@ -32,7 +32,8 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll','$uibM
         id: null,
         league: null,
         start: null,
-        end: null
+        end: null,
+        type: null
     }
 
     $scope.currentDate = moment().toDate();

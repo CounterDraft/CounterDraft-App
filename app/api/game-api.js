@@ -120,7 +120,8 @@ function GameApi() {
             'id',
             'league',
             'start',
-            'end'
+            'end',
+            'type'
         ]
         var searchObject = {
             start: {
