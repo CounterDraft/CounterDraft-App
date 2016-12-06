@@ -66,11 +66,15 @@ module.exports = {
         });
 
         // Error router.
-        router.all(version +'/:type(*)', function(req, res){
+        router.all([version +'/:type(*)', version + '/*'], function(req, res){
             var error = require(GLOBAL.API_DIR + 'error-api');
             var errorApi = new error();
             if(req.params['type'] && CONTROLLERS.indexOf(req.params['type']) > -1){
+                var urls = req.url.split('?');
                 var urlWithSlash = req.url + '/';
+                if(urls.length === 2){
+                    urlWithSlash = urls[0] + '/?' + urls[1];
+                }
                 res.redirect(urlWithSlash);
             }else{
                 errorApi.sendError(1024, 422, res);
