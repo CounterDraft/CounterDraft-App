@@ -29,6 +29,25 @@ function GameController() {
                     break;
             }
         },
+        create: function(verb, req, res, self) {
+            switch (verb) {
+                case 'post':
+                    getApi('game').create(req, res);
+                    break;
+                case 'get':
+                    getApi('game').getGame(req, res);
+                    break;
+                case 'put':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                case 'delete':
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+                default:
+                    self.getErrorApi().sendError(1011, 403, res);
+                    break;
+            }
+        },
         total: function(verb, req, res, self) {
             switch (verb) {
                 case 'post':
@@ -55,7 +74,7 @@ function GameController() {
                     self.getErrorApi().sendError(1011, 403, res);
                     break;
                 case 'get':
-                    self.getErrorApi().sendError(1011, 403, res);
+                    getApi('game').getGame(req, res);
                     break;
                 case 'put':
                     self.getErrorApi().sendError(1011, 403, res);

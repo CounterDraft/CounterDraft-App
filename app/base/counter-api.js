@@ -18,11 +18,11 @@ function baseApi() {
             updatedAt: moment(admin.updatedAt).unix()
         }
     }
-    this._cleanGame = function() {
+    
+    this._cleanGame = function(game) {
         var moment = getMoment();
-        return {
-            
-        }
+        console.log(game);
+        return game;
     }
 
     this._cleanEmployee = function(employee) {

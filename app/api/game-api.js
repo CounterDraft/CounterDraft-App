@@ -30,6 +30,44 @@ function GameApi() {
         });
     }
 
+    this.create = function(req, res) {
+        res.status(200).json({
+            game: self._cleanGame(patron),
+            success: true
+        });
+    }
+
+    this.getGame = function(req, res) {
+        var query = req.query;
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+
+        if (!query.hasOwnProperty('id')) {
+            self.getErrorApi().sendError(1031, 422, res);
+            return;
+        }
+
+        ModelGame.findOne({
+            where: {
+                game_id: query.id,
+                organization_id: organization.id,
+                is_active: true
+            }
+        }).then(function(result){
+            if(result){
+                var game = result.dataValues;
+                res.status(200).json({
+                    game: self._cleanGame(game),
+                    success: true
+                });
+            }else{
+                self.getErrorApi().sendError(1068, 422, res);
+            }
+        }).catch(function(err){
+            self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+        });
+    }
+
     this.getGameTypes = function(req, res) {
         ModelGameType.all().then(function(game_types) {
             if (game_types) {
@@ -56,7 +94,7 @@ function GameApi() {
             if (league_types) {
                 var leg_types = [];
                 for (var x in league_types) {
-                    if(!league_types[x].is_active){
+                    if (!league_types[x].is_active) {
                         continue;
                     }
                     var lt = {};

@@ -1,4 +1,10 @@
 "use strict";
+/*  Title: Login-Api
+    Author:  Hubbert
+    Date: Dec 05 2016
+    Comment: 
+        This is the api which is used login for employees and admins.
+*/
 
 function LoginApi() {
     var self = this;
