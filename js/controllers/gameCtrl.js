@@ -5,10 +5,11 @@
         This should all the logic for the game page.
 */
 
-app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll','$uibModal', 'data', function($scope, $http, $window, $anchorScroll, $uibModal, data) {
+app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uibModal', 'data', function($scope, $http, $window, $anchorScroll, $uibModal, data) {
     var _base_templates = "templates/game/";
     var _url_game_search = "/api/v1/game/search/";
     var _url_application = "/api/v1/application";
+    var _url_game_create = "/api/v1/game/create/";
 
     $scope.currentPage = null;
 
@@ -25,7 +26,8 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll','$uibM
         maxPlayers: null,
         minPlayers: null,
         holding: null,
-        winners: null
+        winners: 3,
+        multiplier: 0.30
     }
 
     $scope.gameSearchModel = {
@@ -137,23 +139,94 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll','$uibM
                 $scope.onRoute('add-game-step-2', false);
                 break;
             case 2:
-                var modalInstance = $uibModal.open({
-                    animation: true,
-                    ariaLabelledBy: 'modal-title',
-                    ariaDescribedBy: 'modal-body',
-                    templateUrl: 'game-summary-modal.html',
-                    controller: 'GameSummaryCtrl',
-                    controllerAs: 'mCtrl',
-                    size: 'lg',
-                    scope: $scope
-                });
-
-                modalInstance.result.then(function() {}, function() {
-                    console.info('Modal dismissed at: ' + new Date());
-                });
+                _showSummaryModal();
                 break;
             default:
                 break;
+        }
+    }
+
+    var _showSummaryModal = function() {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'game-summary-modal.html',
+            controller: 'GameSummaryCtrl',
+            controllerAs: 'mCtrl',
+            size: 'lg',
+            scope: $scope,
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        modalInstance.result.then(function(isConfirmed) {
+            if (isConfirmed) {
+                $scope.onCreateGame(angular.copy($scope.gameModel));
+            } else {
+                console.info('Modal dismissed at: ' + new Date());
+            }
+        }, function() {
+            console.info('Modal dismissed at: ' + new Date());
+        });
+    }
+    $scope.onCreateGame = function(formData) {
+        var self = this;
+        var hasData = false;
+        var errorMsg = "Unknown server error, service is currently down.";
+
+        for (var x in formData) {
+            if (formData[x]) {
+                hasData = true;
+            }
+        }
+        if (hasData) {
+            //POST call to backend;
+            $http({
+                method: 'POST',
+                url: _url_game_create,
+                data: formData,
+            }).then(function successCallback(response) {
+                if (response && response.hasOwnProperty('data') && response.data.game) {
+                    console.log(response);
+                } else {
+                    $window.swal({
+                        title: "Error",
+                        text: errorMsg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                }
+            }, function errorCallback(response) {
+                var data = response.data || null;
+                if (data && data.error.length > 0) {
+                    var error = data.error[0];
+                    $window.swal({
+                        title: "Error",
+                        text: error.msg,
+                        type: "error",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true,
+                        html: true
+                    });
+                } else {
+                    console.error(response);
+                }
+            });
+        } else {
+            $window.swal({
+                title: "Error",
+                text: "Opps, missing required field!",
+                type: "error",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                html: true
+            });
         }
     }
 

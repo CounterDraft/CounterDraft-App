@@ -1,29 +1,83 @@
 <script type="text/ng-template" id="game-summary-modal.html" class="counter-modal">
     <div id="game-summary-modal" class="counter-modal" ng-init="mCtrl.initGameSummaryModal()">
         <div class="model-tmpl-0">
-            <form ng-submit="mCtrl.onSubmit(mCtrl.gameSummaryForm)" class="counter-form" data-toggle="validator" role="form" name="gameSummaryForm">
+            <form ng-submit="mCtrl.onConfirm()" class="counter-form" data-toggle="validator" role="form" name="gameSummaryForm">
                 <div class="modal-header">
-                    <h4 class="modal-title text-center">Change Password</h4>
+                    <h4 class="modal-title text-center">Game Summary</h4>
                     <button type="button" class="btn close quinary" ng-click="mCtrl.cancel()">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group" show-errors>
-                        <input type="password" class="form-control" name="old_password" placeholder="Old password *" ng-model="passwordModel.old_password" data-minlength="6" required>
-                        <div class="help-block" ng-if="changePasswordForm.old_password.$error && !changePasswordForm.old_password.$error.required">Not long enough</div>
+                    <div class="row">
+                        <div class="form-group col-xs-12 counter-group" show-errors>
+                            <div class="input-group">
+                                <div class="input-group-addon">Salary Cap</div>
+                                <input type="number" class="form-control" min="0" ng-model="gameModel.salaryCap" name="salaryCap" required />
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12 counter-group" show-errors>
+                            <div class="input-group">
+                                <div class="input-group-addon">Entry Fee</div>
+                                <input type="number" class="form-control" min="0" ng-model="gameModel.entryFee" name="entryFee" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group col-xs-12 col-md-6" show-errors>
+                                    <div class="input-group counter-group">
+                                        <div class="input-group-addon">Start</div>
+                                        <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="start" ng-model="gameModel.start" required/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-md-6" show-errors>
+                                    <div class="input-group counter-group">
+                                        <div class="input-group-addon">End</div>
+                                        <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="end" ng-model="gameModel.end" required/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group col-xs-12 col-md-6" show-errors>
+                                    <div class="input-group counter-group">
+                                        <div class="input-group-addon">Min Players</div>
+                                        <input type="number" class="form-control" min="0" name="minPlayers" ng-model="gameModel.minPlayers" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-md-6" show-errors>
+                                    <div class="input-group counter-group">
+                                        <div class="input-group-addon">Max Players</div>
+                                        <input type="number" class="form-control" min="0" name="maxPlayers" ng-model="gameModel.maxPlayers" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12 counter-group" show-errors>
+                            <div class="input-group">
+                                <div class="input-group-addon">Holding %</div>
+                                <input type="number" class="form-control" ng-model="gameModel.holding" name="holding" required/>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12 counter-group" show-errors>
+                            <div class="input-group">
+                                <div class="input-group-addon"># of Winners</div>
+                                <input type="number" class="form-control" ng-model="gameModel.winners" name="winners" required/>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12 counter-group" show-errors>
+                            <div class="input-group">
+                                <div class="input-group-addon">Multiplier</div>
+                                <input type="number" step="0.001" class="form-control" ng-model="gameModel.multiplier" name="multiplier" required/>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group" show-errors>
-                        <input type="password" class="form-control" name="new_password" placeholder="Enter password *" ng-model="passwordModel.new_password" data-minlength="6" required>
-                        <div class="help-block" ng-if="changePasswordForm.new_password.$error && !changePasswordForm.new_password.$error.required">Not long enough</div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-3">&nbsp;</div>
+                        <div class="col-xs-6">
+                            <button class="btn btn-block primary" type="submit">Create</button>
+                        </div>
+                        <div class="col-xs-3">&nbsp;</div>
                     </div>
-                    <div class="form-group" show-errors>
-                        <input type="password" class="form-control" name="passwordConfirm" placeholder="Enter password again *" data-minlength="6" ng-model="passwordModel.password_confirm" required>
-                        <div class="help-block" ng-if="changePasswordForm.passwordConfirm.$error && !changePasswordForm.passwordConfirm.$error.required">Not long enough</div>
-                    </div>
-                    <div class="col-xs-3 col-sm-4">&nbsp;</div>
-                    <div class="col-xs-6 col-sm-4">
-                        <button class="btn btn-block primary" type="submit" ng-disabled="changePasswordForm.$invalid">Submit</button>
-                    </div>
-                    <div class="col-xs-3 col-sm-4">&nbsp;</div>
                 </div>
                 <div class="modal-footer">&nbsp;</div>
             </form>

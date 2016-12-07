@@ -256,20 +256,9 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         }
     }
 }]).controller('GameSummaryCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
-    var _url_reset_employee_password = "/api/v1/reset/employee";
-    $scope.resetPasswordModel = {
-        email_address: null
-    }
 
-    this.initEmployeeResetPasswordModal = function() {
-        //nothing;
-    }
-
-    this.isEmailCorrect = function(form) {
-        if (form.$dirty && $scope.resetPasswordModel.email_address != $scope.employeeModel.email_address) {
-            return true;
-        }
-        return false;
+    this.initGameSummaryModal = function() {
+        // console.log($scope.gameModel);
     }
 
     this.cancel = function() {
@@ -277,47 +266,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         return false;
     }
 
-    this.onSubmit = function() {
-        var self = this;
-        var formData = angular.copy($scope.resetPasswordModel);
-        formData.id = $scope.employeeModel.id;
-
-        var hasData = true;
-        var errorMsg = null;
-
-        for (var x in formData) {
-            if (!formData[x]) {
-                hasData = false;
-            }
-        }
-        if ($scope.employeeModel.email_address != formData.email_address) {
-            return;
-        }
-
-        if (hasData) {
-            errorMsg = "Unknown failed to send password reset.";
-            $http({
-                method: 'PUT',
-                url: _url_reset_employee_password,
-                data: formData,
-            }).then(function successCallback(response) {
-                if (response && response.status === 200) {
-                    $scope.resetPasswordModel = null;
-                    $scope.resetPasswordForm.$setPristine();
-                    $scope.resetPasswordForm.$setUntouched();
-                    $scope.$broadcast('show-errors-reset');
-                    $uibModalInstance.close({ status: true, response: response });
-                } else {
-                    $uibModalInstance.close({ status: false, errorMsg: errorMsg });
-                }
-            }, function errorCallback(response) {
-                if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('error') && response.data.error.length > 0) {
-                    errorMsg = response.data.error[0].msg;
-                }
-                $uibModalInstance.close({ status: false, errorMsg: errorMsg });
-            });
-        } else {
-            $uibModalInstance.close({ status: false, errorMsg: errorMsg });
-        }
+    this.onConfirm = function() {
+        $uibModalInstance.close({ status: true });
     }
 }]);

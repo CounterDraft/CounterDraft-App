@@ -32,7 +32,7 @@ function GameApi() {
 
     this.create = function(req, res) {
         res.status(200).json({
-            game: self._cleanGame(patron),
+            game: self._cleanGame({}),
             success: true
         });
     }
