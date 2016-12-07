@@ -228,7 +228,7 @@ var errorList = {
         msg: 'Failed to get game types from game_type table.'
     },
     1068: {
-        msg: 'Game not found for organization.'
+        msg: 'Game not found in organization.'
     },
 
 

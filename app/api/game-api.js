@@ -165,13 +165,13 @@ function GameApi() {
                 if (result) {
                     games.push(self._cleanGame(result.dataValues));
                 }
-                console.log(games);
                 res.status(200).json({
                     games: games,
                     success: true
                 });
             }).catch(function(err) {
-                self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
+                self.getErrorApi().sendError(1068, 500, res);
+                // self.getErrorApi().setErrorWithMessage(err.toString(), 500, res);
             });
             return;
         }
