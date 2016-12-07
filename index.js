@@ -61,8 +61,8 @@ var _launchApp = function() {
     var umzug = null;
     //init database and starts server after the init;
     return global.models.sequelize.sync().then(function() {
-        if (global.config['migration_run']) {
-            logger.info('Running migrations please wait...');
+        if (global.config['seeder_run']) {
+           logger.info('Running seeders please wait...');
             umzug = new Umzug({
                 storage: 'sequelize',
                 storageOptions: {
@@ -81,28 +81,49 @@ var _launchApp = function() {
                 return umzug.down();
             } else {
                 return umzug.up();
-            }
-        } else {
-            return new Promise(function(resolve, reject) {
-                return resolve(false);
+            } 
+        }
+
+        if (global.config['migration_run']) {
+            logger.info('Running migrations please wait...');
+            umzug = new Umzug({
+                storage: 'sequelize',
+                storageOptions: {
+                    sequelize: models.sequelize,
+                    model: models.sequelize_meta,
+                    modelName: 'sequelize_meta',
+                    columnType: new models.Sequelize.STRING(100)
+                },
+                migrations: {
+                    params: [models.sequelize.getQueryInterface(), models.Sequelize],
+                    // path: 'migrations'
+                }
             });
-        }
-    }).then(function(migrations) {
-        if (migrations && migrations.length > 0) {
-            if (global.config['migration_order'] && global.config['migration_order'] === 'down') {
-                for (var r in migrations) {
-                    logger.info("migration applied down() = " + migrations[r].file);
-                }
-            } else {
 
-                for (var x in migrations) {
-                    logger.info("migration applied up() = " + migrations[x].file);
-                }
+            if (global.config['migration_order'] && global.config['migration_order'] === 'down') {
+                return umzug.down();
+            } else {
+                return umzug.up();
             }
         }
 
+        return new Promise(function(resolve, reject) {
+            return resolve(false);
+        });
+    }).then(function(migrations) {
+        if(migrations && migrations.length > 0){
+            if(!global.config['seeder_run']){
+                for (var r in migrations) {
+                    logger.info("migration applied " + global.config['migration_order'] + "() = " + migrations[r].file);
+                }
+            }else{
+                for (var r in migrations) {
+                    logger.info("seeder applied " + global.config['migration_order'] + "() = " + migrations[r].file);
+                }
+            }
+        }
         if (umzug) {
-            logger.info('Getting migrations in system please wait...');
+            logger.info('Getting executed migrations & seeders in system please wait...');
             return umzug.executed();
         } else {
             return new Promise(function(resolve, reject) {
@@ -112,7 +133,7 @@ var _launchApp = function() {
     }).then(function(migrations) {
         if (migrations && migrations.length > 0) {
             for (var x in migrations) {
-                console.log("Existing migration in system = " + migrations[x].file);
+                console.log("Existing in system = " + migrations[x].file);
             }
         }
         return app.listen(app.get('port'), function() {
