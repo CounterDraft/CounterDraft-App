@@ -58,10 +58,12 @@ var _addWatcher = function() {
 }
 
 var _launchApp = function() {
+    var umzug = null;
     //init database and starts server after the init;
     return global.models.sequelize.sync().then(function() {
         if (global.config['migration_run']) {
-            var umzug = new Umzug({
+            logger.info('Running migrations please wait...');
+            umzug = new Umzug({
                 storage: 'sequelize',
                 storageOptions: {
                     sequelize: models.sequelize,
@@ -75,18 +77,15 @@ var _launchApp = function() {
                 }
             });
 
-            umzug.executed().then(function(migrations) {
-                // No need to log this;
-                for (var x in migrations) {
-                    console.log("Existing migration in system = " + migrations[x].file);
-                }
-
-            });
             if (global.config['migration_order'] && global.config['migration_order'] === 'down') {
                 return umzug.down();
             } else {
                 return umzug.up();
             }
+        } else {
+            return new Promise(function(resolve, reject) {
+                return resolve(false);
+            });
         }
     }).then(function(migrations) {
         if (migrations && migrations.length > 0) {
@@ -100,7 +99,21 @@ var _launchApp = function() {
                     logger.info("migration applied up() = " + migrations[x].file);
                 }
             }
+        }
 
+        if (umzug) {
+            logger.info('Getting migrations in system please wait...');
+            return umzug.executed();
+        } else {
+            return new Promise(function(resolve, reject) {
+                return resolve([]);
+            });
+        }
+    }).then(function(migrations) {
+        if (migrations && migrations.length > 0) {
+            for (var x in migrations) {
+                console.log("Existing migration in system = " + migrations[x].file);
+            }
         }
         return app.listen(app.get('port'), function() {
             logger.info('Loaded configuration: \n' + JSON.stringify(getUtil.inspect(config)));
