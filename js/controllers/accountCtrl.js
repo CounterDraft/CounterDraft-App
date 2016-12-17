@@ -41,6 +41,10 @@ app.controller('AccountCtrl', ['$scope', '$http', '$window', '$location', '$anch
             $scope.registrationModel.organization_hash = $location.search().invitation_token;
             return;
         }
+        if ($location.search().hasOwnProperty('page')) {
+            $scope.onRoute($location.search().page);
+            return;
+        }
         //default page;
         $scope.currentPage = _getDefaultPage();
     }
