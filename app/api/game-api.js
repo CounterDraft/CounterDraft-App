@@ -31,6 +31,10 @@ function GameApi() {
     }
 
     this.create = function(req, res) {
+        //check the information for correctness
+        //calculate all the needed data
+        //send game creating to create game que to it can be added to game-manager
+        //send back json game table row;
         res.status(200).json({
             game: self._cleanGame({}),
             success: true
