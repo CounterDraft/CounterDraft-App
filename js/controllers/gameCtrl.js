@@ -27,7 +27,9 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uib
         minPlayers: null,
         holding: null,
         winners: 3,
-        multiplier: 0.30
+        multiplier: 0.30,
+        type: null,
+        league: null
     }
 
     $scope.gameSearchModel = {

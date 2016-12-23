@@ -258,7 +258,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
 }]).controller('GameSummaryCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
 
     this.initGameSummaryModal = function() {
-        // console.log($scope.gameModel);
+        console.log($scope.gameModel);
     }
 
     this.cancel = function() {
