@@ -7,12 +7,22 @@
                     <button type="button" class="btn close quinary" ng-click="mCtrl.cancel()">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6" style="border:1px solid black;">
-                            <img ng-src="http://www.gravatar.com/avatar/{{hash}}" alt="sport"/>
-                        </div>
-                        <div class="col-xs-12 col-sm-6" style="border:1px solid black;">&times;</div>
+                    <div class="col-xs-12 col-sm-6">
+                        <img ng-src="{{getLeagueImage(gameModel.league)}}" alt="sport" />
                     </div>
+                    <fieldset class="col-xs-12 col-sm-6 game-summary-container">
+                        <div class="col-xs-12">Estimated Pool&nbsp;
+                            <span ng-if="gameModel.maxPlayers"><small>&#36;{{gameModel.entryFee * gameModel.maxPlayers}}</small></span>
+                            <span ng-if="!gameModel.maxPlayers">Not Available</span>
+                        </div>
+                        <div class="col-xs-12">Game Revenue&nbsp;
+                        <span ng-if="gameModel.maxPlayers"><small>&#36;{{(gameModel.entryFee * gameModel.maxPlayers) * gameModel.holding / 100}}</small></span>
+                            <span ng-if="!gameModel.maxPlayers">Not Available</span>
+                        </div>
+                        <div class="col-xs-6">Start&nbsp;<small>{{gameModel.start | date:'short'}}</small></div>
+                        <div class="col-xs-6">End&nbsp;<small>{{gameModel.end | date:'short'}}</small></div>
+                    </fieldset>
+                    <div class="col-xs-12">&nbsp;</div>
                     <div class="row">
                         <div class="form-group col-xs-12 counter-group" show-errors>
                             <div class="input-group">

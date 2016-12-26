@@ -22,11 +22,18 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.TEXT,
             allowNull: false,
             comment: "The website for the league."
+        },
+        image: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            comment: "File name of icon for league."
         }
     }, {
-        classMethods: { associate: function(models) {
-            //none;
-        }}
+        classMethods: {
+            associate: function(models) {
+                //none;
+            }
+        }
     });
 
     return LeagueTypes;

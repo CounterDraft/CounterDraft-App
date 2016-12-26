@@ -105,6 +105,7 @@ function GameApi() {
                     lt.id = league_types[x].id;
                     lt.description = league_types[x].description;
                     lt.name = league_types[x].name;
+                    lt.image = league_types[x].image;
                     leg_types.push(lt);
                 }
                 res.status(200).json({
