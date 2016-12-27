@@ -40,7 +40,19 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uib
         type: null
     }
 
+    $scope.league = null;
+
     $scope.currentDate = moment().toDate();
+
+    $scope.$watch('gameModel.league', function(newValue, oldValue, controller) {
+        if (newValue && $scope.league_types) {
+            angular.forEach($scope.league_types, function(value, key) {
+                if (newValue === value.id) {
+                    $scope.league = value;
+                }
+            });
+        }
+    }, true);
 
     var _init = function() {
 
@@ -50,7 +62,7 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uib
         }).then(function successCallback(response) {
             if (response.data && response.data.hasOwnProperty('league_types')) {
                 $scope.league_types = response.data.league_types;
-                console.log($scope.league_types);
+                // console.log($scope.league_types);
             }
         }, function errorCallback(response) {
             var message = 'An unexpected error has occuried!';
@@ -106,11 +118,6 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uib
         angular.forEach($scope[modalName], function(value, key) {
             $scope[modalName][key] = null;
         });
-    }
-
-    $scope.getLeagueImage = function(league){
-        //get the image from the league_types list using league
-        return '/images/leagues/MLB.svg';
     }
 
     $scope.onRoute = function(page, doNotClear) {
