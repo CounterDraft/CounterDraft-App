@@ -48,6 +48,7 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uib
         if (newValue && $scope.league_types) {
             angular.forEach($scope.league_types, function(value, key) {
                 if (newValue === value.id) {
+                    console.log(value);
                     $scope.league = value;
                 }
             });
