@@ -31,6 +31,28 @@ function GameApi() {
     }
 
     this.create = function(req, res) {
+        var user = self.getUser(req, res);
+        var organization = self.getOrganization(req, res);
+        var postData = req.body;
+        var chckData = this._verifyGameCreation(postData);
+
+        console.log(postData);
+
+        // {
+        //     salaryCap: 300,
+        //     entryFee: 30,
+        //     start: '2017-12-12T08:00:00.000Z',
+        //     end: '2017-12-12T08:00:00.000Z',
+        //     maxPlayers: 100,
+        //     minPlayers: 30,
+        //     holding: 30,
+        //     winners: 3,
+        //     multiplier: 0.3,
+        //     type: 1,
+        //     league: 1
+        // }
+
+
         //check the information for correctness
         //calculate all the needed data
         //send game creating to create game que to it can be added to game-manager
@@ -132,7 +154,7 @@ function GameApi() {
             start: {
                 $gt: moment(0).toDate() //January 1, 1970
             },
-            end:{
+            end: {
                 $lt: moment().toDate(), //Now
             }
         }
@@ -158,7 +180,7 @@ function GameApi() {
                 }
             }
         }
-    
+
         // if we have game id we dont search the other stuff;
         if (searchObject.hasOwnProperty('id')) {
             ModelGame.findOne({
@@ -201,11 +223,50 @@ function GameApi() {
         });
     }
 
-    this.create = function(req, res) {
-        var organization = self.getOrganization(req, res);
-        res.status(200).json({
-            success: true
-        });
+    this._verifyGameCreation = function(game) {
+
+        // {
+        //     salaryCap: 300,
+        //     entryFee: 30,
+        //     start: '2017-12-12T08:00:00.000Z',
+        //     end: '2017-12-12T08:00:00.000Z',
+        //     maxPlayers: 100,
+        //     minPlayers: 30,
+        //     holding: 30,
+        //     winners: 3,
+        //     multiplier: 0.3,
+        //     type: 1,
+        //     league: 1
+        // }
+
+
+        // needs to verify salary cap is a number and is not set needs to be 0
+        // verify entryfee is a amount.
+        //verify start date is in the future and is a date string.
+        // verify end date is in the future and after start date.
+        // etc..
+
+
+        var errorNumber = null;
+        var isCorrupt = false;
+
+        if (organization.hasOwnProperty('id') || organization.hasOwnProperty('createdAt') ||
+            organization.hasOwnProperty('updatedAt') || organization.hasOwnProperty('is_active') ||
+            organization.hasOwnProperty('o_uuid') || organization.hasOwnProperty('api_key')) {
+            errorNumber = 1034;
+        }
+        if (organization.hasOwnProperty('phone') &&
+            organization.phone &&
+            !this.getModelPattern('phone').test(organization.phone)) {
+            errorNumber = 1046;
+        }
+        if (errorNumber) {
+            isCorrupt = true;
+        }
+        return {
+            errNum: errorNumber,
+            isCorrupt: isCorrupt
+        }
     }
 }
 
