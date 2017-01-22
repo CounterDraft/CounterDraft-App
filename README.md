@@ -22,12 +22,14 @@ Backend & web app code for all CounterDraft
 	'brew install node'
 5. Install all npm libs via the root directory of project. (where the package.json file is located)
 	'npm install'
-6. Run the project with the following command:
+6. Run the init seeder file by running the following script:
+	'npm run-script init'
+7. Run the project with the following command:
 	'npm start'
-7. The project should create all the tables and relationships. Now run the querys on the counter database, located in scripts/testData.sql.
-8. Run the project with the following command:
-	'npm start'
-9. You can comment out the migration_run property in your local_config.js if you dont want migrations to try to run.
+	optional you can set the seeder flag in your local_config to run the other seeder files, but you dont need to.
+
+-The project should create all the tables and relationships. Now run the querys on the counter database, located in scripts/testData.sql.
+-You can comment out the migration_run property in your local_config.js if you dont want migrations to try to run.
 
 #Running the project in production.
 
