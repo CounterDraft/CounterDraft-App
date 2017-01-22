@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "node scripts/postInstall.js",
+    "init": "node scripts/init-install.js",
     "start": "node index.js"
   },
   "dependencies": {
