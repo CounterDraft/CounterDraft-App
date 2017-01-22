@@ -2,7 +2,7 @@
 
 module.exports = {
     up: function(queryInterface, Sequelize) {
-      //ALL MIGRATIONS SHOULD BE ADD HERE FOR FRESH ENVIOMENT SETUPS;
+        //ALL MIGRATIONS SHOULD BE ADD HERE FOR FRESH ENVIOMENT SETUPS;
         return queryInterface.bulkInsert('sequelize_meta', [{
             name: '20160926231604-adding-isActive-migration.js',
             createdAt: new Date(),
@@ -69,6 +69,14 @@ module.exports = {
             updatedAt: new Date()
         }, {
             name: '20161121224843-game_creation-migration.js',
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }, {
+            name: '20161207021057-adding-fields-to-game.js',
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }, {
+            name: '20161223184314-adding-field-to-league.js',
             createdAt: new Date(),
             updatedAt: new Date()
         }], {});
