@@ -89,18 +89,37 @@ module.exports = function(grunt) {
             }
         },
 
+        watch: {
+            files: ["./css/*"],
+            tasks: ["less"],
+            options: {
+                nospawn: true
+            }
+        },
+
         less: {
-            compile: {
+            production: {
+                compile: {
+                    options: {
+                        compress: true,
+                        strictMath: true,
+                        sourceMap: true,
+                        outputSourceFiles: true,
+                        sourceMapURL: '<%= pkg.name %>.css.map',
+                        sourceMapFilename: 'build/css/min/<%= pkg.name %>.css.map'
+                    },
+                    files: {
+                        'build/css/min/<%= pkg.name %>.min.css': 'css/counter-main.less'
+                    }
+                }
+            },
+            development: {
                 options: {
-                    compress: true,
-                    strictMath: true,
-                    sourceMap: true,
-                    outputSourceFiles: true,
-                    sourceMapURL: '<%= pkg.name %>.css.map',
-                    sourceMapFilename: 'build/css/min/<%= pkg.name %>.css.map'
+                    paths: ["./css/"],
+                    compress: false
                 },
                 files: {
-                    'build/css/min/<%= pkg.name %>.min.css': 'css/counter-main.less'
+                    "./css/counter-main.css": "./css/counter-main.less"
                 }
             }
         }
@@ -113,6 +132,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-ng-annotate');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task(s).
     grunt.registerTask('default', [
@@ -124,4 +145,20 @@ module.exports = function(grunt) {
         'less',
         'clean:post'
     ]);
+
+    grunt.registerTask('build', [
+        'clean:pre',
+        'copy',
+        'ngAnnotate',
+        'concat',
+        'uglify',
+        'less:production',
+        'clean:post'
+    ]);
+
+    grunt.registerTask('production', ['build']);
+    grunt.registerTask('development', ['less', 'watch']);
 };
+
+
+

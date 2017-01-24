@@ -46,12 +46,7 @@ memwatch.on('leak', function(info) {
 
 var _addWatcher = function() {
     return new Promise(function(resolve, reject) {
-        grunt.cli({
-            gruntfile: __dirname + "/Grunt_dev.js",
-            extra: {
-                key: "run"
-            }
-        }, function() {
+        grunt.tasks('development', {}, function() {
             return resolve(true);
         });
     });
@@ -62,7 +57,7 @@ var _launchApp = function() {
     //init database and starts server after the init;
     return global.models.sequelize.sync().then(function() {
         if (global.config['seeder_run']) {
-           logger.info('Running seeders please wait...');
+            logger.info('Running seeders please wait...');
             umzug = new Umzug({
                 storage: 'sequelize',
                 storageOptions: {
@@ -81,7 +76,7 @@ var _launchApp = function() {
                 return umzug.down();
             } else {
                 return umzug.up();
-            } 
+            }
         }
 
         if (global.config['migration_run']) {
@@ -111,12 +106,12 @@ var _launchApp = function() {
             return resolve(false);
         });
     }).then(function(migrations) {
-        if(migrations && migrations.length > 0){
-            if(!global.config['seeder_run']){
+        if (migrations && migrations.length > 0) {
+            if (!global.config['seeder_run']) {
                 for (var r in migrations) {
                     logger.info("migration applied " + global.config['migration_order'] + "() = " + migrations[r].file);
                 }
-            }else{
+            } else {
                 for (var r in migrations) {
                     logger.info("seeder applied " + global.config['migration_order'] + "() = " + migrations[r].file);
                 }
@@ -147,15 +142,9 @@ var _launchApp = function() {
 if (global.config.environment === 'production') {
     logger.warn('Creating the build, please wait...');
     new Promise(function(resolve, reject) {
-        grunt.cli({
-            gruntfile: __dirname + "/Grunt_pro.js",
-            extra: {
-                key: "run"
-            }
-        }, function() {
+        grunt.tasks('production', {}, function() {
             return resolve(true);
         });
-
     }).then(function(result) {
         return _launchApp();
     }).catch(function(err) {
