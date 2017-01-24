@@ -1,5 +1,8 @@
 module.exports = function(grunt) {
     // Project configuration.
+    require('load-grunt-tasks')(grunt);
+    require('time-grunt')(grunt);
+
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -124,16 +127,6 @@ module.exports = function(grunt) {
             }
         }
     });
-
-    //load all tasks;
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-ng-annotate');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task(s).
     grunt.registerTask('default', [
