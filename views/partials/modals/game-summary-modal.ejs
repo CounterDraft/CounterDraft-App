@@ -19,7 +19,7 @@
                                     <span ng-if="!gameModel.maxPlayers">Not Available</span>
                                 </div>
                                 <div class="col-xs-12">Game Revenue&nbsp;
-                                <span ng-if="gameModel.maxPlayers"><small>&#36;{{(gameModel.entryFee * gameModel.maxPlayers) * gameModel.holding / 100}}</small></span>
+                                    <span ng-if="gameModel.maxPlayers"><small>&#36;{{(gameModel.entryFee * gameModel.maxPlayers) * gameModel.holding / 100}}</small></span>
                                     <span ng-if="!gameModel.maxPlayers">Not Available</span>
                                 </div>
                                 <div class="col-xs-6">Start&nbsp;<small>{{gameModel.start | date:'short'}}</small></div>
@@ -28,70 +28,37 @@
                             <div class="col-sm-12 hidden-xs">&nbsp;</div>
                         </div>
                     </div>
-                    <div class="col-xs-12">&nbsp;</div>
+                    <div class="col-xs-12 hidden-sm hidden-md hidden-lg">&nbsp;</div>
                     <div class="row">
-                        <div class="form-group col-xs-12 counter-group" show-errors>
-                            <div class="input-group">
-                                <div class="input-group-addon">Salary Cap</div>
-                                <input type="number" class="form-control" min="0" ng-model="gameModel.salaryCap" name="salaryCap" required />
+                        <div class="col-xs-12">
+                            <div class="col-xs-12 col-sm-6 text-right-not-xs">
+                                <label>Salary Cap:</label> {{gameModel.salaryCap}}</div>
+                            <div class="col-xs-12 col-sm-6">
+                                <label>Entry Fee:</label> {{gameModel.entryFee}}</div>
+                            <div class="col-xs-12 col-sm-6 text-right-not-xs">
+                                <label>Start:</label> {{gameModel.start | date:'medium'}}</div>
+                            <div class="col-xs-12 col-sm-6">
+                                <label>End:</label> {{gameModel.end | date:'medium'}}</div>
+                            <div class="col-xs-12 col-sm-6 text-right-not-xs">
+                                <label>Min Players:</label> {{gameModel.minPlayers}}</div>
+                            <div class="col-xs-12 col-sm-6">
+                                <label>Max Players:</label> {{gameModel.maxPlayers}}</div>
+                            <div class="col-xs-12 col-sm-6 text-right-not-xs">
+                                <label>Holding:</label> {{gameModel.holding}}%</div>
+                            <div class="col-xs-12 col-sm-6">
+                                <label># of Winners:</label> {{gameModel.winners}}</div>
+                            <div class="col-xs-12 col-sm-6 text-right-not-xs">
+                                <label>Multiplier:</label> {{gameModel.multiplier}}</div>
+                        </div>
+                        <div class="col-xs-12">
+                            <h3>Player Payouts&nbsp;<small>estamited of max player value</small></h3>
+                        </div>
+                        <div class="col-xs-12" ng-if="gameModel.maxPlayers">
+                            <div class="col-xs-12" ng-repeat="i in getNumber(gameModel.winners) track by $index">
+                                <span>{{$index + 1}} place winner </span> &#36;{{ (gameModel.entryFee * gameModel.maxPlayers) - ((gameModel.entryFee * gameModel.maxPlayers) * gameModel.holding / 100)}}
                             </div>
                         </div>
-                        <div class="form-group col-xs-12 counter-group" show-errors>
-                            <div class="input-group">
-                                <div class="input-group-addon">Entry Fee</div>
-                                <input type="number" class="form-control" min="0" ng-model="gameModel.entryFee" name="entryFee" required/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group col-xs-12 col-md-6" show-errors>
-                                    <div class="input-group counter-group">
-                                        <div class="input-group-addon">Start</div>
-                                        <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="start" ng-model="gameModel.start" required/>
-                                    </div>
-                                </div>
-                                <div class="form-group col-xs-12 col-md-6" show-errors>
-                                    <div class="input-group counter-group">
-                                        <div class="input-group-addon">End</div>
-                                        <input type="date" class="form-control" min="{{ currentDate | date:'yyyy-MM-dd'}}" name="end" ng-model="gameModel.end" required/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group col-xs-12 col-md-6" show-errors>
-                                    <div class="input-group counter-group">
-                                        <div class="input-group-addon">Min Players</div>
-                                        <input type="number" class="form-control" min="0" name="minPlayers" ng-model="gameModel.minPlayers" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-xs-12 col-md-6" show-errors>
-                                    <div class="input-group counter-group">
-                                        <div class="input-group-addon">Max Players</div>
-                                        <input type="number" class="form-control" min="0" name="maxPlayers" ng-model="gameModel.maxPlayers" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group col-xs-12 counter-group" show-errors>
-                            <div class="input-group">
-                                <div class="input-group-addon">Holding %</div>
-                                <input type="number" class="form-control" ng-model="gameModel.holding" name="holding" required/>
-                            </div>
-                        </div>
-                        <div class="form-group col-xs-12 counter-group" show-errors>
-                            <div class="input-group">
-                                <div class="input-group-addon"># of Winners</div>
-                                <input type="number" class="form-control" ng-model="gameModel.winners" name="winners" required/>
-                            </div>
-                        </div>
-                        <div class="form-group col-xs-12 counter-group" show-errors>
-                            <div class="input-group">
-                                <div class="input-group-addon">Multiplier</div>
-                                <input type="number" step="0.001" class="form-control" ng-model="gameModel.multiplier" name="multiplier" required/>
-                            </div>
-                        </div>
+                        <span ng-if="!gameModel.maxPlayers">Not Available</span>
                     </div>
                     <div class="col-xs-12">
                         <div class="col-xs-3">&nbsp;</div>

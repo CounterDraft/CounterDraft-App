@@ -118,7 +118,7 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
             simplePlace.type = $scope.addressModel.type;
             simplePlace.name = $scope.addressModel.name;
         }
-        
+
         $uibModalInstance.close(simplePlace);
         return false;
     }
@@ -256,9 +256,12 @@ app.controller('ChangePasswordCtrl', ['$scope', '$http', '$window', '$uibModalIn
         }
     }
 }]).controller('GameSummaryCtrl', ['$scope', '$http', '$window', '$uibModalInstance', 'data', function($scope, $http, $window, $uibModalInstance, data) {
-
     this.initGameSummaryModal = function() {
         // console.log($scope.gameModel);
+    }
+
+    $scope.getNumber = function(num) {
+        return new Array(num);
     }
 
     this.cancel = function() {
