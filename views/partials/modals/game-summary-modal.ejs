@@ -51,11 +51,15 @@
                                 <label>Multiplier:</label> {{gameModel.multiplier}}</div>
                         </div>
                         <div class="col-xs-12">
-                            <h3>Player Payouts&nbsp;<small>estamited of max player value</small></h3>
+                            <h3>Player Payouts</h3>
+                            <small>estamited of max player value</small>
                         </div>
-                        <div class="col-xs-12" ng-if="gameModel.maxPlayers">
-                            <div class="col-xs-12" ng-repeat="i in getNumber(gameModel.winners) track by $index">
-                                <span>{{$index + 1}} place winner </span> &#36;{{ (gameModel.entryFee * gameModel.maxPlayers) - ((gameModel.entryFee * gameModel.maxPlayers) * gameModel.holding / 100)}}
+                        <div ng-if="gameModel.maxPlayers">
+                            <div class="col-xs-3">&nbsp;</div>
+                            <div class="col-xs-9">
+                                <div class="col-xs-12" ng-repeat="payout in payouts track by $index">
+                                    <span>{{ payout.place | place }} </span> &#36;{{ (gameModel.entryFee * gameModel.maxPlayers) - ((gameModel.entryFee * gameModel.maxPlayers) * payout.percentage / 100)}}
+                                </div>
                             </div>
                         </div>
                         <span ng-if="!gameModel.maxPlayers">Not Available</span>

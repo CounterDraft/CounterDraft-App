@@ -9,7 +9,7 @@
                 <ng-form name="userFieldForm" ng-repeat="payout in payouts track by $index">
                     <div class="form-group counter-group" show-errors>
                         <div class="input-group">
-                            <div class="input-group-addon">{{payout.place }}</div>
+                            <div class="input-group-addon">{{payout.place | place }}</div>
                             <input type="number" class="form-control" name="percentage" ng-model="payout.percentage" min="0" required/>
                             <div class="input-group-addon">&#37;</div>
                         </div>

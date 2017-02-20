@@ -51,6 +51,7 @@ module.exports = function(grunt) {
                     'build/js/libs/showErrors.js',
                     'build/js/app.js',
                     'build/js/directives.js',
+                    'build/js/filters.js',
 
                     //controllers
                     'build/js/controllers/accountCtrl.js',
