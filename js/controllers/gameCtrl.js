@@ -5,7 +5,7 @@
         This should all the logic for the game page.
 */
 
-app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uibModal', 'data', function($scope, $http, $window, $anchorScroll, $uibModal, data) {
+app.controller('GameCtrl', ['$rootScope','$scope', '$http', '$window', '$anchorScroll', '$uibModal', 'data', function($rootScope,$scope, $http, $window, $anchorScroll, $uibModal, data) {
     var _base_templates = "templates/game/";
     var _url_game_search = "/api/v1/game/search/";
     var _url_application = "/api/v1/application";
@@ -26,8 +26,7 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uib
         maxPlayers: null,
         minPlayers: null,
         holding: null,
-        winners: 3,
-        multiplier: 0.30,
+        winners: 0,
         type: null,
         league: null
     }
@@ -42,21 +41,31 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uib
 
     $scope.league = null;
 
+    $scope.payouts = [];
+
     $scope.currentDate = moment().toDate();
 
     $scope.$watch('gameModel.league', function(newValue, oldValue, controller) {
         if (newValue && $scope.league_types) {
             angular.forEach($scope.league_types, function(value, key) {
                 if (newValue === value.id) {
-                    console.log(value);
                     $scope.league = value;
                 }
             });
         }
     }, true);
 
-    var _init = function() {
+    $scope.$watch('gameModel.winners', function(newValue, oldValue, controller) {
+        $scope.payouts = [];
+        for (var i = 0; i < newValue; i++) {
+            $scope.payouts.push({
+                place: i + 1,
+                percentage: null
+            });
+        }
+    }, true);
 
+    var _init = function() {
         $http({
             method: 'GET',
             url: _url_application + '/league',
@@ -121,6 +130,10 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uib
         });
     }
 
+    $scope.getNumber = function(num) {
+        return new Array(num);
+    }
+
     $scope.onRoute = function(page, doNotClear) {
         if (page) {
             $scope.currentPage = _base_templates + page + '.html';
@@ -147,13 +160,17 @@ app.controller('GameCtrl', ['$scope', '$http', '$window', '$anchorScroll', '$uib
         return is_good;
     }
 
-    $scope.onGameCreate = function(step) {
+    $scope.onGameCreate = function(step, form) {
         var self = this;
         switch (step) {
             case 1:
                 $scope.onRoute('add-game-step-2', false);
                 break;
             case 2:
+                $scope.onRoute('add-game-step-3', false);
+                break;
+            case 3:
+                console.log($scope.payouts);
                 _showSummaryModal();
                 break;
             default:

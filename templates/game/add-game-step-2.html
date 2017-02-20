@@ -1,7 +1,7 @@
 <section class="beta">
     <div class="col-xs-12">
         <button type="button" class="btn senary add" ng-click="onRoute('add-game-step-1', false)"><i class="glyphicon glyphicon-circle-arrow-left"></i></button>
-        <h3 class="text-left-xs text-left-sm text-center">Create Game</h3>
+        <h3 class="text-left-xs text-left-sm text-center">Game Configuration</h3>
     </div>
     <div class="col-xs-12">
         <h3 class="">&nbsp;</h3>
@@ -49,14 +49,14 @@
                         <div class="form-group col-xs-12 col-md-6" show-errors>
                             <div class="input-group counter-group">
                                 <div class="input-group-addon">Min Players</div>
-                                <input type="number" class="form-control" min="0" name="minPlayers" ng-model="gameModel.minPlayers"/>
+                                <input type="number" class="form-control" min="0" name="minPlayers" ng-model="gameModel.minPlayers" />
                             </div>
                             <div class="help-block" ng-if="gameCeateStepTwo.minPlayers.$error && !gameCeateStepTwo.minPlayers.$error.required">Min Players must be > 0</div>
                         </div>
                         <div class="form-group col-xs-12 col-md-6" show-errors>
                             <div class="input-group counter-group">
                                 <div class="input-group-addon">Max Players</div>
-                                <input type="number" class="form-control" min="0" name="maxPlayers" ng-model="gameModel.maxPlayers"/>
+                                <input type="number" class="form-control" min="0" name="maxPlayers" ng-model="gameModel.maxPlayers" />
                             </div>
                             <div class="help-block" ng-if="gameCeateStepTwo.maxPlayers.$error && !gameCeateStepTwo.maxPlayers.$error.required">Max Players must be > 0</div>
                         </div>
@@ -78,14 +78,6 @@
                     <small class="col-xs-12 text-right">1 = only 1st place wins etc.., default = 3</small>
                     <div class="help-block" ng-if="gameCeateStepTwo.winners.$error && !gameCeateStepTwo.winners.$error.required">Contest must have 1 min winner</div>
                     <div class="help-block" ng-if="gameCeateStepTwo.winners.$error.required">Number of winners is required</div>
-                </div>
-                <div class="form-group col-xs-12 counter-group" show-errors>
-                    <div class="input-group">
-                        <div class="input-group-addon">Multiplier</div>
-                        <input type="number"  step="0.001" class="form-control" ng-model="gameModel.multiplier" name="multiplier" required/>
-                    </div>
-                    <small class="col-xs-12 text-right">multiplier is used to determine how much 1st place wins vs 3rd place, default = 0.30</small>
-                    <div class="help-block" ng-if="gameCeateStepTwo.winners.$error.required">Multiplier is required</div>
                 </div>
             </div>
             <div class="form-group">
