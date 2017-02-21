@@ -5,7 +5,8 @@
         This should all the logic for the game page.
 */
 
-app.controller('GameCtrl', ['$rootScope','$scope', '$http', '$window', '$anchorScroll', '$uibModal', 'data', function($rootScope,$scope, $http, $window, $anchorScroll, $uibModal, data) {
+app.controller('GameCtrl', ['$rootScope', '$scope', '$http', '$window', '$anchorScroll', '$uibModal', 'data', function($rootScope, $scope, $http, $window, $anchorScroll, $uibModal, data) {
+
     var _base_templates = "templates/game/";
     var _url_game_search = "/api/v1/game/search/";
     var _url_application = "/api/v1/application";
@@ -170,12 +171,32 @@ app.controller('GameCtrl', ['$rootScope','$scope', '$http', '$window', '$anchorS
                 $scope.onRoute('add-game-step-3', false);
                 break;
             case 3:
-                console.log($scope.payouts);
-                _showSummaryModal();
+                _checkPayouts($scope.payouts)
+                    .then(function(result) {
+                        _showSummaryModal();
+                    }).catch(function(err) {
+                        if (err) {
+                            $window.swal({
+                                title: "Error",
+                                text: err,
+                                type: "error",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: true,
+                                html: true
+                            });
+                        }
+                    });
                 break;
             default:
                 break;
         }
+    }
+
+    var _checkPayouts = function(payouts){
+       return new Promise(function(reslove, reject){
+            return reject('Amount must be equal to 100%'); 
+        });
     }
 
     var _showSummaryModal = function() {
@@ -202,6 +223,7 @@ app.controller('GameCtrl', ['$rootScope','$scope', '$http', '$window', '$anchorS
             console.info('Modal dismissed at: ' + new Date());
         });
     }
+
     $scope.onCreateGame = function(formData) {
         var self = this;
         var hasData = false;
