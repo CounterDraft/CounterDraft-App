@@ -27,7 +27,7 @@ app.controller('GameCtrl', ['$rootScope', '$scope', '$http', '$window', '$anchor
         maxPlayers: null,
         minPlayers: null,
         holding: null,
-        winners: 0,
+        winners: 3,
         type: null,
         league: null
     }

@@ -34,7 +34,7 @@ function GameApi() {
         var user = self.getUser(req, res);
         var organization = self.getOrganization(req, res);
         var postData = req.body;
-        var chckData = this._verifyGameCreation(postData);
+        // var chckData = this._verifyGameCreation(postData);
 
         console.log(postData);
 
@@ -224,7 +224,7 @@ function GameApi() {
     }
 
     this._verifyGameCreation = function(game) {
-
+        var organization = self.getOrganization(req, res);
         // {
         //     salaryCap: 300,
         //     entryFee: 30,
