@@ -193,9 +193,19 @@ app.controller('GameCtrl', ['$rootScope', '$scope', '$http', '$window', '$anchor
         }
     }
 
-    var _checkPayouts = function(payouts){
-       return new Promise(function(reslove, reject){
-            return reject('Amount must be equal to 100%'); 
+    var _checkPayouts = function(payouts) {
+        return new Promise(function(reslove, reject) {
+            var count = 0;
+            angular.forEach(payouts, function(payout, key) {
+               count += payout.percentage;
+            });
+            if(count === 100){
+                return reslove(count);
+            } else if (count < 100){
+                return reject('Total amount is less then 100%');
+            }else{
+                return reject('Total amount is greater then 100%');
+            } 
         });
     }
 

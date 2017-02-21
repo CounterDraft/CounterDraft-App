@@ -34,7 +34,7 @@
                             <div class="col-xs-12 col-sm-6 text-right-not-xs">
                                 <label>Salary Cap:</label> {{gameModel.salaryCap}}</div>
                             <div class="col-xs-12 col-sm-6">
-                                <label>Entry Fee:</label> {{gameModel.entryFee}}</div>
+                                <label>Entry Fee:</label> &#36;{{gameModel.entryFee}}</div>
                             <div class="col-xs-12 col-sm-6 text-right-not-xs">
                                 <label>Start:</label> {{gameModel.start | date:'medium'}}</div>
                             <div class="col-xs-12 col-sm-6">
@@ -47,23 +47,23 @@
                                 <label>Holding:</label> {{gameModel.holding}}%</div>
                             <div class="col-xs-12 col-sm-6">
                                 <label># of Winners:</label> {{gameModel.winners}}</div>
-                            <div class="col-xs-12 col-sm-6 text-right-not-xs">
-                                <label>Multiplier:</label> {{gameModel.multiplier}}</div>
                         </div>
-                        <div class="col-xs-12">
+                        <div class="col-sm-3 hidden-xs">&nbsp;</div>
+                        <div class="col-sm-9 col-xs-12">
                             <h3>Player Payouts</h3>
-                            <small>estamited of max player value</small>
+                            <small>Estamited of max player value</small>
                         </div>
                         <div ng-if="gameModel.maxPlayers">
-                            <div class="col-xs-3">&nbsp;</div>
-                            <div class="col-xs-9">
+                            <div class="col-sm-3 hidden-xs">&nbsp;</div>
+                            <div class="col-sm-9 col-xs-12">
                                 <div class="col-xs-12" ng-repeat="payout in payouts track by $index">
-                                    <span>{{ payout.place | place }} </span> &#36;{{ (gameModel.entryFee * gameModel.maxPlayers) - ((gameModel.entryFee * gameModel.maxPlayers) * payout.percentage / 100)}}
+                                    <span>{{ payout.place | place }} </span> &#36;{{ ((gameModel.entryFee * gameModel.maxPlayers) * payout.percentage / 100) }}
                                 </div>
                             </div>
                         </div>
                         <span ng-if="!gameModel.maxPlayers">Not Available</span>
                     </div>
+                    <div class="col-xs-12">&nbsp;</div>
                     <div class="col-xs-12">
                         <div class="col-xs-3">&nbsp;</div>
                         <div class="col-xs-6">
