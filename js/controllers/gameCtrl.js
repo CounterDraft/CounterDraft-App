@@ -161,7 +161,7 @@ app.controller('GameCtrl', ['$rootScope', '$scope', '$http', '$window', '$anchor
         return is_good;
     }
 
-    $scope.onGameCreate = function(step, form) {
+    $scope.onGameCreate = function(step) {
         var self = this;
         switch (step) {
             case 1:
@@ -225,19 +225,22 @@ app.controller('GameCtrl', ['$rootScope', '$scope', '$http', '$window', '$anchor
 
         modalInstance.result.then(function(isConfirmed) {
             if (isConfirmed) {
-                $scope.onCreateGame(angular.copy($scope.gameModel));
+                $scope.onCreateGame(angular.copy($scope.gameModel), angular.copy($scope.payouts));
             } else {
-                console.info('Modal dismissed at: ' + new Date());
+                // console.info('Modal dismissed at: ' + new Date());
             }
         }, function() {
-            console.info('Modal dismissed at: ' + new Date());
+            // console.info('Modal dismissed at: ' + new Date());
         });
     }
 
-    $scope.onCreateGame = function(formData) {
+    $scope.onCreateGame = function(formData, payouts) {
         var self = this;
         var hasData = false;
         var errorMsg = "Unknown server error, service is currently down.";
+
+        angular.extend(formData, {payouts: payouts});
+        console.log(formData);
 
         for (var x in formData) {
             if (formData[x]) {
@@ -266,7 +269,7 @@ app.controller('GameCtrl', ['$rootScope', '$scope', '$http', '$window', '$anchor
                 }
             }, function errorCallback(response) {
                 var data = response.data || null;
-                if (data && data.error.length > 0) {
+                if (data && data.hasOwnProperty('error')) {
                     var error = data.error[0];
                     $window.swal({
                         title: "Error",
