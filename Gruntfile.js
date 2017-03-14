@@ -97,10 +97,12 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            files: ["./css/*"],
-            tasks: ["less"],
-            options: {
-                nospawn: true
+            less: {
+                files: ["./css/*"],
+                tasks: ["less"],
+                options: {
+                    nospawn: true
+                }
             }
         },
 
@@ -153,5 +155,5 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('production', ['build']);
-    grunt.registerTask('development', ['less', 'watch']);
+    grunt.registerTask('development', ['less:development', 'watch:less']);
 };
