@@ -9,11 +9,14 @@ module.exports = function(grunt) {
 
         clean: {
             pre: ['build'],
-            post: ['build/js/controllers',
+            post: [
+                'build/js/controllers',
                 'build/js/*js',
                 'build/js/libs',
-                'build/css/css',
-                'build/css/*less'
+                'build/css/*less',
+                'build/css/libs',
+                'build/css/general',
+                'build/css/pages',
             ]
         },
 
@@ -88,33 +91,34 @@ module.exports = function(grunt) {
             },
 
             css: {
-                src: 'css/*less',
+                src: ['css/*less', 'css/*/*less', 'css/*/*/*less'],
                 dest: 'build/'
             }
         },
 
         watch: {
-            files: ["./css/*"],
-            tasks: ["less"],
-            options: {
-                nospawn: true
+            less: {
+                files: ["./css/*"],
+                tasks: ["less"],
+                options: {
+                    nospawn: true
+                }
             }
         },
 
         less: {
             production: {
-                compile: {
-                    options: {
-                        compress: true,
-                        strictMath: true,
-                        sourceMap: true,
-                        outputSourceFiles: true,
-                        sourceMapURL: '<%= pkg.name %>.css.map',
-                        sourceMapFilename: 'build/css/min/<%= pkg.name %>.css.map'
-                    },
-                    files: {
-                        'build/css/min/<%= pkg.name %>.min.css': 'css/counter-main.less'
-                    }
+                options: {
+                    paths: ['./css/'],
+                    compress: true,
+                    strictMath: true,
+                    sourceMap: true,
+                    outputSourceFiles: true,
+                    sourceMapURL: '<%= pkg.name %>.css.map',
+                    sourceMapFilename: 'build/css/min/<%= pkg.name %>.css.map'
+                },
+                files: {
+                    'build/css/min/<%= pkg.name %>.min.css': 'build/css/counter-main.less'
                 }
             },
             development: {
@@ -136,7 +140,7 @@ module.exports = function(grunt) {
         'ngAnnotate',
         'concat',
         'uglify',
-        'less',
+        'less:development',
         'clean:post'
     ]);
 
@@ -151,8 +155,5 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('production', ['build']);
-    grunt.registerTask('development', ['less', 'watch']);
+    grunt.registerTask('development', ['less:development', 'watch:less']);
 };
-
-
-
